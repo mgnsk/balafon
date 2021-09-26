@@ -19,39 +19,39 @@ tuplet : '/' _uint64 ;
 
 <<
 import (
-	"github.com/mgnsk/gong/internal/ast"
-	"github.com/mgnsk/gong/internal/token"
+    "github.com/mgnsk/gong/internal/ast"
+    "github.com/mgnsk/gong/internal/token"
 )
 >>
 
 Expr
-	: Assignment
-	| Track
-	| Command
-	;
+    : Assignment
+    | Track
+    | Command
+    ;
 
 Assignment
-	: ident "=" uint64          << ast.NewAssignment($T0.IDValue(), $T2) >>
-	;
+    : ident "=" uint64          << ast.NewAssignment($T0.IDValue(), $T2) >>
+    ;
 
 Track
-	: NoteList Track            << ast.NewTrack($0.(ast.NoteList), $1.(*ast.Track)) >>
-	| empty                     << (*ast.Track)(nil), nil >>
-	;
+    : NoteList Track            << ast.NewTrack($0.(ast.NoteList), $1.(*ast.Track)) >>
+    | empty                     << (*ast.Track)(nil), nil >>
+    ;
 
 NoteList
-	: ident PropertyList		<< ast.NewNoteList($T0.IDValue(), $1.(ast.PropertyList)) >>
+    : ident PropertyList        << ast.NewNoteList($T0.IDValue(), $1.(ast.PropertyList)) >>
     ;
 
 PropertyList
-	: uint64 PropertyList       << ast.NewPropertyList($T0, $1.(ast.PropertyList)) >>
-	| dot PropertyList          << ast.NewPropertyList($T0, $1.(ast.PropertyList)) >>
-	| tuplet PropertyList		<< ast.NewPropertyList($T0, $1.(ast.PropertyList)) >>
-	| empty                     << ast.PropertyList(nil), nil >>
-	;
+    : uint64 PropertyList       << ast.NewPropertyList($T0, $1.(ast.PropertyList)) >>
+    | dot PropertyList          << ast.NewPropertyList($T0, $1.(ast.PropertyList)) >>
+    | tuplet PropertyList       << ast.NewPropertyList($T0, $1.(ast.PropertyList)) >>
+    | empty                     << ast.PropertyList(nil), nil >>
+    ;
 
 Command:
-	: "bar" ident               << ast.NewCommand("bar", $T1.IDValue()) >>
-	| "play" ident              << ast.NewCommand("play", $T1.IDValue()) >>
-	| "end"						<< ast.NewCommand("end", "") >>
-	;
+    : "bar" ident               << ast.NewCommand("bar", $T1.IDValue()) >>
+    | "play" ident              << ast.NewCommand("play", $T1.IDValue()) >>
+    | "end"                     << ast.NewCommand("end", "") >>
+    ;
