@@ -4,6 +4,7 @@ package main
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"io"
 	"os"
@@ -14,24 +15,14 @@ import (
 	"github.com/mgnsk/gong/internal/player"
 	"github.com/mgnsk/gong/internal/scanner"
 	"github.com/spf13/cobra"
-
-	// replace with e.g. "gitlab.com/gomidi/rtmididrv" for real midi connections
-	// driver "gitlab.com/gomidi/midi/testdrv"
-	// driver "gitlab.com/gomidi/midicatdrv"
-	// driver "gitlab.com/gomidi/portmididrv"
-
-	driver "gitlab.com/gomidi/rtmididrv"
+	"gitlab.com/gomidi/midi/v2"
+	_ "gitlab.com/gomidi/midi/v2/drivers/rtmididrv"
 )
 
 func main() {
-	drv, err := driver.New()
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
-	defer drv.Close()
+	defer midi.CloseDriver()
 
-	outs, err := drv.Outs()
+	outs, err := midi.Outs()
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -48,7 +39,7 @@ func main() {
 				rawModeOff.Wait()
 			}()
 
-			fmt.Println("Welcome to gong shell!")
+			fmt.Println("Welcome to the gong shell!")
 
 			port, _ := strconv.Atoi(c.Flag("port").Value.String())
 			out := outs[port]
@@ -88,6 +79,9 @@ func main() {
 				for s.Scan() {
 					for _, msg := range s.Messages() {
 						if err := p.Play(ctx, msg); err != nil {
+							if errors.Is(err, context.Canceled) {
+								return nil
+							}
 							return err
 						}
 					}

@@ -15,7 +15,7 @@ var actionTab = actionTable{
 		canRecover: false,
 		actions: [numSymbols]action{
 			nil,       // INVALID
-			reduce(6), // $, reduce: Track
+			reduce(5), // $, reduce: Track
 			shift(5),  // ident
 			nil,       // =
 			nil,       // uint64
@@ -94,24 +94,24 @@ var actionTab = actionTable{
 	actionRow{ // S5
 		canRecover: false,
 		actions: [numSymbols]action{
-			nil,        // INVALID
-			reduce(11), // $, reduce: PropertyList
-			reduce(11), // ident, reduce: PropertyList
-			shift(10),  // =
-			shift(11),  // uint64
-			nil,        // empty
-			shift(13),  // dot
-			shift(14),  // tuplet
-			nil,        // bar
-			nil,        // play
-			nil,        // end
+			nil,       // INVALID
+			reduce(8), // $, reduce: PropertyList
+			reduce(8), // ident, reduce: PropertyList
+			shift(10), // =
+			shift(11), // uint64
+			nil,       // empty
+			shift(13), // dot
+			shift(14), // tuplet
+			nil,       // bar
+			nil,       // play
+			nil,       // end
 		},
 	},
 	actionRow{ // S6
 		canRecover: false,
 		actions: [numSymbols]action{
 			nil,       // INVALID
-			reduce(6), // $, reduce: Track
+			reduce(5), // $, reduce: Track
 			shift(16), // ident
 			nil,       // =
 			nil,       // uint64
@@ -190,17 +190,17 @@ var actionTab = actionTable{
 	actionRow{ // S11
 		canRecover: false,
 		actions: [numSymbols]action{
-			nil,        // INVALID
-			reduce(11), // $, reduce: PropertyList
-			reduce(11), // ident, reduce: PropertyList
-			nil,        // =
-			shift(11),  // uint64
-			nil,        // empty
-			shift(13),  // dot
-			shift(14),  // tuplet
-			nil,        // bar
-			nil,        // play
-			nil,        // end
+			nil,       // INVALID
+			reduce(8), // $, reduce: PropertyList
+			reduce(8), // ident, reduce: PropertyList
+			nil,       // =
+			shift(11), // uint64
+			nil,       // empty
+			shift(13), // dot
+			shift(14), // tuplet
+			nil,       // bar
+			nil,       // play
+			nil,       // end
 		},
 	},
 	actionRow{ // S12
@@ -222,40 +222,40 @@ var actionTab = actionTable{
 	actionRow{ // S13
 		canRecover: false,
 		actions: [numSymbols]action{
-			nil,        // INVALID
-			reduce(11), // $, reduce: PropertyList
-			reduce(11), // ident, reduce: PropertyList
-			nil,        // =
-			shift(11),  // uint64
-			nil,        // empty
-			shift(13),  // dot
-			shift(14),  // tuplet
-			nil,        // bar
-			nil,        // play
-			nil,        // end
+			nil,       // INVALID
+			reduce(8), // $, reduce: PropertyList
+			reduce(8), // ident, reduce: PropertyList
+			nil,       // =
+			shift(11), // uint64
+			nil,       // empty
+			shift(13), // dot
+			shift(14), // tuplet
+			nil,       // bar
+			nil,       // play
+			nil,       // end
 		},
 	},
 	actionRow{ // S14
 		canRecover: false,
 		actions: [numSymbols]action{
-			nil,        // INVALID
-			reduce(11), // $, reduce: PropertyList
-			reduce(11), // ident, reduce: PropertyList
-			nil,        // =
-			shift(11),  // uint64
-			nil,        // empty
-			shift(13),  // dot
-			shift(14),  // tuplet
-			nil,        // bar
-			nil,        // play
-			nil,        // end
+			nil,       // INVALID
+			reduce(8), // $, reduce: PropertyList
+			reduce(8), // ident, reduce: PropertyList
+			nil,       // =
+			shift(11), // uint64
+			nil,       // empty
+			shift(13), // dot
+			shift(14), // tuplet
+			nil,       // bar
+			nil,       // play
+			nil,       // end
 		},
 	},
 	actionRow{ // S15
 		canRecover: false,
 		actions: [numSymbols]action{
 			nil,       // INVALID
-			reduce(5), // $, reduce: Track
+			reduce(6), // $, reduce: Track
 			nil,       // ident
 			nil,       // =
 			nil,       // uint64
@@ -270,17 +270,17 @@ var actionTab = actionTable{
 	actionRow{ // S16
 		canRecover: false,
 		actions: [numSymbols]action{
-			nil,        // INVALID
-			reduce(11), // $, reduce: PropertyList
-			reduce(11), // ident, reduce: PropertyList
-			nil,        // =
-			shift(11),  // uint64
-			nil,        // empty
-			shift(13),  // dot
-			shift(14),  // tuplet
-			nil,        // bar
-			nil,        // play
-			nil,        // end
+			nil,       // INVALID
+			reduce(8), // $, reduce: PropertyList
+			reduce(8), // ident, reduce: PropertyList
+			nil,       // =
+			shift(11), // uint64
+			nil,       // empty
+			shift(13), // dot
+			shift(14), // tuplet
+			nil,       // bar
+			nil,       // play
+			nil,       // end
 		},
 	},
 	actionRow{ // S17
@@ -335,8 +335,8 @@ var actionTab = actionTable{
 		canRecover: false,
 		actions: [numSymbols]action{
 			nil,       // INVALID
-			reduce(8), // $, reduce: PropertyList
-			reduce(8), // ident, reduce: PropertyList
+			reduce(9), // $, reduce: PropertyList
+			reduce(9), // ident, reduce: PropertyList
 			nil,       // =
 			nil,       // uint64
 			nil,       // empty
@@ -350,25 +350,25 @@ var actionTab = actionTable{
 	actionRow{ // S21
 		canRecover: false,
 		actions: [numSymbols]action{
-			nil,       // INVALID
-			reduce(9), // $, reduce: PropertyList
-			reduce(9), // ident, reduce: PropertyList
-			nil,       // =
-			nil,       // uint64
-			nil,       // empty
-			nil,       // dot
-			nil,       // tuplet
-			nil,       // bar
-			nil,       // play
-			nil,       // end
+			nil,        // INVALID
+			reduce(10), // $, reduce: PropertyList
+			reduce(10), // ident, reduce: PropertyList
+			nil,        // =
+			nil,        // uint64
+			nil,        // empty
+			nil,        // dot
+			nil,        // tuplet
+			nil,        // bar
+			nil,        // play
+			nil,        // end
 		},
 	},
 	actionRow{ // S22
 		canRecover: false,
 		actions: [numSymbols]action{
 			nil,        // INVALID
-			reduce(10), // $, reduce: PropertyList
-			reduce(10), // ident, reduce: PropertyList
+			reduce(11), // $, reduce: PropertyList
+			reduce(11), // ident, reduce: PropertyList
 			nil,        // =
 			nil,        // uint64
 			nil,        // empty

@@ -21,148 +21,158 @@ func TestParser(t *testing.T) {
 
 	for _, tc := range []testcase{
 		{
-			"tempo = 120",
+			"# this is a comment\n",
 			match{
-				Equal(&ast.Assignment{Name: "tempo", Value: 120}),
+				BeNil(),
+				// BeAssignableToTypeOf(ast.LineComment{}),
+			},
+		},
+		{
+			"tempo = 120\n",
+			match{
+				BeAssignableToTypeOf(ast.Assignment{}),
 				ContainSubstring("tempo = 120"),
 			},
 		},
 		{
-			"c = 48",
+			"c = 48\n",
 			match{
-				Equal(&ast.Assignment{Name: "c", Value: 48}),
+				BeAssignableToTypeOf(ast.Assignment{}),
 				ContainSubstring("c = 48"),
 			},
 		},
 		{
-			"c=48",
+			"c=48\n",
 			match{
-				Equal(&ast.Assignment{Name: "c", Value: 48}),
+				BeAssignableToTypeOf(ast.Assignment{}),
 				ContainSubstring("c = 48"),
 			},
 		},
 		{
-			"k",
+			"k\n",
 			match{
-				BeAssignableToTypeOf((*ast.Track)(nil)),
+				BeAssignableToTypeOf(ast.Track{}),
 				ContainSubstring("k4"),
 			},
 		},
 		{
-			"k k",
+			"k k\n",
 			match{
-				BeAssignableToTypeOf((*ast.Track)(nil)),
+				BeAssignableToTypeOf(ast.Track{}),
 				ContainSubstring("k4 k4"),
 			},
 		},
 		{
-			"k k8",
+			"k k8\n",
 			match{
-				BeAssignableToTypeOf((*ast.Track)(nil)),
+				BeAssignableToTypeOf(ast.Track{}),
 				ContainSubstring("k4 k8"),
 			},
 		},
 		{
-			"kk4",
+			"kk4\n",
 			match{
-				BeAssignableToTypeOf((*ast.Track)(nil)),
+				BeAssignableToTypeOf(ast.Track{}),
 				ContainSubstring("k4 k4"),
 			},
 		},
 		{
-			"k8kk16kkkk16",
+			"k8kk16kkkk16\n",
 			match{
-				BeAssignableToTypeOf((*ast.Track)(nil)),
+				BeAssignableToTypeOf(ast.Track{}),
 				ContainSubstring("k8 k16 k16 k16 k16 k16 k16"),
 			},
 		},
 		{
-			"k.",
+			"k.\n",
 			match{
-				BeAssignableToTypeOf((*ast.Track)(nil)),
+				BeAssignableToTypeOf(ast.Track{}),
 				ContainSubstring("k4."),
 			},
 		},
 		{
-			"k4.",
+			"k4.\n",
 			match{
-				BeAssignableToTypeOf((*ast.Track)(nil)),
+				BeAssignableToTypeOf(ast.Track{}),
 				ContainSubstring("k4."),
 			},
 		},
 		{
-			"k8.k16",
+			"k8.k16\n",
 			match{
-				BeAssignableToTypeOf((*ast.Track)(nil)),
+				BeAssignableToTypeOf(ast.Track{}),
 				ContainSubstring("k8. k16"),
 			},
 		},
 		{
-			"kk8.",
+			"kk8.\n",
 			match{
-				BeAssignableToTypeOf((*ast.Track)(nil)),
+				BeAssignableToTypeOf(ast.Track{}),
 				ContainSubstring("k8. k8."),
 			},
 		},
 		{
-			"k/3",
+			"k/3\n",
 			match{
-				BeAssignableToTypeOf((*ast.Track)(nil)),
+				BeAssignableToTypeOf(ast.Track{}),
 				ContainSubstring("k4/3"),
 			},
 		},
 		{
-			"kkk8/3",
+			"kkk8/3\n",
 			match{
-				BeAssignableToTypeOf((*ast.Track)(nil)),
+				BeAssignableToTypeOf(ast.Track{}),
 				ContainSubstring("k8/3 k8/3 k8/3"),
 			},
 		},
 		{
-			"kkk8./3",
+			"kkk8./3\n",
 			match{
-				BeAssignableToTypeOf((*ast.Track)(nil)),
+				BeAssignableToTypeOf(ast.Track{}),
 				ContainSubstring("k8./3 k8./3 k8./3"),
 			},
 		},
 		{
-			"kkk8/3.",
+			"kkk8/3.\n",
 			match{
-				BeAssignableToTypeOf((*ast.Track)(nil)),
+				BeAssignableToTypeOf(ast.Track{}),
 				// Note properties are sorted.
 				ContainSubstring("k8./3 k8./3 k8./3"),
 			},
 		},
 		{
-			"k k4/3kk8/3k4/3 kk8./3",
+			"k k4/3kk8/3k4/3 kk8./3\n",
 			match{
-				BeAssignableToTypeOf((*ast.Track)(nil)),
+				BeAssignableToTypeOf(ast.Track{}),
 				ContainSubstring("k4 k4/3 k8/3 k8/3 k4/3 k8./3 k8./3"),
 			},
 		},
 		{
-			"- k4/3--8/3k4/3 --8./3",
+			"- k4/3--8/3k4/3 --8./3\n",
 			match{
-				BeAssignableToTypeOf((*ast.Track)(nil)),
+				BeAssignableToTypeOf(ast.Track{}),
 				ContainSubstring("-4 k4/3 -8/3 -8/3 k4/3 -8./3 -8./3"),
 			},
 		},
 		{
-			"bar MyRiff",
+			"bar MyRiff\n",
 			match{
-				Equal(&ast.Command{Name: "bar", Arg: "MyRiff"}),
+				BeAssignableToTypeOf(ast.Command{}),
+				ContainSubstring("bar MyRiff"),
 			},
 		},
 		{
-			"end",
+			"end\n",
 			match{
-				Equal(&ast.Command{Name: "end"}),
+				BeAssignableToTypeOf(ast.Command{}),
+				ContainSubstring("end"),
 			},
 		},
 		{
-			"play MyRiff",
+			"play MyRiff\n",
 			match{
-				Equal(&ast.Command{Name: "play", Arg: "MyRiff"}),
+				BeAssignableToTypeOf(ast.Command{}),
+				ContainSubstring("play MyRiff"),
 			},
 		},
 	} {
