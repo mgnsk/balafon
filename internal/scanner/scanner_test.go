@@ -78,10 +78,10 @@ func TestNoteLengths(t *testing.T) {
 		g.Expect(messages).To(HaveLen(2))
 
 		g.Expect(messages[0].Tick).To(Equal(uint64(0)))
-		g.Expect(messages[0].Msg).To(ContainSubstring("channel.NoteOn channel 0 key 36"))
+		g.Expect(messages[0].Msg).To(ContainSubstring("Channel0Msg & NoteOnMsg key: 36"))
 
 		g.Expect(messages[1].Tick).To(Equal(tc.offAt))
-		g.Expect(messages[1].Msg).To(ContainSubstring("channel.NoteOff channel 0 key 36"))
+		g.Expect(messages[1].Msg).To(ContainSubstring("Channel0Msg & NoteOffMsg key: 36"))
 	}
 }
 
@@ -106,26 +106,26 @@ play MyRiff
 	g.Expect(messages).To(HaveLen(8))
 
 	g.Expect(messages[0].Tick).To(Equal(uint64(0)))
-	g.Expect(messages[0].Msg).To(ContainSubstring("channel.NoteOn channel 0 key 36"))
+	g.Expect(messages[0].Msg).To(ContainSubstring("Channel0Msg & NoteOnMsg key: 36"))
 
 	g.Expect(messages[1].Tick).To(Equal(uint64(0)))
-	g.Expect(messages[1].Msg).To(ContainSubstring("channel.NoteOn channel 0 key 38"))
+	g.Expect(messages[1].Msg).To(ContainSubstring("Channel0Msg & NoteOnMsg key: 38"))
 
 	g.Expect(messages[2].Tick).To(Equal(uint64(constants.TicksPerQuarter / 2)))
-	g.Expect(messages[2].Msg).To(ContainSubstring("channel.NoteOff channel 0 key 36"))
+	g.Expect(messages[2].Msg).To(ContainSubstring("Channel0Msg & NoteOffMsg key: 36"))
 
 	g.Expect(messages[3].Tick).To(Equal(uint64(constants.TicksPerQuarter / 2)))
-	g.Expect(messages[3].Msg).To(ContainSubstring("channel.NoteOff channel 0 key 38"))
+	g.Expect(messages[3].Msg).To(ContainSubstring("Channel0Msg & NoteOffMsg key: 38"))
 
 	g.Expect(messages[4].Tick).To(Equal(uint64(constants.TicksPerQuarter / 2)))
-	g.Expect(messages[4].Msg).To(ContainSubstring("channel.NoteOn channel 0 key 36"))
+	g.Expect(messages[4].Msg).To(ContainSubstring("Channel0Msg & NoteOnMsg key: 36"))
 
 	g.Expect(messages[5].Tick).To(Equal(uint64(constants.TicksPerQuarter / 2)))
-	g.Expect(messages[5].Msg).To(ContainSubstring("channel.NoteOn channel 0 key 38"))
+	g.Expect(messages[5].Msg).To(ContainSubstring("Channel0Msg & NoteOnMsg key: 38"))
 
 	g.Expect(messages[6].Tick).To(Equal(uint64(constants.TicksPerQuarter)))
-	g.Expect(messages[6].Msg).To(ContainSubstring("channel.NoteOff channel 0 key 36"))
+	g.Expect(messages[6].Msg).To(ContainSubstring("Channel0Msg & NoteOffMsg key: 36"))
 
 	g.Expect(messages[7].Tick).To(Equal(uint64(constants.TicksPerQuarter)))
-	g.Expect(messages[7].Msg).To(ContainSubstring("channel.NoteOff channel 0 key 38"))
+	g.Expect(messages[7].Msg).To(ContainSubstring("Channel0Msg & NoteOffMsg key: 38"))
 }

@@ -2,20 +2,19 @@ package player
 
 import (
 	"context"
-	"io"
 	"sync"
 	"time"
 
 	"github.com/mgnsk/gong/internal/constants"
 	"github.com/mgnsk/gong/internal/scanner"
-	"gitlab.com/gomidi/midi/writer"
+	"gitlab.com/gomidi/midi/v2"
 )
 
 // Player plays back MIDI messages into a MIDI output port.
 type Player struct {
-	wr           *writer.Writer
-	tickDuration time.Duration
+	out          midi.Sender
 	timer        *time.Timer
+	tickDuration time.Duration
 	once         sync.Once
 	currentTick  uint64
 }
@@ -23,7 +22,7 @@ type Player struct {
 // Play the message.
 func (p *Player) Play(ctx context.Context, msg scanner.Message) error {
 	if msg.Tempo > 0 {
-		p.tickDuration = time.Duration(float64(time.Minute) / float64(msg.Tempo) / float64(constants.TicksPerQuarter))
+		p.setTempo(msg.Tempo)
 		return nil
 	}
 
@@ -42,22 +41,25 @@ func (p *Player) Play(ctx context.Context, msg scanner.Message) error {
 		p.currentTick = msg.Tick
 	}
 
-	if err := p.wr.Write(msg.Msg); err != nil {
+	if err := p.out.Send(msg.Msg.Data); err != nil {
 		return err
 	}
 
 	return nil
 }
 
+func (p *Player) setTempo(bpm uint32) {
+	p.tickDuration = time.Duration(float64(time.Minute) / float64(bpm) / float64(constants.TicksPerQuarter))
+}
+
 // New creates a new Player instance.
-func New(w io.Writer) *Player {
-	tempo := 120
-	d := float64(time.Minute) / float64(tempo) / float64(constants.TicksPerQuarter)
+func New(out midi.Sender) *Player {
 	timer := time.NewTimer(0)
 	<-timer.C
-	return &Player{
-		wr:           writer.New(w),
-		tickDuration: time.Duration(d),
-		timer:        timer,
+	p := &Player{
+		out:   out,
+		timer: timer,
 	}
+	p.setTempo(120)
+	return p
 }

@@ -12,8 +12,7 @@ import (
 	"github.com/mgnsk/gong/internal/constants"
 	"github.com/mgnsk/gong/internal/lexer"
 	"github.com/mgnsk/gong/internal/parser"
-	"gitlab.com/gomidi/midi"
-	"gitlab.com/gomidi/midi/midimessage/channel"
+	"gitlab.com/gomidi/midi/v2"
 )
 
 // Message is a tempo or a MIDI message.
@@ -31,8 +30,8 @@ type Scanner struct {
 	messages []Message
 
 	notes       map[string]uint8
-	bars        map[string][]*ast.Track
-	barBuffer   []*ast.Track
+	bars        map[string][]ast.Track
+	barBuffer   []ast.Track
 	currentBar  string
 	currentTick uint64
 }
@@ -51,6 +50,7 @@ func (s *Scanner) Messages() []Message {
 }
 
 // Suggest returns suggestions for the next input.
+// TODO possible race condition.
 func (s *Scanner) Suggest() []string {
 	// Suggest assigned notes at any time.
 	var sug []string
@@ -83,31 +83,37 @@ func (s *Scanner) Scan() bool {
 
 		s.parser.Reset()
 
-		res, err := s.parser.Parse(lexer.NewLexer(s.scanner.Bytes()))
+		input := append(s.scanner.Bytes(), '\n')
+		res, err := s.parser.Parse(lexer.NewLexer(input))
 		if err != nil {
 			s.err = err
 			return false
 		}
 
+		if res == nil {
+			// Skip comments.
+			continue
+		}
+
 		switch r := res.(type) {
-		case *ast.Assignment:
-			switch r.Name {
+		case ast.Assignment:
+			switch r.Left {
 			case "tempo":
 				s.messages = []Message{{
-					Tempo: r.Value,
+					Tempo: r.Uint32Value(),
 				}}
 				return true
 
 			default:
-				if len(r.Name) != 1 {
-					s.err = fmt.Errorf("invalid assignment to '%s', must be either 'tempo' or a single character note", r.Name)
+				if len(r.Left) != 1 {
+					s.err = fmt.Errorf("invalid assignment to '%s', must be either 'tempo' or a single character note", r.Left)
 					return false
 				}
 				// TODO out of range test uint8
-				s.notes[r.Name] = uint8(r.Value)
+				s.notes[r.Left] = uint8(r.Uint32Value())
 			}
 
-		case *ast.Track:
+		case ast.Track:
 			if s.currentBar != "" {
 				s.barBuffer = append(s.barBuffer, r)
 			} else {
@@ -120,11 +126,11 @@ func (s *Scanner) Scan() bool {
 				return true
 			}
 
-		case *ast.Command:
+		case ast.Command:
 			switch r.Name {
 			case "bar": // Begin a bar.
 				if s.currentBar != "" {
-					s.err = errors.New("cannot begin a bar: already in a bar")
+					s.err = fmt.Errorf("cannot begin a new bar: end bar '%s' first", s.currentBar)
 					return false
 				}
 				if _, ok := s.bars[r.Arg]; ok {
@@ -144,7 +150,7 @@ func (s *Scanner) Scan() bool {
 
 			case "play": // Play a bar.
 				if s.currentBar != "" {
-					s.err = errors.New("cannot play: current bar not ended")
+					s.err = fmt.Errorf("cannot play: end bar '%s' first", s.currentBar)
 					return false
 				}
 				bar, ok := s.bars[r.Arg]
@@ -166,19 +172,19 @@ func (s *Scanner) Scan() bool {
 			}
 
 		default:
-			panic("invalid token")
+			panic(fmt.Sprintf("invalid token %#v", r))
 		}
 	}
 
 	return false
 }
 
-func (s *Scanner) parseBar(tracks ...*ast.Track) ([]Message, error) {
+func (s *Scanner) parseBar(tracks ...ast.Track) ([]Message, error) {
 	var messages []Message
 
 	for _, track := range tracks {
 		var tick uint64
-		for _, note := range track.Notes {
+		for _, note := range track {
 			length := s.noteLength(note)
 
 			if note.Name != "-" {
@@ -190,12 +196,12 @@ func (s *Scanner) parseBar(tracks ...*ast.Track) ([]Message, error) {
 				messages = append(messages, Message{
 					Tick: s.currentTick + tick,
 					// TODO velocity and channel
-					Msg: channel.Channel0.NoteOn(key, 127),
+					Msg: midi.NewMessage(midi.Channel(0).NoteOn(key, 127)),
 				})
 
 				messages = append(messages, Message{
 					Tick: s.currentTick + tick + uint64(length),
-					Msg:  channel.Channel0.NoteOff(key),
+					Msg:  midi.NewMessage(midi.Channel(0).NoteOff(key)),
 				})
 			}
 
@@ -208,8 +214,11 @@ func (s *Scanner) parseBar(tracks ...*ast.Track) ([]Message, error) {
 		if messages[i].Tick < messages[j].Tick {
 			return true
 		} else if messages[i].Tick == messages[j].Tick {
-			if a, ok := messages[i].Msg.(channel.NoteOff); ok {
-				if b, ok := messages[j].Msg.(channel.NoteOff); ok {
+			a := messages[i].Msg
+			b := messages[j].Msg
+
+			if a.IsNoteEnd() {
+				if b.IsNoteEnd() {
 					// When both are NoteOff, sort by key.
 					return a.Key() < b.Key()
 				}
@@ -243,6 +252,6 @@ func New(r io.Reader) *Scanner {
 		scanner: bufio.NewScanner(r),
 		parser:  parser.NewParser(),
 		notes:   make(map[string]uint8),
-		bars:    make(map[string][]*ast.Track),
+		bars:    make(map[string][]ast.Track),
 	}
 }

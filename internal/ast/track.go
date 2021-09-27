@@ -10,26 +10,22 @@ import (
 )
 
 // Track is a single track of notes.
-type Track struct {
-	Notes NoteList
-}
+type Track NoteList
 
 // NewTrack creates a track.
-func NewTrack(notes NoteList, inner *Track) (*Track, error) {
-	t := &Track{}
-	t.Notes = append(t.Notes, notes...)
-
-	if inner != nil {
-		t.Notes = append(t.Notes, inner.Notes...)
+func NewTrack(notes NoteList, inner interface{}) Track {
+	var t Track
+	t = append(t, notes...)
+	if inner, ok := inner.(Track); ok {
+		t = append(t, inner...)
 	}
-
-	return t, nil
+	return t
 }
 
-func (t *Track) String() string {
-	notes := make([]string, len(t.Notes))
-	for i, n := range t.Notes {
-		notes[i] = n.String()
+func (t Track) String() string {
+	notes := make([]string, len(t))
+	for i, note := range t {
+		notes[i] = note.String()
 	}
 	return strings.Join(notes, " ")
 }
@@ -39,26 +35,36 @@ type NoteList []*Note
 
 // NewNoteList creates a note list by expanding the short syntax of a multi note
 // and applying sorted properties to each individual note.
-func NewNoteList(multiNote string, props PropertyList) (NoteList, error) {
-	props.Sort()
-
+func NewNoteList(ident string, props interface{}) NoteList {
 	var p PropertyList
-	if len(props) == 0 || props[0].Type != token.TokMap.Type("uint64") {
-		// Implicit quarter note.
-		p = append(PropertyList{
+
+	switch props := props.(type) {
+	case PropertyList:
+		props.Sort()
+		if len(props) == 0 || props[0].Type != token.TokMap.Type("uint64") {
+			// Implicit quarter note.
+			p = append(PropertyList{
+				&token.Token{
+					Type: token.TokMap.Type("uint64"),
+					Lit:  []byte("4"),
+				},
+			}, props...)
+		} else {
+			p = props
+		}
+	default:
+		p = PropertyList{
 			&token.Token{
 				Type: token.TokMap.Type("uint64"),
 				Lit:  []byte("4"),
 			},
-		}, props...)
-	} else {
-		p = props
+		}
 	}
 
 	// Expand the short syntax of a multi note into individual notes
 	// and apply the properties to each individual note.
-	notes := make(NoteList, len(multiNote))
-	for i, r := range multiNote {
+	notes := make(NoteList, len(ident))
+	for i, r := range ident {
 		n := &Note{
 			Name:  string(r),
 			Props: p,
@@ -66,7 +72,7 @@ func NewNoteList(multiNote string, props PropertyList) (NoteList, error) {
 		notes[i] = n
 	}
 
-	return notes, nil
+	return notes
 }
 
 // Note is a single note with sorted properties.
@@ -136,6 +142,9 @@ func (p PropertyList) String() string {
 }
 
 // NewPropertyList creates a note property list.
-func NewPropertyList(t *token.Token, next PropertyList) (PropertyList, error) {
-	return append(PropertyList{t}, next...), nil
+func NewPropertyList(t *token.Token, inner interface{}) PropertyList {
+	if props, ok := inner.(PropertyList); ok {
+		return append(PropertyList{t}, props...)
+	}
+	return PropertyList{t}
 }

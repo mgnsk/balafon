@@ -2,28 +2,25 @@ package ast
 
 import (
 	"fmt"
-
-	"github.com/mgnsk/gong/internal/token"
+	"strconv"
 )
 
 // Assignment assigns a numeric value to a string name.
 type Assignment struct {
-	Name  string
-	Value uint32
+	Left  string
+	Right string
 }
 
-// NewAssignment creates an assignment from tokens.
-func NewAssignment(name string, value *token.Token) (*Assignment, error) {
-	num, err := value.Int64Value()
+// Uint32Value parses the right side of Assignment as uint32.
+func (a Assignment) Uint32Value() uint32 {
+	v, err := strconv.Atoi(a.Right)
 	if err != nil {
-		return nil, err
+		panic(err)
 	}
-	return &Assignment{
-		Name:  name,
-		Value: uint32(num),
-	}, nil
+	// TODO range
+	return uint32(v)
 }
 
-func (a *Assignment) String() string {
-	return fmt.Sprintf("%s = %d", a.Name, a.Value)
+func (a Assignment) String() string {
+	return fmt.Sprintf("%s = %s", a.Left, a.Right)
 }
