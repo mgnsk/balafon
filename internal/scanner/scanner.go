@@ -2,6 +2,7 @@ package scanner
 
 import (
 	"bufio"
+	"bytes"
 	"errors"
 	"fmt"
 	"io"
@@ -49,6 +50,7 @@ func (s *Scanner) Messages() []Message {
 	return s.messages
 }
 
+// Suggest returns suggestions for the next input.
 func (s *Scanner) Suggest() []string {
 	// Suggest assigned notes at any time.
 	var sug []string
@@ -72,9 +74,10 @@ func (s *Scanner) Suggest() []string {
 // Scan the next batch of messages.
 func (s *Scanner) Scan() bool {
 	s.messages = nil
+	s.err = nil
 
 	for s.scanner.Scan() {
-		if len(s.scanner.Bytes()) == 0 {
+		if len(bytes.TrimSpace(s.scanner.Bytes())) == 0 {
 			continue
 		}
 
@@ -187,7 +190,7 @@ func (s *Scanner) parseBar(tracks ...*ast.Track) ([]Message, error) {
 				messages = append(messages, Message{
 					Tick: s.currentTick + tick,
 					// TODO velocity and channel
-					Msg: channel.Channel0.NoteOn(key, 50),
+					Msg: channel.Channel0.NoteOn(key, 127),
 				})
 
 				messages = append(messages, Message{
