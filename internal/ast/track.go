@@ -31,21 +31,21 @@ func (t Track) String() string {
 }
 
 // NoteList is a list of notes.
-type NoteList []*Note
+type NoteList []Note
 
 // NewNoteList creates a note list by expanding the short syntax of a multi note
 // and applying sorted properties to each individual note.
 func NewNoteList(ident string, props interface{}) NoteList {
-	var p PropertyList
+	var p NotePropertyList
 
 	switch props := props.(type) {
-	case PropertyList:
+	case NotePropertyList:
 		props.Sort()
-		if len(props) == 0 || props[0].Type != token.TokMap.Type("uint64") {
+		if len(props) == 0 || props[0].Type != token.TokMap.Type("uint") {
 			// Implicit quarter note.
-			p = append(PropertyList{
+			p = append(NotePropertyList{
 				&token.Token{
-					Type: token.TokMap.Type("uint64"),
+					Type: token.TokMap.Type("uint"),
 					Lit:  []byte("4"),
 				},
 			}, props...)
@@ -53,23 +53,22 @@ func NewNoteList(ident string, props interface{}) NoteList {
 			p = props
 		}
 	default:
-		p = PropertyList{
+		p = NotePropertyList{
 			&token.Token{
-				Type: token.TokMap.Type("uint64"),
+				Type: token.TokMap.Type("uint"),
 				Lit:  []byte("4"),
 			},
 		}
 	}
 
 	// Expand the short syntax of a multi note into individual notes
-	// and apply the properties to each individual note.
+	// and apply the same properties to each individual note.
 	notes := make(NoteList, len(ident))
 	for i, r := range ident {
-		n := &Note{
+		notes[i] = Note{
 			Name:  string(r),
 			Props: p,
 		}
-		notes[i] = n
 	}
 
 	return notes
@@ -78,11 +77,11 @@ func NewNoteList(ident string, props interface{}) NoteList {
 // Note is a single note with sorted properties.
 type Note struct {
 	Name  string
-	Props PropertyList
+	Props NotePropertyList
 }
 
 // Value returns the note value (1th, 2th, 4th, 8th, 16th, 32th and so on).
-func (n *Note) Value() uint8 {
+func (n Note) Value() uint8 {
 	v, err := n.Props[0].Int32Value()
 	if err != nil {
 		panic(err)
@@ -92,12 +91,12 @@ func (n *Note) Value() uint8 {
 }
 
 // IsDot reports whether the not is a dotted note.
-func (n *Note) IsDot() bool {
+func (n Note) IsDot() bool {
 	return len(n.Props) >= 2 && n.Props[1].Type == token.TokMap.Type("dot")
 }
 
 // Tuplet returns the irregular division value if the note is a tuplet.
-func (n *Note) Tuplet() uint8 {
+func (n Note) Tuplet() uint8 {
 	// If the note is a dotted note, the tuplet property is at index 2,
 	// otherwise it is at index 1.
 	for _, t := range n.Props {
@@ -114,7 +113,7 @@ func (n *Note) Tuplet() uint8 {
 	return 0
 }
 
-func (n *Note) String() string {
+func (n Note) String() string {
 	values := make([]string, len(n.Props))
 	for i, p := range n.Props {
 		values[i] = p.String()
@@ -122,18 +121,18 @@ func (n *Note) String() string {
 	return fmt.Sprintf("%s%s", n.Name, n.Props)
 }
 
-// PropertyList is a list of note properties. 3 types of properties exist:
+// NotePropertyList is a list of note properties. 3 types of properties exist:
 // note value, dot and tuplet.
-type PropertyList []*token.Token
+type NotePropertyList []*token.Token
 
 // Sort the properties in the order of value, dot, tuplet.
-func (p PropertyList) Sort() {
+func (p NotePropertyList) Sort() {
 	sort.Slice(p, func(i, j int) bool {
 		return p[i].Type < p[j].Type
 	})
 }
 
-func (p PropertyList) String() string {
+func (p NotePropertyList) String() string {
 	var format strings.Builder
 	for _, t := range p {
 		format.Write(t.Lit)
@@ -141,10 +140,10 @@ func (p PropertyList) String() string {
 	return format.String()
 }
 
-// NewPropertyList creates a note property list.
-func NewPropertyList(t *token.Token, inner interface{}) PropertyList {
-	if props, ok := inner.(PropertyList); ok {
-		return append(PropertyList{t}, props...)
+// NewNotePropertyList creates a note property list.
+func NewNotePropertyList(t *token.Token, inner interface{}) NotePropertyList {
+	if props, ok := inner.(NotePropertyList); ok {
+		return append(NotePropertyList{t}, props...)
 	}
-	return PropertyList{t}
+	return NotePropertyList{t}
 }

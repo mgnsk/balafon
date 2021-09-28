@@ -10,7 +10,7 @@ import (
 	"gitlab.com/gomidi/midi/v2"
 )
 
-// Player plays back MIDI messages into a MIDI output port.
+// Player plays back scanner messages into a MIDI output port.
 type Player struct {
 	out          midi.Sender
 	timer        *time.Timer

@@ -28,23 +28,16 @@ func TestParser(t *testing.T) {
 			},
 		},
 		{
-			"tempo = 120\n",
-			match{
-				BeAssignableToTypeOf(ast.Assignment{}),
-				ContainSubstring("tempo = 120"),
-			},
-		},
-		{
 			"c = 48\n",
 			match{
-				BeAssignableToTypeOf(ast.Assignment{}),
+				BeAssignableToTypeOf(ast.NoteAssignment{}),
 				ContainSubstring("c = 48"),
 			},
 		},
 		{
 			"c=48\n",
 			match{
-				BeAssignableToTypeOf(ast.Assignment{}),
+				BeAssignableToTypeOf(ast.NoteAssignment{}),
 				ContainSubstring("c = 48"),
 			},
 		},
@@ -155,10 +148,17 @@ func TestParser(t *testing.T) {
 			},
 		},
 		{
-			"bar MyRiff\n",
+			"bar \"Chorus0\"\n",
 			match{
 				BeAssignableToTypeOf(ast.Command{}),
-				ContainSubstring("bar MyRiff"),
+				ContainSubstring(`bar "Chorus0"`),
+			},
+		},
+		{
+			"bar \"Chorus1\"\n",
+			match{
+				BeAssignableToTypeOf(ast.Command{}),
+				ContainSubstring(`bar "Chorus1"`),
 			},
 		},
 		{
@@ -169,10 +169,52 @@ func TestParser(t *testing.T) {
 			},
 		},
 		{
-			"play MyRiff\n",
+			"play \"chorus\"\n",
 			match{
 				BeAssignableToTypeOf(ast.Command{}),
-				ContainSubstring("play MyRiff"),
+				ContainSubstring(`play "chorus"`),
+			},
+		},
+		{
+			"play \"Chorus0\"\n",
+			match{
+				BeAssignableToTypeOf(ast.Command{}),
+				ContainSubstring(`play "Chorus0"`),
+			},
+		},
+		{
+			"play \"Chorus1\"\n",
+			match{
+				BeAssignableToTypeOf(ast.Command{}),
+				ContainSubstring(`play "Chorus1"`),
+			},
+		},
+		{
+			"tempo 120\n",
+			match{
+				BeAssignableToTypeOf(ast.Command{}),
+				ContainSubstring("tempo 120"),
+			},
+		},
+		{
+			"channel 0\n",
+			match{
+				BeAssignableToTypeOf(ast.Command{}),
+				ContainSubstring("channel 0"),
+			},
+		},
+		{
+			"program 0\n",
+			match{
+				BeAssignableToTypeOf(ast.Command{}),
+				ContainSubstring("program 0"),
+			},
+		},
+		{
+			"control 0 1\n",
+			match{
+				BeAssignableToTypeOf(ast.Command{}),
+				ContainSubstring("control 0 1"),
 			},
 		},
 	} {

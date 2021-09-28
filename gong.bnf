@@ -4,19 +4,19 @@ _digit       : '0'-'9' ;
 _lower       : 'a'-'z' ;
 _upper       : 'A'-'Z' ;
 _char        : _lower | _upper ;
-_dash        : '-' ;
-_identchar   : _char | _dash ;
-_uint64      : '1'-'9' {_digit} ;
+_identChar   : _char | '-' ;
+_uint        : '0' | '1'-'9' {_digit} ;
+_stringLit   : '"' _identChar {_identChar | _uint} '"' ;
 _lineComment : '#' { . } '\n';
 
-ident  : _identchar {_identchar} ;
-uint64 : _uint64 ;
-dot    : '.' ;
-tuplet : '/' _uint64 ;
+multiNote : _identChar {_identChar} ;
+barName   : _stringLit ;
+uint      : _uint ;
+dot       : '.' ;
+tuplet    : '/' _uint ;
 
 !comment    : _lineComment ;
 !whitespace : ' ' | '\t' | '\n' | '\r' ;
-
 
 /* Syntax Part */
 
@@ -28,34 +28,38 @@ import (
 >>
 
 Expr
-    : Assignment
+    : NoteAssignment
     | Track
     | Command
     ;
 
-Assignment
-    : ident "=" uint64          << ast.Assignment{$T0.IDValue(), $T2.IDValue()}, nil >>
+// TODO singleNote
+NoteAssignment
+    : multiNote "=" uint            << ast.NewNoteAssignment($T0.IDValue(), $T2.IDValue()) >>
     ;
 
 Track
     : empty
-    | NoteList Track            << ast.NewTrack($0.(ast.NoteList), $1), nil >>
+    | NoteList Track                << ast.NewTrack($0.(ast.NoteList), $1), nil >>
     ;
 
 NoteList
-    : ident PropertyList        << ast.NewNoteList($T0.IDValue(), $1), nil >>
+    : multiNote NotePropertyList    << ast.NewNoteList($T0.IDValue(), $1), nil >>
     ;
 
-PropertyList
+NotePropertyList
     : empty
-    | uint64 PropertyList       << ast.NewPropertyList($T0, $1), nil >>
-    | dot PropertyList          << ast.NewPropertyList($T0, $1), nil >>
-    | tuplet PropertyList       << ast.NewPropertyList($T0, $1), nil >>
+    | uint NotePropertyList         << ast.NewNotePropertyList($T0, $1), nil >>
+    | dot NotePropertyList          << ast.NewNotePropertyList($T0, $1), nil >>
+    | tuplet NotePropertyList       << ast.NewNotePropertyList($T0, $1), nil >>
     ;
 
-// TODO multiple arguments
 Command:
-    : "bar" ident               << ast.Command{"bar", $T1.IDValue()}, nil >>
-    | "play" ident              << ast.Command{"play", $T1.IDValue()}, nil >>
-    | "end"                     << ast.Command{"end", ""}, nil >>
+    : "bar" barName                 << ast.NewCommand("bar", $T1.IDValue()) >>
+    | "end"                         << ast.NewCommand("end") >>
+    | "play" barName                << ast.NewCommand("play", $T1.IDValue()) >>
+    | "tempo" uint                  << ast.NewCommand("tempo", $T1.IDValue()) >>
+    | "channel" uint                << ast.NewCommand("channel", $T1.IDValue()) >>
+    | "program" uint                << ast.NewCommand("program", $T1.IDValue()) >>
+    | "control" uint uint           << ast.NewCommand("control", $T1.IDValue(), $T2.IDValue()) >>
     ;

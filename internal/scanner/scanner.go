@@ -29,11 +29,12 @@ type Scanner struct {
 	err      error
 	messages []Message
 
-	notes       map[string]uint8
-	bars        map[string][]ast.Track
-	barBuffer   []ast.Track
-	currentBar  string
-	currentTick uint64
+	notes          map[string]uint8
+	bars           map[string][]ast.Track
+	barBuffer      []ast.Track
+	currentBar     string
+	currentTick    uint64
+	currentChannel uint8
 }
 
 // Err returns the first non-EOF error that was encountered by the Scanner.
@@ -96,22 +97,13 @@ func (s *Scanner) Scan() bool {
 		}
 
 		switch r := res.(type) {
-		case ast.Assignment:
-			switch r.Left {
-			case "tempo":
-				s.messages = []Message{{
-					Tempo: r.Uint32Value(),
-				}}
-				return true
-
-			default:
-				if len(r.Left) != 1 {
-					s.err = fmt.Errorf("invalid assignment to '%s', must be either 'tempo' or a single character note", r.Left)
-					return false
-				}
-				// TODO out of range test uint8
-				s.notes[r.Left] = uint8(r.Uint32Value())
+		case ast.NoteAssignment:
+			if len(r.Note) != 1 {
+				// TODO
+				s.err = errors.New("note must be a single character")
+				return false
 			}
+			s.notes[r.Note] = r.Key
 
 		case ast.Track:
 			if s.currentBar != "" {
@@ -130,14 +122,14 @@ func (s *Scanner) Scan() bool {
 			switch r.Name {
 			case "bar": // Begin a bar.
 				if s.currentBar != "" {
-					s.err = fmt.Errorf("cannot begin a new bar: end bar '%s' first", s.currentBar)
+					s.err = fmt.Errorf("cannot begin bar '%s': bar '%s' is not ended", r.Args[0], s.currentBar)
 					return false
 				}
-				if _, ok := s.bars[r.Arg]; ok {
-					s.err = fmt.Errorf("bar '%s' already defined", r.Arg)
+				if _, ok := s.bars[r.Args[0]]; ok {
+					s.err = fmt.Errorf("bar '%s' already defined", r.Args[0])
 					return false
 				}
-				s.currentBar = r.Arg
+				s.currentBar = r.Args[0]
 
 			case "end": // End the current bar.
 				if s.currentBar == "" {
@@ -150,12 +142,12 @@ func (s *Scanner) Scan() bool {
 
 			case "play": // Play a bar.
 				if s.currentBar != "" {
-					s.err = fmt.Errorf("cannot play: end bar '%s' first", s.currentBar)
+					s.err = fmt.Errorf("cannot play bar '%s': bar '%s' is not ended", r.Args[0], s.currentBar)
 					return false
 				}
-				bar, ok := s.bars[r.Arg]
+				bar, ok := s.bars[r.Args[0]]
 				if !ok {
-					s.err = fmt.Errorf("cannot play nonexistent bar '%s'", r.Arg)
+					s.err = fmt.Errorf("cannot play nonexistent bar '%s'", r.Args[0])
 					return false
 				}
 				messages, err := s.parseBar(bar...)
@@ -166,9 +158,43 @@ func (s *Scanner) Scan() bool {
 				s.messages = messages
 				return true
 
+			case "tempo":
+				s.messages = []Message{{
+					Tempo: r.Uint32Args()[0],
+				}}
+				return true
+
+			case "channel":
+				if s.currentBar != "" {
+					s.err = fmt.Errorf("cannot change channel: bar '%s' is not ended", s.currentBar)
+					return false
+				}
+				s.currentChannel = r.Uint8Args()[0]
+				continue
+
+			case "program": // Program change.
+				if s.currentBar != "" {
+					s.err = fmt.Errorf("cannot change program: bar '%s' is not ended", s.currentBar)
+					return false
+				}
+				s.messages = []Message{{
+					Msg: midi.NewMessage(midi.Channel(0).ProgramChange(r.Uint8Args()[0])),
+				}}
+				return true
+
+			case "control": // Control change.
+				if s.currentBar != "" {
+					s.err = fmt.Errorf("cannot change control: bar '%s' is not ended", s.currentBar)
+					return false
+				}
+				args := r.Uint8Args()
+				s.messages = []Message{{
+					Msg: midi.NewMessage(midi.Channel(0).ControlChange(args[0], args[1])),
+				}}
+				return true
+
 			default:
-				s.err = fmt.Errorf("invalid command '%s', must be either 'bar', 'end' or 'play'", r.Name)
-				return false
+				panic(fmt.Sprintf("invalid command '%s'", r.Name))
 			}
 
 		default:
@@ -196,7 +222,7 @@ func (s *Scanner) parseBar(tracks ...ast.Track) ([]Message, error) {
 				messages = append(messages, Message{
 					Tick: s.currentTick + tick,
 					// TODO velocity and channel
-					Msg: midi.NewMessage(midi.Channel(0).NoteOn(key, 127)),
+					Msg: midi.NewMessage(midi.Channel(0).NoteOn(key, 100)),
 				})
 
 				messages = append(messages, Message{
@@ -234,7 +260,7 @@ func (s *Scanner) parseBar(tracks ...ast.Track) ([]Message, error) {
 	return messages, nil
 }
 
-func (s *Scanner) noteLength(note *ast.Note) uint16 {
+func (s *Scanner) noteLength(note ast.Note) uint16 {
 	value := note.Value()
 	length := 4 * constants.TicksPerQuarter / uint16(value)
 	if note.IsDot() {

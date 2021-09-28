@@ -12,7 +12,7 @@ import (
 func TestTempo(t *testing.T) {
 	g := NewGomegaWithT(t)
 
-	input := "tempo = 120"
+	input := "tempo 120"
 
 	s := scanner.New(strings.NewReader(input))
 	g.Expect(s.Scan()).To(BeTrue())
@@ -23,6 +23,37 @@ func TestTempo(t *testing.T) {
 	}))
 }
 
+func TestProgramChange(t *testing.T) {
+	g := NewGomegaWithT(t)
+
+	input := "program 0"
+
+	s := scanner.New(strings.NewReader(input))
+	g.Expect(s.Scan()).To(BeTrue())
+	g.Expect(s.Err()).NotTo(HaveOccurred())
+
+	messages := s.Messages()
+
+	g.Expect(messages).To(HaveLen(1))
+	g.Expect(messages[0].Msg).To(ContainSubstring("Channel0Msg & ProgramChangeMsg program: 0"))
+}
+
+func TestControlChange(t *testing.T) {
+	g := NewGomegaWithT(t)
+
+	input := "control 0 1"
+
+	s := scanner.New(strings.NewReader(input))
+	g.Expect(s.Scan()).To(BeTrue())
+	g.Expect(s.Err()).NotTo(HaveOccurred())
+
+	messages := s.Messages()
+
+	g.Expect(messages).To(HaveLen(1))
+	g.Expect(messages[0].Msg).To(ContainSubstring("Channel0Msg & ControlChangeMsg controller: 0 change: 1"))
+}
+
+// TODO change bnf to accept only single char instead of multiNote for assignment
 func TestInvalidAssignment(t *testing.T) {
 	g := NewGomegaWithT(t)
 
@@ -90,11 +121,11 @@ func TestBar(t *testing.T) {
 
 	input := `k=36
 s=38
-bar MyRiff
+bar "verse1"
 kk8
 ss8
 end
-play MyRiff
+play "verse1"
 `
 
 	s := scanner.New(strings.NewReader(input))
