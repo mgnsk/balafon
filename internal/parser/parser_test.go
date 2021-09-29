@@ -20,27 +20,26 @@ func TestParser(t *testing.T) {
 	)
 
 	for _, tc := range []testcase{
-		// {
-		// 	"// this is a comment\n",
-		// 	match{
-		// 		BeNil(),
-		// 		// BeAssignableToTypeOf(ast.LineComment{}),
-		// 	},
-		// },
-		// {
-		// 	"c = 48\n",
-		// 	match{
-		// 		BeAssignableToTypeOf(ast.NoteAssignment{}),
-		// 		ContainSubstring("c = 48"),
-		// 	},
-		// },
-		// {
-		// 	"c=48\n",
-		// 	match{
-		// 		BeAssignableToTypeOf(ast.NoteAssignment{}),
-		// 		ContainSubstring("c = 48"),
-		// 	},
-		// },
+		{
+			"// this is a comment\n",
+			match{
+				BeNil(),
+			},
+		},
+		{
+			"c = 48\n",
+			match{
+				BeAssignableToTypeOf(ast.NoteAssignment{}),
+				ContainSubstring("c = 48"),
+			},
+		},
+		{
+			"c=48\n",
+			match{
+				BeAssignableToTypeOf(ast.NoteAssignment{}),
+				ContainSubstring("c = 48"),
+			},
+		},
 		{
 			"k\n",
 			match{
@@ -152,6 +151,13 @@ func TestParser(t *testing.T) {
 			match{
 				BeAssignableToTypeOf(ast.Track{}),
 				ContainSubstring("k#8./3"),
+			},
+		},
+		{
+			"k/3.$#8\n", // A sharp flat note! Testing the ordering.
+			match{
+				BeAssignableToTypeOf(ast.Track{}),
+				ContainSubstring("k#$8./3"),
 			},
 		},
 		{

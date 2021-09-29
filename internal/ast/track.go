@@ -180,7 +180,8 @@ func NewNotePropertyList(t *token.Token, inner interface{}) NotePropertyList {
 
 var propOrder = map[token.Type]int{
 	token.TokMap.Type("sharp"):  0,
-	token.TokMap.Type("uint"):   1,
-	token.TokMap.Type("dot"):    2,
-	token.TokMap.Type("tuplet"): 3,
+	token.TokMap.Type("flat"):   1,
+	token.TokMap.Type("uint"):   2,
+	token.TokMap.Type("dot"):    3,
+	token.TokMap.Type("tuplet"): 4,
 }

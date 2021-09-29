@@ -12,6 +12,7 @@ _lineComment : '/' '/' { . } '\n';
 multiNote : _identChar {_identChar} ;
 barName   : _stringLit ;
 sharp     : '#' ;
+flat      : '$' ;
 uint      : _uint ;
 dot       : '.' ;
 tuplet    : '/' _uint ;
@@ -50,6 +51,7 @@ NoteList
 NotePropertyList
     : empty
     | sharp NotePropertyList        << ast.NewNotePropertyList($T0, $1), nil >>
+    | flat NotePropertyList         << ast.NewNotePropertyList($T0, $1), nil >>
     | uint NotePropertyList         << ast.NewNotePropertyList($T0, $1), nil >>
     | dot NotePropertyList          << ast.NewNotePropertyList($T0, $1), nil >>
     | tuplet NotePropertyList       << ast.NewNotePropertyList($T0, $1), nil >>

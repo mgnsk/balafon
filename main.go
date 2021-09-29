@@ -1,4 +1,4 @@
-//go:generate gocc -o internal internal/gong.bnf
+//go:generate gocc -o internal gong.bnf
 
 package main
 
