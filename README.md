@@ -18,16 +18,27 @@ go install github.com/mgnsk/gong@latest
   ```sh
   > gong list-ports
   0: Midi Through:Midi Through Port-0 14:0
-  1: Hydrogen:Hydrogen Midi-In 128:0
+  1: VMPK Input:in 128:0
+  2: Hydrogen:Hydrogen Midi-In 135:0
   ```
-- Play a file.
+- Play a file through a specific port. The port name must contain the passed in flag value:
   ```sh
-  $ gong play --port 1 mysong
+  $ gong play --port "VM" mysong
   ```
-- Enter the live shell.
+- Port can also be specified by its number:
+  ```sh
+  $ gong play --port 2 mysong
+  ```
+- Enter the live shell on the first port:
   ```sh
   $ gong
-  Welcome to the gong shell!
+  Welcome to the gong shell on MIDI port 'Midi Through:Midi Through Port-0 14:0'!
+  >
+  ```
+- Enter a live shell on a specific port:
+  ```sh
+  $ gong --port "VM"
+  Welcome to the gong shell on MIDI port 'VMPK Input:in 128:0'!
   >
   ```
 - Help.
@@ -58,33 +69,31 @@ go install github.com/mgnsk/gong@latest
   ```
   // This is a line comment.
   ```
-- #### Tempo change
+- #### Commands
   ```
   tempo 120
-  ```
-- #### MIDI channel
-  ```
   channel 10
-  ```
-- #### Global velocity
-  ```
   velocity 127
-  ```
-- #### Program change
-  ```
   program 0
-  ```
-- #### Control change
-  ```
   control 1 127
   ```
 - #### Note assignment
+  Assign a MIDI note number to a note letter.
   ```
   // Kick drum (on the drum channel).
   k=36
   // Middle C (on other channels).
   c=60
   ```
+- #### Notes
+  Notes are written as a letter symbol (must be assigned first) plus properties.
+  The available properties are
+  - sharp (`#`)
+  - flat (`$`)
+  - numeric note value (`1`, `2`, `4`, `8` and so on)
+  - dot (`.`)
+  - tuplet (`/3`)
+    The number in the tuplet specifies the divison, for example a quintuplet `/5`.
 - #### Note values
   ```
   // Whole note.
@@ -213,8 +222,8 @@ play "fill"
 
 ## Possible features in the future
 
+- Ghost note property - gonna have to think about the syntax. Probably `x)`
+- Accentuated note property - probably `x^`
 - WebAssembly support with Web MIDI for running in browsers
-- Velocity for individual notes
-  this makes the syntax complicated. For example a normal 8th triplet `xxx8/3`. To set a velocity 50 for the second note (to emulate a ghost note), one would have to expand the syntax manually and write `x8/3 x8/3(50) x8/3`.
 - Generating an SMF midi file
 - Accelerando/Ritardando
