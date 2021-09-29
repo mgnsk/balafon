@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"io"
 	"sort"
+	"sync"
 
 	"github.com/mgnsk/gong/internal/ast"
 	"github.com/mgnsk/gong/internal/constants"
@@ -24,11 +25,12 @@ type Message struct {
 
 // Scanner scans messages from raw text input.
 type Scanner struct {
-	scanner  *bufio.Scanner
-	parser   *parser.Parser
-	err      error
-	messages []Message
+	scanner *bufio.Scanner
+	parser  *parser.Parser
+	err     error
 
+	mu              sync.Mutex
+	messages        []Message
 	notes           map[string]uint8
 	bars            map[string][]ast.Track
 	barBuffer       []ast.Track
@@ -52,8 +54,10 @@ func (s *Scanner) Messages() []Message {
 }
 
 // Suggest returns suggestions for the next input.
-// TODO possible race condition.
 func (s *Scanner) Suggest() []string {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+
 	// Suggest assigned notes at any time.
 	var sug []string
 	for note := range s.notes {
@@ -99,121 +103,137 @@ func (s *Scanner) Scan() bool {
 
 		fmt.Println(res)
 
-		switch r := res.(type) {
-		case ast.NoteAssignment:
-			if len(r.Note) != 1 {
-				// TODO
-				s.err = errors.New("note must be a single character")
-				return false
-			}
-			s.notes[r.Note] = r.Key
-
-		case ast.Track:
-			if s.currentBar != "" {
-				s.barBuffer = append(s.barBuffer, r)
-			} else {
-				messages, err := s.parseBar(r)
-				if err != nil {
-					s.err = err
-					return false
-				}
-				s.messages = messages
-				return true
-			}
-
-		case ast.Command:
-			switch r.Name {
-			case "bar": // Begin a bar.
-				if s.currentBar != "" {
-					s.err = fmt.Errorf("cannot begin bar '%s': bar '%s' is not ended", r.Args[0], s.currentBar)
-					return false
-				}
-				if _, ok := s.bars[r.Args[0]]; ok {
-					s.err = fmt.Errorf("bar '%s' already defined", r.Args[0])
-					return false
-				}
-				s.currentBar = r.Args[0]
-
-			case "end": // End the current bar.
-				if s.currentBar == "" {
-					s.err = errors.New("cannot end a bar: no active bar")
-					return false
-				}
-				s.bars[s.currentBar] = s.barBuffer
-				s.currentBar = ""
-				s.barBuffer = nil
-
-			case "play": // Play a bar.
-				if s.currentBar != "" {
-					s.err = fmt.Errorf("cannot play bar '%s': bar '%s' is not ended", r.Args[0], s.currentBar)
-					return false
-				}
-				bar, ok := s.bars[r.Args[0]]
-				if !ok {
-					s.err = fmt.Errorf("cannot play nonexistent bar '%s'", r.Args[0])
-					return false
-				}
-				messages, err := s.parseBar(bar...)
-				if err != nil {
-					s.err = err
-					return false
-				}
-				s.messages = messages
-				return true
-
-			case "tempo": // Set the current tempo.
-				s.messages = []Message{{
-					Tempo: r.Uint32Args()[0],
-				}}
-				return true
-
-			case "channel": // Set the current channel.
-				if s.currentBar != "" {
-					s.err = fmt.Errorf("cannot change channel: bar '%s' is not ended", s.currentBar)
-					return false
-				}
-				s.currentChannel = r.Uint8Args()[0]
-				continue
-
-			case "velocity": // Set the current velocity.
-				if s.currentBar != "" {
-					s.err = fmt.Errorf("cannot change velocity: bar '%s' is not ended", s.currentBar)
-					return false
-				}
-				s.currentVelocity = r.Uint8Args()[0]
-				continue
-
-			case "program": // Program change.
-				if s.currentBar != "" {
-					s.err = fmt.Errorf("cannot change program: bar '%s' is not ended", s.currentBar)
-					return false
-				}
-				s.messages = []Message{{
-					Msg: midi.NewMessage(midi.Channel(s.currentChannel).ProgramChange(r.Uint8Args()[0])),
-				}}
-				return true
-
-			case "control": // Control change.
-				if s.currentBar != "" {
-					s.err = fmt.Errorf("cannot change control: bar '%s' is not ended", s.currentBar)
-					return false
-				}
-				args := r.Uint8Args()
-				s.messages = []Message{{
-					Msg: midi.NewMessage(midi.Channel(s.currentChannel).ControlChange(args[0], args[1])),
-				}}
-				return true
-
-			default:
-				panic(fmt.Sprintf("invalid command '%s'", r.Name))
-			}
-
-		default:
-			panic(fmt.Sprintf("invalid token %#v", r))
+		success, wantMore := s.parseResult(res)
+		if wantMore {
+			continue
 		}
+
+		return success
 	}
 
 	return false
+}
+
+func (s *Scanner) parseResult(res interface{}) (success, scanMore bool) {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+
+	switch r := res.(type) {
+	case ast.NoteAssignment:
+		if len(r.Note) != 1 {
+			// TODO: a single character note could not be implemented
+			// in our BNF due to ambiguity.
+			s.err = errors.New("note must be a single character")
+			return false, false
+		}
+		s.notes[r.Note] = r.Key
+		return true, true
+
+	case ast.Track:
+		if s.currentBar != "" {
+			s.barBuffer = append(s.barBuffer, r)
+			return true, true
+		}
+		messages, err := s.parseBar(r)
+		if err != nil {
+			s.err = err
+			return false, false
+		}
+		s.messages = messages
+		return true, false
+
+	case ast.Command:
+		switch r.Name {
+		case "bar": // Begin a bar.
+			if s.currentBar != "" {
+				s.err = fmt.Errorf("cannot begin bar '%s': bar '%s' is not ended", r.Args[0], s.currentBar)
+				return false, false
+			}
+			if _, ok := s.bars[r.Args[0]]; ok {
+				s.err = fmt.Errorf("bar '%s' already defined", r.Args[0])
+				return false, false
+			}
+			s.currentBar = r.Args[0]
+			return true, true
+
+		case "end": // End the current bar.
+			if s.currentBar == "" {
+				s.err = errors.New("cannot end a bar: no active bar")
+				return false, false
+			}
+			s.bars[s.currentBar] = s.barBuffer
+			s.currentBar = ""
+			s.barBuffer = nil
+			return true, true
+
+		case "play": // Play a bar.
+			if s.currentBar != "" {
+				s.err = fmt.Errorf("cannot play bar '%s': bar '%s' is not ended", r.Args[0], s.currentBar)
+				return false, false
+			}
+			bar, ok := s.bars[r.Args[0]]
+			if !ok {
+				s.err = fmt.Errorf("cannot play nonexistent bar '%s'", r.Args[0])
+				return false, false
+			}
+			messages, err := s.parseBar(bar...)
+			if err != nil {
+				s.err = err
+				return false, false
+			}
+			s.messages = messages
+			return true, false
+
+		case "tempo": // Set the current tempo.
+			s.messages = []Message{{
+				Tempo: r.Uint32Args()[0],
+			}}
+			return true, false
+
+		case "channel": // Set the current channel.
+			if s.currentBar != "" {
+				s.err = fmt.Errorf("cannot change channel: bar '%s' is not ended", s.currentBar)
+				return false, false
+			}
+			s.currentChannel = r.Uint8Args()[0]
+			return true, true
+
+		case "velocity": // Set the current velocity.
+			if s.currentBar != "" {
+				s.err = fmt.Errorf("cannot change velocity: bar '%s' is not ended", s.currentBar)
+				return false, false
+			}
+			s.currentVelocity = r.Uint8Args()[0]
+			return true, true
+
+		case "program": // Program change.
+			if s.currentBar != "" {
+				s.err = fmt.Errorf("cannot change program: bar '%s' is not ended", s.currentBar)
+				return false, false
+			}
+			s.messages = []Message{{
+				Msg: midi.NewMessage(midi.Channel(s.currentChannel).ProgramChange(r.Uint8Args()[0])),
+			}}
+			return true, false
+
+		case "control": // Control change.
+			if s.currentBar != "" {
+				s.err = fmt.Errorf("cannot change control: bar '%s' is not ended", s.currentBar)
+				return false, false
+			}
+			args := r.Uint8Args()
+			s.messages = []Message{{
+				Msg: midi.NewMessage(midi.Channel(s.currentChannel).ControlChange(args[0], args[1])),
+			}}
+			return true, false
+
+		default:
+			panic(fmt.Sprintf("invalid command '%s'", r.Name))
+		}
+
+	default:
+		panic(fmt.Sprintf("invalid token %#v", r))
+	}
 }
 
 func (s *Scanner) parseBar(tracks ...ast.Track) ([]Message, error) {
