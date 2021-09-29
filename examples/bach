@@ -1,0 +1,37 @@
+// J.S. Bach - Musikalisches Opfer - 6. Canon A 2 Per Tonos
+
+// C3
+C=48
+D=50
+E=52
+F=53
+G=55
+A=57
+B=59
+
+// C4 (middle C)
+c=60
+d=62
+e=64
+f=65
+g=67
+a=69
+b=71
+
+tempo 73
+velocity 100
+
+bar "bar 1"
+c.                d8 e$8 e8 f8 f#8
+-C16 E$16 G16 c2            B$8A8
+end
+
+// 16th rests instead of ties (unimplemented).
+bar "bar 2"
+g2                 a$     -f16d$16c16
+-G16B$16d16 g2            fe8
+B$          -EDE16 FCFG16 A$
+end
+
+play "bar 1"
+play "bar 2"

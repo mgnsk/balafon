@@ -23,22 +23,22 @@ go install github.com/mgnsk/gong@latest
   ```
 - Play a file through a specific port. The port name must contain the passed in flag value:
   ```sh
-  $ gong play --port "VM" mysong
+  $ gong play --port "VM" examples/piano
   ```
 - Port can also be specified by its number:
   ```sh
-  $ gong play --port 2 mysong
+  $ gong play --port 2 examples/bonham
   ```
 - Enter the live shell on the first port:
   ```sh
   $ gong
-  Welcome to the gong shell on MIDI port 'Midi Through:Midi Through Port-0 14:0'!
+  Welcome to the gong shell on MIDI port '0: Midi Through:Midi Through Port-0 14:0'!
   >
   ```
 - Enter a live shell on a specific port:
   ```sh
   $ gong --port "VM"
-  Welcome to the gong shell on MIDI port 'VMPK Input:in 128:0'!
+  Welcome to the gong shell on MIDI port '1: VMPK Input:in 128:0'!
   >
   ```
 - Help.
@@ -110,6 +110,13 @@ go install github.com/mgnsk/gong@latest
   x32
   // And so on...
   ```
+- ### Rests
+  ```
+  // A quarter rest.
+  -
+  // An 8th rest.
+  -8
+  ```
 - #### Dotted notes and triplets
   ```
   // Dotted quarter note.
@@ -154,7 +161,9 @@ go install github.com/mgnsk/gong@latest
   play "Rock beat"
   ```
 
-## Example of The Bonham Half Time Shuffle
+## Examples
+
+### The Bonham Half Time Shuffle
 
 The file is included in the `examples` directory. To play into the default port, run
 
@@ -166,8 +175,10 @@ $ gong play examples/bonham
 // The Bonham half time shuffle
 
 tempo 132
-channel 10
 velocity 100
+
+// Percussion channel.
+channel 10
 
 // Kick drum.
 k=36
@@ -220,10 +231,56 @@ play "bonham 2"
 play "fill"
 ```
 
+### J.S. Bach - Musikalisches Opfer - 6. Canon A 2 Per Tonos
+
+It is possible to write melodies using gong in a limited way. Here's 2 bars of Bach:
+
+```
+// J.S. Bach - Musikalisches Opfer - 6. Canon A 2 Per Tonos
+
+// C3
+C=48
+D=50
+E=52
+F=53
+G=55
+A=57
+B=59
+
+// C4 (middle C)
+c=60
+d=62
+e=64
+f=65
+g=67
+a=69
+b=71
+
+tempo 73
+velocity 100
+
+bar "bar 1"
+c.                d8 e$8 e8 f8 f#8
+-C16 E$16 G16 c2            B$8A8
+end
+
+// 16th rests instead of ties (unimplemented).
+bar "bar 2"
+g2                 a$     -f16d$16c16
+-G16B$16d16 g2            fe8
+B$          -EDE16 FCFG16 A$
+end
+
+play "bar 1"
+play "bar 2"
+```
+
 ## Possible features in the future
 
-- Ghost note property - gonna have to think about the syntax. Probably `x)`
-- Accentuated note property - probably `x^`
-- WebAssembly support with Web MIDI for running in browsers
-- Generating an SMF midi file
-- Accelerando/Ritardando
+- Tie (a curved line connecting the heads of two notes of the same pitch) - no idea about the syntax. Can be partially emulated by using note values if the rhythm is simple enough.
+- Double dotted notes.
+- Ghost note property - gonna have to think about the syntax. Probably `x)`.
+- Accentuated note property - probably `x^`.
+- WebAssembly support with Web MIDI for running in browsers.
+- Generating an SMF midi file.
+- Accelerando/Ritardando.

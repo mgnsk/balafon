@@ -1,8 +1,10 @@
 // The Bonham half time shuffle
 
 tempo 132
-channel 10
 velocity 100
+
+// Percussion channel.
+channel 10
 
 // Kick drum.
 k=36
