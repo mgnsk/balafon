@@ -86,7 +86,7 @@ func (n Note) Value() uint8 {
 	if err != nil {
 		panic(err)
 	}
-
+	// TODO range validation.
 	return uint8(v)
 }
 
@@ -107,10 +107,27 @@ func (n Note) Tuplet() uint8 {
 			if err != nil {
 				panic(err)
 			}
+			// TODO range validation.
 			return uint8(v)
 		}
 	}
 	return 0
+}
+
+// Velocity returns the note velocity.
+func (n Note) Velocity() (uint8, bool) {
+	for _, t := range n.Props {
+		if t.Type == token.TokMap.Type("velo") {
+			v, err := strconv.Atoi(t.StringValue())
+			if err != nil {
+				panic(err)
+			}
+			// TODO range validation.
+			return uint8(v), true
+		}
+	}
+	// Max velocity.
+	return 0, false
 }
 
 func (n Note) String() string {

@@ -64,6 +64,8 @@ func NewCommand(name string, args ...string) (Command, error) {
 			if v > 15 {
 				return Command{}, fmt.Errorf("channel argument must be in range 0-15")
 			}
+		case "velocity":
+			fallthrough
 		case "program":
 			fallthrough
 		case "control":

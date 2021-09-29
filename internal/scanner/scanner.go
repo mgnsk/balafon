@@ -29,12 +29,13 @@ type Scanner struct {
 	err      error
 	messages []Message
 
-	notes          map[string]uint8
-	bars           map[string][]ast.Track
-	barBuffer      []ast.Track
-	currentBar     string
-	currentTick    uint64
-	currentChannel uint8
+	notes           map[string]uint8
+	bars            map[string][]ast.Track
+	barBuffer       []ast.Track
+	currentBar      string
+	currentTick     uint64
+	currentChannel  uint8
+	currentVelocity uint8
 }
 
 // Err returns the first non-EOF error that was encountered by the Scanner.
@@ -63,7 +64,7 @@ func (s *Scanner) Suggest() []string {
 		sug = append(sug, "end")
 	} else {
 		// Suggest commands.
-		sug = append(sug, "bar", "tempo")
+		sug = append(sug, "bar", "tempo", "channel", "velocity", "program", "control")
 		// Suggest playing a bar.
 		for name := range s.bars {
 			sug = append(sug, "play "+name)
@@ -95,6 +96,8 @@ func (s *Scanner) Scan() bool {
 			// Skip comments.
 			continue
 		}
+
+		fmt.Println(res)
 
 		switch r := res.(type) {
 		case ast.NoteAssignment:
@@ -158,18 +161,26 @@ func (s *Scanner) Scan() bool {
 				s.messages = messages
 				return true
 
-			case "tempo":
+			case "tempo": // Set the current tempo.
 				s.messages = []Message{{
 					Tempo: r.Uint32Args()[0],
 				}}
 				return true
 
-			case "channel":
+			case "channel": // Set the current channel.
 				if s.currentBar != "" {
 					s.err = fmt.Errorf("cannot change channel: bar '%s' is not ended", s.currentBar)
 					return false
 				}
 				s.currentChannel = r.Uint8Args()[0]
+				continue
+
+			case "velocity": // Set the current velocity.
+				if s.currentBar != "" {
+					s.err = fmt.Errorf("cannot change velocity: bar '%s' is not ended", s.currentBar)
+					return false
+				}
+				s.currentVelocity = r.Uint8Args()[0]
 				continue
 
 			case "program": // Program change.
@@ -178,7 +189,7 @@ func (s *Scanner) Scan() bool {
 					return false
 				}
 				s.messages = []Message{{
-					Msg: midi.NewMessage(midi.Channel(0).ProgramChange(r.Uint8Args()[0])),
+					Msg: midi.NewMessage(midi.Channel(s.currentChannel).ProgramChange(r.Uint8Args()[0])),
 				}}
 				return true
 
@@ -189,7 +200,7 @@ func (s *Scanner) Scan() bool {
 				}
 				args := r.Uint8Args()
 				s.messages = []Message{{
-					Msg: midi.NewMessage(midi.Channel(0).ControlChange(args[0], args[1])),
+					Msg: midi.NewMessage(midi.Channel(s.currentChannel).ControlChange(args[0], args[1])),
 				}}
 				return true
 
@@ -219,15 +230,19 @@ func (s *Scanner) parseBar(tracks ...ast.Track) ([]Message, error) {
 					return nil, fmt.Errorf("key '%s' undefined", note.Name)
 				}
 
+				velocity := s.currentVelocity
+				if v, ok := note.Velocity(); ok {
+					velocity = v
+				}
+
 				messages = append(messages, Message{
 					Tick: s.currentTick + tick,
-					// TODO velocity and channel
-					Msg: midi.NewMessage(midi.Channel(0).NoteOn(key, 100)),
+					Msg:  midi.NewMessage(midi.Channel(s.currentChannel).NoteOn(key, velocity)),
 				})
 
 				messages = append(messages, Message{
 					Tick: s.currentTick + tick + uint64(length),
-					Msg:  midi.NewMessage(midi.Channel(0).NoteOff(key)),
+					Msg:  midi.NewMessage(midi.Channel(s.currentChannel).NoteOff(key)),
 				})
 			}
 
@@ -275,9 +290,10 @@ func (s *Scanner) noteLength(note ast.Note) uint16 {
 // New creates a new Scanner instance.
 func New(r io.Reader) *Scanner {
 	return &Scanner{
-		scanner: bufio.NewScanner(r),
-		parser:  parser.NewParser(),
-		notes:   make(map[string]uint8),
-		bars:    make(map[string][]ast.Track),
+		scanner:         bufio.NewScanner(r),
+		parser:          parser.NewParser(),
+		notes:           make(map[string]uint8),
+		bars:            make(map[string][]ast.Track),
+		currentVelocity: 127,
 	}
 }

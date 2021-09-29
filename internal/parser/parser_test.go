@@ -204,6 +204,13 @@ func TestParser(t *testing.T) {
 			},
 		},
 		{
+			"velocity 50\n",
+			match{
+				BeAssignableToTypeOf(ast.Command{}),
+				ContainSubstring("velocity 50"),
+			},
+		},
+		{
 			"program 0\n",
 			match{
 				BeAssignableToTypeOf(ast.Command{}),

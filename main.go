@@ -1,4 +1,4 @@
-//go:generate gocc -o internal gong.bnf
+//go:generate gocc -o internal internal/gong.bnf
 
 package main
 
@@ -9,7 +9,9 @@ import (
 	"io"
 	"os"
 	"os/exec"
+	"runtime"
 	"strconv"
+	"strings"
 
 	"github.com/c-bata/go-prompt"
 	"github.com/mgnsk/gong/internal/player"
@@ -29,15 +31,21 @@ func main() {
 	}
 
 	root := &cobra.Command{
-		Short: "gong shell",
+		Short: "gong is a MIDI control language and interpreter.",
+		CompletionOptions: cobra.CompletionOptions{
+			DisableDefaultCmd: true,
+		},
 		RunE: func(c *cobra.Command, _ []string) error {
-			defer func() {
-				// Fix Ctrl+C not working after exit (https://github.com/c-bata/go-prompt/issues/228)
-				rawModeOff := exec.Command("/bin/stty", "-raw", "echo")
-				rawModeOff.Stdin = os.Stdin
-				_ = rawModeOff.Run()
-				rawModeOff.Wait()
-			}()
+			if strings.Contains(runtime.GOOS, "linux") {
+				// TODO: eventually remove this when the bugs get fixed.
+				defer func() {
+					// Fix Ctrl+C not working after exit (https://github.com/c-bata/go-prompt/issues/228)
+					rawModeOff := exec.Command("/bin/stty", "-raw", "echo")
+					rawModeOff.Stdin = os.Stdin
+					_ = rawModeOff.Run()
+					rawModeOff.Wait()
+				}()
+			}
 
 			fmt.Println("Welcome to the gong shell!")
 
@@ -124,7 +132,7 @@ func main() {
 				return err
 			}
 
-			s := scanner.New(io.TeeReader(f, os.Stdout))
+			s := scanner.New(f)
 			p := player.New(out)
 
 			for s.Scan() {

@@ -31,8 +31,7 @@ func (p *Player) Play(ctx context.Context, msg scanner.Message) error {
 	})
 
 	if msg.Tick > p.currentTick {
-		d := time.Duration(msg.Tick-p.currentTick) * p.tickDuration
-		p.timer.Reset(d)
+		p.timer.Reset(time.Duration(msg.Tick-p.currentTick) * p.tickDuration)
 		select {
 		case <-ctx.Done():
 			return ctx.Err()
@@ -41,11 +40,7 @@ func (p *Player) Play(ctx context.Context, msg scanner.Message) error {
 		p.currentTick = msg.Tick
 	}
 
-	if err := p.out.Send(msg.Msg.Data); err != nil {
-		return err
-	}
-
-	return nil
+	return p.out.Send(msg.Msg.Data)
 }
 
 func (p *Player) setTempo(bpm uint32) {

@@ -61,14 +61,14 @@ var gotoTab = gotoTable{
 		-1, // NoteAssignment
 		-1, // Track
 		-1, // NoteList
-		16, // NotePropertyList
+		17, // NotePropertyList
 		-1, // Command
 	},
 	gotoRow{ // S6
 		-1, // S'
 		-1, // Expr
 		-1, // NoteAssignment
-		19, // Track
+		20, // Track
 		6,  // NoteList
 		-1, // NotePropertyList
 		-1, // Command
@@ -151,7 +151,7 @@ var gotoTab = gotoTable{
 		-1, // NoteAssignment
 		-1, // Track
 		-1, // NoteList
-		28, // NotePropertyList
+		-1, // NotePropertyList
 		-1, // Command
 	},
 	gotoRow{ // S16
@@ -160,7 +160,7 @@ var gotoTab = gotoTable{
 		-1, // NoteAssignment
 		-1, // Track
 		-1, // NoteList
-		-1, // NotePropertyList
+		30, // NotePropertyList
 		-1, // Command
 	},
 	gotoRow{ // S17
@@ -169,7 +169,7 @@ var gotoTab = gotoTable{
 		-1, // NoteAssignment
 		-1, // Track
 		-1, // NoteList
-		29, // NotePropertyList
+		-1, // NotePropertyList
 		-1, // Command
 	},
 	gotoRow{ // S18
@@ -178,7 +178,7 @@ var gotoTab = gotoTable{
 		-1, // NoteAssignment
 		-1, // Track
 		-1, // NoteList
-		30, // NotePropertyList
+		31, // NotePropertyList
 		-1, // Command
 	},
 	gotoRow{ // S19
@@ -187,7 +187,7 @@ var gotoTab = gotoTable{
 		-1, // NoteAssignment
 		-1, // Track
 		-1, // NoteList
-		-1, // NotePropertyList
+		32, // NotePropertyList
 		-1, // Command
 	},
 	gotoRow{ // S20
@@ -196,7 +196,7 @@ var gotoTab = gotoTable{
 		-1, // NoteAssignment
 		-1, // Track
 		-1, // NoteList
-		16, // NotePropertyList
+		-1, // NotePropertyList
 		-1, // Command
 	},
 	gotoRow{ // S21
@@ -205,7 +205,7 @@ var gotoTab = gotoTable{
 		-1, // NoteAssignment
 		-1, // Track
 		-1, // NoteList
-		-1, // NotePropertyList
+		17, // NotePropertyList
 		-1, // Command
 	},
 	gotoRow{ // S22
@@ -290,6 +290,24 @@ var gotoTab = gotoTable{
 		-1, // Command
 	},
 	gotoRow{ // S31
+		-1, // S'
+		-1, // Expr
+		-1, // NoteAssignment
+		-1, // Track
+		-1, // NoteList
+		-1, // NotePropertyList
+		-1, // Command
+	},
+	gotoRow{ // S32
+		-1, // S'
+		-1, // Expr
+		-1, // NoteAssignment
+		-1, // Track
+		-1, // NoteList
+		-1, // NotePropertyList
+		-1, // Command
+	},
+	gotoRow{ // S33
 		-1, // S'
 		-1, // Expr
 		-1, // NoteAssignment

@@ -193,10 +193,20 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `Command : "program" uint	<< ast.NewCommand("program", X[1].(*token.Token).IDValue()) >>`,
+		String: `Command : "velocity" uint	<< ast.NewCommand("velocity", X[1].(*token.Token).IDValue()) >>`,
 		Id:         "Command",
 		NTType:     6,
 		Index:      17,
+		NumSymbols: 2,
+		ReduceFunc: func(X []Attrib, C interface{}) (Attrib, error) {
+			return ast.NewCommand("velocity", X[1].(*token.Token).IDValue())
+		},
+	},
+	ProdTabEntry{
+		String: `Command : "program" uint	<< ast.NewCommand("program", X[1].(*token.Token).IDValue()) >>`,
+		Id:         "Command",
+		NTType:     6,
+		Index:      18,
 		NumSymbols: 2,
 		ReduceFunc: func(X []Attrib, C interface{}) (Attrib, error) {
 			return ast.NewCommand("program", X[1].(*token.Token).IDValue())
@@ -206,7 +216,7 @@ var productionsTable = ProdTab{
 		String: `Command : "control" uint uint	<< ast.NewCommand("control", X[1].(*token.Token).IDValue(), X[2].(*token.Token).IDValue()) >>`,
 		Id:         "Command",
 		NTType:     6,
-		Index:      18,
+		Index:      19,
 		NumSymbols: 3,
 		ReduceFunc: func(X []Attrib, C interface{}) (Attrib, error) {
 			return ast.NewCommand("control", X[1].(*token.Token).IDValue(), X[2].(*token.Token).IDValue())

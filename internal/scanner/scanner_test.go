@@ -121,6 +121,8 @@ func TestBar(t *testing.T) {
 
 	input := `k=36
 s=38
+velocity 100
+channel 10
 bar "verse1"
 kk8
 ss8
@@ -137,26 +139,26 @@ play "verse1"
 	g.Expect(messages).To(HaveLen(8))
 
 	g.Expect(messages[0].Tick).To(Equal(uint64(0)))
-	g.Expect(messages[0].Msg).To(ContainSubstring("Channel0Msg & NoteOnMsg key: 36"))
+	g.Expect(messages[0].Msg).To(ContainSubstring("Channel10Msg & NoteOnMsg key: 36 velocity: 100"))
 
 	g.Expect(messages[1].Tick).To(Equal(uint64(0)))
-	g.Expect(messages[1].Msg).To(ContainSubstring("Channel0Msg & NoteOnMsg key: 38"))
+	g.Expect(messages[1].Msg).To(ContainSubstring("Channel10Msg & NoteOnMsg key: 38 velocity: 100"))
 
 	g.Expect(messages[2].Tick).To(Equal(uint64(constants.TicksPerQuarter / 2)))
-	g.Expect(messages[2].Msg).To(ContainSubstring("Channel0Msg & NoteOffMsg key: 36"))
+	g.Expect(messages[2].Msg).To(ContainSubstring("Channel10Msg & NoteOffMsg key: 36"))
 
 	g.Expect(messages[3].Tick).To(Equal(uint64(constants.TicksPerQuarter / 2)))
-	g.Expect(messages[3].Msg).To(ContainSubstring("Channel0Msg & NoteOffMsg key: 38"))
+	g.Expect(messages[3].Msg).To(ContainSubstring("Channel10Msg & NoteOffMsg key: 38"))
 
 	g.Expect(messages[4].Tick).To(Equal(uint64(constants.TicksPerQuarter / 2)))
-	g.Expect(messages[4].Msg).To(ContainSubstring("Channel0Msg & NoteOnMsg key: 36"))
+	g.Expect(messages[4].Msg).To(ContainSubstring("Channel10Msg & NoteOnMsg key: 36 velocity: 100"))
 
 	g.Expect(messages[5].Tick).To(Equal(uint64(constants.TicksPerQuarter / 2)))
-	g.Expect(messages[5].Msg).To(ContainSubstring("Channel0Msg & NoteOnMsg key: 38"))
+	g.Expect(messages[5].Msg).To(ContainSubstring("Channel10Msg & NoteOnMsg key: 38 velocity: 100"))
 
 	g.Expect(messages[6].Tick).To(Equal(uint64(constants.TicksPerQuarter)))
-	g.Expect(messages[6].Msg).To(ContainSubstring("Channel0Msg & NoteOffMsg key: 36"))
+	g.Expect(messages[6].Msg).To(ContainSubstring("Channel10Msg & NoteOffMsg key: 36"))
 
 	g.Expect(messages[7].Tick).To(Equal(uint64(constants.TicksPerQuarter)))
-	g.Expect(messages[7].Msg).To(ContainSubstring("Channel0Msg & NoteOffMsg key: 38"))
+	g.Expect(messages[7].Msg).To(ContainSubstring("Channel10Msg & NoteOffMsg key: 38"))
 }

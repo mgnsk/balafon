@@ -150,6 +150,7 @@ var TokMap = TokenMap{
 		"play",
 		"tempo",
 		"channel",
+		"velocity",
 		"program",
 		"control",
 	},
@@ -169,7 +170,8 @@ var TokMap = TokenMap{
 		"play":      11,
 		"tempo":     12,
 		"channel":   13,
-		"program":   14,
-		"control":   15,
+		"velocity":  14,
+		"program":   15,
+		"control":   16,
 	},
 }

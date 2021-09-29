@@ -6,7 +6,7 @@ _upper       : 'A'-'Z' ;
 _char        : _lower | _upper ;
 _identChar   : _char | '-' ;
 _uint        : '0' | '1'-'9' {_digit} ;
-_stringLit   : '"' _identChar {_identChar | _uint} '"' ;
+_stringLit   : '"' { . } '"' ;
 _lineComment : '#' { . } '\n';
 
 multiNote : _identChar {_identChar} ;
@@ -33,7 +33,6 @@ Expr
     | Command
     ;
 
-// TODO singleNote
 NoteAssignment
     : multiNote "=" uint            << ast.NewNoteAssignment($T0.IDValue(), $T2.IDValue()) >>
     ;
@@ -60,6 +59,7 @@ Command:
     | "play" barName                << ast.NewCommand("play", $T1.IDValue()) >>
     | "tempo" uint                  << ast.NewCommand("tempo", $T1.IDValue()) >>
     | "channel" uint                << ast.NewCommand("channel", $T1.IDValue()) >>
+    | "velocity" uint               << ast.NewCommand("velocity", $T1.IDValue()) >>
     | "program" uint                << ast.NewCommand("program", $T1.IDValue()) >>
     | "control" uint uint           << ast.NewCommand("control", $T1.IDValue(), $T2.IDValue()) >>
     ;
