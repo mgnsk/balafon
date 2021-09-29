@@ -29,7 +29,7 @@ go install github.com/mgnsk/gong@latest
   ```sh
   $ gong play --port 2 examples/bonham
   ```
-- Enter the live shell on the first port:
+- Enter the live shell on the default port:
   ```sh
   $ gong
   Welcome to the gong shell on MIDI port '0: Midi Through:Midi Through Port-0 14:0'!
@@ -232,6 +232,12 @@ play "fill"
 ```
 
 ### J.S. Bach - Musikalisches Opfer - 6. Canon A 2 Per Tonos
+
+The file is included in the `examples` directory. To play into the default port, run
+
+```sh
+$ gong play examples/bach
+```
 
 It is possible to write melodies using gong in a limited way. Here's 2 bars of Bach:
 
