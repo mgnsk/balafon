@@ -1,0 +1,56 @@
+# The Bonham half time shuffle
+
+tempo 132
+channel 10
+velocity 100
+
+# Kick drum.
+k=36
+# Acoustic snare drum.
+s=38
+# Hi-Hat closed.
+x=42
+# Hi-Hat open.
+o=46
+# Hi-Hat foot.
+X=44
+# Crash cymbal.
+c=49
+# Low tom.
+q=45
+# Floor tom 2.
+g=41
+
+# Start the first bar with a crash cymbal.
+bar "bonham 1"
+# A crash whole note in the first bar.
+c1
+--o8/3 x-x8/3 x-x8/3 x-x8/3
+k-k8/3 -sk8/3 s      -sk8/3
+-      X
+end
+
+bar "bonham 2"
+x-o8/3 x-x8/3 x-x8/3 x-x8/3
+k-k8/3 -sk8/3 s      -sk8/3
+-      X
+end
+
+bar "fill"
+--s8/3 sss8/3 ssq8/3 qgg8/3
+k-k8/3 --k8/3
+x      X      X      X
+end
+
+# Count in.
+xxxo
+
+# Play 8 bars of the Bonham groove.
+play "bonham 1"
+play "bonham 2"
+play "bonham 2"
+play "fill"
+play "bonham 1"
+play "bonham 2"
+play "bonham 2"
+play "fill"
