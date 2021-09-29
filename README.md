@@ -56,7 +56,7 @@ go install github.com/mgnsk/gong@latest
 
 - #### Comments
   ```
-  # This is a line comment.
+  // This is a line comment.
   ```
 - #### Tempo change
   ```
@@ -80,57 +80,68 @@ go install github.com/mgnsk/gong@latest
   ```
 - #### Note assignment
   ```
-  # Kick drum (on the drum channel).
+  // Kick drum (on the drum channel).
   k=36
-  # Middle C (on other channels).
+  // Middle C (on other channels).
   c=60
   ```
 - #### Note values
   ```
-  # Whole note.
+  // Whole note.
   x1
-  # Half note.
+  // Half note.
   x2
-  # Quarter note (same as x4).
+  // Quarter note (same as x4).
   x
-  # 8th note.
+  // 8th note.
   x8
-  # 16th note.
+  // 16th note.
   x16
-  # 32th note.
+  // 32th note.
   x32
-  # And so on...
+  // And so on...
   ```
 - #### Dotted notes and triplets
   ```
-  # Dotted quarter note.
+  // Dotted quarter note.
   x.
-  # Dotted 8th note.
+  // Dotted 8th note.
   x8.
-  # Quarter triplet note.
+  // Quarter triplet note.
   x/3
-  # Dotted 8th quintuplet note.
+  // Dotted 8th quintuplet note.
   x8./5
+  ```
+- #### Flat and sharp notes.
+  ```
+  // A note.
+  c
+  // A sharp note (MIDI note number + 1).
+  c#
+  // A flat note (MIDI note number - 1).
+  c$
   ```
 - #### Note grouping
   ```
-  # Ti-Tiri.
+  // Ti-Tiri.
   x8 x16 x16
-  # Can be written as:
+  // Can be written as:
   x8xx16
-  # Three 8th triplet notes.
+  // Three 8th triplet notes.
   xxx8/3
   ```
 - #### Bars
 
+  Bars are used to to specify multiple tracks playing at once.
+
   ```
-  # Define a bar.
+  // Define a bar.
   bar "Rock beat"
   xx8 xx8 xx8 xx8
   k   s   k   s
   end
 
-  # Play the bar.
+  // Play the bar.
   play "Rock beat"
   ```
 
@@ -143,32 +154,31 @@ $ gong play examples/bonham
 ```
 
 ```
-# The Bonham half time shuffle
+// The Bonham half time shuffle
 
 tempo 132
 channel 10
 velocity 100
 
-# Kick drum.
+// Kick drum.
 k=36
-# Acoustic snare drum.
+// Acoustic snare drum.
 s=38
-# Hi-Hat closed.
+// Hi-Hat closed.
 x=42
-# Hi-Hat open.
+// Hi-Hat open.
 o=46
-# Hi-Hat foot.
+// Hi-Hat foot.
 X=44
-# Crash cymbal.
+// Crash cymbal.
 c=49
-# Low tom.
+// Low tom.
 q=45
-# Floor tom 2.
+// Floor tom 2.
 g=41
 
-# Start the first bar with a crash cymbal.
+// Start the first bar with a crash cymbal.
 bar "bonham 1"
-# A crash whole note in the first bar.
 c1
 --o8/3 x-x8/3 x-x8/3 x-x8/3
 k-k8/3 -sk8/3 s      -sk8/3
@@ -187,10 +197,10 @@ k-k8/3 --k8/3
 x      X      X      X
 end
 
-# Count in.
+// Count in.
 xxxo
 
-# Play 8 bars of the Bonham groove.
+// Play 8 bars of the Bonham groove.
 play "bonham 1"
 play "bonham 2"
 play "bonham 2"

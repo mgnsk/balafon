@@ -7,10 +7,11 @@ _char        : _lower | _upper ;
 _identChar   : _char | '-' ;
 _uint        : '0' | '1'-'9' {_digit} ;
 _stringLit   : '"' { . } '"' ;
-_lineComment : '#' { . } '\n';
+_lineComment : '/' '/' { . } '\n';
 
 multiNote : _identChar {_identChar} ;
 barName   : _stringLit ;
+sharp     : '#' ;
 uint      : _uint ;
 dot       : '.' ;
 tuplet    : '/' _uint ;
@@ -48,6 +49,7 @@ NoteList
 
 NotePropertyList
     : empty
+    | sharp NotePropertyList        << ast.NewNotePropertyList($T0, $1), nil >>
     | uint NotePropertyList         << ast.NewNotePropertyList($T0, $1), nil >>
     | dot NotePropertyList          << ast.NewNotePropertyList($T0, $1), nil >>
     | tuplet NotePropertyList       << ast.NewNotePropertyList($T0, $1), nil >>

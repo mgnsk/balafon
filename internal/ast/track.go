@@ -38,28 +38,24 @@ type NoteList []Note
 func NewNoteList(ident string, props interface{}) NoteList {
 	var p NotePropertyList
 
+	// Add implicit quarter note property if missing.
 	switch props := props.(type) {
 	case NotePropertyList:
-		props.Sort()
-		if len(props) == 0 || props[0].Type != token.TokMap.Type("uint") {
-			// Implicit quarter note.
-			p = append(NotePropertyList{
-				&token.Token{
-					Type: token.TokMap.Type("uint"),
-					Lit:  []byte("4"),
-				},
-			}, props...)
-		} else {
-			p = props
-		}
-	default:
-		p = NotePropertyList{
-			&token.Token{
+		p = props
+		if p.Find(token.TokMap.Type("uint")) == nil {
+			p = append(p, &token.Token{
 				Type: token.TokMap.Type("uint"),
 				Lit:  []byte("4"),
-			},
+			})
 		}
+	default:
+		p = NotePropertyList{&token.Token{
+			Type: token.TokMap.Type("uint"),
+			Lit:  []byte("4"),
+		}}
 	}
+
+	sort.Stable(p)
 
 	// Expand the short syntax of a multi note into individual notes
 	// and apply the same properties to each individual note.
@@ -80,9 +76,19 @@ type Note struct {
 	Props NotePropertyList
 }
 
+// IsSharp reports whether the note is a sharp note.
+func (n Note) IsSharp() bool {
+	t := n.Props.Find(token.TokMap.Type("sharp"))
+	return t != nil
+}
+
 // Value returns the note value (1th, 2th, 4th, 8th, 16th, 32th and so on).
 func (n Note) Value() uint8 {
-	v, err := n.Props[0].Int32Value()
+	t := n.Props.Find(token.TokMap.Type("uint"))
+	if t == nil {
+		panic("ast.Note: missing note value")
+	}
+	v, err := t.Int32Value()
 	if err != nil {
 		panic(err)
 	}
@@ -92,49 +98,39 @@ func (n Note) Value() uint8 {
 
 // IsDot reports whether the not is a dotted note.
 func (n Note) IsDot() bool {
-	return len(n.Props) >= 2 && n.Props[1].Type == token.TokMap.Type("dot")
+	t := n.Props.Find(token.TokMap.Type("dot"))
+	return t != nil
 }
 
 // Tuplet returns the irregular division value if the note is a tuplet.
 func (n Note) Tuplet() uint8 {
-	// If the note is a dotted note, the tuplet property is at index 2,
-	// otherwise it is at index 1.
-	for _, t := range n.Props {
-		if t.Type == token.TokMap.Type("tuplet") {
-			// Extract the division number.
-			// For example "3" for a triplet denoted by "/3".
-			v, err := strconv.Atoi(string(t.Lit[1:]))
-			if err != nil {
-				panic(err)
-			}
-			// TODO range validation.
-			return uint8(v)
+	if t := n.Props.Find(token.TokMap.Type("tuplet")); t != nil {
+		// Extract the division number.
+		// For example "3" for a triplet denoted by "/3".
+		v, err := strconv.Atoi(string(t.Lit[1:]))
+		if err != nil {
+			panic(err)
 		}
+		// TODO range validation.
+		return uint8(v)
 	}
 	return 0
 }
 
 // Velocity returns the note velocity.
 func (n Note) Velocity() (uint8, bool) {
-	for _, t := range n.Props {
-		if t.Type == token.TokMap.Type("velo") {
-			v, err := strconv.Atoi(t.StringValue())
-			if err != nil {
-				panic(err)
-			}
-			// TODO range validation.
-			return uint8(v), true
+	if t := n.Props.Find(token.TokMap.Type("velo")); t != nil {
+		v, err := strconv.Atoi(t.StringValue())
+		if err != nil {
+			panic(err)
 		}
+		// TODO range validation.
+		return uint8(v), true
 	}
-	// Max velocity.
 	return 0, false
 }
 
 func (n Note) String() string {
-	values := make([]string, len(n.Props))
-	for i, p := range n.Props {
-		values[i] = p.String()
-	}
 	return fmt.Sprintf("%s%s", n.Name, n.Props)
 }
 
@@ -142,11 +138,28 @@ func (n Note) String() string {
 // note value, dot and tuplet.
 type NotePropertyList []*token.Token
 
-// Sort the properties in the order of value, dot, tuplet.
-func (p NotePropertyList) Sort() {
-	sort.Slice(p, func(i, j int) bool {
-		return p[i].Type < p[j].Type
-	})
+func (p NotePropertyList) Len() int      { return len(p) }
+func (p NotePropertyList) Swap(i, j int) { p[i], p[j] = p[j], p[i] }
+func (p NotePropertyList) Less(i, j int) bool {
+	a, ok := propOrder[p[i].Type]
+	if !ok {
+		panic(fmt.Sprintf("NotePropertyList.Sort: invalid token type '%s'", token.TokMap.StringType(p[i].Type)))
+	}
+	b, ok := propOrder[p[j].Type]
+	if !ok {
+		panic(fmt.Sprintf("NotePropertyList.Sort: invalid token type '%s'", token.TokMap.StringType(p[j].Type)))
+	}
+	return a < b
+}
+
+// Find the property with specified type.
+func (p NotePropertyList) Find(typ token.Type) *token.Token {
+	for _, t := range p {
+		if t.Type == typ {
+			return t
+		}
+	}
+	return nil
 }
 
 func (p NotePropertyList) String() string {
@@ -163,4 +176,11 @@ func NewNotePropertyList(t *token.Token, inner interface{}) NotePropertyList {
 		return append(NotePropertyList{t}, props...)
 	}
 	return NotePropertyList{t}
+}
+
+var propOrder = map[token.Type]int{
+	token.TokMap.Type("sharp"):  0,
+	token.TokMap.Type("uint"):   1,
+	token.TokMap.Type("dot"):    2,
+	token.TokMap.Type("tuplet"): 3,
 }
