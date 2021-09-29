@@ -76,9 +76,15 @@ type Note struct {
 	Props NotePropertyList
 }
 
-// IsSharp reports whether the note is a sharp note.
+// IsSharp reports whether the note is sharp.
 func (n Note) IsSharp() bool {
 	t := n.Props.Find(token.TokMap.Type("sharp"))
+	return t != nil
+}
+
+// IsFlat reports whether the note is flat.
+func (n Note) IsFlat() bool {
+	t := n.Props.Find(token.TokMap.Type("flat"))
 	return t != nil
 }
 

@@ -230,6 +230,13 @@ func (s *Scanner) parseBar(tracks ...ast.Track) ([]Message, error) {
 					return nil, fmt.Errorf("key '%s' undefined", note.Name)
 				}
 
+				// TODO: overflow.
+				if note.IsSharp() {
+					key++
+				} else if note.IsFlat() {
+					key--
+				}
+
 				velocity := s.currentVelocity
 				if v, ok := note.Velocity(); ok {
 					velocity = v

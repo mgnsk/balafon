@@ -76,6 +76,36 @@ func TestUndefinedKey(t *testing.T) {
 	g.Expect(s.Messages()).To(BeNil())
 }
 
+func TestSharpNote(t *testing.T) {
+	g := NewGomegaWithT(t)
+
+	input := "c=60\nc#"
+
+	s := scanner.New(strings.NewReader(input))
+	g.Expect(s.Scan()).To(BeTrue())
+	g.Expect(s.Err()).NotTo(HaveOccurred())
+
+	messages := s.Messages()
+
+	g.Expect(messages).To(HaveLen(2))
+	g.Expect(messages[0].Msg).To(ContainSubstring("Channel0Msg & NoteOnMsg key: 61"))
+}
+
+func TestFlatNote(t *testing.T) {
+	g := NewGomegaWithT(t)
+
+	input := "c=60\nc$"
+
+	s := scanner.New(strings.NewReader(input))
+	g.Expect(s.Scan()).To(BeTrue())
+	g.Expect(s.Err()).NotTo(HaveOccurred())
+
+	messages := s.Messages()
+
+	g.Expect(messages).To(HaveLen(2))
+	g.Expect(messages[0].Msg).To(ContainSubstring("Channel0Msg & NoteOnMsg key: 59"))
+}
+
 func TestNoteLengths(t *testing.T) {
 	g := NewGomegaWithT(t)
 
