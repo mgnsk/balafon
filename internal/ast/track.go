@@ -14,11 +14,15 @@ type Track NoteList
 
 // NewTrack creates a track.
 func NewTrack(notes NoteList, inner interface{}) Track {
-	var t Track
-	t = append(t, notes...)
-	if inner, ok := inner.(Track); ok {
-		t = append(t, inner...)
+	innerTrack, ok := inner.(Track)
+	if ok {
+		t := make(Track, 0, len(notes)+len(innerTrack))
+		t = append(t, notes...)
+		t = append(t, innerTrack...)
+		return t
 	}
+	t := make(Track, 0, len(notes))
+	t = append(t, notes...)
 	return t
 }
 
@@ -41,15 +45,15 @@ func NewNoteList(ident string, props interface{}) NoteList {
 	// Add implicit quarter note property if missing.
 	switch props := props.(type) {
 	case NotePropertyList:
-		p = props
+		p = make(NotePropertyList, 0, len(props)+1)
+		p = append(p, props...)
 		if p.Find(uintType) == nil {
 			p = append(p, uintToken)
 		}
+		sort.Stable(p)
 	default:
 		p = NotePropertyList{uintToken}
 	}
-
-	sort.Stable(p)
 
 	// Expand the short syntax of a multi note into individual notes
 	// and apply the same properties to each individual note.
@@ -125,8 +129,7 @@ func (n Note) String() string {
 	return fmt.Sprintf("%c%s", n.Name, n.Props)
 }
 
-// NotePropertyList is a list of note properties. 3 types of properties exist:
-// note value, dot and tuplet.
+// NotePropertyList is a list of note properties.
 type NotePropertyList []*token.Token
 
 func (p NotePropertyList) Len() int      { return len(p) }
@@ -178,7 +181,9 @@ func NewNotePropertyList(t *token.Token, inner interface{}) (NotePropertyList, e
 				return nil, fmt.Errorf("duplicate note property '%s': '%s'", token.TokMap.Id(p.Type), p.IDValue())
 			}
 		}
-		return append(NotePropertyList{t}, props...), nil
+		p := make(NotePropertyList, 1, len(props)+1)
+		p[0] = t
+		return append(p, props...), nil
 	}
 	return NotePropertyList{t}, nil
 }

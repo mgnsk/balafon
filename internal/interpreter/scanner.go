@@ -40,7 +40,7 @@ func (s *Scanner) Scan() bool {
 	s.err = nil
 
 	for s.scanner.Scan() {
-		messages, err := s.interpreter.Eval(s.scanner.Bytes())
+		messages, err := s.interpreter.Eval(s.scanner.Text())
 		if err != nil {
 			s.err = err
 			return false

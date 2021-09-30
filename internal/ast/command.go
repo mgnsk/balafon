@@ -122,8 +122,12 @@ func (l ArgumentList) String() string {
 
 // NewArgumentList creates an argument list.
 func NewArgumentList(arg *token.Token, inner interface{}) ArgumentList {
-	if args, ok := inner.(ArgumentList); ok {
-		return append(ArgumentList{arg}, args...)
+	innerArgs, ok := inner.(ArgumentList)
+	if ok {
+		l := make(ArgumentList, 1, len(innerArgs)+1)
+		l[0] = arg
+		l = append(l, innerArgs...)
+		return l
 	}
 	return ArgumentList{arg}
 }

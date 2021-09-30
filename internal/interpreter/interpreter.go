@@ -1,10 +1,10 @@
 package interpreter
 
 import (
-	"bytes"
 	"errors"
 	"fmt"
 	"sort"
+	"strings"
 
 	"github.com/mgnsk/gong/internal/ast"
 	"github.com/mgnsk/gong/internal/constants"
@@ -58,23 +58,16 @@ func (i *Interpreter) Suggest() []string {
 	return sug
 }
 
-// EvalString evaluates a single input line.
-// If both return values are nil, more input is needed.
-func (i *Interpreter) EvalString(input string) ([]Message, error) {
-	return i.Eval([]byte(input))
-}
-
 // Eval evaluates a single input line.
 // If both return values are nil, more input is needed.
-func (i *Interpreter) Eval(input []byte) ([]Message, error) {
-	if len(bytes.TrimSpace(input)) == 0 {
+func (i *Interpreter) Eval(input string) ([]Message, error) {
+	if len(strings.TrimSpace(input)) == 0 {
 		return nil, nil
 	}
 
 	i.parser.Reset()
 
-	input = append(input, '\n')
-	res, err := i.parser.Parse(lexer.NewLexer(input))
+	res, err := i.parser.Parse(lexer.NewLexer([]byte(input + "\n")))
 	if err != nil {
 		return nil, err
 	}

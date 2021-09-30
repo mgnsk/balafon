@@ -100,7 +100,7 @@ func runShell(c *cobra.Command, _ []string) error {
 
 	prompt.New(
 		func(input string) {
-			messages, err := it.EvalString(input)
+			messages, err := it.Eval(input)
 			if err != nil {
 				fmt.Println(err)
 				return
