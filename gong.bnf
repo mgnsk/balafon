@@ -25,7 +25,7 @@ tuplet    : '/' _uint ;
 <<
 import (
     "github.com/mgnsk/gong/internal/ast"
-    "github.com/mgnsk/gong/internal/token"
+    "github.com/mgnsk/gong/internal/parser/token"
 )
 >>
 
@@ -36,7 +36,7 @@ Expr
     ;
 
 NoteAssignment
-    : multiNote "=" uint            << ast.NewNoteAssignment($T0.IDValue(), $T2.IDValue()) >>
+    : multiNote "=" uint            << ast.NewNoteAssignment($T0, $T2) >>
     ;
 
 Track
@@ -50,11 +50,11 @@ NoteList
 
 NotePropertyList
     : empty
-    | sharp NotePropertyList        << ast.NewNotePropertyList($T0, $1), nil >>
-    | flat NotePropertyList         << ast.NewNotePropertyList($T0, $1), nil >>
-    | uint NotePropertyList         << ast.NewNotePropertyList($T0, $1), nil >>
-    | dot NotePropertyList          << ast.NewNotePropertyList($T0, $1), nil >>
-    | tuplet NotePropertyList       << ast.NewNotePropertyList($T0, $1), nil >>
+    | sharp NotePropertyList        << ast.NewNotePropertyList($T0, $1) >>
+    | flat NotePropertyList         << ast.NewNotePropertyList($T0, $1) >>
+    | uint NotePropertyList         << ast.NewNotePropertyList($T0, $1) >>
+    | dot NotePropertyList          << ast.NewNotePropertyList($T0, $1) >>
+    | tuplet NotePropertyList       << ast.NewNotePropertyList($T0, $1) >>
     ;
 
 Command:

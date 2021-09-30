@@ -6,8 +6,8 @@ import (
 	"fmt"
 	"strings"
 
-	parseError "github.com/mgnsk/gong/internal/errors"
-	"github.com/mgnsk/gong/internal/token"
+	parseError "github.com/mgnsk/gong/internal/parser/errors"
+	"github.com/mgnsk/gong/internal/parser/token"
 )
 
 const (

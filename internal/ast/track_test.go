@@ -1,16 +1,16 @@
-package parser_test
+package ast_test
 
 import (
 	"testing"
 
 	"github.com/mgnsk/gong/internal/ast"
-	"github.com/mgnsk/gong/internal/lexer"
-	"github.com/mgnsk/gong/internal/parser"
+	"github.com/mgnsk/gong/internal/parser/lexer"
+	"github.com/mgnsk/gong/internal/parser/parser"
 	. "github.com/onsi/gomega"
 	. "github.com/onsi/gomega/types"
 )
 
-func TestParser(t *testing.T) {
+func TestValidInputs(t *testing.T) {
 	type (
 		match    []GomegaMatcher
 		testcase struct {
@@ -20,26 +20,6 @@ func TestParser(t *testing.T) {
 	)
 
 	for _, tc := range []testcase{
-		{
-			"// this is a comment\n",
-			match{
-				BeNil(),
-			},
-		},
-		{
-			"c = 48\n",
-			match{
-				BeAssignableToTypeOf(ast.NoteAssignment{}),
-				ContainSubstring("c = 48"),
-			},
-		},
-		{
-			"c=48\n",
-			match{
-				BeAssignableToTypeOf(ast.NoteAssignment{}),
-				ContainSubstring("c = 48"),
-			},
-		},
 		{
 			"k\n",
 			match{
@@ -80,6 +60,20 @@ func TestParser(t *testing.T) {
 			match{
 				BeAssignableToTypeOf(ast.Track{}),
 				ContainSubstring("k4."),
+			},
+		},
+		{
+			"k..\n", // Double dotted note.
+			match{
+				BeAssignableToTypeOf(ast.Track{}),
+				ContainSubstring("k4.."),
+			},
+		},
+		{
+			"k...\n", // Triple dotted note.
+			match{
+				BeAssignableToTypeOf(ast.Track{}),
+				ContainSubstring("k4..."),
 			},
 		},
 		{
@@ -125,11 +119,11 @@ func TestParser(t *testing.T) {
 			},
 		},
 		{
-			"kkk8/3.\n",
+			"kkk128/3.\n",
 			match{
 				BeAssignableToTypeOf(ast.Track{}),
 				// Note properties are sorted.
-				ContainSubstring("k8./3 k8./3 k8./3"),
+				ContainSubstring("k128./3 k128./3 k128./3"),
 			},
 		},
 		{
@@ -160,83 +154,6 @@ func TestParser(t *testing.T) {
 				ContainSubstring("k#$8./3"),
 			},
 		},
-		{
-			"bar \"Chorus0\"\n",
-			match{
-				BeAssignableToTypeOf(ast.Command{}),
-				ContainSubstring(`bar "Chorus0"`),
-			},
-		},
-		{
-			"bar \"Chorus1\"\n",
-			match{
-				BeAssignableToTypeOf(ast.Command{}),
-				ContainSubstring(`bar "Chorus1"`),
-			},
-		},
-		{
-			"end\n",
-			match{
-				BeAssignableToTypeOf(ast.Command{}),
-				ContainSubstring("end"),
-			},
-		},
-		{
-			"play \"chorus\"\n",
-			match{
-				BeAssignableToTypeOf(ast.Command{}),
-				ContainSubstring(`play "chorus"`),
-			},
-		},
-		{
-			"play \"Chorus0\"\n",
-			match{
-				BeAssignableToTypeOf(ast.Command{}),
-				ContainSubstring(`play "Chorus0"`),
-			},
-		},
-		{
-			"play \"Chorus1\"\n",
-			match{
-				BeAssignableToTypeOf(ast.Command{}),
-				ContainSubstring(`play "Chorus1"`),
-			},
-		},
-		{
-			"tempo 120\n",
-			match{
-				BeAssignableToTypeOf(ast.Command{}),
-				ContainSubstring("tempo 120"),
-			},
-		},
-		{
-			"channel 0\n",
-			match{
-				BeAssignableToTypeOf(ast.Command{}),
-				ContainSubstring("channel 0"),
-			},
-		},
-		{
-			"velocity 50\n",
-			match{
-				BeAssignableToTypeOf(ast.Command{}),
-				ContainSubstring("velocity 50"),
-			},
-		},
-		{
-			"program 0\n",
-			match{
-				BeAssignableToTypeOf(ast.Command{}),
-				ContainSubstring("program 0"),
-			},
-		},
-		{
-			"control 0 1\n",
-			match{
-				BeAssignableToTypeOf(ast.Command{}),
-				ContainSubstring("control 0 1"),
-			},
-		},
 	} {
 		t.Run(tc.input, func(t *testing.T) {
 			g := NewGomegaWithT(t)
@@ -250,6 +167,43 @@ func TestParser(t *testing.T) {
 			for _, match := range tc.match {
 				g.Expect(res).To(match)
 			}
+		})
+	}
+}
+
+func TestInvalidNoteValue(t *testing.T) {
+	for _, input := range []string{
+		"k3",
+		"k22",
+		"k0",
+		"k129",
+	} {
+		t.Run(input, func(t *testing.T) {
+			g := NewGomegaWithT(t)
+
+			lex := lexer.NewLexer([]byte(input))
+			p := parser.NewParser()
+
+			_, err := p.Parse(lex)
+			g.Expect(err).To(HaveOccurred())
+		})
+	}
+}
+
+func TestForbiddenDuplicateProperty(t *testing.T) {
+	for _, input := range []string{
+		"k##",
+		"k$$",
+		"k/3/3",
+	} {
+		t.Run(input, func(t *testing.T) {
+			g := NewGomegaWithT(t)
+
+			lex := lexer.NewLexer([]byte(input))
+			p := parser.NewParser()
+
+			_, err := p.Parse(lex)
+			g.Expect(err).To(HaveOccurred())
 		})
 	}
 }

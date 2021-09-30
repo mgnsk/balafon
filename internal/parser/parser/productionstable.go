@@ -4,7 +4,7 @@ package parser
 
 import (
     "github.com/mgnsk/gong/internal/ast"
-    "github.com/mgnsk/gong/internal/token"
+    "github.com/mgnsk/gong/internal/parser/token"
 )
 
 type (
@@ -63,13 +63,13 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `NoteAssignment : multiNote "=" uint	<< ast.NewNoteAssignment(X[0].(*token.Token).IDValue(), X[2].(*token.Token).IDValue()) >>`,
+		String: `NoteAssignment : multiNote "=" uint	<< ast.NewNoteAssignment(X[0].(*token.Token), X[2].(*token.Token)) >>`,
 		Id:         "NoteAssignment",
 		NTType:     2,
 		Index:      4,
 		NumSymbols: 3,
 		ReduceFunc: func(X []Attrib, C interface{}) (Attrib, error) {
-			return ast.NewNoteAssignment(X[0].(*token.Token).IDValue(), X[2].(*token.Token).IDValue())
+			return ast.NewNoteAssignment(X[0].(*token.Token), X[2].(*token.Token))
 		},
 	},
 	ProdTabEntry{
@@ -113,53 +113,53 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `NotePropertyList : sharp NotePropertyList	<< ast.NewNotePropertyList(X[0].(*token.Token), X[1]), nil >>`,
+		String: `NotePropertyList : sharp NotePropertyList	<< ast.NewNotePropertyList(X[0].(*token.Token), X[1]) >>`,
 		Id:         "NotePropertyList",
 		NTType:     5,
 		Index:      9,
 		NumSymbols: 2,
 		ReduceFunc: func(X []Attrib, C interface{}) (Attrib, error) {
-			return ast.NewNotePropertyList(X[0].(*token.Token), X[1]), nil
+			return ast.NewNotePropertyList(X[0].(*token.Token), X[1])
 		},
 	},
 	ProdTabEntry{
-		String: `NotePropertyList : flat NotePropertyList	<< ast.NewNotePropertyList(X[0].(*token.Token), X[1]), nil >>`,
+		String: `NotePropertyList : flat NotePropertyList	<< ast.NewNotePropertyList(X[0].(*token.Token), X[1]) >>`,
 		Id:         "NotePropertyList",
 		NTType:     5,
 		Index:      10,
 		NumSymbols: 2,
 		ReduceFunc: func(X []Attrib, C interface{}) (Attrib, error) {
-			return ast.NewNotePropertyList(X[0].(*token.Token), X[1]), nil
+			return ast.NewNotePropertyList(X[0].(*token.Token), X[1])
 		},
 	},
 	ProdTabEntry{
-		String: `NotePropertyList : uint NotePropertyList	<< ast.NewNotePropertyList(X[0].(*token.Token), X[1]), nil >>`,
+		String: `NotePropertyList : uint NotePropertyList	<< ast.NewNotePropertyList(X[0].(*token.Token), X[1]) >>`,
 		Id:         "NotePropertyList",
 		NTType:     5,
 		Index:      11,
 		NumSymbols: 2,
 		ReduceFunc: func(X []Attrib, C interface{}) (Attrib, error) {
-			return ast.NewNotePropertyList(X[0].(*token.Token), X[1]), nil
+			return ast.NewNotePropertyList(X[0].(*token.Token), X[1])
 		},
 	},
 	ProdTabEntry{
-		String: `NotePropertyList : dot NotePropertyList	<< ast.NewNotePropertyList(X[0].(*token.Token), X[1]), nil >>`,
+		String: `NotePropertyList : dot NotePropertyList	<< ast.NewNotePropertyList(X[0].(*token.Token), X[1]) >>`,
 		Id:         "NotePropertyList",
 		NTType:     5,
 		Index:      12,
 		NumSymbols: 2,
 		ReduceFunc: func(X []Attrib, C interface{}) (Attrib, error) {
-			return ast.NewNotePropertyList(X[0].(*token.Token), X[1]), nil
+			return ast.NewNotePropertyList(X[0].(*token.Token), X[1])
 		},
 	},
 	ProdTabEntry{
-		String: `NotePropertyList : tuplet NotePropertyList	<< ast.NewNotePropertyList(X[0].(*token.Token), X[1]), nil >>`,
+		String: `NotePropertyList : tuplet NotePropertyList	<< ast.NewNotePropertyList(X[0].(*token.Token), X[1]) >>`,
 		Id:         "NotePropertyList",
 		NTType:     5,
 		Index:      13,
 		NumSymbols: 2,
 		ReduceFunc: func(X []Attrib, C interface{}) (Attrib, error) {
-			return ast.NewNotePropertyList(X[0].(*token.Token), X[1]), nil
+			return ast.NewNotePropertyList(X[0].(*token.Token), X[1])
 		},
 	},
 	ProdTabEntry{

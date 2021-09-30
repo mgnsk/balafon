@@ -6,7 +6,7 @@ import (
 	"io/ioutil"
 	"unicode/utf8"
 
-	"github.com/mgnsk/gong/internal/token"
+	"github.com/mgnsk/gong/internal/parser/token"
 )
 
 const (

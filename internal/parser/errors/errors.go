@@ -8,7 +8,7 @@ import (
 	"strings"
 	"unicode"
 
-	"github.com/mgnsk/gong/internal/token"
+	"github.com/mgnsk/gong/internal/parser/token"
 )
 
 type ErrorSymbol interface {

@@ -45,39 +45,41 @@ func (c Command) Uint32Args() []uint32 {
 
 // NewCommand creates a command from name and optional arguments.
 func NewCommand(name string, args ...string) (Command, error) {
-	c := Command{Name: name}
-	for _, arg := range args {
+	c := Command{
+		Name: name,
+		Args: make([]string, len(args)),
+	}
+	for i, arg := range args {
 		switch name {
 		case "tempo":
-			v, err := strconv.Atoi(arg)
-			if err != nil {
+			if err := validateRange(name, arg, 1, math.MaxUint16); err != nil {
 				return Command{}, err
-			}
-			if v > math.MaxUint32 {
-				return Command{}, fmt.Errorf("tempo argument must be in range 0-%d", math.MaxUint32)
 			}
 		case "channel":
-			v, err := strconv.Atoi(arg)
-			if err != nil {
+			if err := validateRange(name, arg, 0, 15); err != nil {
 				return Command{}, err
-			}
-			if v > 15 {
-				return Command{}, fmt.Errorf("channel argument must be in range 0-15")
 			}
 		case "velocity":
 			fallthrough
 		case "program":
 			fallthrough
 		case "control":
-			v, err := strconv.Atoi(arg)
-			if err != nil {
+			if err := validateRange(name, arg, 0, 127); err != nil {
 				return Command{}, err
 			}
-			if v > 127 {
-				return Command{}, fmt.Errorf("%s argument must be in range 0-127", name)
-			}
 		}
-		c.Args = append(c.Args, arg)
+		c.Args[i] = arg
 	}
 	return c, nil
+}
+
+func validateRange(name, arg string, min, max int) error {
+	v, err := strconv.Atoi(arg)
+	if err != nil {
+		return err
+	}
+	if v < min || v > max {
+		return fmt.Errorf("%s argument must be in range %d-%d", name, min, max)
+	}
+	return nil
 }

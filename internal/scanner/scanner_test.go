@@ -53,18 +53,6 @@ func TestControlChange(t *testing.T) {
 	g.Expect(messages[0].Msg).To(ContainSubstring("Channel0Msg & ControlChangeMsg controller: 0 change: 1"))
 }
 
-// TODO change bnf to accept only single char instead of multiNote for assignment
-func TestInvalidAssignment(t *testing.T) {
-	g := NewGomegaWithT(t)
-
-	input := "cc = 120"
-
-	s := scanner.New(strings.NewReader(input))
-	g.Expect(s.Scan()).To(BeFalse())
-	g.Expect(s.Err()).To(HaveOccurred())
-	g.Expect(s.Messages()).To(BeNil())
-}
-
 func TestUndefinedKey(t *testing.T) {
 	g := NewGomegaWithT(t)
 
@@ -106,9 +94,27 @@ func TestFlatNote(t *testing.T) {
 	g.Expect(messages[0].Msg).To(ContainSubstring("Channel0Msg & NoteOnMsg key: 59"))
 }
 
-func TestNoteLengths(t *testing.T) {
+func TestSharpNoteRange(t *testing.T) {
 	g := NewGomegaWithT(t)
 
+	input := "c=127\nc#"
+
+	s := scanner.New(strings.NewReader(input))
+	g.Expect(s.Scan()).To(BeFalse())
+	g.Expect(s.Err()).To(HaveOccurred())
+}
+
+func TestFlatNoteRange(t *testing.T) {
+	g := NewGomegaWithT(t)
+
+	input := "c=0\nc$"
+
+	s := scanner.New(strings.NewReader(input))
+	g.Expect(s.Scan()).To(BeFalse())
+	g.Expect(s.Err()).To(HaveOccurred())
+}
+
+func TestNoteLengths(t *testing.T) {
 	for _, tc := range []struct {
 		input string
 		offAt uint64
@@ -122,6 +128,14 @@ func TestNoteLengths(t *testing.T) {
 			offAt: uint64(constants.TicksPerQuarter * 3 / 2),
 		},
 		{
+			input: "k=36\nk..", // Double dotted quarter note.
+			offAt: uint64(constants.TicksPerQuarter * 9 / 4),
+		},
+		{
+			input: "k=36\nk...", // Triplet dotted quarter note.
+			offAt: uint64(constants.TicksPerQuarter * 27 / 8),
+		},
+		{
 			input: "k=36\nk/5", // Quintuplet quarter note.
 			offAt: uint64(constants.TicksPerQuarter * 2 / 5),
 		},
@@ -130,19 +144,45 @@ func TestNoteLengths(t *testing.T) {
 			offAt: uint64(constants.TicksPerQuarter),
 		},
 	} {
-		s := scanner.New(strings.NewReader(tc.input))
-		g.Expect(s.Scan()).To(BeTrue())
-		g.Expect(s.Err()).NotTo(HaveOccurred())
+		t.Run(tc.input, func(t *testing.T) {
+			g := NewGomegaWithT(t)
 
-		messages := s.Messages()
+			s := scanner.New(strings.NewReader(tc.input))
+			g.Expect(s.Scan()).To(BeTrue())
+			g.Expect(s.Err()).NotTo(HaveOccurred())
 
-		g.Expect(messages).To(HaveLen(2))
+			messages := s.Messages()
 
-		g.Expect(messages[0].Tick).To(Equal(uint64(0)))
-		g.Expect(messages[0].Msg).To(ContainSubstring("Channel0Msg & NoteOnMsg key: 36"))
+			g.Expect(messages).To(HaveLen(2))
 
-		g.Expect(messages[1].Tick).To(Equal(tc.offAt))
-		g.Expect(messages[1].Msg).To(ContainSubstring("Channel0Msg & NoteOffMsg key: 36"))
+			g.Expect(messages[0].Tick).To(Equal(uint64(0)))
+			g.Expect(messages[0].Msg).To(ContainSubstring("Channel0Msg & NoteOnMsg key: 36"))
+
+			g.Expect(messages[1].Tick).To(Equal(tc.offAt))
+			g.Expect(messages[1].Msg).To(ContainSubstring("Channel0Msg & NoteOffMsg key: 36"))
+		})
+	}
+}
+
+func TestCommandForbiddenInBar(t *testing.T) {
+	for _, input := range []string{
+		"bar \"bar\"\nc=10",
+		"bar \"bar\"\nbar \"forbidden\"",
+		"bar \"bar\"\nplay \"forbidden\"",
+		"bar \"bar\"\ntempo 120",
+		"bar \"bar\"\nchannel 0",
+		"bar \"bar\"\nvelocity 0",
+		"bar \"bar\"\nprogram 0",
+		"bar \"bar\"\ncontrol 0 0",
+	} {
+		t.Run(input, func(t *testing.T) {
+			g := NewGomegaWithT(t)
+
+			s := scanner.New(strings.NewReader(input))
+			g.Expect(s.Scan()).To(BeFalse())
+			g.Expect(s.Err()).To(HaveOccurred())
+			g.Expect(s.Err().Error()).To(ContainSubstring("not ended"))
+		})
 	}
 }
 

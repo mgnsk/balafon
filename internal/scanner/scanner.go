@@ -11,8 +11,8 @@ import (
 
 	"github.com/mgnsk/gong/internal/ast"
 	"github.com/mgnsk/gong/internal/constants"
-	"github.com/mgnsk/gong/internal/lexer"
-	"github.com/mgnsk/gong/internal/parser"
+	"github.com/mgnsk/gong/internal/parser/lexer"
+	"github.com/mgnsk/gong/internal/parser/parser"
 	"gitlab.com/gomidi/midi/v2"
 )
 
@@ -31,7 +31,7 @@ type Scanner struct {
 
 	mu              sync.Mutex
 	messages        []Message
-	notes           map[string]uint8
+	notes           map[rune]uint8
 	bars            map[string][]ast.Track
 	barBuffer       []ast.Track
 	currentBar      string
@@ -59,21 +59,23 @@ func (s *Scanner) Suggest() []string {
 	defer s.mu.Unlock()
 
 	// Suggest assigned notes at any time.
+	// TODO command list
 	var sug []string
-	for note := range s.notes {
-		sug = append(sug, note)
-	}
-	if s.currentBar != "" {
-		// Suggest ending the current bar if we're in the middle of a bar.
-		sug = append(sug, "end")
-	} else {
-		// Suggest commands.
-		sug = append(sug, "bar", "tempo", "channel", "velocity", "program", "control")
-		// Suggest playing a bar.
-		for name := range s.bars {
-			sug = append(sug, "play "+name)
-		}
-	}
+	// for note := range s.notes {
+	// 	sug = append(sug, note)
+	// }
+	// if s.currentBar != "" {
+	// 	// Suggest ending the current bar if we're in the middle of a bar.
+	// 	sug = append(sug, "end")
+	// } else {
+	// 	// Suggest commands.
+	// 	// TODO get all commands
+	// 	sug = append(sug, "bar", "tempo", "channel", "velocity", "program", "control")
+	// 	// Suggest playing a bar.
+	// 	for name := range s.bars {
+	// 		sug = append(sug, "play "+name)
+	// 	}
+	// }
 	return sug
 }
 
@@ -114,16 +116,14 @@ func (s *Scanner) Scan() bool {
 	return false
 }
 
-func (s *Scanner) parseResult(res interface{}) (success, scanMore bool) {
+func (s *Scanner) parseResult(res interface{}) (success, wantMore bool) {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 
 	switch r := res.(type) {
 	case ast.NoteAssignment:
-		if len(r.Note) != 1 {
-			// TODO: a single character note could not be implemented
-			// in our BNF due to ambiguity.
-			s.err = errors.New("note must be a single character")
+		if s.currentBar != "" {
+			s.err = fmt.Errorf("cannot assign note: bar '%s' is not ended", s.currentBar)
 			return false, false
 		}
 		s.notes[r.Note] = r.Key
@@ -185,6 +185,10 @@ func (s *Scanner) parseResult(res interface{}) (success, scanMore bool) {
 			return true, false
 
 		case "tempo": // Set the current tempo.
+			if s.currentBar != "" {
+				s.err = fmt.Errorf("cannot change tempo: bar '%s' is not ended", s.currentBar)
+				return false, false
+			}
 			s.messages = []Message{{
 				Tempo: r.Uint32Args()[0],
 			}}
@@ -242,76 +246,47 @@ func (s *Scanner) parseBar(tracks ...ast.Track) ([]Message, error) {
 	for _, track := range tracks {
 		var tick uint64
 		for _, note := range track {
-			length := s.noteLength(note)
+			length := noteLength(note)
 
-			if note.Name != "-" {
+			if note.Name != '-' {
 				key, ok := s.notes[note.Name]
 				if !ok {
-					return nil, fmt.Errorf("key '%s' undefined", note.Name)
+					return nil, fmt.Errorf("key '%c' undefined", note.Name)
 				}
 
-				// TODO: overflow.
 				if note.IsSharp() {
+					if key == 127 {
+						return nil, fmt.Errorf("sharp note '%s' out of MIDI range", note)
+					}
 					key++
 				} else if note.IsFlat() {
+					if key == 0 {
+						return nil, fmt.Errorf("flat note '%s' out of MIDI range", note)
+					}
 					key--
-				}
-
-				velocity := s.currentVelocity
-				if v, ok := note.Velocity(); ok {
-					velocity = v
 				}
 
 				messages = append(messages, Message{
 					Tick: s.currentTick + tick,
-					Msg:  midi.NewMessage(midi.Channel(s.currentChannel).NoteOn(key, velocity)),
+					Msg:  midi.NewMessage(midi.Channel(s.currentChannel).NoteOn(key, s.currentVelocity)),
 				})
 
 				messages = append(messages, Message{
-					Tick: s.currentTick + tick + uint64(length),
+					Tick: s.currentTick + tick + length,
 					Msg:  midi.NewMessage(midi.Channel(s.currentChannel).NoteOff(key)),
 				})
 			}
 
-			tick += uint64(length)
+			tick += length
 		}
 	}
 
 	// Sort the messages so that every note is off before on.
-	sort.Slice(messages, func(i, j int) bool {
-		if messages[i].Tick < messages[j].Tick {
-			return true
-		} else if messages[i].Tick == messages[j].Tick {
-			a := messages[i].Msg
-			b := messages[j].Msg
-
-			if a.IsNoteEnd() {
-				if b.IsNoteEnd() {
-					// When both are NoteOff, sort by key.
-					return a.Key() < b.Key()
-				}
-				// NoteOff before any other messages on the same tick.
-				return true
-			}
-		}
-		return false
-	})
+	sort.Stable(byMessageTypeOrKey(messages))
 
 	s.currentTick = messages[len(messages)-1].Tick
 
 	return messages, nil
-}
-
-func (s *Scanner) noteLength(note ast.Note) uint16 {
-	value := note.Value()
-	length := 4 * constants.TicksPerQuarter / uint16(value)
-	if note.IsDot() {
-		length += (length / 2)
-	}
-	if division := note.Tuplet(); division > 0 {
-		length = uint16(float64(length) * 2.0 / float64(division))
-	}
-	return length
 }
 
 // New creates a new Scanner instance.
@@ -319,8 +294,41 @@ func New(r io.Reader) *Scanner {
 	return &Scanner{
 		scanner:         bufio.NewScanner(r),
 		parser:          parser.NewParser(),
-		notes:           make(map[string]uint8),
+		notes:           make(map[rune]uint8),
 		bars:            make(map[string][]ast.Track),
 		currentVelocity: 127,
 	}
+}
+
+func noteLength(note ast.Note) uint64 {
+	value := note.Value()
+	length := 4 * constants.TicksPerQuarter / uint64(value)
+	for i := uint(0); i < note.Dots(); i++ {
+		length += (length / 2)
+	}
+	if division := note.Tuplet(); division > 0 {
+		length = uint64(float64(length) * 2.0 / float64(division))
+	}
+	return length
+}
+
+type byMessageTypeOrKey []Message
+
+func (s byMessageTypeOrKey) Len() int      { return len(s) }
+func (s byMessageTypeOrKey) Swap(i, j int) { s[i], s[j] = s[j], s[i] }
+func (s byMessageTypeOrKey) Less(i, j int) bool {
+	if s[i].Tick == s[j].Tick {
+		a := s[i].Msg
+		b := s[j].Msg
+
+		if a.IsNoteEnd() {
+			if b.IsNoteEnd() {
+				// When both are NoteOff, sort by key.
+				return a.Key() < b.Key()
+			}
+			// NoteOff before any other messages on the same tick.
+			return true
+		}
+	}
+	return s[i].Tick < s[j].Tick
 }
