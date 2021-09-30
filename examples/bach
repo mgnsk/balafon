@@ -22,14 +22,14 @@ tempo 73
 velocity 100
 
 bar "bar 1"
-c.                d8 e$8 e8 f8 f#8
--C16 E$16 G16 c2            B$8A8
+c.                 d8 e$8 e8 f8  f#8
+-C16E$16G16 c2               B$8 A8
 end
 
 // 16th rests instead of ties (unimplemented).
 bar "bar 2"
-g2                 a$     -f16d$16c16
--G16B$16d16 g2            fe8
+g2                 a$        -f16d$16c16
+-G16B$16d16 g2               f8  e8
 B$          -EDE16 FCFG16 A$
 end
 
