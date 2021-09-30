@@ -44,22 +44,7 @@ go install github.com/mgnsk/gong@latest
 - Help.
 
   ```sh
-  gong is a MIDI control language and interpreter.
-
-  Usage:
-     [flags]
-     [command]
-
-  Available Commands:
-    help        Help about any command
-    list-ports  List available MIDI output ports
-    play        Play a file
-
-  Flags:
-    -h, --help          help for this command
-        --port string   MIDI output port (default "0")
-
-  Use " [command] --help" for more information about a command.
+{{.HelpSection | indent 2 | trim_trailing_newlines}}
   ```
 
 ## Syntax
@@ -171,63 +156,7 @@ $ gong play examples/bonham
 ```
 
 ```
-// The Bonham half time shuffle
-
-tempo 132
-velocity 100
-
-// Percussion channel.
-channel 10
-
-// Kick drum.
-k=36
-// Acoustic snare drum.
-s=38
-// Hi-Hat closed.
-x=42
-// Hi-Hat open.
-o=46
-// Hi-Hat foot.
-X=44
-// Crash cymbal.
-c=49
-// Low tom.
-q=45
-// Floor tom 2.
-g=41
-
-// Start the first bar with a crash cymbal.
-bar "bonham 1"
-c1
---o8/3 x-x8/3 x-x8/3 x-x8/3
-k-k8/3 -sk8/3 s      -sk8/3
--      X
-end
-
-bar "bonham 2"
-x-o8/3 x-x8/3 x-x8/3 x-x8/3
-k-k8/3 -sk8/3 s      -sk8/3
--      X
-end
-
-bar "fill"
---s8/3 sss8/3 ssq8/3 qgg8/3
-k-k8/3 --k8/3
-x      X      X      X
-end
-
-// Count in.
-xxxo
-
-// Play 8 bars of the Bonham groove.
-play "bonham 1"
-play "bonham 2"
-play "bonham 2"
-play "fill"
-play "bonham 1"
-play "bonham 2"
-play "bonham 2"
-play "fill"
+{{.BonhamExample | trim_trailing_newlines}}
 ```
 
 ### J.S. Bach - Musikalisches Opfer - 6. Canon A 2 Per Tonos
@@ -241,43 +170,7 @@ $ gong play examples/bach
 It is possible to write melodies using gong in a limited way. Here's 2 bars of Bach:
 
 ```
-// J.S. Bach - Musikalisches Opfer - 6. Canon A 2 Per Tonos
-
-// C3
-C=48
-D=50
-E=52
-F=53
-G=55
-A=57
-B=59
-
-// C4 (middle C)
-c=60
-d=62
-e=64
-f=65
-g=67
-a=69
-b=71
-
-tempo 73
-velocity 100
-
-bar "bar 1"
-c.                 d8 e$8 e8 f8  f#8
--C16E$16G16 c2               B$8 A8
-end
-
-// 16th rests instead of ties (unimplemented).
-bar "bar 2"
-g2                 a$        -f16d$16c16
--G16B$16d16 g2               f8  e8
-B$          -EDE16 FCFG16 A$
-end
-
-play "bar 1"
-play "bar 2"
+{{.BachExample | trim_trailing_newlines}}
 ```
 
 ## Possible features in the future
