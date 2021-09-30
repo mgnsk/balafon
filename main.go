@@ -171,7 +171,10 @@ func startPlayer(ctx context.Context, out midi.Sender, msgC <-chan []interpreter
 		select {
 		case <-ctx.Done():
 			return
-		case m := <-msgC:
+		case m, ok := <-msgC:
+			if !ok {
+				return
+			}
 			for _, msg := range m {
 				if err := p.Play(ctx, msg); err != nil {
 					if errors.Is(err, context.Canceled) {
