@@ -58,24 +58,25 @@ func (s *Scanner) Suggest() []string {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 
-	// Suggest assigned notes at any time.
-	// TODO command list
 	var sug []string
-	// for note := range s.notes {
-	// 	sug = append(sug, note)
-	// }
-	// if s.currentBar != "" {
-	// 	// Suggest ending the current bar if we're in the middle of a bar.
-	// 	sug = append(sug, "end")
-	// } else {
-	// 	// Suggest commands.
-	// 	// TODO get all commands
-	// 	sug = append(sug, "bar", "tempo", "channel", "velocity", "program", "control")
-	// 	// Suggest playing a bar.
-	// 	for name := range s.bars {
-	// 		sug = append(sug, "play "+name)
-	// 	}
-	// }
+
+	// Suggest assigned notes at any time.
+	for note := range s.notes {
+		sug = append(sug, string(note))
+	}
+
+	if s.currentBar != "" {
+		// Suggest ending the current bar if we're in the middle of a bar.
+		sug = append(sug, "end")
+	} else {
+		// Suggest commands.
+		sug = append(sug, "tempo", "channel", "velocity", "program", "control", "bar")
+		// Suggest playing a bar.
+		for name := range s.bars {
+			sug = append(sug, "play "+name)
+		}
+	}
+
 	return sug
 }
 
