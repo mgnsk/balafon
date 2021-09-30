@@ -149,11 +149,11 @@ func (s *Scanner) parseResult(res interface{}) (success, wantMore bool) {
 				s.err = fmt.Errorf("cannot begin bar '%s': bar '%s' is not ended", r.Args[0], s.currentBar)
 				return false, false
 			}
-			if _, ok := s.bars[r.Args[0]]; ok {
+			if _, ok := s.bars[r.Args[0].IDValue()]; ok {
 				s.err = fmt.Errorf("bar '%s' already defined", r.Args[0])
 				return false, false
 			}
-			s.currentBar = r.Args[0]
+			s.currentBar = r.Args[0].IDValue()
 			return true, true
 
 		case "end": // End the current bar.
@@ -171,7 +171,7 @@ func (s *Scanner) parseResult(res interface{}) (success, wantMore bool) {
 				s.err = fmt.Errorf("cannot play bar '%s': bar '%s' is not ended", r.Args[0], s.currentBar)
 				return false, false
 			}
-			bar, ok := s.bars[r.Args[0]]
+			bar, ok := s.bars[r.Args[0].IDValue()]
 			if !ok {
 				s.err = fmt.Errorf("cannot play nonexistent bar '%s'", r.Args[0])
 				return false, false

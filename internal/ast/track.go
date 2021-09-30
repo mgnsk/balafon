@@ -169,7 +169,7 @@ func NewNotePropertyList(t *token.Token, inner interface{}) (NotePropertyList, e
 			panic(err)
 		}
 		if uv := uint8(v); v < 1 || v > 128 || uv&(uv-1) != 0 {
-			return nil, fmt.Errorf("note value property must be factor of 2 in range 1-128, value given: '%s'", t.IDValue())
+			return nil, fmt.Errorf("note value property must be a power of 2 in range 1-128, value given: '%s'", t.IDValue())
 		}
 	}
 	if props, ok := inner.(NotePropertyList); ok {
@@ -182,14 +182,6 @@ func NewNotePropertyList(t *token.Token, inner interface{}) (NotePropertyList, e
 	}
 	return NotePropertyList{t}, nil
 }
-
-var (
-	sharpType  = token.TokMap.Type("sharp")
-	flatType   = token.TokMap.Type("flat")
-	uintType   = token.TokMap.Type("uint")
-	dotType    = token.TokMap.Type("dot")
-	tupletType = token.TokMap.Type("tuplet")
-)
 
 var uintToken = &token.Token{
 	Type: uintType,

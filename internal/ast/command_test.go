@@ -114,56 +114,54 @@ func TestValidCommands(t *testing.T) {
 	}
 }
 
-func TestTempoRange(t *testing.T) {
-	g := NewGomegaWithT(t)
+func TestInvalidArguments(t *testing.T) {
+	for _, input := range []string{
+		"tempo",
+		"tempo 1 1",
+		"tempo \"string\"",
+		"channel",
+		"channel 0 0",
+		"channel \"string\" \"string\"",
+		"velocity",
+		"velocity 0 0",
+		"velocity \"string\" \"string\"",
+		"program",
+		"program 0 0",
+		"program \"string\" \"string\"",
+		"control",
+		"control 0",
+		"control \"string\"",
+	} {
+		t.Run(input, func(t *testing.T) {
+			g := NewGomegaWithT(t)
+			lex := lexer.NewLexer([]byte(input))
+			p := parser.NewParser()
 
-	for _, input := range []string{"tempo 0\n", "tempo 65536\n"} {
-		lex := lexer.NewLexer([]byte(input))
-		p := parser.NewParser()
-
-		_, err := p.Parse(lex)
-		g.Expect(err).To(HaveOccurred())
+			_, err := p.Parse(lex)
+			g.Expect(err).To(HaveOccurred())
+			g.Expect(err.Error()).To(ContainSubstring("requires"))
+		})
 	}
 }
 
-func TestChannelRange(t *testing.T) {
-	g := NewGomegaWithT(t)
+func TestInvalidArgumentRange(t *testing.T) {
+	for _, input := range []string{
+		"tempo 0",
+		"tempo 65536",
+		"channel 16",
+		"velocity 128",
+		"program 128",
+		"control 0 128",
+		"control 128 0",
+	} {
+		t.Run(input, func(t *testing.T) {
+			g := NewGomegaWithT(t)
+			lex := lexer.NewLexer([]byte(input))
+			p := parser.NewParser()
 
-	lex := lexer.NewLexer([]byte("channel 16\n"))
-	p := parser.NewParser()
-
-	_, err := p.Parse(lex)
-	g.Expect(err).To(HaveOccurred())
-}
-
-func TestVelocityRange(t *testing.T) {
-	g := NewGomegaWithT(t)
-
-	lex := lexer.NewLexer([]byte("velocity 128\n"))
-	p := parser.NewParser()
-
-	_, err := p.Parse(lex)
-	g.Expect(err).To(HaveOccurred())
-}
-
-func TestProgramRange(t *testing.T) {
-	g := NewGomegaWithT(t)
-
-	lex := lexer.NewLexer([]byte("program 128\n"))
-	p := parser.NewParser()
-
-	_, err := p.Parse(lex)
-	g.Expect(err).To(HaveOccurred())
-}
-
-func TestControlRange(t *testing.T) {
-	g := NewGomegaWithT(t)
-
-	for _, input := range []string{"control 0 128\n", "control 128 0\n"} {
-		lex := lexer.NewLexer([]byte(input))
-		p := parser.NewParser()
-
-		_, err := p.Parse(lex)
-		g.Expect(err).To(HaveOccurred())
+			_, err := p.Parse(lex)
+			g.Expect(err).To(HaveOccurred())
+			g.Expect(err.Error()).To(ContainSubstring("range"))
+		})
 	}
 }

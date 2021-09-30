@@ -24,15 +24,15 @@ var actionTab = actionTable{
 			nil,       // flat
 			nil,       // dot
 			nil,       // tuplet
-			shift(7),  // bar
-			nil,       // barName
-			shift(8),  // end
-			shift(9),  // play
-			shift(10), // tempo
-			shift(11), // channel
-			shift(12), // velocity
-			shift(13), // program
-			shift(14), // control
+			nil,       // stringLit
+			shift(8),  // tempo
+			shift(9),  // channel
+			shift(10), // velocity
+			shift(11), // program
+			shift(12), // control
+			shift(13), // bar
+			shift(14), // end
+			shift(15), // play
 		},
 	},
 	actionRow{ // S1
@@ -48,15 +48,15 @@ var actionTab = actionTable{
 			nil,          // flat
 			nil,          // dot
 			nil,          // tuplet
-			nil,          // bar
-			nil,          // barName
-			nil,          // end
-			nil,          // play
+			nil,          // stringLit
 			nil,          // tempo
 			nil,          // channel
 			nil,          // velocity
 			nil,          // program
 			nil,          // control
+			nil,          // bar
+			nil,          // end
+			nil,          // play
 		},
 	},
 	actionRow{ // S2
@@ -72,15 +72,15 @@ var actionTab = actionTable{
 			nil,       // flat
 			nil,       // dot
 			nil,       // tuplet
-			nil,       // bar
-			nil,       // barName
-			nil,       // end
-			nil,       // play
+			nil,       // stringLit
 			nil,       // tempo
 			nil,       // channel
 			nil,       // velocity
 			nil,       // program
 			nil,       // control
+			nil,       // bar
+			nil,       // end
+			nil,       // play
 		},
 	},
 	actionRow{ // S3
@@ -96,15 +96,15 @@ var actionTab = actionTable{
 			nil,       // flat
 			nil,       // dot
 			nil,       // tuplet
-			nil,       // bar
-			nil,       // barName
-			nil,       // end
-			nil,       // play
+			nil,       // stringLit
 			nil,       // tempo
 			nil,       // channel
 			nil,       // velocity
 			nil,       // program
 			nil,       // control
+			nil,       // bar
+			nil,       // end
+			nil,       // play
 		},
 	},
 	actionRow{ // S4
@@ -120,15 +120,15 @@ var actionTab = actionTable{
 			nil,       // flat
 			nil,       // dot
 			nil,       // tuplet
-			nil,       // bar
-			nil,       // barName
-			nil,       // end
-			nil,       // play
+			nil,       // stringLit
 			nil,       // tempo
 			nil,       // channel
 			nil,       // velocity
 			nil,       // program
 			nil,       // control
+			nil,       // bar
+			nil,       // end
+			nil,       // play
 		},
 	},
 	actionRow{ // S5
@@ -137,22 +137,22 @@ var actionTab = actionTable{
 			nil,       // INVALID
 			reduce(8), // $, reduce: NotePropertyList
 			reduce(8), // multiNote, reduce: NotePropertyList
-			shift(15), // =
-			shift(16), // uint
+			shift(16), // =
+			shift(17), // uint
 			nil,       // empty
-			shift(18), // sharp
-			shift(19), // flat
-			shift(20), // dot
-			shift(21), // tuplet
-			nil,       // bar
-			nil,       // barName
-			nil,       // end
-			nil,       // play
+			shift(20), // sharp
+			shift(21), // flat
+			shift(22), // dot
+			shift(23), // tuplet
+			nil,       // stringLit
 			nil,       // tempo
 			nil,       // channel
 			nil,       // velocity
 			nil,       // program
 			nil,       // control
+			nil,       // bar
+			nil,       // end
+			nil,       // play
 		},
 	},
 	actionRow{ // S6
@@ -160,7 +160,7 @@ var actionTab = actionTable{
 		actions: [numSymbols]action{
 			nil,       // INVALID
 			reduce(5), // $, reduce: Track
-			shift(23), // multiNote
+			shift(25), // multiNote
 			nil,       // =
 			nil,       // uint
 			nil,       // empty
@@ -168,162 +168,234 @@ var actionTab = actionTable{
 			nil,       // flat
 			nil,       // dot
 			nil,       // tuplet
-			nil,       // bar
-			nil,       // barName
-			nil,       // end
-			nil,       // play
+			nil,       // stringLit
 			nil,       // tempo
 			nil,       // channel
 			nil,       // velocity
 			nil,       // program
 			nil,       // control
+			nil,       // bar
+			nil,       // end
+			nil,       // play
 		},
 	},
 	actionRow{ // S7
 		canRecover: false,
 		actions: [numSymbols]action{
-			nil,       // INVALID
-			nil,       // $
-			nil,       // multiNote
-			nil,       // =
-			nil,       // uint
-			nil,       // empty
-			nil,       // sharp
-			nil,       // flat
-			nil,       // dot
-			nil,       // tuplet
-			nil,       // bar
-			shift(24), // barName
-			nil,       // end
-			nil,       // play
-			nil,       // tempo
-			nil,       // channel
-			nil,       // velocity
-			nil,       // program
-			nil,       // control
+			nil,        // INVALID
+			reduce(16), // $, reduce: ArgumentList
+			nil,        // multiNote
+			nil,        // =
+			shift(26),  // uint
+			nil,        // empty
+			nil,        // sharp
+			nil,        // flat
+			nil,        // dot
+			nil,        // tuplet
+			shift(28),  // stringLit
+			nil,        // tempo
+			nil,        // channel
+			nil,        // velocity
+			nil,        // program
+			nil,        // control
+			nil,        // bar
+			nil,        // end
+			nil,        // play
 		},
 	},
 	actionRow{ // S8
 		canRecover: false,
 		actions: [numSymbols]action{
 			nil,        // INVALID
-			reduce(15), // $, reduce: Command
+			reduce(19), // $, reduce: CommandName
 			nil,        // multiNote
 			nil,        // =
-			nil,        // uint
+			reduce(19), // uint, reduce: CommandName
 			nil,        // empty
 			nil,        // sharp
 			nil,        // flat
 			nil,        // dot
 			nil,        // tuplet
-			nil,        // bar
-			nil,        // barName
-			nil,        // end
-			nil,        // play
+			reduce(19), // stringLit, reduce: CommandName
 			nil,        // tempo
 			nil,        // channel
 			nil,        // velocity
 			nil,        // program
 			nil,        // control
+			nil,        // bar
+			nil,        // end
+			nil,        // play
 		},
 	},
 	actionRow{ // S9
 		canRecover: false,
 		actions: [numSymbols]action{
-			nil,       // INVALID
-			nil,       // $
-			nil,       // multiNote
-			nil,       // =
-			nil,       // uint
-			nil,       // empty
-			nil,       // sharp
-			nil,       // flat
-			nil,       // dot
-			nil,       // tuplet
-			nil,       // bar
-			shift(25), // barName
-			nil,       // end
-			nil,       // play
-			nil,       // tempo
-			nil,       // channel
-			nil,       // velocity
-			nil,       // program
-			nil,       // control
+			nil,        // INVALID
+			reduce(20), // $, reduce: CommandName
+			nil,        // multiNote
+			nil,        // =
+			reduce(20), // uint, reduce: CommandName
+			nil,        // empty
+			nil,        // sharp
+			nil,        // flat
+			nil,        // dot
+			nil,        // tuplet
+			reduce(20), // stringLit, reduce: CommandName
+			nil,        // tempo
+			nil,        // channel
+			nil,        // velocity
+			nil,        // program
+			nil,        // control
+			nil,        // bar
+			nil,        // end
+			nil,        // play
 		},
 	},
 	actionRow{ // S10
 		canRecover: false,
 		actions: [numSymbols]action{
-			nil,       // INVALID
-			nil,       // $
-			nil,       // multiNote
-			nil,       // =
-			shift(26), // uint
-			nil,       // empty
-			nil,       // sharp
-			nil,       // flat
-			nil,       // dot
-			nil,       // tuplet
-			nil,       // bar
-			nil,       // barName
-			nil,       // end
-			nil,       // play
-			nil,       // tempo
-			nil,       // channel
-			nil,       // velocity
-			nil,       // program
-			nil,       // control
+			nil,        // INVALID
+			reduce(21), // $, reduce: CommandName
+			nil,        // multiNote
+			nil,        // =
+			reduce(21), // uint, reduce: CommandName
+			nil,        // empty
+			nil,        // sharp
+			nil,        // flat
+			nil,        // dot
+			nil,        // tuplet
+			reduce(21), // stringLit, reduce: CommandName
+			nil,        // tempo
+			nil,        // channel
+			nil,        // velocity
+			nil,        // program
+			nil,        // control
+			nil,        // bar
+			nil,        // end
+			nil,        // play
 		},
 	},
 	actionRow{ // S11
 		canRecover: false,
 		actions: [numSymbols]action{
-			nil,       // INVALID
-			nil,       // $
-			nil,       // multiNote
-			nil,       // =
-			shift(27), // uint
-			nil,       // empty
-			nil,       // sharp
-			nil,       // flat
-			nil,       // dot
-			nil,       // tuplet
-			nil,       // bar
-			nil,       // barName
-			nil,       // end
-			nil,       // play
-			nil,       // tempo
-			nil,       // channel
-			nil,       // velocity
-			nil,       // program
-			nil,       // control
+			nil,        // INVALID
+			reduce(22), // $, reduce: CommandName
+			nil,        // multiNote
+			nil,        // =
+			reduce(22), // uint, reduce: CommandName
+			nil,        // empty
+			nil,        // sharp
+			nil,        // flat
+			nil,        // dot
+			nil,        // tuplet
+			reduce(22), // stringLit, reduce: CommandName
+			nil,        // tempo
+			nil,        // channel
+			nil,        // velocity
+			nil,        // program
+			nil,        // control
+			nil,        // bar
+			nil,        // end
+			nil,        // play
 		},
 	},
 	actionRow{ // S12
 		canRecover: false,
 		actions: [numSymbols]action{
-			nil,       // INVALID
-			nil,       // $
-			nil,       // multiNote
-			nil,       // =
-			shift(28), // uint
-			nil,       // empty
-			nil,       // sharp
-			nil,       // flat
-			nil,       // dot
-			nil,       // tuplet
-			nil,       // bar
-			nil,       // barName
-			nil,       // end
-			nil,       // play
-			nil,       // tempo
-			nil,       // channel
-			nil,       // velocity
-			nil,       // program
-			nil,       // control
+			nil,        // INVALID
+			reduce(23), // $, reduce: CommandName
+			nil,        // multiNote
+			nil,        // =
+			reduce(23), // uint, reduce: CommandName
+			nil,        // empty
+			nil,        // sharp
+			nil,        // flat
+			nil,        // dot
+			nil,        // tuplet
+			reduce(23), // stringLit, reduce: CommandName
+			nil,        // tempo
+			nil,        // channel
+			nil,        // velocity
+			nil,        // program
+			nil,        // control
+			nil,        // bar
+			nil,        // end
+			nil,        // play
 		},
 	},
 	actionRow{ // S13
+		canRecover: false,
+		actions: [numSymbols]action{
+			nil,        // INVALID
+			reduce(24), // $, reduce: CommandName
+			nil,        // multiNote
+			nil,        // =
+			reduce(24), // uint, reduce: CommandName
+			nil,        // empty
+			nil,        // sharp
+			nil,        // flat
+			nil,        // dot
+			nil,        // tuplet
+			reduce(24), // stringLit, reduce: CommandName
+			nil,        // tempo
+			nil,        // channel
+			nil,        // velocity
+			nil,        // program
+			nil,        // control
+			nil,        // bar
+			nil,        // end
+			nil,        // play
+		},
+	},
+	actionRow{ // S14
+		canRecover: false,
+		actions: [numSymbols]action{
+			nil,        // INVALID
+			reduce(25), // $, reduce: CommandName
+			nil,        // multiNote
+			nil,        // =
+			reduce(25), // uint, reduce: CommandName
+			nil,        // empty
+			nil,        // sharp
+			nil,        // flat
+			nil,        // dot
+			nil,        // tuplet
+			reduce(25), // stringLit, reduce: CommandName
+			nil,        // tempo
+			nil,        // channel
+			nil,        // velocity
+			nil,        // program
+			nil,        // control
+			nil,        // bar
+			nil,        // end
+			nil,        // play
+		},
+	},
+	actionRow{ // S15
+		canRecover: false,
+		actions: [numSymbols]action{
+			nil,        // INVALID
+			reduce(26), // $, reduce: CommandName
+			nil,        // multiNote
+			nil,        // =
+			reduce(26), // uint, reduce: CommandName
+			nil,        // empty
+			nil,        // sharp
+			nil,        // flat
+			nil,        // dot
+			nil,        // tuplet
+			reduce(26), // stringLit, reduce: CommandName
+			nil,        // tempo
+			nil,        // channel
+			nil,        // velocity
+			nil,        // program
+			nil,        // control
+			nil,        // bar
+			nil,        // end
+			nil,        // play
+		},
+	},
+	actionRow{ // S16
 		canRecover: false,
 		actions: [numSymbols]action{
 			nil,       // INVALID
@@ -336,90 +408,42 @@ var actionTab = actionTable{
 			nil,       // flat
 			nil,       // dot
 			nil,       // tuplet
-			nil,       // bar
-			nil,       // barName
-			nil,       // end
-			nil,       // play
+			nil,       // stringLit
 			nil,       // tempo
 			nil,       // channel
 			nil,       // velocity
 			nil,       // program
 			nil,       // control
-		},
-	},
-	actionRow{ // S14
-		canRecover: false,
-		actions: [numSymbols]action{
-			nil,       // INVALID
-			nil,       // $
-			nil,       // multiNote
-			nil,       // =
-			shift(30), // uint
-			nil,       // empty
-			nil,       // sharp
-			nil,       // flat
-			nil,       // dot
-			nil,       // tuplet
 			nil,       // bar
-			nil,       // barName
 			nil,       // end
 			nil,       // play
-			nil,       // tempo
-			nil,       // channel
-			nil,       // velocity
-			nil,       // program
-			nil,       // control
-		},
-	},
-	actionRow{ // S15
-		canRecover: false,
-		actions: [numSymbols]action{
-			nil,       // INVALID
-			nil,       // $
-			nil,       // multiNote
-			nil,       // =
-			shift(31), // uint
-			nil,       // empty
-			nil,       // sharp
-			nil,       // flat
-			nil,       // dot
-			nil,       // tuplet
-			nil,       // bar
-			nil,       // barName
-			nil,       // end
-			nil,       // play
-			nil,       // tempo
-			nil,       // channel
-			nil,       // velocity
-			nil,       // program
-			nil,       // control
-		},
-	},
-	actionRow{ // S16
-		canRecover: false,
-		actions: [numSymbols]action{
-			nil,       // INVALID
-			reduce(8), // $, reduce: NotePropertyList
-			reduce(8), // multiNote, reduce: NotePropertyList
-			nil,       // =
-			shift(16), // uint
-			nil,       // empty
-			shift(18), // sharp
-			shift(19), // flat
-			shift(20), // dot
-			shift(21), // tuplet
-			nil,       // bar
-			nil,       // barName
-			nil,       // end
-			nil,       // play
-			nil,       // tempo
-			nil,       // channel
-			nil,       // velocity
-			nil,       // program
-			nil,       // control
 		},
 	},
 	actionRow{ // S17
+		canRecover: false,
+		actions: [numSymbols]action{
+			nil,        // INVALID
+			reduce(12), // $, reduce: NoteProperty
+			reduce(12), // multiNote, reduce: NoteProperty
+			nil,        // =
+			reduce(12), // uint, reduce: NoteProperty
+			nil,        // empty
+			reduce(12), // sharp, reduce: NoteProperty
+			reduce(12), // flat, reduce: NoteProperty
+			reduce(12), // dot, reduce: NoteProperty
+			reduce(12), // tuplet, reduce: NoteProperty
+			nil,        // stringLit
+			nil,        // tempo
+			nil,        // channel
+			nil,        // velocity
+			nil,        // program
+			nil,        // control
+			nil,        // bar
+			nil,        // end
+			nil,        // play
+		},
+	},
+	actionRow{ // S18
 		canRecover: false,
 		actions: [numSymbols]action{
 			nil,       // INVALID
@@ -432,39 +456,15 @@ var actionTab = actionTable{
 			nil,       // flat
 			nil,       // dot
 			nil,       // tuplet
-			nil,       // bar
-			nil,       // barName
-			nil,       // end
-			nil,       // play
+			nil,       // stringLit
 			nil,       // tempo
 			nil,       // channel
 			nil,       // velocity
 			nil,       // program
 			nil,       // control
-		},
-	},
-	actionRow{ // S18
-		canRecover: false,
-		actions: [numSymbols]action{
-			nil,       // INVALID
-			reduce(8), // $, reduce: NotePropertyList
-			reduce(8), // multiNote, reduce: NotePropertyList
-			nil,       // =
-			shift(16), // uint
-			nil,       // empty
-			shift(18), // sharp
-			shift(19), // flat
-			shift(20), // dot
-			shift(21), // tuplet
 			nil,       // bar
-			nil,       // barName
 			nil,       // end
 			nil,       // play
-			nil,       // tempo
-			nil,       // channel
-			nil,       // velocity
-			nil,       // program
-			nil,       // control
 		},
 	},
 	actionRow{ // S19
@@ -474,72 +474,120 @@ var actionTab = actionTable{
 			reduce(8), // $, reduce: NotePropertyList
 			reduce(8), // multiNote, reduce: NotePropertyList
 			nil,       // =
-			shift(16), // uint
+			shift(17), // uint
 			nil,       // empty
-			shift(18), // sharp
-			shift(19), // flat
-			shift(20), // dot
-			shift(21), // tuplet
-			nil,       // bar
-			nil,       // barName
-			nil,       // end
-			nil,       // play
+			shift(20), // sharp
+			shift(21), // flat
+			shift(22), // dot
+			shift(23), // tuplet
+			nil,       // stringLit
 			nil,       // tempo
 			nil,       // channel
 			nil,       // velocity
 			nil,       // program
 			nil,       // control
+			nil,       // bar
+			nil,       // end
+			nil,       // play
 		},
 	},
 	actionRow{ // S20
 		canRecover: false,
 		actions: [numSymbols]action{
-			nil,       // INVALID
-			reduce(8), // $, reduce: NotePropertyList
-			reduce(8), // multiNote, reduce: NotePropertyList
-			nil,       // =
-			shift(16), // uint
-			nil,       // empty
-			shift(18), // sharp
-			shift(19), // flat
-			shift(20), // dot
-			shift(21), // tuplet
-			nil,       // bar
-			nil,       // barName
-			nil,       // end
-			nil,       // play
-			nil,       // tempo
-			nil,       // channel
-			nil,       // velocity
-			nil,       // program
-			nil,       // control
+			nil,        // INVALID
+			reduce(10), // $, reduce: NoteProperty
+			reduce(10), // multiNote, reduce: NoteProperty
+			nil,        // =
+			reduce(10), // uint, reduce: NoteProperty
+			nil,        // empty
+			reduce(10), // sharp, reduce: NoteProperty
+			reduce(10), // flat, reduce: NoteProperty
+			reduce(10), // dot, reduce: NoteProperty
+			reduce(10), // tuplet, reduce: NoteProperty
+			nil,        // stringLit
+			nil,        // tempo
+			nil,        // channel
+			nil,        // velocity
+			nil,        // program
+			nil,        // control
+			nil,        // bar
+			nil,        // end
+			nil,        // play
 		},
 	},
 	actionRow{ // S21
 		canRecover: false,
 		actions: [numSymbols]action{
-			nil,       // INVALID
-			reduce(8), // $, reduce: NotePropertyList
-			reduce(8), // multiNote, reduce: NotePropertyList
-			nil,       // =
-			shift(16), // uint
-			nil,       // empty
-			shift(18), // sharp
-			shift(19), // flat
-			shift(20), // dot
-			shift(21), // tuplet
-			nil,       // bar
-			nil,       // barName
-			nil,       // end
-			nil,       // play
-			nil,       // tempo
-			nil,       // channel
-			nil,       // velocity
-			nil,       // program
-			nil,       // control
+			nil,        // INVALID
+			reduce(11), // $, reduce: NoteProperty
+			reduce(11), // multiNote, reduce: NoteProperty
+			nil,        // =
+			reduce(11), // uint, reduce: NoteProperty
+			nil,        // empty
+			reduce(11), // sharp, reduce: NoteProperty
+			reduce(11), // flat, reduce: NoteProperty
+			reduce(11), // dot, reduce: NoteProperty
+			reduce(11), // tuplet, reduce: NoteProperty
+			nil,        // stringLit
+			nil,        // tempo
+			nil,        // channel
+			nil,        // velocity
+			nil,        // program
+			nil,        // control
+			nil,        // bar
+			nil,        // end
+			nil,        // play
 		},
 	},
 	actionRow{ // S22
+		canRecover: false,
+		actions: [numSymbols]action{
+			nil,        // INVALID
+			reduce(13), // $, reduce: NoteProperty
+			reduce(13), // multiNote, reduce: NoteProperty
+			nil,        // =
+			reduce(13), // uint, reduce: NoteProperty
+			nil,        // empty
+			reduce(13), // sharp, reduce: NoteProperty
+			reduce(13), // flat, reduce: NoteProperty
+			reduce(13), // dot, reduce: NoteProperty
+			reduce(13), // tuplet, reduce: NoteProperty
+			nil,        // stringLit
+			nil,        // tempo
+			nil,        // channel
+			nil,        // velocity
+			nil,        // program
+			nil,        // control
+			nil,        // bar
+			nil,        // end
+			nil,        // play
+		},
+	},
+	actionRow{ // S23
+		canRecover: false,
+		actions: [numSymbols]action{
+			nil,        // INVALID
+			reduce(14), // $, reduce: NoteProperty
+			reduce(14), // multiNote, reduce: NoteProperty
+			nil,        // =
+			reduce(14), // uint, reduce: NoteProperty
+			nil,        // empty
+			reduce(14), // sharp, reduce: NoteProperty
+			reduce(14), // flat, reduce: NoteProperty
+			reduce(14), // dot, reduce: NoteProperty
+			reduce(14), // tuplet, reduce: NoteProperty
+			nil,        // stringLit
+			nil,        // tempo
+			nil,        // channel
+			nil,        // velocity
+			nil,        // program
+			nil,        // control
+			nil,        // bar
+			nil,        // end
+			nil,        // play
+		},
+	},
+	actionRow{ // S24
 		canRecover: false,
 		actions: [numSymbols]action{
 			nil,       // INVALID
@@ -552,118 +600,70 @@ var actionTab = actionTable{
 			nil,       // flat
 			nil,       // dot
 			nil,       // tuplet
-			nil,       // bar
-			nil,       // barName
-			nil,       // end
-			nil,       // play
+			nil,       // stringLit
 			nil,       // tempo
 			nil,       // channel
 			nil,       // velocity
 			nil,       // program
 			nil,       // control
+			nil,       // bar
+			nil,       // end
+			nil,       // play
 		},
 	},
-	actionRow{ // S23
+	actionRow{ // S25
 		canRecover: false,
 		actions: [numSymbols]action{
 			nil,       // INVALID
 			reduce(8), // $, reduce: NotePropertyList
 			reduce(8), // multiNote, reduce: NotePropertyList
 			nil,       // =
-			shift(16), // uint
+			shift(17), // uint
 			nil,       // empty
-			shift(18), // sharp
-			shift(19), // flat
-			shift(20), // dot
-			shift(21), // tuplet
-			nil,       // bar
-			nil,       // barName
-			nil,       // end
-			nil,       // play
+			shift(20), // sharp
+			shift(21), // flat
+			shift(22), // dot
+			shift(23), // tuplet
+			nil,       // stringLit
 			nil,       // tempo
 			nil,       // channel
 			nil,       // velocity
 			nil,       // program
 			nil,       // control
-		},
-	},
-	actionRow{ // S24
-		canRecover: false,
-		actions: [numSymbols]action{
-			nil,        // INVALID
-			reduce(14), // $, reduce: Command
-			nil,        // multiNote
-			nil,        // =
-			nil,        // uint
-			nil,        // empty
-			nil,        // sharp
-			nil,        // flat
-			nil,        // dot
-			nil,        // tuplet
-			nil,        // bar
-			nil,        // barName
-			nil,        // end
-			nil,        // play
-			nil,        // tempo
-			nil,        // channel
-			nil,        // velocity
-			nil,        // program
-			nil,        // control
-		},
-	},
-	actionRow{ // S25
-		canRecover: false,
-		actions: [numSymbols]action{
-			nil,        // INVALID
-			reduce(16), // $, reduce: Command
-			nil,        // multiNote
-			nil,        // =
-			nil,        // uint
-			nil,        // empty
-			nil,        // sharp
-			nil,        // flat
-			nil,        // dot
-			nil,        // tuplet
-			nil,        // bar
-			nil,        // barName
-			nil,        // end
-			nil,        // play
-			nil,        // tempo
-			nil,        // channel
-			nil,        // velocity
-			nil,        // program
-			nil,        // control
+			nil,       // bar
+			nil,       // end
+			nil,       // play
 		},
 	},
 	actionRow{ // S26
 		canRecover: false,
 		actions: [numSymbols]action{
 			nil,        // INVALID
-			reduce(17), // $, reduce: Command
+			reduce(16), // $, reduce: ArgumentList
 			nil,        // multiNote
 			nil,        // =
-			nil,        // uint
+			shift(26),  // uint
 			nil,        // empty
 			nil,        // sharp
 			nil,        // flat
 			nil,        // dot
 			nil,        // tuplet
-			nil,        // bar
-			nil,        // barName
-			nil,        // end
-			nil,        // play
+			shift(28),  // stringLit
 			nil,        // tempo
 			nil,        // channel
 			nil,        // velocity
 			nil,        // program
 			nil,        // control
+			nil,        // bar
+			nil,        // end
+			nil,        // play
 		},
 	},
 	actionRow{ // S27
 		canRecover: false,
 		actions: [numSymbols]action{
 			nil,        // INVALID
-			reduce(18), // $, reduce: Command
+			reduce(15), // $, reduce: Command
 			nil,        // multiNote
 			nil,        // =
 			nil,        // uint
@@ -672,90 +672,42 @@ var actionTab = actionTable{
 			nil,        // flat
 			nil,        // dot
 			nil,        // tuplet
-			nil,        // bar
-			nil,        // barName
-			nil,        // end
-			nil,        // play
+			nil,        // stringLit
 			nil,        // tempo
 			nil,        // channel
 			nil,        // velocity
 			nil,        // program
 			nil,        // control
+			nil,        // bar
+			nil,        // end
+			nil,        // play
 		},
 	},
 	actionRow{ // S28
 		canRecover: false,
 		actions: [numSymbols]action{
 			nil,        // INVALID
-			reduce(19), // $, reduce: Command
+			reduce(16), // $, reduce: ArgumentList
 			nil,        // multiNote
 			nil,        // =
-			nil,        // uint
+			shift(26),  // uint
 			nil,        // empty
 			nil,        // sharp
 			nil,        // flat
 			nil,        // dot
 			nil,        // tuplet
-			nil,        // bar
-			nil,        // barName
-			nil,        // end
-			nil,        // play
+			shift(28),  // stringLit
 			nil,        // tempo
 			nil,        // channel
 			nil,        // velocity
 			nil,        // program
 			nil,        // control
+			nil,        // bar
+			nil,        // end
+			nil,        // play
 		},
 	},
 	actionRow{ // S29
-		canRecover: false,
-		actions: [numSymbols]action{
-			nil,        // INVALID
-			reduce(20), // $, reduce: Command
-			nil,        // multiNote
-			nil,        // =
-			nil,        // uint
-			nil,        // empty
-			nil,        // sharp
-			nil,        // flat
-			nil,        // dot
-			nil,        // tuplet
-			nil,        // bar
-			nil,        // barName
-			nil,        // end
-			nil,        // play
-			nil,        // tempo
-			nil,        // channel
-			nil,        // velocity
-			nil,        // program
-			nil,        // control
-		},
-	},
-	actionRow{ // S30
-		canRecover: false,
-		actions: [numSymbols]action{
-			nil,       // INVALID
-			nil,       // $
-			nil,       // multiNote
-			nil,       // =
-			shift(37), // uint
-			nil,       // empty
-			nil,       // sharp
-			nil,       // flat
-			nil,       // dot
-			nil,       // tuplet
-			nil,       // bar
-			nil,       // barName
-			nil,       // end
-			nil,       // play
-			nil,       // tempo
-			nil,       // channel
-			nil,       // velocity
-			nil,       // program
-			nil,       // control
-		},
-	},
-	actionRow{ // S31
 		canRecover: false,
 		actions: [numSymbols]action{
 			nil,       // INVALID
@@ -768,42 +720,18 @@ var actionTab = actionTable{
 			nil,       // flat
 			nil,       // dot
 			nil,       // tuplet
-			nil,       // bar
-			nil,       // barName
-			nil,       // end
-			nil,       // play
+			nil,       // stringLit
 			nil,       // tempo
 			nil,       // channel
 			nil,       // velocity
 			nil,       // program
 			nil,       // control
+			nil,       // bar
+			nil,       // end
+			nil,       // play
 		},
 	},
-	actionRow{ // S32
-		canRecover: false,
-		actions: [numSymbols]action{
-			nil,        // INVALID
-			reduce(11), // $, reduce: NotePropertyList
-			reduce(11), // multiNote, reduce: NotePropertyList
-			nil,        // =
-			nil,        // uint
-			nil,        // empty
-			nil,        // sharp
-			nil,        // flat
-			nil,        // dot
-			nil,        // tuplet
-			nil,        // bar
-			nil,        // barName
-			nil,        // end
-			nil,        // play
-			nil,        // tempo
-			nil,        // channel
-			nil,        // velocity
-			nil,        // program
-			nil,        // control
-		},
-	},
-	actionRow{ // S33
+	actionRow{ // S30
 		canRecover: false,
 		actions: [numSymbols]action{
 			nil,       // INVALID
@@ -816,94 +744,22 @@ var actionTab = actionTable{
 			nil,       // flat
 			nil,       // dot
 			nil,       // tuplet
-			nil,       // bar
-			nil,       // barName
-			nil,       // end
-			nil,       // play
+			nil,       // stringLit
 			nil,       // tempo
 			nil,       // channel
 			nil,       // velocity
 			nil,       // program
 			nil,       // control
+			nil,       // bar
+			nil,       // end
+			nil,       // play
 		},
 	},
-	actionRow{ // S34
+	actionRow{ // S31
 		canRecover: false,
 		actions: [numSymbols]action{
 			nil,        // INVALID
-			reduce(10), // $, reduce: NotePropertyList
-			reduce(10), // multiNote, reduce: NotePropertyList
-			nil,        // =
-			nil,        // uint
-			nil,        // empty
-			nil,        // sharp
-			nil,        // flat
-			nil,        // dot
-			nil,        // tuplet
-			nil,        // bar
-			nil,        // barName
-			nil,        // end
-			nil,        // play
-			nil,        // tempo
-			nil,        // channel
-			nil,        // velocity
-			nil,        // program
-			nil,        // control
-		},
-	},
-	actionRow{ // S35
-		canRecover: false,
-		actions: [numSymbols]action{
-			nil,        // INVALID
-			reduce(12), // $, reduce: NotePropertyList
-			reduce(12), // multiNote, reduce: NotePropertyList
-			nil,        // =
-			nil,        // uint
-			nil,        // empty
-			nil,        // sharp
-			nil,        // flat
-			nil,        // dot
-			nil,        // tuplet
-			nil,        // bar
-			nil,        // barName
-			nil,        // end
-			nil,        // play
-			nil,        // tempo
-			nil,        // channel
-			nil,        // velocity
-			nil,        // program
-			nil,        // control
-		},
-	},
-	actionRow{ // S36
-		canRecover: false,
-		actions: [numSymbols]action{
-			nil,        // INVALID
-			reduce(13), // $, reduce: NotePropertyList
-			reduce(13), // multiNote, reduce: NotePropertyList
-			nil,        // =
-			nil,        // uint
-			nil,        // empty
-			nil,        // sharp
-			nil,        // flat
-			nil,        // dot
-			nil,        // tuplet
-			nil,        // bar
-			nil,        // barName
-			nil,        // end
-			nil,        // play
-			nil,        // tempo
-			nil,        // channel
-			nil,        // velocity
-			nil,        // program
-			nil,        // control
-		},
-	},
-	actionRow{ // S37
-		canRecover: false,
-		actions: [numSymbols]action{
-			nil,        // INVALID
-			reduce(21), // $, reduce: Command
+			reduce(18), // $, reduce: ArgumentList
 			nil,        // multiNote
 			nil,        // =
 			nil,        // uint
@@ -912,15 +768,39 @@ var actionTab = actionTable{
 			nil,        // flat
 			nil,        // dot
 			nil,        // tuplet
-			nil,        // bar
-			nil,        // barName
-			nil,        // end
-			nil,        // play
+			nil,        // stringLit
 			nil,        // tempo
 			nil,        // channel
 			nil,        // velocity
 			nil,        // program
 			nil,        // control
+			nil,        // bar
+			nil,        // end
+			nil,        // play
+		},
+	},
+	actionRow{ // S32
+		canRecover: false,
+		actions: [numSymbols]action{
+			nil,        // INVALID
+			reduce(17), // $, reduce: ArgumentList
+			nil,        // multiNote
+			nil,        // =
+			nil,        // uint
+			nil,        // empty
+			nil,        // sharp
+			nil,        // flat
+			nil,        // dot
+			nil,        // tuplet
+			nil,        // stringLit
+			nil,        // tempo
+			nil,        // channel
+			nil,        // velocity
+			nil,        // program
+			nil,        // control
+			nil,        // bar
+			nil,        // end
+			nil,        // play
 		},
 	},
 }

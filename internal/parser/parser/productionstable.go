@@ -113,7 +113,7 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `NotePropertyList : sharp NotePropertyList	<< ast.NewNotePropertyList(X[0].(*token.Token), X[1]) >>`,
+		String: `NotePropertyList : NoteProperty NotePropertyList	<< ast.NewNotePropertyList(X[0].(*token.Token), X[1]) >>`,
 		Id:         "NotePropertyList",
 		NTType:     5,
 		Index:      9,
@@ -123,123 +123,173 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `NotePropertyList : flat NotePropertyList	<< ast.NewNotePropertyList(X[0].(*token.Token), X[1]) >>`,
-		Id:         "NotePropertyList",
-		NTType:     5,
+		String: `NoteProperty : sharp	<<  >>`,
+		Id:         "NoteProperty",
+		NTType:     6,
 		Index:      10,
-		NumSymbols: 2,
-		ReduceFunc: func(X []Attrib, C interface{}) (Attrib, error) {
-			return ast.NewNotePropertyList(X[0].(*token.Token), X[1])
-		},
-	},
-	ProdTabEntry{
-		String: `NotePropertyList : uint NotePropertyList	<< ast.NewNotePropertyList(X[0].(*token.Token), X[1]) >>`,
-		Id:         "NotePropertyList",
-		NTType:     5,
-		Index:      11,
-		NumSymbols: 2,
-		ReduceFunc: func(X []Attrib, C interface{}) (Attrib, error) {
-			return ast.NewNotePropertyList(X[0].(*token.Token), X[1])
-		},
-	},
-	ProdTabEntry{
-		String: `NotePropertyList : dot NotePropertyList	<< ast.NewNotePropertyList(X[0].(*token.Token), X[1]) >>`,
-		Id:         "NotePropertyList",
-		NTType:     5,
-		Index:      12,
-		NumSymbols: 2,
-		ReduceFunc: func(X []Attrib, C interface{}) (Attrib, error) {
-			return ast.NewNotePropertyList(X[0].(*token.Token), X[1])
-		},
-	},
-	ProdTabEntry{
-		String: `NotePropertyList : tuplet NotePropertyList	<< ast.NewNotePropertyList(X[0].(*token.Token), X[1]) >>`,
-		Id:         "NotePropertyList",
-		NTType:     5,
-		Index:      13,
-		NumSymbols: 2,
-		ReduceFunc: func(X []Attrib, C interface{}) (Attrib, error) {
-			return ast.NewNotePropertyList(X[0].(*token.Token), X[1])
-		},
-	},
-	ProdTabEntry{
-		String: `Command : "bar" barName	<< ast.NewCommand("bar", X[1].(*token.Token).IDValue()) >>`,
-		Id:         "Command",
-		NTType:     6,
-		Index:      14,
-		NumSymbols: 2,
-		ReduceFunc: func(X []Attrib, C interface{}) (Attrib, error) {
-			return ast.NewCommand("bar", X[1].(*token.Token).IDValue())
-		},
-	},
-	ProdTabEntry{
-		String: `Command : "end"	<< ast.NewCommand("end") >>`,
-		Id:         "Command",
-		NTType:     6,
-		Index:      15,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib, C interface{}) (Attrib, error) {
-			return ast.NewCommand("end")
+			return X[0], nil
 		},
 	},
 	ProdTabEntry{
-		String: `Command : "play" barName	<< ast.NewCommand("play", X[1].(*token.Token).IDValue()) >>`,
-		Id:         "Command",
+		String: `NoteProperty : flat	<<  >>`,
+		Id:         "NoteProperty",
 		NTType:     6,
-		Index:      16,
+		Index:      11,
+		NumSymbols: 1,
+		ReduceFunc: func(X []Attrib, C interface{}) (Attrib, error) {
+			return X[0], nil
+		},
+	},
+	ProdTabEntry{
+		String: `NoteProperty : uint	<<  >>`,
+		Id:         "NoteProperty",
+		NTType:     6,
+		Index:      12,
+		NumSymbols: 1,
+		ReduceFunc: func(X []Attrib, C interface{}) (Attrib, error) {
+			return X[0], nil
+		},
+	},
+	ProdTabEntry{
+		String: `NoteProperty : dot	<<  >>`,
+		Id:         "NoteProperty",
+		NTType:     6,
+		Index:      13,
+		NumSymbols: 1,
+		ReduceFunc: func(X []Attrib, C interface{}) (Attrib, error) {
+			return X[0], nil
+		},
+	},
+	ProdTabEntry{
+		String: `NoteProperty : tuplet	<<  >>`,
+		Id:         "NoteProperty",
+		NTType:     6,
+		Index:      14,
+		NumSymbols: 1,
+		ReduceFunc: func(X []Attrib, C interface{}) (Attrib, error) {
+			return X[0], nil
+		},
+	},
+	ProdTabEntry{
+		String: `Command : CommandName ArgumentList	<< ast.NewCommand(X[0].(*token.Token).IDValue(), X[1]) >>`,
+		Id:         "Command",
+		NTType:     7,
+		Index:      15,
 		NumSymbols: 2,
 		ReduceFunc: func(X []Attrib, C interface{}) (Attrib, error) {
-			return ast.NewCommand("play", X[1].(*token.Token).IDValue())
+			return ast.NewCommand(X[0].(*token.Token).IDValue(), X[1])
 		},
 	},
 	ProdTabEntry{
-		String: `Command : "tempo" uint	<< ast.NewCommand("tempo", X[1].(*token.Token).IDValue()) >>`,
-		Id:         "Command",
-		NTType:     6,
+		String: `ArgumentList : empty	<<  >>`,
+		Id:         "ArgumentList",
+		NTType:     8,
+		Index:      16,
+		NumSymbols: 0,
+		ReduceFunc: func(X []Attrib, C interface{}) (Attrib, error) {
+			return nil, nil
+		},
+	},
+	ProdTabEntry{
+		String: `ArgumentList : stringLit ArgumentList	<< ast.NewArgumentList(X[0].(*token.Token), X[1]), nil >>`,
+		Id:         "ArgumentList",
+		NTType:     8,
 		Index:      17,
 		NumSymbols: 2,
 		ReduceFunc: func(X []Attrib, C interface{}) (Attrib, error) {
-			return ast.NewCommand("tempo", X[1].(*token.Token).IDValue())
+			return ast.NewArgumentList(X[0].(*token.Token), X[1]), nil
 		},
 	},
 	ProdTabEntry{
-		String: `Command : "channel" uint	<< ast.NewCommand("channel", X[1].(*token.Token).IDValue()) >>`,
-		Id:         "Command",
-		NTType:     6,
+		String: `ArgumentList : uint ArgumentList	<< ast.NewArgumentList(X[0].(*token.Token), X[1]), nil >>`,
+		Id:         "ArgumentList",
+		NTType:     8,
 		Index:      18,
 		NumSymbols: 2,
 		ReduceFunc: func(X []Attrib, C interface{}) (Attrib, error) {
-			return ast.NewCommand("channel", X[1].(*token.Token).IDValue())
+			return ast.NewArgumentList(X[0].(*token.Token), X[1]), nil
 		},
 	},
 	ProdTabEntry{
-		String: `Command : "velocity" uint	<< ast.NewCommand("velocity", X[1].(*token.Token).IDValue()) >>`,
-		Id:         "Command",
-		NTType:     6,
+		String: `CommandName : "tempo"	<<  >>`,
+		Id:         "CommandName",
+		NTType:     9,
 		Index:      19,
-		NumSymbols: 2,
+		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib, C interface{}) (Attrib, error) {
-			return ast.NewCommand("velocity", X[1].(*token.Token).IDValue())
+			return X[0], nil
 		},
 	},
 	ProdTabEntry{
-		String: `Command : "program" uint	<< ast.NewCommand("program", X[1].(*token.Token).IDValue()) >>`,
-		Id:         "Command",
-		NTType:     6,
+		String: `CommandName : "channel"	<<  >>`,
+		Id:         "CommandName",
+		NTType:     9,
 		Index:      20,
-		NumSymbols: 2,
+		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib, C interface{}) (Attrib, error) {
-			return ast.NewCommand("program", X[1].(*token.Token).IDValue())
+			return X[0], nil
 		},
 	},
 	ProdTabEntry{
-		String: `Command : "control" uint uint	<< ast.NewCommand("control", X[1].(*token.Token).IDValue(), X[2].(*token.Token).IDValue()) >>`,
-		Id:         "Command",
-		NTType:     6,
+		String: `CommandName : "velocity"	<<  >>`,
+		Id:         "CommandName",
+		NTType:     9,
 		Index:      21,
-		NumSymbols: 3,
+		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib, C interface{}) (Attrib, error) {
-			return ast.NewCommand("control", X[1].(*token.Token).IDValue(), X[2].(*token.Token).IDValue())
+			return X[0], nil
+		},
+	},
+	ProdTabEntry{
+		String: `CommandName : "program"	<<  >>`,
+		Id:         "CommandName",
+		NTType:     9,
+		Index:      22,
+		NumSymbols: 1,
+		ReduceFunc: func(X []Attrib, C interface{}) (Attrib, error) {
+			return X[0], nil
+		},
+	},
+	ProdTabEntry{
+		String: `CommandName : "control"	<<  >>`,
+		Id:         "CommandName",
+		NTType:     9,
+		Index:      23,
+		NumSymbols: 1,
+		ReduceFunc: func(X []Attrib, C interface{}) (Attrib, error) {
+			return X[0], nil
+		},
+	},
+	ProdTabEntry{
+		String: `CommandName : "bar"	<<  >>`,
+		Id:         "CommandName",
+		NTType:     9,
+		Index:      24,
+		NumSymbols: 1,
+		ReduceFunc: func(X []Attrib, C interface{}) (Attrib, error) {
+			return X[0], nil
+		},
+	},
+	ProdTabEntry{
+		String: `CommandName : "end"	<<  >>`,
+		Id:         "CommandName",
+		NTType:     9,
+		Index:      25,
+		NumSymbols: 1,
+		ReduceFunc: func(X []Attrib, C interface{}) (Attrib, error) {
+			return X[0], nil
+		},
+	},
+	ProdTabEntry{
+		String: `CommandName : "play"	<<  >>`,
+		Id:         "CommandName",
+		NTType:     9,
+		Index:      26,
+		NumSymbols: 1,
+		ReduceFunc: func(X []Attrib, C interface{}) (Attrib, error) {
+			return X[0], nil
 		},
 	},
 }

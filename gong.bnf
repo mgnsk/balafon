@@ -10,7 +10,7 @@ _stringLit   : '"' { . } '"' ;
 _lineComment : '/' '/' { . } '\n';
 
 multiNote : _identChar {_identChar} ;
-barName   : _stringLit ;
+stringLit : _stringLit ;
 sharp     : '#' ;
 flat      : '$' ;
 uint      : _uint ;
@@ -50,20 +50,34 @@ NoteList
 
 NotePropertyList
     : empty
-    | sharp NotePropertyList        << ast.NewNotePropertyList($T0, $1) >>
-    | flat NotePropertyList         << ast.NewNotePropertyList($T0, $1) >>
-    | uint NotePropertyList         << ast.NewNotePropertyList($T0, $1) >>
-    | dot NotePropertyList          << ast.NewNotePropertyList($T0, $1) >>
-    | tuplet NotePropertyList       << ast.NewNotePropertyList($T0, $1) >>
+    | NoteProperty NotePropertyList << ast.NewNotePropertyList($T0, $1) >>
+    ;
+
+NoteProperty
+    : sharp
+    | flat
+    | uint
+    | dot
+    | tuplet
     ;
 
 Command:
-    : "bar" barName                 << ast.NewCommand("bar", $T1.IDValue()) >>
-    | "end"                         << ast.NewCommand("end") >>
-    | "play" barName                << ast.NewCommand("play", $T1.IDValue()) >>
-    | "tempo" uint                  << ast.NewCommand("tempo", $T1.IDValue()) >>
-    | "channel" uint                << ast.NewCommand("channel", $T1.IDValue()) >>
-    | "velocity" uint               << ast.NewCommand("velocity", $T1.IDValue()) >>
-    | "program" uint                << ast.NewCommand("program", $T1.IDValue()) >>
-    | "control" uint uint           << ast.NewCommand("control", $T1.IDValue(), $T2.IDValue()) >>
+    : CommandName ArgumentList      << ast.NewCommand($T0.IDValue(), $1) >>
+    ;
+
+ArgumentList:
+    : empty
+    | stringLit ArgumentList        << ast.NewArgumentList($T0, $1), nil >>
+    | uint ArgumentList             << ast.NewArgumentList($T0, $1), nil >>
+    ;
+
+CommandName:
+    : "tempo"
+    | "channel"
+    | "velocity"
+    | "program"
+    | "control"
+    | "bar"
+    | "end"
+    | "play"
     ;
