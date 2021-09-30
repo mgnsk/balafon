@@ -1,4 +1,4 @@
-//go:generate gocc -o internal gong.bnf
+//go:generate gocc -o internal/parser gong.bnf
 
 package main
 
@@ -6,16 +6,17 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"io"
+	"log"
 	"os"
 	"os/exec"
 	"runtime"
 	"strconv"
 	"strings"
+	"sync"
 
 	"github.com/c-bata/go-prompt"
+	"github.com/mgnsk/gong/internal/interpreter"
 	"github.com/mgnsk/gong/internal/player"
-	"github.com/mgnsk/gong/internal/scanner"
 	"github.com/spf13/cobra"
 	"gitlab.com/gomidi/midi/v2"
 	_ "gitlab.com/gomidi/midi/v2/drivers/rtmididrv"
@@ -84,50 +85,45 @@ func runShell(c *cobra.Command, _ []string) error {
 
 	fmt.Printf("Welcome to the gong shell on MIDI port '%d: %s'!\n", out.Number(), out.String())
 
-	r, w := io.Pipe()
-	s := scanner.New(r)
-	p := player.New(out)
+	it := interpreter.NewInterpreter()
 
+	msgC := make(chan []interpreter.Message)
 	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
 
+	var wg sync.WaitGroup
+	wg.Add(1)
 	go func() {
-		defer cancel()
-		defer w.Close()
-		prompt.New(
-			func(input string) {
-				io.WriteString(w, input+"\n")
-			},
-			func(in prompt.Document) []prompt.Suggest {
-				var sug []prompt.Suggest
-				for _, text := range s.Suggest() {
-					sug = append(sug, prompt.Suggest{Text: text})
-				}
-				return prompt.FilterHasPrefix(sug, in.GetWordBeforeCursor(), true)
-			},
-			prompt.OptionPrefixTextColor(prompt.Yellow),
-			prompt.OptionPreviewSuggestionTextColor(prompt.Blue),
-			prompt.OptionSelectedSuggestionBGColor(prompt.LightGray),
-			prompt.OptionSuggestionBGColor(prompt.DarkGray),
-		).Run()
+		defer wg.Done()
+		startPlayer(ctx, out, msgC)
 	}()
 
-	for {
-		for s.Scan() {
-			for _, msg := range s.Messages() {
-				if err := p.Play(ctx, msg); err != nil {
-					if errors.Is(err, context.Canceled) {
-						return nil
-					}
-					return err
-				}
+	prompt.New(
+		func(input string) {
+			messages, err := it.EvalString(input)
+			if err != nil {
+				fmt.Println(err)
+				return
 			}
-		}
-		if s.Err() == nil {
-			return nil
-		}
-		fmt.Println(s.Err())
-	}
+			msgC <- messages
+		},
+		func(in prompt.Document) []prompt.Suggest {
+			var sug []prompt.Suggest
+			for _, text := range it.Suggest() {
+				sug = append(sug, prompt.Suggest{Text: text})
+			}
+			return prompt.FilterHasPrefix(sug, in.GetWordBeforeCursor(), true)
+		},
+		prompt.OptionPrefixTextColor(prompt.Yellow),
+		prompt.OptionPreviewSuggestionTextColor(prompt.Blue),
+		prompt.OptionSelectedSuggestionBGColor(prompt.LightGray),
+		prompt.OptionSuggestionBGColor(prompt.DarkGray),
+	).Run()
 
+	cancel()
+	wg.Wait()
+
+	return nil
 }
 
 func playFile(c *cobra.Command, args []string) error {
@@ -146,25 +142,52 @@ func playFile(c *cobra.Command, args []string) error {
 		return err
 	}
 
-	s := scanner.New(f)
-	p := player.New(out)
+	s := interpreter.NewScanner(f)
+
+	msgC := make(chan []interpreter.Message)
+
+	var wg sync.WaitGroup
+	wg.Add(1)
+	go func() {
+		defer wg.Done()
+		startPlayer(context.Background(), out, msgC)
+	}()
 
 	for s.Scan() {
-		for _, msg := range s.Messages() {
-			if err := p.Play(context.Background(), msg); err != nil {
-				return err
+		msgC <- s.Messages()
+	}
+
+	close(msgC)
+	wg.Wait()
+
+	return s.Err()
+}
+
+func startPlayer(ctx context.Context, out midi.Sender, msgC <-chan []interpreter.Message) {
+	runtime.LockOSThread()
+
+	p := player.New(out)
+	for {
+		select {
+		case <-ctx.Done():
+			return
+		case m := <-msgC:
+			for _, msg := range m {
+				if err := p.Play(ctx, msg); err != nil {
+					if errors.Is(err, context.Canceled) {
+						return
+					}
+					log.Fatal(err)
+				}
 			}
 		}
 	}
-
-	return s.Err()
 }
 
 func getPort(port string) (midi.Out, error) {
 	portNum, err := strconv.Atoi(port)
 	if err == nil {
 		return midi.OutByNumber(portNum)
-	} else {
-		return midi.OutByName(port)
 	}
+	return midi.OutByName(port)
 }

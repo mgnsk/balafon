@@ -1,11 +1,11 @@
-package scanner_test
+package interpreter_test
 
 import (
 	"strings"
 	"testing"
 
 	"github.com/mgnsk/gong/internal/constants"
-	"github.com/mgnsk/gong/internal/scanner"
+	"github.com/mgnsk/gong/internal/interpreter"
 	. "github.com/onsi/gomega"
 )
 
@@ -14,11 +14,11 @@ func TestTempo(t *testing.T) {
 
 	input := "tempo 120"
 
-	s := scanner.New(strings.NewReader(input))
+	s := interpreter.NewScanner(strings.NewReader(input))
 	g.Expect(s.Scan()).To(BeTrue())
 	g.Expect(s.Err()).NotTo(HaveOccurred())
 
-	g.Expect(s.Messages()).To(ConsistOf(scanner.Message{
+	g.Expect(s.Messages()).To(ConsistOf(interpreter.Message{
 		Tempo: 120,
 	}))
 }
@@ -28,7 +28,7 @@ func TestProgramChange(t *testing.T) {
 
 	input := "program 0"
 
-	s := scanner.New(strings.NewReader(input))
+	s := interpreter.NewScanner(strings.NewReader(input))
 	g.Expect(s.Scan()).To(BeTrue())
 	g.Expect(s.Err()).NotTo(HaveOccurred())
 
@@ -43,7 +43,7 @@ func TestControlChange(t *testing.T) {
 
 	input := "control 0 1"
 
-	s := scanner.New(strings.NewReader(input))
+	s := interpreter.NewScanner(strings.NewReader(input))
 	g.Expect(s.Scan()).To(BeTrue())
 	g.Expect(s.Err()).NotTo(HaveOccurred())
 
@@ -58,7 +58,7 @@ func TestUndefinedKey(t *testing.T) {
 
 	input := "k"
 
-	s := scanner.New(strings.NewReader(input))
+	s := interpreter.NewScanner(strings.NewReader(input))
 	g.Expect(s.Scan()).To(BeFalse())
 	g.Expect(s.Err()).To(HaveOccurred())
 	g.Expect(s.Messages()).To(BeNil())
@@ -69,7 +69,7 @@ func TestSharpNote(t *testing.T) {
 
 	input := "c=60\nc#"
 
-	s := scanner.New(strings.NewReader(input))
+	s := interpreter.NewScanner(strings.NewReader(input))
 	g.Expect(s.Scan()).To(BeTrue())
 	g.Expect(s.Err()).NotTo(HaveOccurred())
 
@@ -84,7 +84,7 @@ func TestFlatNote(t *testing.T) {
 
 	input := "c=60\nc$"
 
-	s := scanner.New(strings.NewReader(input))
+	s := interpreter.NewScanner(strings.NewReader(input))
 	g.Expect(s.Scan()).To(BeTrue())
 	g.Expect(s.Err()).NotTo(HaveOccurred())
 
@@ -99,7 +99,7 @@ func TestSharpNoteRange(t *testing.T) {
 
 	input := "c=127\nc#"
 
-	s := scanner.New(strings.NewReader(input))
+	s := interpreter.NewScanner(strings.NewReader(input))
 	g.Expect(s.Scan()).To(BeFalse())
 	g.Expect(s.Err()).To(HaveOccurred())
 }
@@ -109,7 +109,7 @@ func TestFlatNoteRange(t *testing.T) {
 
 	input := "c=0\nc$"
 
-	s := scanner.New(strings.NewReader(input))
+	s := interpreter.NewScanner(strings.NewReader(input))
 	g.Expect(s.Scan()).To(BeFalse())
 	g.Expect(s.Err()).To(HaveOccurred())
 }
@@ -147,7 +147,7 @@ func TestNoteLengths(t *testing.T) {
 		t.Run(tc.input, func(t *testing.T) {
 			g := NewGomegaWithT(t)
 
-			s := scanner.New(strings.NewReader(tc.input))
+			s := interpreter.NewScanner(strings.NewReader(tc.input))
 			g.Expect(s.Scan()).To(BeTrue())
 			g.Expect(s.Err()).NotTo(HaveOccurred())
 
@@ -178,7 +178,7 @@ func TestCommandForbiddenInBar(t *testing.T) {
 		t.Run(input, func(t *testing.T) {
 			g := NewGomegaWithT(t)
 
-			s := scanner.New(strings.NewReader(input))
+			s := interpreter.NewScanner(strings.NewReader(input))
 			g.Expect(s.Scan()).To(BeFalse())
 			g.Expect(s.Err()).To(HaveOccurred())
 			g.Expect(s.Err().Error()).To(ContainSubstring("not ended"))
@@ -200,7 +200,7 @@ end
 play "verse1"
 `
 
-	s := scanner.New(strings.NewReader(input))
+	s := interpreter.NewScanner(strings.NewReader(input))
 	g.Expect(s.Scan()).To(BeTrue())
 	g.Expect(s.Err()).NotTo(HaveOccurred())
 

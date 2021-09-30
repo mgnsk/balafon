@@ -6,11 +6,11 @@ import (
 	"time"
 
 	"github.com/mgnsk/gong/internal/constants"
-	"github.com/mgnsk/gong/internal/scanner"
+	"github.com/mgnsk/gong/internal/interpreter"
 	"gitlab.com/gomidi/midi/v2"
 )
 
-// Player plays back scanner messages into a MIDI output port.
+// Player plays back interpreted messages into a MIDI output port.
 type Player struct {
 	out          midi.Sender
 	timer        *time.Timer
@@ -20,7 +20,7 @@ type Player struct {
 }
 
 // Play the message.
-func (p *Player) Play(ctx context.Context, msg scanner.Message) error {
+func (p *Player) Play(ctx context.Context, msg interpreter.Message) error {
 	if msg.Tempo > 0 {
 		p.setTempo(msg.Tempo)
 		return nil
