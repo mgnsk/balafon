@@ -124,16 +124,16 @@ func TestNoteLengths(t *testing.T) {
 			offAt: uint64(constants.TicksPerQuarter),
 		},
 		{
-			input: "k=36\nk.", // Dotted quarter note.
+			input: "k=36\nk.", // Dotted quarter note, x1.5.
 			offAt: uint64(constants.TicksPerQuarter * 3 / 2),
 		},
 		{
-			input: "k=36\nk..", // Double dotted quarter note.
-			offAt: uint64(constants.TicksPerQuarter * 9 / 4),
+			input: "k=36\nk..", // Double dotted quarter note, x1.75.
+			offAt: uint64(constants.TicksPerQuarter * 7 / 4),
 		},
 		{
-			input: "k=36\nk...", // Triplet dotted quarter note.
-			offAt: uint64(constants.TicksPerQuarter * 27 / 8),
+			input: "k=36\nk...", // Triplet dotted quarter note, x1.875.
+			offAt: uint64(constants.TicksPerQuarter * 15 / 8),
 		},
 		{
 			input: "k=36\nk/5", // Quintuplet quarter note.

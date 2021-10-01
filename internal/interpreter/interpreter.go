@@ -191,7 +191,12 @@ func (i *Interpreter) evalResult(res interface{}) ([]Message, error) {
 }
 
 func (i *Interpreter) parseBar(tracks ...ast.Track) ([]Message, error) {
-	var messages []Message
+	count := 0
+	for _, track := range tracks {
+		count += len(track) * 2
+	}
+	messages := make([]Message, count)
+	n := 0
 
 	for _, track := range tracks {
 		var tick uint64
@@ -216,15 +221,17 @@ func (i *Interpreter) parseBar(tracks ...ast.Track) ([]Message, error) {
 					key--
 				}
 
-				messages = append(messages, Message{
+				messages[n] = Message{
 					Tick: i.currentTick + tick,
 					Msg:  midi.NewMessage(midi.Channel(i.currentChannel).NoteOn(key, i.currentVelocity)),
-				})
+				}
 
-				messages = append(messages, Message{
+				messages[n+1] = Message{
 					Tick: i.currentTick + tick + length,
 					Msg:  midi.NewMessage(midi.Channel(i.currentChannel).NoteOff(key)),
-				})
+				}
+
+				n += 2
 			}
 
 			tick += length
@@ -232,7 +239,7 @@ func (i *Interpreter) parseBar(tracks ...ast.Track) ([]Message, error) {
 	}
 
 	// Sort the messages so that every note is off before on.
-	sort.Stable(byMessageTypeOrKey(messages))
+	sort.Sort(byMessageTypeOrKey(messages))
 
 	i.currentTick = messages[len(messages)-1].Tick
 
@@ -252,13 +259,15 @@ func NewInterpreter() *Interpreter {
 func noteLength(note ast.Note) uint64 {
 	value := note.Value()
 	length := 4 * constants.TicksPerQuarter / uint64(value)
+	newLength := length
 	for i := uint(0); i < note.Dots(); i++ {
-		length += (length / 2)
+		length = (length / 2)
+		newLength += length
 	}
 	if division := note.Tuplet(); division > 0 {
-		length = uint64(float64(length) * 2.0 / float64(division))
+		newLength = uint64(float64(newLength) * 2.0 / float64(division))
 	}
-	return length
+	return newLength
 }
 
 type byMessageTypeOrKey []Message

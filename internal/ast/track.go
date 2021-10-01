@@ -50,7 +50,7 @@ func NewNoteList(ident string, props interface{}) NoteList {
 		if p.Find(uintType) == nil {
 			p = append(p, uintToken)
 		}
-		sort.Stable(p)
+		sort.Sort(p)
 	default:
 		p = NotePropertyList{uintToken}
 	}
