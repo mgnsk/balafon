@@ -120,6 +120,10 @@ go install github.com/mgnsk/gong@latest
   ```
   // Dotted quarter note.
   x.
+  // Double-dotted note.
+  x..
+  // Triple-dotted note.
+  x...
   // Dotted 8th note.
   x8.
   // Quarter triplet note.
