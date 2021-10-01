@@ -1,16 +1,11 @@
 /* Lexical Part */
 
-_digit       : '0'-'9' ;
-_lower       : 'a'-'z' ;
-_upper       : 'A'-'Z' ;
-_char        : _lower | _upper ;
-_identChar   : _char | '-' ;
-_uint        : '0' | '1'-'9' {_digit} ;
-_stringLit   : '"' { . } '"' ;
+_identChar   : 'a'-'z' | 'A'-'Z' | '-' ;
+_uint        : '0' | '1'-'9' {'0'-'9'} ;
 _lineComment : '/' '/' { . } '\n';
 
 multiNote : _identChar {_identChar} ;
-stringLit : _stringLit ;
+stringLit : '"' { . } '"' ;
 sharp     : '#' ;
 flat      : '$' ;
 uint      : _uint ;
