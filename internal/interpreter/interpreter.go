@@ -24,8 +24,8 @@ type Message struct {
 type Interpreter struct {
 	parser          *parser.Parser
 	notes           map[rune]uint8
-	bars            map[string][]ast.Track
-	barBuffer       []ast.Track
+	bars            map[string][]ast.NoteList
+	barBuffer       []ast.NoteList
 	currentBar      string
 	currentTick     uint64
 	currentChannel  uint8
@@ -89,14 +89,10 @@ func (i *Interpreter) Eval(input string) ([]Message, error) {
 
 func (i *Interpreter) evalResult(res interface{}) ([]Message, error) {
 	switch r := res.(type) {
-	case ast.NoteAssignment:
-		if i.currentBar != "" {
-			return nil, fmt.Errorf("cannot assign note: bar '%s' is not ended", i.currentBar)
-		}
-		i.notes[r.Note] = r.Key
-		return nil, nil
+	// TODO
+	// case ast.NoteAssignment:
 
-	case ast.Track:
+	case ast.NoteList:
 		if i.currentBar != "" {
 			i.barBuffer = append(i.barBuffer, r)
 			return nil, nil
@@ -109,6 +105,17 @@ func (i *Interpreter) evalResult(res interface{}) ([]Message, error) {
 
 	case ast.Command:
 		switch r.Name {
+		case "assign":
+			if i.currentBar != "" {
+				return nil, fmt.Errorf("cannot assign note: bar '%s' is not ended", i.currentBar)
+			}
+			v, err := r.Args[1].Int32Value()
+			if err != nil {
+				panic(err)
+			}
+			// Dealing with ASCII characters.
+			i.notes[rune(r.Args[0].IDValue()[0])] = uint8(v)
+			return nil, nil
 		case "bar": // Begin a bar.
 			if i.currentBar != "" {
 				return nil, fmt.Errorf("cannot begin bar '%s': bar '%s' is not ended", r.Args[0], i.currentBar)
@@ -190,7 +197,7 @@ func (i *Interpreter) evalResult(res interface{}) ([]Message, error) {
 	}
 }
 
-func (i *Interpreter) parseBar(tracks ...ast.Track) ([]Message, error) {
+func (i *Interpreter) parseBar(tracks ...ast.NoteList) ([]Message, error) {
 	count := 0
 	for _, track := range tracks {
 		count += len(track) * 2
@@ -251,7 +258,7 @@ func NewInterpreter() *Interpreter {
 	return &Interpreter{
 		parser:          parser.NewParser(),
 		notes:           make(map[rune]uint8),
-		bars:            make(map[string][]ast.Track),
+		bars:            make(map[string][]ast.NoteList),
 		currentVelocity: 127,
 	}
 }

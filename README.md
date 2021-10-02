@@ -80,9 +80,9 @@ go install github.com/mgnsk/gong@latest
   Assign a MIDI note number to a note letter.
   ```
   // Kick drum (on the drum channel).
-  k=36
+  assign k 36
   // Middle C (on other channels).
-  c=60
+  assign c 60
   ```
 - #### Notes
   Notes are written as a letter symbol (must be assigned first) plus properties.
@@ -141,13 +141,20 @@ go install github.com/mgnsk/gong@latest
   c$
   ```
 - #### Note grouping
+  Notes can be arbitrarily grouped and properties applied to multiple notes at once.
   ```
   // Ti-Tiri.
   x8 x16 x16
   // Can be written as:
-  x8xx16
+  x8[xx]16
   // Three 8th triplet notes.
-  xxx8/3
+  [xxx]8/3
+  // Expands to
+  x8/3 x8/3 x8/3
+  // Nested groups are also supported:
+  [[cde] [cde]#]8
+  // Expands to
+  c8 d8 e8 c#8 d#8 e#8
   ```
 - #### Bars
 
@@ -156,8 +163,15 @@ go install github.com/mgnsk/gong@latest
   ```
   // Define a bar.
   bar "Rock beat"
-  xx8 xx8 xx8 xx8
-  k   s   k   s
+  [xx xx xx xx]8
+  // Using braces for nice alignment.
+  [k  s  k  s]
+  end
+
+  // You can also write the same bar as:
+  bar "The same beat"
+  [xxxxxxxx]8
+  ksks
   end
 
   // Play the bar.
@@ -184,39 +198,39 @@ velocity 100
 channel 10
 
 // Kick drum.
-k=36
+assign k 36
 // Acoustic snare drum.
-s=38
+assign s 38
 // Hi-Hat closed.
-x=42
+assign x 42
 // Hi-Hat open.
-o=46
+assign o 46
 // Hi-Hat foot.
-X=44
+assign X 44
 // Crash cymbal.
-c=49
+assign c 49
 // Low tom.
-q=45
+assign q 45
 // Floor tom 2.
-g=41
+assign g 41
 
 // Start the first bar with a crash cymbal.
 bar "bonham 1"
 c1
---o8/3 x-x8/3 x-x8/3 x-x8/3
-k-k8/3 -sk8/3 s      -sk8/3
+[[--o] [x-x] [x-x] [x-x]]8/3
+[[k-k] [-sk] [s--] [-sk]]8/3
 -      X
 end
 
 bar "bonham 2"
-x-o8/3 x-x8/3 x-x8/3 x-x8/3
-k-k8/3 -sk8/3 s      -sk8/3
+[[x-o] [x-x] [x-x] [x-x]]8/3
+[[k-k] [-sk] [s--] [-sk]]8/3
 -      X
 end
 
 bar "fill"
---s8/3 sss8/3 ssq8/3 qgg8/3
-k-k8/3 --k8/3
+[[--s] [sss] [ssq] [qgg]]8/3
+[[k-k] [--k]]8/3
 x      X      X      X
 end
 
@@ -248,36 +262,36 @@ It is possible to write melodies using gong in a limited way. Here's 2 bars of B
 // J.S. Bach - Musikalisches Opfer - 6. Canon A 2 Per Tonos
 
 // C3
-C=48
-D=50
-E=52
-F=53
-G=55
-A=57
-B=59
+assign C 48
+assign D 50
+assign E 52
+assign F 53
+assign G 55
+assign A 57
+assign B 59
 
 // C4 (middle C)
-c=60
-d=62
-e=64
-f=65
-g=67
-a=69
-b=71
+assign c 60
+assign d 62
+assign e 64
+assign f 65
+assign g 67
+assign a 69
+assign b 71
 
 tempo 73
 velocity 100
 
 bar "bar 1"
-c.                 d8 e$8 e8 f8  f#8
--C16E$16G16 c2               B$8 A8
+c.            d8 [e$ e f f#]8
+[-CE$G]16 c2          [B$A]8
 end
 
 // 16th rests instead of ties (unimplemented).
 bar "bar 2"
-g2                 a$        -f16d$16c16
--G16B$16d16 g2               f8  e8
-B$          -EDE16 FCFG16 A$
+g2                  a$      [- f d$ c]16
+[-GB$d]16  g2               [f   e]8
+B$        [-EDE]16 [FCFG]16  A$
 end
 
 play "bar 1"

@@ -65,9 +65,9 @@ go install github.com/mgnsk/gong@latest
   Assign a MIDI note number to a note letter.
   ```
   // Kick drum (on the drum channel).
-  k=36
+  assign k 36
   // Middle C (on other channels).
-  c=60
+  assign c 60
   ```
 - #### Notes
   Notes are written as a letter symbol (must be assigned first) plus properties.
@@ -126,13 +126,20 @@ go install github.com/mgnsk/gong@latest
   c$
   ```
 - #### Note grouping
+  Notes can be arbitrarily grouped and properties applied to multiple notes at once.
   ```
   // Ti-Tiri.
   x8 x16 x16
   // Can be written as:
-  x8xx16
+  x8[xx]16
   // Three 8th triplet notes.
-  xxx8/3
+  [xxx]8/3
+  // Expands to
+  x8/3 x8/3 x8/3
+  // Nested groups are also supported:
+  [[cde] [cde]#]8
+  // Expands to
+  c8 d8 e8 c#8 d#8 e#8
   ```
 - #### Bars
 
@@ -141,8 +148,15 @@ go install github.com/mgnsk/gong@latest
   ```
   // Define a bar.
   bar "Rock beat"
-  xx8 xx8 xx8 xx8
-  k   s   k   s
+  [xx xx xx xx]8
+  // Using braces for nice alignment.
+  [k  s  k  s]
+  end
+
+  // You can also write the same bar as:
+  bar "The same beat"
+  [xxxxxxxx]8
+  ksks
   end
 
   // Play the bar.

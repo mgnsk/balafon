@@ -21,136 +21,135 @@ func TestValidInputs(t *testing.T) {
 
 	for _, tc := range []testcase{
 		{
-			"k\n",
+			"k",
 			match{
-				BeAssignableToTypeOf(ast.Track{}),
+				BeAssignableToTypeOf(ast.NoteList(nil)),
 				ContainSubstring("k4"),
 			},
 		},
 		{
-			"k k\n",
+			"kk",
 			match{
-				BeAssignableToTypeOf(ast.Track{}),
+				BeAssignableToTypeOf(ast.NoteList(nil)),
 				ContainSubstring("k4 k4"),
 			},
 		},
 		{
-			"k k8\n",
+			"k k",
 			match{
-				BeAssignableToTypeOf(ast.Track{}),
+				BeAssignableToTypeOf(ast.NoteList(nil)),
+				ContainSubstring("k4 k4"),
+			},
+		},
+		{
+			"k k8",
+			match{
+				BeAssignableToTypeOf(ast.NoteList(nil)),
 				ContainSubstring("k4 k8"),
 			},
 		},
 		{
-			"kk4\n",
+			"kk8.", // Properties apply only to the previous note symbol.
 			match{
-				BeAssignableToTypeOf(ast.Track{}),
-				ContainSubstring("k4 k4"),
+				BeAssignableToTypeOf(ast.NoteList(nil)),
+				ContainSubstring("k4 k8."),
 			},
 		},
 		{
-			"k8kk16kkkk16\n",
+			"[kk.]8", // Group properties apply to all notes in the group.
 			match{
-				BeAssignableToTypeOf(ast.Track{}),
-				ContainSubstring("k8 k16 k16 k16 k16 k16 k16"),
+				BeAssignableToTypeOf(ast.NoteList(nil)),
+				ContainSubstring("k8 k8."),
 			},
 		},
 		{
-			"k.\n",
+			"[k.].", // Group properties override any duplicate properties the inner notes have.
 			match{
-				BeAssignableToTypeOf(ast.Track{}),
+				BeAssignableToTypeOf(ast.NoteList(nil)),
 				ContainSubstring("k4."),
 			},
 		},
 		{
-			"k..\n", // Double dotted note.
+			"[k]",
 			match{
-				BeAssignableToTypeOf(ast.Track{}),
+				BeAssignableToTypeOf(ast.NoteList(nil)),
+				ContainSubstring("k4"),
+			},
+		},
+		{
+			"[k][k].",
+			match{
+				BeAssignableToTypeOf(ast.NoteList(nil)),
+				ContainSubstring("k4 k4."),
+			},
+		},
+		{
+			"kk[kk]kk[kk]kk",
+			match{
+				BeAssignableToTypeOf(ast.NoteList(nil)),
+				// ContainSubstring("k4"),
+			},
+		},
+		{
+			"[[k]]8",
+			match{
+				BeAssignableToTypeOf(ast.NoteList(nil)),
+				// ContainSubstring("k4"),
+			},
+		},
+		{
+			"k8kk16kkkk16",
+			match{
+				BeAssignableToTypeOf(ast.NoteList(nil)),
+				ContainSubstring("k8 k4 k16 k4 k4 k4 k16"),
+			},
+		},
+		{
+			"k8 [kk]16 [kkkk]32",
+			match{
+				BeAssignableToTypeOf(ast.NoteList(nil)),
+				ContainSubstring("k8 k16 k16 k32 k32 k32 k32"),
+			},
+		},
+		{
+			"k..", // Double dotted note.
+			match{
+				BeAssignableToTypeOf(ast.NoteList(nil)),
 				ContainSubstring("k4.."),
 			},
 		},
 		{
-			"k...\n", // Triple dotted note.
+			"k...", // Triple dotted note.
 			match{
-				BeAssignableToTypeOf(ast.Track{}),
+				BeAssignableToTypeOf(ast.NoteList(nil)),
 				ContainSubstring("k4..."),
 			},
 		},
 		{
-			"k4.\n",
+			"k/3", // Triplet.
 			match{
-				BeAssignableToTypeOf(ast.Track{}),
-				ContainSubstring("k4."),
-			},
-		},
-		{
-			"k8.k16\n",
-			match{
-				BeAssignableToTypeOf(ast.Track{}),
-				ContainSubstring("k8. k16"),
-			},
-		},
-		{
-			"kk8.\n",
-			match{
-				BeAssignableToTypeOf(ast.Track{}),
-				ContainSubstring("k8. k8."),
-			},
-		},
-		{
-			"k/3\n",
-			match{
-				BeAssignableToTypeOf(ast.Track{}),
+				BeAssignableToTypeOf(ast.NoteList(nil)),
 				ContainSubstring("k4/3"),
 			},
 		},
 		{
-			"kkk8/3\n",
+			"-", // Pause.
 			match{
-				BeAssignableToTypeOf(ast.Track{}),
-				ContainSubstring("k8/3 k8/3 k8/3"),
-			},
-		},
-		{
-			"kkk8./3\n",
-			match{
-				BeAssignableToTypeOf(ast.Track{}),
-				ContainSubstring("k8./3 k8./3 k8./3"),
-			},
-		},
-		{
-			"kkk128/3.\n",
-			match{
-				BeAssignableToTypeOf(ast.Track{}),
-				// Note properties are sorted.
-				ContainSubstring("k128./3 k128./3 k128./3"),
-			},
-		},
-		{
-			"k k4/3kk8/3k4/3 kk8./3\n",
-			match{
-				BeAssignableToTypeOf(ast.Track{}),
-				ContainSubstring("k4 k4/3 k8/3 k8/3 k4/3 k8./3 k8./3"),
-			},
-		},
-		{
-			"- k4/3--8/3k4/3 --8./3\n",
-			match{
-				BeAssignableToTypeOf(ast.Track{}),
-				ContainSubstring("-4 k4/3 -8/3 -8/3 k4/3 -8./3 -8./3"),
+				BeAssignableToTypeOf(ast.NoteList(nil)),
+				ContainSubstring("-4"),
 			},
 		},
 		{
 			"k/3.#8\n",
 			match{
-				BeAssignableToTypeOf(ast.Track{}),
+				BeAssignableToTypeOf(ast.NoteList(nil)),
 				ContainSubstring("k#8./3"),
 			},
 		},
 		{
-			"k/3.$#8\n", // A sharp flat note! Testing the ordering.
+			"[[[[[k]/3].]$]#]8\n", // A sharp flat note! Testing the ordering.
 			match{
-				BeAssignableToTypeOf(ast.Track{}),
+				BeAssignableToTypeOf(ast.NoteList(nil)),
 				ContainSubstring("k#$8./3"),
 			},
 		},
