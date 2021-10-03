@@ -196,8 +196,6 @@ It is possible to write melodies using gong in a limited way. Here's 2 bars of B
 ## Possible features in the future
 
 - Tie (a curved line connecting the heads of two notes of the same pitch) - no idea about the syntax. Can be partially emulated by using dotted notes if the rhythm is simple enough.
-- Ghost note property - gonna have to think about the syntax. Probably `x)`.
-- Accentuated note property - probably `x^`.
 - WebAssembly support with Web MIDI for running in browsers.
 - Generating an SMF midi file.
 - Accelerando/Ritardando.
