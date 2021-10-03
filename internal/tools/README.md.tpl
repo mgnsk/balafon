@@ -74,6 +74,8 @@ go install github.com/mgnsk/gong@latest
   The available properties are
   - sharp (`#`)
   - flat (`$`)
+  - accentuated (`^`)
+  - ghost (`)`)
   - numeric note value (`1`, `2`, `4`, `8` and so on)
   - dot (`.`)
   - tuplet (`/3`)

@@ -48,7 +48,7 @@ func (i *Interpreter) Suggest() []string {
 		sug = append(sug, "end")
 	} else {
 		// Suggest commands.
-		sug = append(sug, "tempo", "channel", "velocity", "program", "control", "bar")
+		sug = append(sug, "assign", "tempo", "channel", "velocity", "program", "control", "bar")
 		// Suggest playing a bar.
 		for name := range i.bars {
 			sug = append(sug, "play "+name)
@@ -224,9 +224,20 @@ func (i *Interpreter) parseBar(tracks ...ast.NoteList) ([]Message, error) {
 					key--
 				}
 
+				velocity := i.currentVelocity
+				if note.IsAccent() {
+					if v := 2 * velocity; v <= 127 {
+						velocity = v
+					} else {
+						velocity = 127
+					}
+				} else if note.IsGhost() {
+					velocity /= 2
+				}
+
 				messages[n] = Message{
 					Tick: i.currentTick + tick,
-					Msg:  midi.NewMessage(midi.Channel(i.currentChannel).NoteOn(key, i.currentVelocity)),
+					Msg:  midi.NewMessage(midi.Channel(i.currentChannel).NoteOn(key, velocity)),
 				}
 
 				messages[n+1] = Message{

@@ -147,10 +147,17 @@ func TestValidInputs(t *testing.T) {
 			},
 		},
 		{
-			"[[[[[k]/3].]$]#]8\n", // A sharp flat note! Testing the ordering.
+			"[[[[[k]/3].]#]8]^\n", // Testing the ordering of properties.
 			match{
 				BeAssignableToTypeOf(ast.NoteList(nil)),
-				ContainSubstring("k#$8./3"),
+				ContainSubstring("k#^8./3"),
+			},
+		},
+		{
+			"[[[[[k]/3].]$]8])\n", // Testing the ordering of properties.
+			match{
+				BeAssignableToTypeOf(ast.NoteList(nil)),
+				ContainSubstring("k$)8./3"),
 			},
 		},
 	} {
@@ -166,6 +173,25 @@ func TestValidInputs(t *testing.T) {
 			for _, match := range tc.match {
 				g.Expect(res).To(match)
 			}
+		})
+	}
+}
+
+func TestInvalidProperties(t *testing.T) {
+	for _, input := range []string{
+		"k#$", // Sharp flat note.
+		"k$#",
+		"k^)", // Accentuated ghost note.
+		"k)^",
+	} {
+		t.Run(input, func(t *testing.T) {
+			g := NewGomegaWithT(t)
+
+			lex := lexer.NewLexer([]byte(input))
+			p := parser.NewParser()
+
+			_, err := p.Parse(lex)
+			g.Expect(err).To(HaveOccurred())
 		})
 	}
 }

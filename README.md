@@ -89,6 +89,8 @@ go install github.com/mgnsk/gong@latest
   The available properties are
   - sharp (`#`)
   - flat (`$`)
+  - accentuated (`^`)
+  - ghost (`)`)
   - numeric note value (`1`, `2`, `4`, `8` and so on)
   - dot (`.`)
   - tuplet (`/3`)
@@ -189,7 +191,7 @@ $ gong play examples/bonham
 ```
 
 ```
-// The Bonham half time shuffle
+// A simplified Bonham half time shuffle
 
 tempo 132
 velocity 100
@@ -217,21 +219,23 @@ assign g 41
 // Start the first bar with a crash cymbal.
 bar "bonham 1"
 c1
-[[--o] [x-x] [x-x] [x-x]]8/3
-[[k-k] [-sk] [s--] [-sk]]8/3
--      X
+[[--o]    [x^-x]    [x^-x] [x^-x]]8/3
+-         [-s)-]8/3 s      [-s)-]8/3
+[k^-k]8/3 [--k]8/3  -      [--k]8/3
+-       X
 end
 
 bar "bonham 2"
-[[x-o] [x-x] [x-x] [x-x]]8/3
-[[k-k] [-sk] [s--] [-sk]]8/3
--      X
+[[x-o]    [x^-x]    [x^-x] [x^-x]]8/3
+-         [-s)-]8/3 s      [-s)-]8/3
+[k^-k]8/3 [--k]8/3  -      [--k]8/3
+-       X
 end
 
 bar "fill"
 [[--s] [sss] [ssq] [qgg]]8/3
 [[k-k] [--k]]8/3
-x      X      X      X
+x      X     X     X
 end
 
 // Count in.

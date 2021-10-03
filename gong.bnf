@@ -8,6 +8,8 @@ singleNote : _singleNote ;
 stringLit  : '"' { . } '"' ;
 sharp      : '#' ;
 flat       : '$' ;
+accent     : '^' ;
+ghost      : ')' ;
 uint       : _uint ;
 dot        : '.' ;
 tuplet     : '/' _uint ;
@@ -51,6 +53,8 @@ PropertyList
 Property
     : sharp
     | flat
+    | accent
+    | ghost
     | uint
     | dot
     | tuplet

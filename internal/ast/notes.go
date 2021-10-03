@@ -89,6 +89,18 @@ func (n Note) IsFlat() bool {
 	return ok
 }
 
+// IsAccent reports whether the note is accentuated.
+func (n Note) IsAccent() bool {
+	_, ok := n.Props.Find(accentType)
+	return ok
+}
+
+// IsGhost reports whether the note is a ghost note.
+func (n Note) IsGhost() bool {
+	_, ok := n.Props.Find(ghostType)
+	return ok
+}
+
 // Value returns the note value (1th, 2th, 4th, 8th, 16th, 32th and so on).
 func (n Note) Value() uint8 {
 	i, ok := n.Props.Find(uintType)
@@ -206,6 +218,18 @@ func NewPropertyList(t *token.Token, inner interface{}) (PropertyList, error) {
 			if p.Type == t.Type && p.Type != dotType {
 				return nil, fmt.Errorf("duplicate note property '%s': '%s'", token.TokMap.Id(p.Type), p.IDValue())
 			}
+			if t.Type == accentType && p.Type == ghostType {
+				return nil, fmt.Errorf("cannot add ghost property, note already has accentuated property")
+			}
+			if t.Type == ghostType && p.Type == accentType {
+				return nil, fmt.Errorf("cannot add accentuated property, note already has ghost property")
+			}
+			if t.Type == sharpType && p.Type == flatType {
+				return nil, fmt.Errorf("cannot add flat property, note already has sharp property")
+			}
+			if t.Type == flatType && p.Type == sharpType {
+				return nil, fmt.Errorf("cannot add sharp property, note already has flat property")
+			}
 		}
 		p := make(PropertyList, len(props)+1)
 		p[0] = *t
@@ -218,7 +242,9 @@ func NewPropertyList(t *token.Token, inner interface{}) (PropertyList, error) {
 var propOrder = map[token.Type]int{
 	sharpType:  0,
 	flatType:   1,
-	uintType:   2,
-	dotType:    3,
-	tupletType: 4,
+	accentType: 2,
+	ghostType:  3,
+	uintType:   4,
+	dotType:    5,
+	tupletType: 6,
 }
