@@ -36,7 +36,7 @@ func main() {
 	root.PersistentFlags().String("port", "0", "MIDI output port")
 
 	root.AddCommand(&cobra.Command{
-		Use:   "list-ports",
+		Use:   "list",
 		Short: "List available MIDI output ports",
 		RunE: func(c *cobra.Command, _ []string) error {
 			outs, err := midi.Outs()

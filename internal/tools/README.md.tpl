@@ -16,7 +16,7 @@ go install github.com/mgnsk/gong@latest
 
 - List the available MIDI ports. The default port is the first port in the list.
   ```sh
-  $ gong list-ports
+  $ gong list
   0: Midi Through:Midi Through Port-0 14:0
   1: VMPK Input:in 128:0
   2: Hydrogen:Hydrogen Midi-In 135:0

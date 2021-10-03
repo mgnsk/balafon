@@ -16,7 +16,7 @@ go install github.com/mgnsk/gong@latest
 
 - List the available MIDI ports. The default port is the first port in the list.
   ```sh
-  $ gong list-ports
+  $ gong list
   0: Midi Through:Midi Through Port-0 14:0
   1: VMPK Input:in 128:0
   2: Hydrogen:Hydrogen Midi-In 135:0
@@ -52,7 +52,7 @@ go install github.com/mgnsk/gong@latest
 
   Available Commands:
     help        Help about any command
-    list-ports  List available MIDI output ports
+    list        List available MIDI output ports
     play        Play a file
 
   Flags:
@@ -70,11 +70,22 @@ go install github.com/mgnsk/gong@latest
   ```
 - #### Commands
   ```
+  // Assign a note.
+  assign c 60
+  // Set the tempo.
   tempo 120
+  // Set the MIDI channel.
   channel 10
+  // Set velocity.
   velocity 127
+  // Program change message.
   program 0
+  // Control change message.
   control 1 127
+  // Start message. Useful for controlling a DAW which records MIDI input.
+  start
+  // Stop message.
+  stop
   ```
 - #### Note assignment
   Assign a MIDI note number to a note letter.
