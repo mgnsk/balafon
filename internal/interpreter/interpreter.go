@@ -82,9 +82,6 @@ func (i *Interpreter) Eval(input string) ([]Message, error) {
 		return nil, err
 	}
 
-	// TODO: display is 1 row ahead, the player is asynchronous.
-	fmt.Println(res)
-
 	return messages, nil
 }
 
@@ -116,12 +113,13 @@ func (i *Interpreter) evalResult(res interface{}) ([]Message, error) {
 			return nil, nil
 		case "bar": // Begin a bar.
 			if i.currentBar != "" {
-				return nil, fmt.Errorf("cannot begin bar '%s': bar '%s' is not ended", r.Args[0], i.currentBar)
+				return nil, fmt.Errorf("cannot begin bar '%s': bar '%s' is not ended", r.Args[0].StringValue(), i.currentBar)
 			}
-			if _, ok := i.bars[r.Args[0].StringValue()]; ok {
-				return nil, fmt.Errorf("bar '%s' already defined", r.Args[0])
+			barName := r.Args[0].StringValue()
+			if _, ok := i.bars[barName]; ok {
+				return nil, fmt.Errorf("bar '%s' already defined", barName)
 			}
-			i.currentBar = r.Args[0].StringValue()
+			i.currentBar = barName
 			return nil, nil
 
 		case "end": // End the current bar.
@@ -135,11 +133,11 @@ func (i *Interpreter) evalResult(res interface{}) ([]Message, error) {
 
 		case "play": // Play a bar.
 			if i.currentBar != "" {
-				return nil, fmt.Errorf("cannot play bar '%s': bar '%s' is not ended", r.Args[0], i.currentBar)
+				return nil, fmt.Errorf("cannot play bar '%s': bar '%s' is not ended", r.Args[0].StringValue(), i.currentBar)
 			}
 			bar, ok := i.bars[r.Args[0].StringValue()]
 			if !ok {
-				return nil, fmt.Errorf("cannot play nonexistent bar '%s'", r.Args[0])
+				return nil, fmt.Errorf("cannot play nonexistent bar '%s'", r.Args[0].StringValue())
 			}
 			messages, err := i.parseBar(bar...)
 			if err != nil {
