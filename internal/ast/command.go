@@ -57,6 +57,13 @@ func NewCommand(name string, argList interface{}) (Command, error) {
 	}
 
 	switch name {
+	case "assign":
+		if len(args) != 2 || args[0].Type != singleNoteType || args[1].Type != uintType {
+			return Command{}, fmt.Errorf("command '%s' requires 1 note argument and 1 numeric argument", name)
+		}
+		if len(args[0].IDValue()) != 1 {
+			return Command{}, fmt.Errorf("command '%s' requires first argument to be a single character note", name)
+		}
 	case "tempo":
 		fallthrough
 	case "channel":
@@ -83,8 +90,14 @@ func NewCommand(name string, argList interface{}) (Command, error) {
 		}
 	}
 
-	for _, arg := range args {
+	for i, arg := range args {
 		switch name {
+		case "assign":
+			if i == 1 {
+				if err := validateRange(name, arg.IDValue(), 0, 127); err != nil {
+					return Command{}, err
+				}
+			}
 		case "tempo":
 			if err := validateRange(name, arg.IDValue(), 1, math.MaxUint16); err != nil {
 				return Command{}, err

@@ -21,77 +21,84 @@ func TestValidCommands(t *testing.T) {
 
 	for _, tc := range []testcase{
 		{
-			"bar \"Chorus0\"\n",
+			"assign k 36 ",
+			match{
+				BeAssignableToTypeOf(ast.Command{}),
+				ContainSubstring(`assign k 36`),
+			},
+		},
+		{
+			"bar \"Chorus0\"",
 			match{
 				BeAssignableToTypeOf(ast.Command{}),
 				ContainSubstring(`bar "Chorus0"`),
 			},
 		},
 		{
-			"bar \"Chorus1\"\n",
+			"bar \"Chorus1\"",
 			match{
 				BeAssignableToTypeOf(ast.Command{}),
 				ContainSubstring(`bar "Chorus1"`),
 			},
 		},
 		{
-			"end\n",
+			"end",
 			match{
 				BeAssignableToTypeOf(ast.Command{}),
 				ContainSubstring("end"),
 			},
 		},
 		{
-			"play \"chorus\"\n",
+			"play \"chorus\"",
 			match{
 				BeAssignableToTypeOf(ast.Command{}),
 				ContainSubstring(`play "chorus"`),
 			},
 		},
 		{
-			"play \"Chorus0\"\n",
+			"play \"Chorus0\"",
 			match{
 				BeAssignableToTypeOf(ast.Command{}),
 				ContainSubstring(`play "Chorus0"`),
 			},
 		},
 		{
-			"play \"Chorus1\"\n",
+			"play \"Chorus1\"",
 			match{
 				BeAssignableToTypeOf(ast.Command{}),
 				ContainSubstring(`play "Chorus1"`),
 			},
 		},
 		{
-			"tempo 120\n",
+			"tempo 120",
 			match{
 				BeAssignableToTypeOf(ast.Command{}),
 				ContainSubstring("tempo 120"),
 			},
 		},
 		{
-			"channel 0\n",
+			"channel 0",
 			match{
 				BeAssignableToTypeOf(ast.Command{}),
 				ContainSubstring("channel 0"),
 			},
 		},
 		{
-			"velocity 50\n",
+			"velocity 50",
 			match{
 				BeAssignableToTypeOf(ast.Command{}),
 				ContainSubstring("velocity 50"),
 			},
 		},
 		{
-			"program 0\n",
+			"program 0",
 			match{
 				BeAssignableToTypeOf(ast.Command{}),
 				ContainSubstring("program 0"),
 			},
 		},
 		{
-			"control 0 1\n",
+			"control 0 1",
 			match{
 				BeAssignableToTypeOf(ast.Command{}),
 				ContainSubstring("control 0 1"),
@@ -116,6 +123,10 @@ func TestValidCommands(t *testing.T) {
 
 func TestInvalidArguments(t *testing.T) {
 	for _, input := range []string{
+		"assign",
+		"assign 1",
+		"assign \"string\" \"string\"",
+		"assign \"kk\" 36", // Argument types are valid but string length must be 1.
 		"tempo",
 		"tempo 1 1",
 		"tempo \"string\"",
@@ -146,6 +157,7 @@ func TestInvalidArguments(t *testing.T) {
 
 func TestInvalidArgumentRange(t *testing.T) {
 	for _, input := range []string{
+		"assign k 128",
 		"tempo 0",
 		"tempo 65536",
 		"channel 16",

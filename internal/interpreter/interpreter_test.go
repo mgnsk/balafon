@@ -67,7 +67,7 @@ func TestUndefinedKey(t *testing.T) {
 func TestSharpNote(t *testing.T) {
 	g := NewGomegaWithT(t)
 
-	input := "c=60\nc#"
+	input := "assign c 60\nc#"
 
 	s := interpreter.NewScanner(strings.NewReader(input))
 	g.Expect(s.Scan()).To(BeTrue())
@@ -82,7 +82,7 @@ func TestSharpNote(t *testing.T) {
 func TestFlatNote(t *testing.T) {
 	g := NewGomegaWithT(t)
 
-	input := "c=60\nc$"
+	input := "assign c 60\nc$"
 
 	s := interpreter.NewScanner(strings.NewReader(input))
 	g.Expect(s.Scan()).To(BeTrue())
@@ -97,7 +97,7 @@ func TestFlatNote(t *testing.T) {
 func TestSharpNoteRange(t *testing.T) {
 	g := NewGomegaWithT(t)
 
-	input := "c=127\nc#"
+	input := "assign c 127\nc#"
 
 	s := interpreter.NewScanner(strings.NewReader(input))
 	g.Expect(s.Scan()).To(BeFalse())
@@ -107,7 +107,7 @@ func TestSharpNoteRange(t *testing.T) {
 func TestFlatNoteRange(t *testing.T) {
 	g := NewGomegaWithT(t)
 
-	input := "c=0\nc$"
+	input := "assign c 0\nc$"
 
 	s := interpreter.NewScanner(strings.NewReader(input))
 	g.Expect(s.Scan()).To(BeFalse())
@@ -120,27 +120,27 @@ func TestNoteLengths(t *testing.T) {
 		offAt uint64
 	}{
 		{
-			input: "k=36\nk", // Quarter note.
+			input: "assign k 36\nk", // Quarter note.
 			offAt: uint64(constants.TicksPerQuarter),
 		},
 		{
-			input: "k=36\nk.", // Dotted quarter note, x1.5.
+			input: "assign k 36\nk.", // Dotted quarter note, x1.5.
 			offAt: uint64(constants.TicksPerQuarter * 3 / 2),
 		},
 		{
-			input: "k=36\nk..", // Double dotted quarter note, x1.75.
+			input: "assign k 36\nk..", // Double dotted quarter note, x1.75.
 			offAt: uint64(constants.TicksPerQuarter * 7 / 4),
 		},
 		{
-			input: "k=36\nk...", // Triplet dotted quarter note, x1.875.
+			input: "assign k 36\nk...", // Triplet dotted quarter note, x1.875.
 			offAt: uint64(constants.TicksPerQuarter * 15 / 8),
 		},
 		{
-			input: "k=36\nk/5", // Quintuplet quarter note.
+			input: "assign k 36\nk/5", // Quintuplet quarter note.
 			offAt: uint64(constants.TicksPerQuarter * 2 / 5),
 		},
 		{
-			input: "k=36\nk./3", // Dotted triplet quarter note == quarter note.
+			input: "assign k 36\nk./3", // Dotted triplet quarter note == quarter note.
 			offAt: uint64(constants.TicksPerQuarter),
 		},
 	} {
@@ -166,7 +166,7 @@ func TestNoteLengths(t *testing.T) {
 
 func TestCommandForbiddenInBar(t *testing.T) {
 	for _, input := range []string{
-		"bar \"bar\"\nc=10",
+		"bar \"bar\"\nassign c 10",
 		"bar \"bar\"\nbar \"forbidden\"",
 		"bar \"bar\"\nplay \"forbidden\"",
 		"bar \"bar\"\ntempo 120",
@@ -189,13 +189,13 @@ func TestCommandForbiddenInBar(t *testing.T) {
 func TestBar(t *testing.T) {
 	g := NewGomegaWithT(t)
 
-	input := `k=36
-s=38
+	input := `assign k 36
+assign s 38
 velocity 100
 channel 10
 bar "verse1"
-kk8
-ss8
+[kk]8
+[ss]8
 end
 play "verse1"
 `

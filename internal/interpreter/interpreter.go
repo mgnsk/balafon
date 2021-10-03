@@ -24,8 +24,8 @@ type Message struct {
 type Interpreter struct {
 	parser          *parser.Parser
 	notes           map[rune]uint8
-	bars            map[string][]ast.Track
-	barBuffer       []ast.Track
+	bars            map[string][]ast.NoteList
+	barBuffer       []ast.NoteList
 	currentBar      string
 	currentTick     uint64
 	currentChannel  uint8
@@ -82,6 +82,7 @@ func (i *Interpreter) Eval(input string) ([]Message, error) {
 		return nil, err
 	}
 
+	// TODO: display is 1 row ahead, the player is asynchronous.
 	fmt.Println(res)
 
 	return messages, nil
@@ -89,14 +90,7 @@ func (i *Interpreter) Eval(input string) ([]Message, error) {
 
 func (i *Interpreter) evalResult(res interface{}) ([]Message, error) {
 	switch r := res.(type) {
-	case ast.NoteAssignment:
-		if i.currentBar != "" {
-			return nil, fmt.Errorf("cannot assign note: bar '%s' is not ended", i.currentBar)
-		}
-		i.notes[r.Note] = r.Key
-		return nil, nil
-
-	case ast.Track:
+	case ast.NoteList:
 		if i.currentBar != "" {
 			i.barBuffer = append(i.barBuffer, r)
 			return nil, nil
@@ -109,14 +103,25 @@ func (i *Interpreter) evalResult(res interface{}) ([]Message, error) {
 
 	case ast.Command:
 		switch r.Name {
+		case "assign":
+			if i.currentBar != "" {
+				return nil, fmt.Errorf("cannot assign note: bar '%s' is not ended", i.currentBar)
+			}
+			v, err := r.Args[1].Int32Value()
+			if err != nil {
+				panic(err)
+			}
+			// Guaranteed to be one ASCII character.
+			i.notes[[]rune(r.Args[0].IDValue())[0]] = uint8(v)
+			return nil, nil
 		case "bar": // Begin a bar.
 			if i.currentBar != "" {
 				return nil, fmt.Errorf("cannot begin bar '%s': bar '%s' is not ended", r.Args[0], i.currentBar)
 			}
-			if _, ok := i.bars[r.Args[0].IDValue()]; ok {
+			if _, ok := i.bars[r.Args[0].StringValue()]; ok {
 				return nil, fmt.Errorf("bar '%s' already defined", r.Args[0])
 			}
-			i.currentBar = r.Args[0].IDValue()
+			i.currentBar = r.Args[0].StringValue()
 			return nil, nil
 
 		case "end": // End the current bar.
@@ -132,7 +137,7 @@ func (i *Interpreter) evalResult(res interface{}) ([]Message, error) {
 			if i.currentBar != "" {
 				return nil, fmt.Errorf("cannot play bar '%s': bar '%s' is not ended", r.Args[0], i.currentBar)
 			}
-			bar, ok := i.bars[r.Args[0].IDValue()]
+			bar, ok := i.bars[r.Args[0].StringValue()]
 			if !ok {
 				return nil, fmt.Errorf("cannot play nonexistent bar '%s'", r.Args[0])
 			}
@@ -190,7 +195,7 @@ func (i *Interpreter) evalResult(res interface{}) ([]Message, error) {
 	}
 }
 
-func (i *Interpreter) parseBar(tracks ...ast.Track) ([]Message, error) {
+func (i *Interpreter) parseBar(tracks ...ast.NoteList) ([]Message, error) {
 	count := 0
 	for _, track := range tracks {
 		count += len(track) * 2
@@ -251,7 +256,7 @@ func NewInterpreter() *Interpreter {
 	return &Interpreter{
 		parser:          parser.NewParser(),
 		notes:           make(map[rune]uint8),
-		bars:            make(map[string][]ast.Track),
+		bars:            make(map[string][]ast.NoteList),
 		currentVelocity: 127,
 	}
 }
