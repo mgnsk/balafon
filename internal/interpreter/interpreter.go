@@ -184,6 +184,22 @@ func (i *Interpreter) evalResult(res interface{}) ([]Message, error) {
 				Msg: midi.NewMessage(midi.Channel(i.currentChannel).ControlChange(args[0], args[1])),
 			}}, nil
 
+		case "start": // Start message.
+			if i.currentBar != "" {
+				return nil, fmt.Errorf("cannot start: bar '%s' is not ended", i.currentBar)
+			}
+			return []Message{{
+				Msg: midi.NewMessage(midi.Start()),
+			}}, nil
+
+		case "stop": // Stop message.
+			if i.currentBar != "" {
+				return nil, fmt.Errorf("cannot stop: bar '%s' is not ended", i.currentBar)
+			}
+			return []Message{{
+				Msg: midi.NewMessage(midi.Stop()),
+			}}, nil
+
 		default:
 			panic(fmt.Sprintf("invalid command '%s'", r.Name))
 		}

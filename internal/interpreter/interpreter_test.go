@@ -9,7 +9,7 @@ import (
 	. "github.com/onsi/gomega"
 )
 
-func TestTempo(t *testing.T) {
+func TestTempoCommand(t *testing.T) {
 	g := NewGomegaWithT(t)
 
 	input := "tempo 120"
@@ -23,7 +23,7 @@ func TestTempo(t *testing.T) {
 	}))
 }
 
-func TestProgramChange(t *testing.T) {
+func TestProgramChangeCommand(t *testing.T) {
 	g := NewGomegaWithT(t)
 
 	input := "program 0"
@@ -38,7 +38,7 @@ func TestProgramChange(t *testing.T) {
 	g.Expect(messages[0].Msg).To(ContainSubstring("Channel0Msg & ProgramChangeMsg program: 0"))
 }
 
-func TestControlChange(t *testing.T) {
+func TestControlChangeCommand(t *testing.T) {
 	g := NewGomegaWithT(t)
 
 	input := "control 0 1"
@@ -51,6 +51,36 @@ func TestControlChange(t *testing.T) {
 
 	g.Expect(messages).To(HaveLen(1))
 	g.Expect(messages[0].Msg).To(ContainSubstring("Channel0Msg & ControlChangeMsg controller: 0 change: 1"))
+}
+
+func TestStartCommand(t *testing.T) {
+	g := NewGomegaWithT(t)
+
+	input := "start"
+
+	s := interpreter.NewScanner(strings.NewReader(input))
+	g.Expect(s.Scan()).To(BeTrue())
+	g.Expect(s.Err()).NotTo(HaveOccurred())
+
+	messages := s.Messages()
+
+	g.Expect(messages).To(HaveLen(1))
+	g.Expect(messages[0].Msg).To(ContainSubstring("StartMsg"))
+}
+
+func TestStopCommand(t *testing.T) {
+	g := NewGomegaWithT(t)
+
+	input := "stop"
+
+	s := interpreter.NewScanner(strings.NewReader(input))
+	g.Expect(s.Scan()).To(BeTrue())
+	g.Expect(s.Err()).NotTo(HaveOccurred())
+
+	messages := s.Messages()
+
+	g.Expect(messages).To(HaveLen(1))
+	g.Expect(messages[0].Msg).To(ContainSubstring("StopMsg"))
 }
 
 func TestUndefinedKey(t *testing.T) {

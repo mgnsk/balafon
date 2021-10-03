@@ -88,6 +88,12 @@ func NewCommand(name string, argList interface{}) (Command, error) {
 		if len(args) != 0 {
 			return Command{}, fmt.Errorf("command '%s' requires 0 arguments", name)
 		}
+	case "start":
+		fallthrough
+	case "stop":
+		if len(args) != 0 {
+			return Command{}, fmt.Errorf("command '%s' requires 0 arguments", name)
+		}
 	}
 
 	for i, arg := range args {

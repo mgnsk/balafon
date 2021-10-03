@@ -159,6 +159,8 @@ var TokMap = TokenMap{
 		"bar",
 		"end",
 		"play",
+		"start",
+		"stop",
 	},
 
 	idMap: map[string]Type{
@@ -185,5 +187,7 @@ var TokMap = TokenMap{
 		"bar":        20,
 		"end":        21,
 		"play":       22,
+		"start":      23,
+		"stop":       24,
 	},
 }

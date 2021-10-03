@@ -104,6 +104,20 @@ func TestValidCommands(t *testing.T) {
 				ContainSubstring("control 0 1"),
 			},
 		},
+		{
+			"start",
+			match{
+				BeAssignableToTypeOf(ast.Command{}),
+				ContainSubstring("start"),
+			},
+		},
+		{
+			"stop",
+			match{
+				BeAssignableToTypeOf(ast.Command{}),
+				ContainSubstring("stop"),
+			},
+		},
 	} {
 		t.Run(tc.input, func(t *testing.T) {
 			g := NewGomegaWithT(t)
@@ -142,6 +156,8 @@ func TestInvalidArguments(t *testing.T) {
 		"control",
 		"control 0",
 		"control \"string\"",
+		"start 0",
+		"stop 0",
 	} {
 		t.Run(input, func(t *testing.T) {
 			g := NewGomegaWithT(t)

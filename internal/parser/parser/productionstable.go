@@ -332,4 +332,24 @@ var productionsTable = ProdTab{
 			return X[0], nil
 		},
 	},
+	ProdTabEntry{
+		String: `CommandName : "start"	<<  >>`,
+		Id:         "CommandName",
+		NTType:     9,
+		Index:      31,
+		NumSymbols: 1,
+		ReduceFunc: func(X []Attrib, C interface{}) (Attrib, error) {
+			return X[0], nil
+		},
+	},
+	ProdTabEntry{
+		String: `CommandName : "stop"	<<  >>`,
+		Id:         "CommandName",
+		NTType:     9,
+		Index:      32,
+		NumSymbols: 1,
+		ReduceFunc: func(X []Attrib, C interface{}) (Attrib, error) {
+			return X[0], nil
+		},
+	},
 }

@@ -55,11 +55,22 @@ go install github.com/mgnsk/gong@latest
   ```
 - #### Commands
   ```
+  // Assign a note.
+  assign c 60
+  // Set the tempo.
   tempo 120
+  // Set the MIDI channel.
   channel 10
+  // Set velocity.
   velocity 127
+  // Program change message.
   program 0
+  // Control change message.
   control 1 127
+  // Start message. Useful for controlling a DAW which records MIDI input.
+  start
+  // Stop message.
+  stop
   ```
 - #### Note assignment
   Assign a MIDI note number to a note letter.
