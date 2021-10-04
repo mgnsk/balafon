@@ -276,8 +276,8 @@ func (i *Interpreter) parseBar(tracks ...ast.NoteList) ([]Message, error) {
 	return messages, nil
 }
 
-// NewInterpreter creates an interpreter.
-func NewInterpreter() *Interpreter {
+// New creates an interpreter.
+func New() *Interpreter {
 	return &Interpreter{
 		parser:          parser.NewParser(),
 		notes:           make(map[rune]uint8),

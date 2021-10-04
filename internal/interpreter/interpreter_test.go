@@ -1,7 +1,6 @@
 package interpreter_test
 
 import (
-	"strings"
 	"testing"
 
 	"github.com/mgnsk/gong/internal/constants"
@@ -12,13 +11,11 @@ import (
 func TestTempoCommand(t *testing.T) {
 	g := NewGomegaWithT(t)
 
-	input := "tempo 120"
+	it := interpreter.New()
 
-	s := interpreter.NewScanner(strings.NewReader(input))
-	g.Expect(s.Scan()).To(BeTrue())
-	g.Expect(s.Err()).NotTo(HaveOccurred())
-
-	g.Expect(s.Messages()).To(ConsistOf(interpreter.Message{
+	messages, err := it.Eval("tempo 120")
+	g.Expect(err).NotTo(HaveOccurred())
+	g.Expect(messages).To(ConsistOf(interpreter.Message{
 		Tempo: 120,
 	}))
 }
@@ -26,14 +23,10 @@ func TestTempoCommand(t *testing.T) {
 func TestProgramChangeCommand(t *testing.T) {
 	g := NewGomegaWithT(t)
 
-	input := "program 0"
+	it := interpreter.New()
 
-	s := interpreter.NewScanner(strings.NewReader(input))
-	g.Expect(s.Scan()).To(BeTrue())
-	g.Expect(s.Err()).NotTo(HaveOccurred())
-
-	messages := s.Messages()
-
+	messages, err := it.Eval("program 0")
+	g.Expect(err).NotTo(HaveOccurred())
 	g.Expect(messages).To(HaveLen(1))
 	g.Expect(messages[0].Msg).To(ContainSubstring("Channel0Msg & ProgramChangeMsg program: 0"))
 }
@@ -41,14 +34,10 @@ func TestProgramChangeCommand(t *testing.T) {
 func TestControlChangeCommand(t *testing.T) {
 	g := NewGomegaWithT(t)
 
-	input := "control 0 1"
+	it := interpreter.New()
 
-	s := interpreter.NewScanner(strings.NewReader(input))
-	g.Expect(s.Scan()).To(BeTrue())
-	g.Expect(s.Err()).NotTo(HaveOccurred())
-
-	messages := s.Messages()
-
+	messages, err := it.Eval("control 0 1")
+	g.Expect(err).NotTo(HaveOccurred())
 	g.Expect(messages).To(HaveLen(1))
 	g.Expect(messages[0].Msg).To(ContainSubstring("Channel0Msg & ControlChangeMsg controller: 0 change: 1"))
 }
@@ -56,14 +45,10 @@ func TestControlChangeCommand(t *testing.T) {
 func TestStartCommand(t *testing.T) {
 	g := NewGomegaWithT(t)
 
-	input := "start"
+	it := interpreter.New()
 
-	s := interpreter.NewScanner(strings.NewReader(input))
-	g.Expect(s.Scan()).To(BeTrue())
-	g.Expect(s.Err()).NotTo(HaveOccurred())
-
-	messages := s.Messages()
-
+	messages, err := it.Eval("start")
+	g.Expect(err).NotTo(HaveOccurred())
 	g.Expect(messages).To(HaveLen(1))
 	g.Expect(messages[0].Msg).To(ContainSubstring("StartMsg"))
 }
@@ -71,14 +56,10 @@ func TestStartCommand(t *testing.T) {
 func TestStopCommand(t *testing.T) {
 	g := NewGomegaWithT(t)
 
-	input := "stop"
+	it := interpreter.New()
 
-	s := interpreter.NewScanner(strings.NewReader(input))
-	g.Expect(s.Scan()).To(BeTrue())
-	g.Expect(s.Err()).NotTo(HaveOccurred())
-
-	messages := s.Messages()
-
+	messages, err := it.Eval("stop")
+	g.Expect(err).NotTo(HaveOccurred())
 	g.Expect(messages).To(HaveLen(1))
 	g.Expect(messages[0].Msg).To(ContainSubstring("StopMsg"))
 }
@@ -86,25 +67,24 @@ func TestStopCommand(t *testing.T) {
 func TestUndefinedKey(t *testing.T) {
 	g := NewGomegaWithT(t)
 
-	input := "k"
+	it := interpreter.New()
 
-	s := interpreter.NewScanner(strings.NewReader(input))
-	g.Expect(s.Scan()).To(BeFalse())
-	g.Expect(s.Err()).To(HaveOccurred())
-	g.Expect(s.Messages()).To(BeNil())
+	messages, err := it.Eval("k")
+	g.Expect(err).To(HaveOccurred())
+	g.Expect(messages).To(BeNil())
 }
 
 func TestSharpNote(t *testing.T) {
 	g := NewGomegaWithT(t)
 
-	input := "assign c 60\nc#"
+	it := interpreter.New()
 
-	s := interpreter.NewScanner(strings.NewReader(input))
-	g.Expect(s.Scan()).To(BeTrue())
-	g.Expect(s.Err()).NotTo(HaveOccurred())
+	messages, err := it.Eval("assign c 60")
+	g.Expect(err).NotTo(HaveOccurred())
+	g.Expect(messages).To(BeNil())
 
-	messages := s.Messages()
-
+	messages, err = it.Eval("c#")
+	g.Expect(err).NotTo(HaveOccurred())
 	g.Expect(messages).To(HaveLen(2))
 	g.Expect(messages[0].Msg).To(ContainSubstring("Channel0Msg & NoteOnMsg key: 61"))
 }
@@ -112,14 +92,14 @@ func TestSharpNote(t *testing.T) {
 func TestFlatNote(t *testing.T) {
 	g := NewGomegaWithT(t)
 
-	input := "assign c 60\nc$"
+	it := interpreter.New()
 
-	s := interpreter.NewScanner(strings.NewReader(input))
-	g.Expect(s.Scan()).To(BeTrue())
-	g.Expect(s.Err()).NotTo(HaveOccurred())
+	messages, err := it.Eval("assign c 60")
+	g.Expect(err).NotTo(HaveOccurred())
+	g.Expect(messages).To(BeNil())
 
-	messages := s.Messages()
-
+	messages, err = it.Eval("c$")
+	g.Expect(err).NotTo(HaveOccurred())
 	g.Expect(messages).To(HaveLen(2))
 	g.Expect(messages[0].Msg).To(ContainSubstring("Channel0Msg & NoteOnMsg key: 59"))
 }
@@ -127,21 +107,29 @@ func TestFlatNote(t *testing.T) {
 func TestSharpNoteRange(t *testing.T) {
 	g := NewGomegaWithT(t)
 
-	input := "assign c 127\nc#"
+	it := interpreter.New()
 
-	s := interpreter.NewScanner(strings.NewReader(input))
-	g.Expect(s.Scan()).To(BeFalse())
-	g.Expect(s.Err()).To(HaveOccurred())
+	messages, err := it.Eval("assign c 127")
+	g.Expect(err).NotTo(HaveOccurred())
+	g.Expect(messages).To(BeNil())
+
+	messages, err = it.Eval("c#")
+	g.Expect(err).To(HaveOccurred())
+	g.Expect(messages).To(BeNil())
 }
 
 func TestFlatNoteRange(t *testing.T) {
 	g := NewGomegaWithT(t)
 
-	input := "assign c 0\nc$"
+	it := interpreter.New()
 
-	s := interpreter.NewScanner(strings.NewReader(input))
-	g.Expect(s.Scan()).To(BeFalse())
-	g.Expect(s.Err()).To(HaveOccurred())
+	messages, err := it.Eval("assign c 0")
+	g.Expect(err).NotTo(HaveOccurred())
+	g.Expect(messages).To(BeNil())
+
+	messages, err = it.Eval("c$")
+	g.Expect(err).To(HaveOccurred())
+	g.Expect(messages).To(BeNil())
 }
 
 func TestNoteLengths(t *testing.T) {
@@ -150,44 +138,44 @@ func TestNoteLengths(t *testing.T) {
 		offAt uint64
 	}{
 		{
-			input: "assign k 36\nk", // Quarter note.
+			input: "k", // Quarter note.
 			offAt: uint64(constants.TicksPerQuarter),
 		},
 		{
-			input: "assign k 36\nk.", // Dotted quarter note, x1.5.
+			input: "k.", // Dotted quarter note, x1.5.
 			offAt: uint64(constants.TicksPerQuarter * 3 / 2),
 		},
 		{
-			input: "assign k 36\nk..", // Double dotted quarter note, x1.75.
+			input: "k..", // Double dotted quarter note, x1.75.
 			offAt: uint64(constants.TicksPerQuarter * 7 / 4),
 		},
 		{
-			input: "assign k 36\nk...", // Triplet dotted quarter note, x1.875.
+			input: "k...", // Triplet dotted quarter note, x1.875.
 			offAt: uint64(constants.TicksPerQuarter * 15 / 8),
 		},
 		{
-			input: "assign k 36\nk/5", // Quintuplet quarter note.
+			input: "k/5", // Quintuplet quarter note.
 			offAt: uint64(constants.TicksPerQuarter * 2 / 5),
 		},
 		{
-			input: "assign k 36\nk./3", // Dotted triplet quarter note == quarter note.
+			input: "k./3", // Dotted triplet quarter note == quarter note.
 			offAt: uint64(constants.TicksPerQuarter),
 		},
 	} {
 		t.Run(tc.input, func(t *testing.T) {
 			g := NewGomegaWithT(t)
 
-			s := interpreter.NewScanner(strings.NewReader(tc.input))
-			g.Expect(s.Scan()).To(BeTrue())
-			g.Expect(s.Err()).NotTo(HaveOccurred())
+			it := interpreter.New()
 
-			messages := s.Messages()
+			messages, err := it.Eval("assign k 36")
+			g.Expect(err).NotTo(HaveOccurred())
+			g.Expect(messages).To(BeNil())
 
+			messages, err = it.Eval(tc.input)
+			g.Expect(err).NotTo(HaveOccurred())
 			g.Expect(messages).To(HaveLen(2))
-
 			g.Expect(messages[0].Tick).To(Equal(uint64(0)))
 			g.Expect(messages[0].Msg).To(ContainSubstring("Channel0Msg & NoteOnMsg key: 36"))
-
 			g.Expect(messages[1].Tick).To(Equal(tc.offAt))
 			g.Expect(messages[1].Msg).To(ContainSubstring("Channel0Msg & NoteOffMsg key: 36"))
 		})
@@ -196,22 +184,30 @@ func TestNoteLengths(t *testing.T) {
 
 func TestCommandForbiddenInBar(t *testing.T) {
 	for _, input := range []string{
-		"bar \"bar\"\nassign c 10",
-		"bar \"bar\"\nbar \"forbidden\"",
-		"bar \"bar\"\nplay \"forbidden\"",
-		"bar \"bar\"\ntempo 120",
-		"bar \"bar\"\nchannel 0",
-		"bar \"bar\"\nvelocity 0",
-		"bar \"bar\"\nprogram 0",
-		"bar \"bar\"\ncontrol 0 0",
+		`assign c 10`,
+		`bar "forbidden"`,
+		`play "forbidden"`,
+		`tempo 120`,
+		`channel 0`,
+		`velocity 0`,
+		`program 0`,
+		`control 0 0`,
+		`start`,
+		`stop`,
 	} {
 		t.Run(input, func(t *testing.T) {
 			g := NewGomegaWithT(t)
 
-			s := interpreter.NewScanner(strings.NewReader(input))
-			g.Expect(s.Scan()).To(BeFalse())
-			g.Expect(s.Err()).To(HaveOccurred())
-			g.Expect(s.Err().Error()).To(ContainSubstring("not ended"))
+			it := interpreter.New()
+
+			messages, err := it.Eval(`bar "bar"`)
+			g.Expect(err).NotTo(HaveOccurred())
+			g.Expect(messages).To(BeNil())
+
+			messages, err = it.Eval(input)
+			g.Expect(err).To(HaveOccurred())
+			g.Expect(err.Error()).To(ContainSubstring("not ended"))
+			g.Expect(messages).To(BeNil())
 		})
 	}
 }
@@ -219,22 +215,25 @@ func TestCommandForbiddenInBar(t *testing.T) {
 func TestBar(t *testing.T) {
 	g := NewGomegaWithT(t)
 
-	input := `assign k 36
-assign s 38
-velocity 100
-channel 10
-bar "verse1"
-[kk]8
-[ss]8
-end
-play "verse1"
-`
+	it := interpreter.New()
 
-	s := interpreter.NewScanner(strings.NewReader(input))
-	g.Expect(s.Scan()).To(BeTrue())
-	g.Expect(s.Err()).NotTo(HaveOccurred())
+	for _, input := range []string{
+		`assign k 36`,
+		`assign s 38`,
+		`velocity 100`,
+		`channel 10`,
+		`bar "verse"`,
+		`[kk]8`,
+		`[ss]8`,
+		`end`,
+	} {
+		messages, err := it.Eval(input)
+		g.Expect(err).NotTo(HaveOccurred())
+		g.Expect(messages).To(BeNil())
+	}
 
-	messages := s.Messages()
+	messages, err := it.Eval(`play "verse"`)
+	g.Expect(err).NotTo(HaveOccurred())
 
 	g.Expect(messages).To(HaveLen(8))
 

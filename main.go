@@ -3,6 +3,7 @@
 package main
 
 import (
+	"bufio"
 	"context"
 	"errors"
 	"fmt"
@@ -62,6 +63,11 @@ func main() {
 	}
 }
 
+type result struct {
+	input    string
+	messages []interpreter.Message
+}
+
 func runShell(c *cobra.Command, _ []string) error {
 	if strings.Contains(runtime.GOOS, "linux") {
 		// TODO: eventually remove this when the bugs get fixed.
@@ -85,9 +91,9 @@ func runShell(c *cobra.Command, _ []string) error {
 
 	fmt.Printf("Welcome to the gong shell on MIDI port '%d: %s'!\n", out.Number(), out.String())
 
-	it := interpreter.NewInterpreter()
+	it := interpreter.New()
 
-	msgC := make(chan []interpreter.Message)
+	resultC := make(chan result)
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 
@@ -95,7 +101,7 @@ func runShell(c *cobra.Command, _ []string) error {
 	wg.Add(1)
 	go func() {
 		defer wg.Done()
-		startPlayer(ctx, out, msgC)
+		startPlayer(ctx, out, resultC)
 	}()
 
 	prompt.New(
@@ -105,7 +111,7 @@ func runShell(c *cobra.Command, _ []string) error {
 				fmt.Println(err)
 				return
 			}
-			msgC <- messages
+			resultC <- result{"", messages}
 		},
 		func(in prompt.Document) []prompt.Suggest {
 			var sug []prompt.Suggest
@@ -142,28 +148,34 @@ func playFile(c *cobra.Command, args []string) error {
 		return err
 	}
 
-	s := interpreter.NewScanner(f)
+	it := interpreter.New()
+	s := bufio.NewScanner(f)
 
-	msgC := make(chan []interpreter.Message)
+	resultC := make(chan result)
 
 	var wg sync.WaitGroup
 	wg.Add(1)
 	go func() {
 		defer wg.Done()
-		startPlayer(context.Background(), out, msgC)
+		startPlayer(context.Background(), out, resultC)
 	}()
 
 	for s.Scan() {
-		msgC <- s.Messages()
+		input := s.Text()
+		messages, err := it.Eval(input)
+		if err != nil {
+			return err
+		}
+		resultC <- result{input, messages}
 	}
 
-	close(msgC)
+	close(resultC)
 	wg.Wait()
 
 	return s.Err()
 }
 
-func startPlayer(ctx context.Context, out midi.Sender, msgC <-chan []interpreter.Message) {
+func startPlayer(ctx context.Context, out midi.Sender, resultC <-chan result) {
 	runtime.LockOSThread()
 
 	p := player.New(out)
@@ -171,11 +183,14 @@ func startPlayer(ctx context.Context, out midi.Sender, msgC <-chan []interpreter
 		select {
 		case <-ctx.Done():
 			return
-		case m, ok := <-msgC:
+		case res, ok := <-resultC:
 			if !ok {
 				return
 			}
-			for _, msg := range m {
+			if res.input != "" {
+				fmt.Println(res.input)
+			}
+			for _, msg := range res.messages {
 				if err := p.Play(ctx, msg); err != nil {
 					if errors.Is(err, context.Canceled) {
 						return
