@@ -111,6 +111,7 @@ func (i *Interpreter) evalResult(res interface{}) ([]Message, error) {
 			// Guaranteed to be one ASCII character.
 			i.notes[[]rune(r.Args[0].IDValue())[0]] = uint8(v)
 			return nil, nil
+
 		case "bar": // Begin a bar.
 			if i.currentBar != "" {
 				return nil, fmt.Errorf("cannot begin bar '%s': bar '%s' is not ended", r.Args[0].StringValue(), i.currentBar)
@@ -242,9 +243,8 @@ func (i *Interpreter) parseBar(tracks ...ast.NoteList) ([]Message, error) {
 
 				velocity := i.currentVelocity
 				if note.IsAccent() {
-					if v := 2 * velocity; v <= 127 {
-						velocity = v
-					} else {
+					velocity *= 2
+					if velocity > 127 {
 						velocity = 127
 					}
 				} else if note.IsGhost() {

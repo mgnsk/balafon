@@ -5,6 +5,7 @@ import (
 
 	"github.com/mgnsk/gong/internal/constants"
 	"github.com/mgnsk/gong/internal/interpreter"
+	"github.com/onsi/gomega"
 	. "github.com/onsi/gomega"
 )
 
@@ -74,16 +75,20 @@ func TestUndefinedKey(t *testing.T) {
 	g.Expect(messages).To(BeNil())
 }
 
+func evalExpectNil(g *gomega.WithT, it *interpreter.Interpreter, input string) {
+	messages, err := it.Eval(input)
+	g.Expect(err).NotTo(HaveOccurred())
+	g.Expect(messages).To(BeNil())
+}
+
 func TestSharpNote(t *testing.T) {
 	g := NewGomegaWithT(t)
 
 	it := interpreter.New()
 
-	messages, err := it.Eval("assign c 60")
-	g.Expect(err).NotTo(HaveOccurred())
-	g.Expect(messages).To(BeNil())
+	evalExpectNil(g, it, "assign c 60")
 
-	messages, err = it.Eval("c#")
+	messages, err := it.Eval("c#")
 	g.Expect(err).NotTo(HaveOccurred())
 	g.Expect(messages).To(HaveLen(2))
 	g.Expect(messages[0].Msg).To(ContainSubstring("Channel0Msg & NoteOnMsg key: 61"))
@@ -94,11 +99,9 @@ func TestFlatNote(t *testing.T) {
 
 	it := interpreter.New()
 
-	messages, err := it.Eval("assign c 60")
-	g.Expect(err).NotTo(HaveOccurred())
-	g.Expect(messages).To(BeNil())
+	evalExpectNil(g, it, "assign c 60")
 
-	messages, err = it.Eval("c$")
+	messages, err := it.Eval("c$")
 	g.Expect(err).NotTo(HaveOccurred())
 	g.Expect(messages).To(HaveLen(2))
 	g.Expect(messages[0].Msg).To(ContainSubstring("Channel0Msg & NoteOnMsg key: 59"))
@@ -109,11 +112,9 @@ func TestSharpNoteRange(t *testing.T) {
 
 	it := interpreter.New()
 
-	messages, err := it.Eval("assign c 127")
-	g.Expect(err).NotTo(HaveOccurred())
-	g.Expect(messages).To(BeNil())
+	evalExpectNil(g, it, "assign c 127")
 
-	messages, err = it.Eval("c#")
+	messages, err := it.Eval("c#")
 	g.Expect(err).To(HaveOccurred())
 	g.Expect(messages).To(BeNil())
 }
@@ -123,13 +124,44 @@ func TestFlatNoteRange(t *testing.T) {
 
 	it := interpreter.New()
 
-	messages, err := it.Eval("assign c 0")
-	g.Expect(err).NotTo(HaveOccurred())
-	g.Expect(messages).To(BeNil())
+	evalExpectNil(g, it, "assign c 0")
 
-	messages, err = it.Eval("c$")
+	messages, err := it.Eval("c$")
 	g.Expect(err).To(HaveOccurred())
 	g.Expect(messages).To(BeNil())
+}
+
+func TestAccentuatedAndGhostNote(t *testing.T) {
+	g := NewGomegaWithT(t)
+
+	it := interpreter.New()
+
+	evalExpectNil(g, it, "velocity 50")
+	evalExpectNil(g, it, "assign c 60")
+
+	messages, err := it.Eval("c^")
+	g.Expect(err).NotTo(HaveOccurred())
+	g.Expect(messages).To(HaveLen(2))
+	g.Expect(messages[0].Msg).To(ContainSubstring("velocity: 100"))
+
+	messages, err = it.Eval("c)")
+	g.Expect(err).NotTo(HaveOccurred())
+	g.Expect(messages).To(HaveLen(2))
+	g.Expect(messages[0].Msg).To(ContainSubstring("velocity: 25"))
+}
+
+func TestAccentutedNoteRange(t *testing.T) {
+	g := NewGomegaWithT(t)
+
+	it := interpreter.New()
+
+	evalExpectNil(g, it, "velocity 127")
+	evalExpectNil(g, it, "assign c 60")
+
+	messages, err := it.Eval("c^")
+	g.Expect(err).NotTo(HaveOccurred())
+	g.Expect(messages).To(HaveLen(2))
+	g.Expect(messages[0].Msg).To(ContainSubstring("velocity: 127"))
 }
 
 func TestNoteLengths(t *testing.T) {
@@ -167,11 +199,9 @@ func TestNoteLengths(t *testing.T) {
 
 			it := interpreter.New()
 
-			messages, err := it.Eval("assign k 36")
-			g.Expect(err).NotTo(HaveOccurred())
-			g.Expect(messages).To(BeNil())
+			evalExpectNil(g, it, "assign k 36")
 
-			messages, err = it.Eval(tc.input)
+			messages, err := it.Eval(tc.input)
 			g.Expect(err).NotTo(HaveOccurred())
 			g.Expect(messages).To(HaveLen(2))
 			g.Expect(messages[0].Tick).To(Equal(uint64(0)))
@@ -200,11 +230,9 @@ func TestCommandForbiddenInBar(t *testing.T) {
 
 			it := interpreter.New()
 
-			messages, err := it.Eval(`bar "bar"`)
-			g.Expect(err).NotTo(HaveOccurred())
-			g.Expect(messages).To(BeNil())
+			evalExpectNil(g, it, `bar "bar"`)
 
-			messages, err = it.Eval(input)
+			messages, err := it.Eval(input)
 			g.Expect(err).To(HaveOccurred())
 			g.Expect(err.Error()).To(ContainSubstring("not ended"))
 			g.Expect(messages).To(BeNil())
@@ -227,9 +255,7 @@ func TestBar(t *testing.T) {
 		`[ss]8`,
 		`end`,
 	} {
-		messages, err := it.Eval(input)
-		g.Expect(err).NotTo(HaveOccurred())
-		g.Expect(messages).To(BeNil())
+		evalExpectNil(g, it, input)
 	}
 
 	messages, err := it.Eval(`play "verse"`)
