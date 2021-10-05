@@ -236,16 +236,16 @@ bar "bonham 1"
 end
 
 bar "bonham 2"
-[[x-o]    [x^-x]    [x^-x] [x^-x]]8/3
--         [-s)-]8/3 s      [-s)-]8/3
-[k^-k]8/3 [--k]8/3  -      [--k]8/3
--         X
+[[x^-o]    [x^-x]    [x^-x] [x^-x]]8/3
+-          [-s)-]8/3 s      [-s)-]8/3
+[k^-k]8/3  [--k]8/3  -      [--k]8/3
+-          X
 end
 
 bar "fill"
-[[--s] [sss] [ssq] [qgg]]8/3
-[[k-k] [--k]]8/3
-x      X     X     X
+[[x^-s]  [sss] [ssq] [qgg]]8/3
+[[k-k]   [--k]]8/3
+-        X     X     X
 end
 
 // Count in.
