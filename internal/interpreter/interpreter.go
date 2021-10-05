@@ -24,6 +24,7 @@ type Message struct {
 type Interpreter struct {
 	parser          *parser.Parser
 	notes           map[rune]uint8
+	ringing         map[uint16]struct{}
 	bars            map[string][]ast.NoteList
 	barBuffer       []ast.NoteList
 	currentBar      string
@@ -151,21 +152,21 @@ func (i *Interpreter) evalResult(res interface{}) ([]Message, error) {
 				return nil, fmt.Errorf("cannot change tempo: bar '%s' is not ended", i.currentBar)
 			}
 			return []Message{{
-				Tempo: r.Uint32Args()[0],
+				Tempo: r.Uint32Arg(0),
 			}}, nil
 
 		case "channel": // Set the current channel.
 			if i.currentBar != "" {
 				return nil, fmt.Errorf("cannot change channel: bar '%s' is not ended", i.currentBar)
 			}
-			i.currentChannel = r.Uint8Args()[0]
+			i.currentChannel = r.Uint8Arg(0)
 			return nil, nil
 
 		case "velocity": // Set the current velocity.
 			if i.currentBar != "" {
 				return nil, fmt.Errorf("cannot change velocity: bar '%s' is not ended", i.currentBar)
 			}
-			i.currentVelocity = r.Uint8Args()[0]
+			i.currentVelocity = r.Uint8Arg(0)
 			return nil, nil
 
 		case "program": // Program change.
@@ -173,16 +174,15 @@ func (i *Interpreter) evalResult(res interface{}) ([]Message, error) {
 				return nil, fmt.Errorf("cannot change program: bar '%s' is not ended", i.currentBar)
 			}
 			return []Message{{
-				Msg: midi.NewMessage(midi.Channel(i.currentChannel).ProgramChange(r.Uint8Args()[0])),
+				Msg: midi.NewMessage(midi.Channel(i.currentChannel).ProgramChange(r.Uint8Arg(0))),
 			}}, nil
 
 		case "control": // Control change.
 			if i.currentBar != "" {
 				return nil, fmt.Errorf("cannot change control: bar '%s' is not ended", i.currentBar)
 			}
-			args := r.Uint8Args()
 			return []Message{{
-				Msg: midi.NewMessage(midi.Channel(i.currentChannel).ControlChange(args[0], args[1])),
+				Msg: midi.NewMessage(midi.Channel(i.currentChannel).ControlChange(r.Uint8Arg(0), r.Uint8Arg(1))),
 			}}, nil
 
 		case "start": // Start message.
@@ -211,67 +211,89 @@ func (i *Interpreter) evalResult(res interface{}) ([]Message, error) {
 }
 
 func (i *Interpreter) parseBar(tracks ...ast.NoteList) ([]Message, error) {
-	count := 0
-	for _, track := range tracks {
-		count += len(track) * 2
-	}
-	messages := make([]Message, count)
-	n := 0
+	var (
+		messages     []Message
+		furthestTick uint64
+	)
 
 	for _, track := range tracks {
 		var tick uint64
 		for _, note := range track {
 			length := noteLength(note)
 
-			if note.Name != '-' {
-				key, ok := i.notes[note.Name]
-				if !ok {
-					return nil, fmt.Errorf("key '%c' undefined", note.Name)
-				}
+			if note.Name == '-' {
+				tick += length
+				continue
+			}
 
-				if note.IsSharp() {
-					if key == 127 {
-						return nil, fmt.Errorf("sharp note '%s' out of MIDI range", note)
-					}
-					key++
-				} else if note.IsFlat() {
-					if key == 0 {
-						return nil, fmt.Errorf("flat note '%s' out of MIDI range", note)
-					}
-					key--
-				}
+			key, ok := i.notes[note.Name]
+			if !ok {
+				return nil, fmt.Errorf("key '%c' undefined", note.Name)
+			}
 
-				velocity := i.currentVelocity
-				if note.IsAccent() {
-					velocity *= 2
-					if velocity > 127 {
-						velocity = 127
-					}
-				} else if note.IsGhost() {
-					velocity /= 2
+			if note.IsSharp() {
+				if key == 127 {
+					return nil, fmt.Errorf("sharp note '%s' out of MIDI range", note)
 				}
+				key++
+			} else if note.IsFlat() {
+				if key == 0 {
+					return nil, fmt.Errorf("flat note '%s' out of MIDI range", note)
+				}
+				key--
+			}
 
-				messages[n] = Message{
+			velocity := i.currentVelocity
+			if note.IsAccent() {
+				velocity *= 2
+				if velocity > 127 {
+					velocity = 127
+				}
+			} else if note.IsGhost() {
+				velocity /= 2
+			}
+
+			r := uint16(i.currentChannel)<<8 | uint16(key)
+			if _, ok := i.ringing[r]; ok {
+				delete(i.ringing, r)
+				messages = append(messages,
+					Message{
+						Tick: i.currentTick + tick,
+						Msg:  midi.NewMessage(midi.Channel(i.currentChannel).NoteOff(key)),
+					},
+					Message{
+						Tick: i.currentTick + tick,
+						Msg:  midi.NewMessage(midi.Channel(i.currentChannel).NoteOn(key, velocity)),
+					},
+				)
+			} else {
+				messages = append(messages, Message{
 					Tick: i.currentTick + tick,
 					Msg:  midi.NewMessage(midi.Channel(i.currentChannel).NoteOn(key, velocity)),
-				}
+				})
+			}
 
-				messages[n+1] = Message{
+			if note.LetRing() {
+				i.ringing[r] = struct{}{}
+			} else {
+				messages = append(messages, Message{
 					Tick: i.currentTick + tick + length,
 					Msg:  midi.NewMessage(midi.Channel(i.currentChannel).NoteOff(key)),
-				}
-
-				n += 2
+				})
 			}
 
 			tick += length
+
+			if tick > furthestTick {
+				furthestTick = tick
+			}
 		}
 	}
 
+	i.currentTick += furthestTick
+
 	// Sort the messages so that every note is off before on.
 	sort.Sort(byMessageTypeOrKey(messages))
-
-	i.currentTick = messages[len(messages)-1].Tick
 
 	return messages, nil
 }
@@ -280,8 +302,9 @@ func (i *Interpreter) parseBar(tracks ...ast.NoteList) ([]Message, error) {
 func New() *Interpreter {
 	return &Interpreter{
 		parser:          parser.NewParser(),
-		notes:           make(map[rune]uint8),
-		bars:            make(map[string][]ast.NoteList),
+		notes:           map[rune]uint8{},
+		ringing:         map[uint16]struct{}{},
+		bars:            map[string][]ast.NoteList{},
 		currentVelocity: 127,
 	}
 }

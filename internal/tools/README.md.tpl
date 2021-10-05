@@ -89,8 +89,8 @@ go install github.com/mgnsk/gong@latest
   - ghost (`)`)
   - numeric note value (`1`, `2`, `4`, `8` and so on)
   - dot (`.`)
-  - tuplet (`/3`)
-    The number in the tuplet specifies the divison, for example a quintuplet `/5`.
+  - tuplet (`/3`) (The number in the tuplet specifies the divison, for example a quintuplet `/5`)
+  - let ring (`*`)
 - #### Note values
   ```
   // Whole note.

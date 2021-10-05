@@ -140,6 +140,12 @@ func (n Note) Tuplet() uint {
 	return 0
 }
 
+// LetRing reports whether the note must ring.
+func (n Note) LetRing() bool {
+	_, ok := n.Props.Find(letRingType)
+	return ok
+}
+
 func (n Note) String() string {
 	return fmt.Sprintf("%c%s", n.Name, n.Props)
 }
@@ -240,11 +246,12 @@ func NewPropertyList(t *token.Token, inner interface{}) (PropertyList, error) {
 }
 
 var propOrder = map[token.Type]int{
-	sharpType:  0,
-	flatType:   1,
-	accentType: 2,
-	ghostType:  3,
-	uintType:   4,
-	dotType:    5,
-	tupletType: 6,
+	sharpType:   0,
+	flatType:    1,
+	accentType:  2,
+	ghostType:   3,
+	uintType:    4,
+	dotType:     5,
+	tupletType:  6,
+	letRingType: 7,
 }

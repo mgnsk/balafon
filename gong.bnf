@@ -13,6 +13,7 @@ ghost      : ')' ;
 uint       : _uint ;
 dot        : '.' ;
 tuplet     : '/' _uint ;
+letRing    : '*' ;
 
 !comment    : _lineComment ;
 !whitespace : ' ' | '\t' | '\n' | '\r' ;
@@ -58,6 +59,7 @@ Property
     | uint
     | dot
     | tuplet
+    | letRing
     ;
 
 Command:

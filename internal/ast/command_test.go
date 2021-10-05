@@ -21,101 +21,101 @@ func TestValidCommands(t *testing.T) {
 
 	for _, tc := range []testcase{
 		{
-			"assign k 36 ",
+			`assign k 36`,
 			match{
 				BeAssignableToTypeOf(ast.Command{}),
 				ContainSubstring(`assign k 36`),
 			},
 		},
 		{
-			"bar \"Chorus0\"",
+			`bar "Chorus0"`,
 			match{
 				BeAssignableToTypeOf(ast.Command{}),
 				ContainSubstring(`bar "Chorus0"`),
 			},
 		},
 		{
-			"bar \"Chorus1\"",
+			`bar "Chorus1"`,
 			match{
 				BeAssignableToTypeOf(ast.Command{}),
 				ContainSubstring(`bar "Chorus1"`),
 			},
 		},
 		{
-			"end",
+			`end`,
 			match{
 				BeAssignableToTypeOf(ast.Command{}),
 				ContainSubstring("end"),
 			},
 		},
 		{
-			"play \"chorus\"",
+			`play "chorus"`,
 			match{
 				BeAssignableToTypeOf(ast.Command{}),
 				ContainSubstring(`play "chorus"`),
 			},
 		},
 		{
-			"play \"Chorus0\"",
+			`play "Chorus0"`,
 			match{
 				BeAssignableToTypeOf(ast.Command{}),
 				ContainSubstring(`play "Chorus0"`),
 			},
 		},
 		{
-			"play \"Chorus1\"",
+			`play "Chorus1"`,
 			match{
 				BeAssignableToTypeOf(ast.Command{}),
 				ContainSubstring(`play "Chorus1"`),
 			},
 		},
 		{
-			"tempo 120",
+			`tempo 120`,
 			match{
 				BeAssignableToTypeOf(ast.Command{}),
-				ContainSubstring("tempo 120"),
+				ContainSubstring(`tempo 120`),
 			},
 		},
 		{
-			"channel 0",
+			`channel 0`,
 			match{
 				BeAssignableToTypeOf(ast.Command{}),
-				ContainSubstring("channel 0"),
+				ContainSubstring(`channel 0`),
 			},
 		},
 		{
-			"velocity 50",
+			`velocity 50`,
 			match{
 				BeAssignableToTypeOf(ast.Command{}),
-				ContainSubstring("velocity 50"),
+				ContainSubstring(`velocity 50`),
 			},
 		},
 		{
-			"program 0",
+			`program 0`,
 			match{
 				BeAssignableToTypeOf(ast.Command{}),
-				ContainSubstring("program 0"),
+				ContainSubstring(`program 0`),
 			},
 		},
 		{
-			"control 0 1",
+			`control 0 1`,
 			match{
 				BeAssignableToTypeOf(ast.Command{}),
-				ContainSubstring("control 0 1"),
+				ContainSubstring(`control 0 1`),
 			},
 		},
 		{
-			"start",
+			`start`,
 			match{
 				BeAssignableToTypeOf(ast.Command{}),
-				ContainSubstring("start"),
+				ContainSubstring(`start`),
 			},
 		},
 		{
-			"stop",
+			`stop`,
 			match{
 				BeAssignableToTypeOf(ast.Command{}),
-				ContainSubstring("stop"),
+				ContainSubstring(`stop`),
 			},
 		},
 	} {
@@ -137,27 +137,27 @@ func TestValidCommands(t *testing.T) {
 
 func TestInvalidArguments(t *testing.T) {
 	for _, input := range []string{
-		"assign",
-		"assign 1",
-		"assign \"string\" \"string\"",
-		"assign \"kk\" 36", // Argument types are valid but string length must be 1.
-		"tempo",
-		"tempo 1 1",
-		"tempo \"string\"",
-		"channel",
-		"channel 0 0",
-		"channel \"string\" \"string\"",
-		"velocity",
-		"velocity 0 0",
-		"velocity \"string\" \"string\"",
-		"program",
-		"program 0 0",
-		"program \"string\" \"string\"",
-		"control",
-		"control 0",
-		"control \"string\"",
-		"start 0",
-		"stop 0",
+		`assign`,
+		`assign 1`,
+		`assign "string" "string"`,
+		`assign "kk" 36`, // Argument types are valid but string length must be 1.
+		`tempo`,
+		`tempo 1 1`,
+		`tempo "string"`,
+		`channel`,
+		`channel 0 0`,
+		`channel "string" "string"`,
+		`velocity`,
+		`velocity 0 0`,
+		`velocity "string" "string"`,
+		`program`,
+		`program 0 0`,
+		`program "string" "string"`,
+		`control`,
+		`control 0`,
+		`control "string"`,
+		`start 0`,
+		`stop 0`,
 	} {
 		t.Run(input, func(t *testing.T) {
 			g := NewGomegaWithT(t)
@@ -173,14 +173,14 @@ func TestInvalidArguments(t *testing.T) {
 
 func TestInvalidArgumentRange(t *testing.T) {
 	for _, input := range []string{
-		"assign k 128",
-		"tempo 0",
-		"tempo 65536",
-		"channel 16",
-		"velocity 128",
-		"program 128",
-		"control 0 128",
-		"control 128 0",
+		`assign k 128`,
+		`tempo 0`,
+		`tempo 65536`,
+		`channel 16`,
+		`velocity 128`,
+		`program 128`,
+		`control 0 128`,
+		`control 128 0`,
 	} {
 		t.Run(input, func(t *testing.T) {
 			g := NewGomegaWithT(t)

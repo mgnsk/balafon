@@ -154,10 +154,10 @@ func TestValidInputs(t *testing.T) {
 			},
 		},
 		{
-			"[[[[[k]/3].]$]8])\n", // Testing the ordering of properties.
+			"[[[[[k*]/3].]$]8])\n", // Testing the ordering of properties.
 			match{
 				BeAssignableToTypeOf(ast.NoteList(nil)),
-				ContainSubstring("k$)8./3"),
+				ContainSubstring("k$)8./3*"),
 			},
 		},
 	} {

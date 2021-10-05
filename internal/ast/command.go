@@ -19,30 +19,28 @@ func (c Command) String() string {
 	return fmt.Sprintf("%s %s", c.Name, c.Args)
 }
 
-// Uint8Args parses the command arguments as uint8 slice.
-func (c Command) Uint8Args() []uint8 {
-	args := make([]uint8, 0, 2)
-	for _, a := range c.Args {
-		v, err := a.Int32Value()
+// Uint8Arg parses the i-th command argument as a uint8.
+func (c Command) Uint8Arg(i int) uint8 {
+	if i < len(c.Args) {
+		v, err := c.Args[i].Int32Value()
 		if err != nil {
 			panic(err)
 		}
-		args = append(args, uint8(v))
+		return uint8(v)
 	}
-	return args
+	panic("invalid argument index")
 }
 
-// Uint32Args parses the command arguments as uint32 slice.
-func (c Command) Uint32Args() []uint32 {
-	args := make([]uint32, 0, 2)
-	for _, a := range c.Args {
-		v, err := a.Int32Value()
+// Uint32Arg parses the i-th command argument as a uint32.
+func (c Command) Uint32Arg(i int) uint32 {
+	if i < len(c.Args) {
+		v, err := c.Args[i].Int32Value()
 		if err != nil {
 			panic(err)
 		}
-		args = append(args, uint32(v))
+		return uint32(v)
 	}
-	return args
+	panic("invalid argument index")
 }
 
 // NewCommand creates a command from name and optional arguments.

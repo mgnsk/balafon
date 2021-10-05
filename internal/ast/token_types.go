@@ -11,5 +11,6 @@ var (
 	uintType       = token.TokMap.Type("uint")
 	dotType        = token.TokMap.Type("dot")
 	tupletType     = token.TokMap.Type("tuplet")
+	letRingType    = token.TokMap.Type("letRing")
 	stringLitType  = token.TokMap.Type("stringLit")
 )

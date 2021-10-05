@@ -104,8 +104,8 @@ go install github.com/mgnsk/gong@latest
   - ghost (`)`)
   - numeric note value (`1`, `2`, `4`, `8` and so on)
   - dot (`.`)
-  - tuplet (`/3`)
-    The number in the tuplet specifies the divison, for example a quintuplet `/5`.
+  - tuplet (`/3`) (The number in the tuplet specifies the divison, for example a quintuplet `/5`)
+  - let ring (`*`)
 - #### Note values
   ```
   // Whole note.
@@ -227,13 +227,12 @@ assign q 45
 // Floor tom 2.
 assign g 41
 
-// Start the first bar with a crash cymbal.
+// Start the first bar with a crash cymbal and let it ring.
 bar "bonham 1"
-c1
-[[--o]    [x^-x]    [x^-x] [x^-x]]8/3
--         [-s)-]8/3 s      [-s)-]8/3
-[k^-k]8/3 [--k]8/3  -      [--k]8/3
--         X
+[[c*-o]    [x^-x]    [x^-x] [x^-x]]8/3
+-          [-s)-]8/3 s      [-s)-]8/3
+[k^-k]8/3  [--k]8/3  -      [--k]8/3
+-          X
 end
 
 bar "bonham 2"
