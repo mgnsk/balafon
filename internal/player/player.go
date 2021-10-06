@@ -43,7 +43,7 @@ func (p *Player) Play(ctx context.Context, msg interpreter.Message) error {
 	return p.out.Send(msg.Msg.Data)
 }
 
-func (p *Player) setTempo(bpm uint32) {
+func (p *Player) setTempo(bpm uint16) {
 	p.tickDuration = time.Duration(float64(time.Minute) / float64(bpm) / float64(constants.TicksPerQuarter))
 }
 

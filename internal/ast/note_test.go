@@ -3,7 +3,6 @@ package ast_test
 import (
 	"testing"
 
-	"github.com/davecgh/go-spew/spew"
 	"github.com/mgnsk/gong/internal/ast"
 	"github.com/mgnsk/gong/internal/parser/lexer"
 	"github.com/mgnsk/gong/internal/parser/parser"
@@ -210,8 +209,7 @@ func TestInvalidNoteValue(t *testing.T) {
 			lex := lexer.NewLexer([]byte(input))
 			p := parser.NewParser()
 
-			r, err := p.Parse(lex)
-			spew.Dump(r)
+			_, err := p.Parse(lex)
 			g.Expect(err).To(HaveOccurred())
 		})
 	}

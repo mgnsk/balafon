@@ -17,7 +17,7 @@ import (
 type Message struct {
 	Msg   midi.Message
 	Tick  uint64
-	Tempo uint32
+	Tempo uint16
 }
 
 // Interpreter evaluates messages from raw line input.
@@ -81,6 +81,10 @@ func (i *Interpreter) Eval(input string) ([]Message, error) {
 	return i.evalResult(res)
 }
 
+func (i *Interpreter) errBarNotEnded(want string) error {
+	return fmt.Errorf("cannot %s: bar '%s' is not ended", want, i.currentBar)
+}
+
 func (i *Interpreter) evalResult(res interface{}) ([]Message, error) {
 	switch r := res.(type) {
 	case ast.NoteList:
@@ -88,111 +92,102 @@ func (i *Interpreter) evalResult(res interface{}) ([]Message, error) {
 			i.barBuffer = append(i.barBuffer, r)
 			return nil, nil
 		}
-		messages, err := i.parseBar(r)
-		if err != nil {
-			return nil, err
+		return i.parseBar(r)
+
+	case ast.CmdAssign:
+		if i.currentBar != "" {
+			return nil, i.errBarNotEnded("assign note")
 		}
-		return messages, nil
+		i.notes[r.Note] = r.Key
+		return nil, nil
 
-	case ast.Command:
-		switch r.Name {
-		case "assign":
-			if i.currentBar != "" {
-				return nil, fmt.Errorf("cannot assign note: bar '%s' is not ended", i.currentBar)
-			}
-			i.notes[r.RuneArg(0)] = r.Uint8Arg(1)
-			return nil, nil
-
-		case "bar": // Begin a bar.
-			if i.currentBar != "" {
-				return nil, fmt.Errorf("cannot begin bar '%s': bar '%s' is not ended", r.StringValueArg(0), i.currentBar)
-			}
-			barName := r.StringValueArg(0)
-			if _, ok := i.bars[barName]; ok {
-				return nil, fmt.Errorf("bar '%s' already defined", barName)
-			}
-			i.currentBar = barName
-			return nil, nil
-
-		case "end": // End the current bar.
-			if i.currentBar == "" {
-				return nil, errors.New("cannot end a bar: no active bar")
-			}
-			i.bars[i.currentBar] = i.barBuffer
-			i.currentBar = ""
-			i.barBuffer = nil
-			return nil, nil
-
-		case "play": // Play a bar.
-			if i.currentBar != "" {
-				return nil, fmt.Errorf("cannot play bar '%s': bar '%s' is not ended", r.StringValueArg(0), i.currentBar)
-			}
-			bar, ok := i.bars[r.StringValueArg(0)]
-			if !ok {
-				return nil, fmt.Errorf("cannot play nonexistent bar '%s'", r.StringValueArg(0))
-			}
-			return i.parseBar(bar...)
-
-		case "tempo": // Set the current tempo.
-			if i.currentBar != "" {
-				return nil, fmt.Errorf("cannot change tempo: bar '%s' is not ended", i.currentBar)
-			}
-			return []Message{{
-				Tempo: r.Uint32Arg(0),
-			}}, nil
-
-		case "channel": // Set the current channel.
-			if i.currentBar != "" {
-				return nil, fmt.Errorf("cannot change channel: bar '%s' is not ended", i.currentBar)
-			}
-			i.currentChannel = r.Uint8Arg(0)
-			return nil, nil
-
-		case "velocity": // Set the current velocity.
-			if i.currentBar != "" {
-				return nil, fmt.Errorf("cannot change velocity: bar '%s' is not ended", i.currentBar)
-			}
-			i.currentVelocity = r.Uint8Arg(0)
-			return nil, nil
-
-		case "program": // Program change.
-			if i.currentBar != "" {
-				return nil, fmt.Errorf("cannot change program: bar '%s' is not ended", i.currentBar)
-			}
-			return []Message{{
-				Msg: midi.NewMessage(midi.Channel(i.currentChannel).ProgramChange(r.Uint8Arg(0))),
-			}}, nil
-
-		case "control": // Control change.
-			if i.currentBar != "" {
-				return nil, fmt.Errorf("cannot change control: bar '%s' is not ended", i.currentBar)
-			}
-			return []Message{{
-				Msg: midi.NewMessage(midi.Channel(i.currentChannel).ControlChange(r.Uint8Arg(0), r.Uint8Arg(1))),
-			}}, nil
-
-		case "start": // Start message.
-			if i.currentBar != "" {
-				return nil, fmt.Errorf("cannot start: bar '%s' is not ended", i.currentBar)
-			}
-			return []Message{{
-				Msg: midi.NewMessage(midi.Start()),
-			}}, nil
-
-		case "stop": // Stop message.
-			if i.currentBar != "" {
-				return nil, fmt.Errorf("cannot stop: bar '%s' is not ended", i.currentBar)
-			}
-			return []Message{{
-				Msg: midi.NewMessage(midi.Stop()),
-			}}, nil
-
-		default:
-			panic(fmt.Sprintf("invalid command '%s'", r.Name))
+	case ast.CmdTempo:
+		if i.currentBar != "" {
+			return nil, i.errBarNotEnded("change tempo")
 		}
+		return []Message{{
+			Tempo: uint16(r),
+		}}, nil
+
+	case ast.CmdChannel:
+		if i.currentBar != "" {
+			return nil, i.errBarNotEnded("change channel")
+		}
+		i.currentChannel = uint8(r)
+		return nil, nil
+
+	case ast.CmdVelocity:
+		if i.currentBar != "" {
+			return nil, i.errBarNotEnded("change velocity")
+		}
+		i.currentVelocity = uint8(r)
+		return nil, nil
+
+	case ast.CmdProgram:
+		if i.currentBar != "" {
+			return nil, i.errBarNotEnded("change program")
+		}
+		return []Message{{
+			Msg: midi.NewMessage(midi.Channel(i.currentChannel).ProgramChange(uint8(r))),
+		}}, nil
+
+	case ast.CmdControl:
+		if i.currentBar != "" {
+			return nil, i.errBarNotEnded("change control")
+		}
+		return []Message{{
+			Msg: midi.NewMessage(midi.Channel(i.currentChannel).ControlChange(r.Control, r.Value)),
+		}}, nil
+
+	case ast.CmdBar:
+		if i.currentBar != "" {
+			return nil, i.errBarNotEnded("begin bar")
+		}
+		bar := string(r)
+		if _, ok := i.bars[bar]; ok {
+			return nil, fmt.Errorf("bar '%s' already defined", bar)
+		}
+		i.currentBar = bar
+		return nil, nil
+
+	case ast.CmdEnd:
+		if i.currentBar == "" {
+			return nil, errors.New("cannot end bar: no active bar")
+		}
+		i.bars[i.currentBar] = i.barBuffer
+		i.currentBar = ""
+		i.barBuffer = nil
+		return nil, nil
+
+	case ast.CmdPlay:
+		if i.currentBar != "" {
+			return nil, i.errBarNotEnded("play bar")
+		}
+		bar := string(r)
+		noteList, ok := i.bars[bar]
+		if !ok {
+			return nil, fmt.Errorf("bar '%s' does not exist", bar)
+		}
+		return i.parseBar(noteList...)
+
+	case ast.CmdStart:
+		if i.currentBar != "" {
+			return nil, i.errBarNotEnded("start")
+		}
+		return []Message{{
+			Msg: midi.NewMessage(midi.Start()),
+		}}, nil
+
+	case ast.CmdStop:
+		if i.currentBar != "" {
+			return nil, i.errBarNotEnded("stop")
+		}
+		return []Message{{
+			Msg: midi.NewMessage(midi.Stop()),
+		}}, nil
 
 	default:
-		panic(fmt.Sprintf("invalid token %#v", r))
+		panic(fmt.Sprintf("invalid expression: %#v", r))
 	}
 }
 

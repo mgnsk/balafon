@@ -7,25 +7,6 @@ import (
 	"github.com/mgnsk/gong/internal/parser/token"
 )
 
-func validateNoteValue(v int32) error {
-	if uv := uint8(v); v < 1 || v > 128 || uv&(uv-1) != 0 {
-		return fmt.Errorf("note value must be a power of 2 in the range [1, 128], value given: '%d'", v)
-	}
-	return nil
-}
-
-// NewNoteValue creates a note value.
-func NewNoteValue(t *token.Token) (*token.Token, error) {
-	v, err := t.Int32Value()
-	if err != nil {
-		return nil, err
-	}
-	if err := validateNoteValue(v); err != nil {
-		return nil, err
-	}
-	return t, nil
-}
-
 // PropertyList is a list of note properties.
 type PropertyList []token.Token
 
@@ -63,12 +44,21 @@ func (p PropertyList) String() string {
 
 // NewPropertyList creates a note property list.
 func NewPropertyList(t *token.Token, inner interface{}) (PropertyList, error) {
+	if t.Type == uintType {
+		v, err := t.Int32Value()
+		if err != nil {
+			return nil, err
+		}
+		if err := validateNoteValue(v); err != nil {
+			return nil, err
+		}
+	}
+
 	if props, ok := inner.(PropertyList); ok {
 		for _, p := range props {
-			if p.Type == t.Type && p.Type != dotType {
-				return nil, fmt.Errorf("duplicate note property '%s': '%s'", token.TokMap.Id(p.Type), p.IDValue())
-			}
 			switch {
+			case p.Type == t.Type && p.Type != dotType:
+				return nil, fmt.Errorf("duplicate note property '%s': '%s'", token.TokMap.Id(p.Type), p.IDValue())
 			case t.Type == accentType && p.Type == ghostType:
 				return nil, fmt.Errorf("cannot add ghost property, note already has accentuated property")
 			case t.Type == ghostType && p.Type == accentType:
@@ -84,8 +74,20 @@ func NewPropertyList(t *token.Token, inner interface{}) (PropertyList, error) {
 		copy(p[1:], props)
 		return p, nil
 	}
+
 	return PropertyList{*t}, nil
 }
+
+var (
+	sharpType   = token.TokMap.Type("sharp")
+	flatType    = token.TokMap.Type("flat")
+	accentType  = token.TokMap.Type("accent")
+	ghostType   = token.TokMap.Type("ghost")
+	uintType    = token.TokMap.Type("uint")
+	dotType     = token.TokMap.Type("dot")
+	tupletType  = token.TokMap.Type("tuplet")
+	letRingType = token.TokMap.Type("letRing")
+)
 
 var propOrder = map[token.Type]int{
 	sharpType:   0,

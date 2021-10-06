@@ -3,17 +3,18 @@
 _uint        : '0' | '1'-'9' {'0'-'9'} ;
 _lineComment : '/' '/' { . } '\n' ;
 
-char       : 'a'-'z' | 'A'-'Z' ;
-rest       : '-' ;
-stringLit  : '"' { . } '"' ;
-sharp      : '#' ;
-flat       : '$' ;
-accent     : '^' ;
-ghost      : ')' ;
-uint       : _uint ;
-dot        : '.' ;
-tuplet     : '/' _uint ;
-letRing    : '*' ;
+char      : 'a'-'z' | 'A'-'Z' ;
+uint      : _uint ;
+stringLit : '"' { . } '"' ;
+
+rest    : '-' ;
+sharp   : '#' ;
+flat    : '$' ;
+accent  : '^' ;
+ghost   : ')' ;
+dot     : '.' ;
+tuplet  : '/' _uint ;
+letRing : '*' ;
 
 !comment    : _lineComment ;
 !whitespace : ' ' | '\t' | '\n' | '\r' ;
@@ -61,33 +62,22 @@ Property
     | flat
     | accent
     | ghost
-    | uint                          << ast.NewNoteValue($T0) >>
+    | uint
     | dot
     | tuplet
     | letRing
     ;
 
 Command:
-    : CommandName ArgumentList      << ast.NewCommand($T0.IDValue(), $1) >>
-    ;
-
-ArgumentList:
-    : empty
-    | char ArgumentList             << ast.NewArgumentList($T0, $1), nil >>
-    | stringLit ArgumentList        << ast.NewArgumentList($T0, $1), nil >>
-    | uint ArgumentList             << ast.NewArgumentList($T0, $1), nil >>
-    ;
-
-CommandName:
-    : "assign"
-    | "tempo"
-    | "channel"
-    | "velocity"
-    | "program"
-    | "control"
-    | "bar"
-    | "end"
-    | "play"
-    | "start"
-    | "stop"
+    : "assign" char uint            << ast.NewCmdAssign($T1, $T2) >>
+    | "tempo" uint                  << ast.NewCmdTempo($T1) >>
+    | "channel" uint                << ast.NewCmdChannel($T1) >>
+    | "velocity" uint               << ast.NewCmdVelocity($T1) >>
+    | "program" uint                << ast.NewCmdProgram($T1) >>
+    | "control" uint uint           << ast.NewCmdControl($T1, $T2) >>
+    | "bar" stringLit               << ast.CmdBar($T1.StringValue()), nil >>
+    | "end"                         << ast.CmdEnd{}, nil >>
+    | "play" stringLit              << ast.CmdPlay($T1.StringValue()), nil >>
+    | "start"                       << ast.CmdStart{}, nil >>
+    | "stop"                        << ast.CmdStop{}, nil >>
     ;
