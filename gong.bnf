@@ -61,7 +61,7 @@ Property
     | flat
     | accent
     | ghost
-    | uint
+    | uint                          << ast.NewNoteValue($T0) >>
     | dot
     | tuplet
     | letRing

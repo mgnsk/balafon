@@ -3,6 +3,7 @@ package ast_test
 import (
 	"testing"
 
+	"github.com/davecgh/go-spew/spew"
 	"github.com/mgnsk/gong/internal/ast"
 	"github.com/mgnsk/gong/internal/parser/lexer"
 	"github.com/mgnsk/gong/internal/parser/parser"
@@ -126,7 +127,7 @@ func TestValidInputs(t *testing.T) {
 			},
 		},
 		{
-			"k/3", // Triplet.
+			"k4/3", // Triplet.
 			match{
 				BeAssignableToTypeOf(ast.NoteList(nil)),
 				ContainSubstring("k4/3"),
@@ -209,7 +210,8 @@ func TestInvalidNoteValue(t *testing.T) {
 			lex := lexer.NewLexer([]byte(input))
 			p := parser.NewParser()
 
-			_, err := p.Parse(lex)
+			r, err := p.Parse(lex)
+			spew.Dump(r)
 			g.Expect(err).To(HaveOccurred())
 		})
 	}

@@ -140,7 +140,7 @@ func NewCommand(name string, argList interface{}) (Command, error) {
 }
 
 // ArgumentList is a list of command arguments.
-type ArgumentList []*token.Token
+type ArgumentList []token.Token
 
 func (l ArgumentList) String() string {
 	args := make([]string, len(l))
@@ -155,11 +155,11 @@ func NewArgumentList(arg *token.Token, inner interface{}) ArgumentList {
 	innerArgs, ok := inner.(ArgumentList)
 	if ok {
 		l := make(ArgumentList, 1, len(innerArgs)+1)
-		l[0] = arg
+		l[0] = *arg
 		l = append(l, innerArgs...)
 		return l
 	}
-	return ArgumentList{arg}
+	return ArgumentList{*arg}
 }
 
 func validateRange(name, arg string, min, max int) error {

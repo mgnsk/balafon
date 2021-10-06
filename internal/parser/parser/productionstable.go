@@ -183,13 +183,13 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `Property : uint	<<  >>`,
+		String: `Property : uint	<< ast.NewNoteValue(X[0].(*token.Token)) >>`,
 		Id:         "Property",
 		NTType:     7,
 		Index:      16,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib, C interface{}) (Attrib, error) {
-			return X[0], nil
+			return ast.NewNoteValue(X[0].(*token.Token))
 		},
 	},
 	ProdTabEntry{
