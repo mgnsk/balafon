@@ -1,10 +1,10 @@
 /* Lexical Part */
 
-_singleNote  : 'a'-'z' | 'A'-'Z' | '-' ;
 _uint        : '0' | '1'-'9' {'0'-'9'} ;
 _lineComment : '/' '/' { . } '\n' ;
 
-singleNote : _singleNote ;
+char       : 'a'-'z' | 'A'-'Z' ;
+rest       : '-' ;
 stringLit  : '"' { . } '"' ;
 sharp      : '#' ;
 flat       : '$' ;
@@ -43,7 +43,12 @@ NoteGroup
     ;
 
 Note
-    : singleNote PropertyList       << ast.NewNote($T0.IDValue(), $1), nil >>
+    : NoteSymbol PropertyList       << ast.NewNote($T0.IDValue(), $1), nil >>
+    ;
+
+NoteSymbol
+    : char
+    | rest
     ;
 
 PropertyList
@@ -68,7 +73,7 @@ Command:
 
 ArgumentList:
     : empty
-    | singleNote ArgumentList       << ast.NewArgumentList($T0, $1), nil >>
+    | char ArgumentList             << ast.NewArgumentList($T0, $1), nil >>
     | stringLit ArgumentList        << ast.NewArgumentList($T0, $1), nil >>
     | uint ArgumentList             << ast.NewArgumentList($T0, $1), nil >>
     ;

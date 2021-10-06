@@ -72,11 +72,8 @@ func NewCommand(name string, argList interface{}) (Command, error) {
 
 	switch name {
 	case "assign":
-		if len(args) != 2 || args[0].Type != singleNoteType || args[1].Type != uintType {
+		if len(args) != 2 || args[0].Type != charType || args[1].Type != uintType {
 			return Command{}, fmt.Errorf("command '%s' requires 1 note argument and 1 numeric argument", name)
-		}
-		if len(args[0].IDValue()) != 1 {
-			return Command{}, fmt.Errorf("command '%s' requires first argument to be a single character note", name)
 		}
 	case "tempo":
 		fallthrough
