@@ -139,8 +139,8 @@ func TestInvalidArguments(t *testing.T) {
 	for _, input := range []string{
 		`assign`,
 		`assign 1`,
-		`assign "string" "string"`,
-		`assign "kk" 36`, // Argument types are valid but string length must be 1.
+		`assign k k`,
+		`assign "k" 36`, // Expects a singleNote instead of stringLit.
 		`tempo`,
 		`tempo 1 1`,
 		`tempo "string"`,

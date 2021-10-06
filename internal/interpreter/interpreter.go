@@ -35,7 +35,7 @@ type Interpreter struct {
 
 // Suggest returns suggestions for the next input.
 // It is not safe to call Suggest concurrently
-// with Eval or EvalString.
+// with Eval.
 func (i *Interpreter) Suggest() []string {
 	var sug []string
 
@@ -78,12 +78,7 @@ func (i *Interpreter) Eval(input string) ([]Message, error) {
 		return nil, nil
 	}
 
-	messages, err := i.evalResult(res)
-	if err != nil {
-		return nil, err
-	}
-
-	return messages, nil
+	return i.evalResult(res)
 }
 
 func (i *Interpreter) evalResult(res interface{}) ([]Message, error) {
@@ -105,19 +100,14 @@ func (i *Interpreter) evalResult(res interface{}) ([]Message, error) {
 			if i.currentBar != "" {
 				return nil, fmt.Errorf("cannot assign note: bar '%s' is not ended", i.currentBar)
 			}
-			v, err := r.Args[1].Int32Value()
-			if err != nil {
-				panic(err)
-			}
-			// Guaranteed to be one ASCII character.
-			i.notes[[]rune(r.Args[0].IDValue())[0]] = uint8(v)
+			i.notes[r.RuneArg(0)] = r.Uint8Arg(1)
 			return nil, nil
 
 		case "bar": // Begin a bar.
 			if i.currentBar != "" {
-				return nil, fmt.Errorf("cannot begin bar '%s': bar '%s' is not ended", r.Args[0].StringValue(), i.currentBar)
+				return nil, fmt.Errorf("cannot begin bar '%s': bar '%s' is not ended", r.StringValueArg(0), i.currentBar)
 			}
-			barName := r.Args[0].StringValue()
+			barName := r.StringValueArg(0)
 			if _, ok := i.bars[barName]; ok {
 				return nil, fmt.Errorf("bar '%s' already defined", barName)
 			}
@@ -135,17 +125,13 @@ func (i *Interpreter) evalResult(res interface{}) ([]Message, error) {
 
 		case "play": // Play a bar.
 			if i.currentBar != "" {
-				return nil, fmt.Errorf("cannot play bar '%s': bar '%s' is not ended", r.Args[0].StringValue(), i.currentBar)
+				return nil, fmt.Errorf("cannot play bar '%s': bar '%s' is not ended", r.StringValueArg(0), i.currentBar)
 			}
-			bar, ok := i.bars[r.Args[0].StringValue()]
+			bar, ok := i.bars[r.StringValueArg(0)]
 			if !ok {
-				return nil, fmt.Errorf("cannot play nonexistent bar '%s'", r.Args[0].StringValue())
+				return nil, fmt.Errorf("cannot play nonexistent bar '%s'", r.StringValueArg(0))
 			}
-			messages, err := i.parseBar(bar...)
-			if err != nil {
-				return nil, err
-			}
-			return messages, nil
+			return i.parseBar(bar...)
 
 		case "tempo": // Set the current tempo.
 			if i.currentBar != "" {
@@ -314,7 +300,7 @@ func noteLength(note ast.Note) uint64 {
 	length := 4 * constants.TicksPerQuarter / uint64(value)
 	newLength := length
 	for i := uint(0); i < note.Dots(); i++ {
-		length = (length / 2)
+		length /= 2
 		newLength += length
 	}
 	if division := note.Tuplet(); division > 0 {

@@ -28,8 +28,8 @@ end
 
 // 16th rests instead of ties (unimplemented).
 bar "bar 2"
-g2                  a$      [- f d$ c]16
-[-GB$d]16  g2               [f   e]8
+g2                  a$      [-fd$c]16
+[-GB$d]16  g2               [f e]8
 B$        [-EDE]16 [FCFG]16  A$
 end
 

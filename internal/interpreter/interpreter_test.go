@@ -304,12 +304,15 @@ func TestLetRing(t *testing.T) {
 	// Change to channel 1 and expect that the note on channel 0 stays ringing.
 	evalExpectNil(g, it, `channel 1`)
 
-	messages, err = it.Eval(`k*`)
+	messages, err = it.Eval(`k`)
 	g.Expect(err).NotTo(HaveOccurred())
-	g.Expect(messages).To(HaveLen(1))
+	g.Expect(messages).To(HaveLen(2))
 
 	g.Expect(messages[0].Tick).To(Equal(uint64(constants.TicksPerQuarter)))
 	g.Expect(messages[0].Msg).To(ContainSubstring("Channel1Msg & NoteOnMsg key: 36"))
+
+	g.Expect(messages[1].Tick).To(Equal(uint64(constants.TicksPerQuarter * 2)))
+	g.Expect(messages[1].Msg).To(ContainSubstring("Channel1Msg & NoteOffMsg key: 36"))
 
 	// Change back to channel 0 and expect the ringing note to be turned off.
 	evalExpectNil(g, it, `channel 0`)

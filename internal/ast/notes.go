@@ -24,7 +24,7 @@ func (l NoteList) String() string {
 }
 
 // NewNoteList creates a list of notes.
-func NewNoteList(note interface{}, inner interface{}) (list NoteList) {
+func NewNoteList(note, inner interface{}) (list NoteList) {
 	switch n := note.(type) {
 	case Note:
 		list = NoteList{n}
@@ -57,8 +57,7 @@ func NewNoteListFromGroup(notes, props interface{}) (NoteList, error) {
 	list := make(NoteList, len(noteList))
 	for i, note := range noteList {
 		for _, p := range propList {
-			idx, ok := note.Props.Find(p.Type)
-			if ok {
+			if idx, ok := note.Props.Find(p.Type); ok {
 				note.Props[idx] = p
 			} else {
 				note.Props = append(note.Props, p)
@@ -181,11 +180,11 @@ func (p PropertyList) Swap(i, j int) { p[i], p[j] = p[j], p[i] }
 func (p PropertyList) Less(i, j int) bool {
 	a, ok := propOrder[p[i].Type]
 	if !ok {
-		panic(fmt.Sprintf("PropertyList.Sort: invalid token type '%s'", token.TokMap.StringType(p[i].Type)))
+		panic(fmt.Sprintf("PropertyList: invalid token type '%s'", token.TokMap.StringType(p[i].Type)))
 	}
 	b, ok := propOrder[p[j].Type]
 	if !ok {
-		panic(fmt.Sprintf("PropertyList.Sort: invalid token type '%s'", token.TokMap.StringType(p[j].Type)))
+		panic(fmt.Sprintf("PropertyList: invalid token type '%s'", token.TokMap.StringType(p[j].Type)))
 	}
 	return a < b
 }

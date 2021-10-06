@@ -150,13 +150,13 @@ go install github.com/mgnsk/gong@latest
   // Expands to
   x8/3 x8/3 x8/3
   // Nested groups are also supported:
-  [[cde] [cde]#]8
+  [[fcg] [fcg]#]8
   // Expands to
-  c8 d8 e8 c#8 d#8 e#8
+  f8 c8 g8 f#8 c#8 g#8
   ```
 - #### Bars
 
-  Bars are used to to specify multiple tracks playing at once.
+  Bars are used to specify multiple tracks playing at once.
 
   ```
   // Define a bar.

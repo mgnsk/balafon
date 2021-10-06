@@ -19,28 +19,44 @@ func (c Command) String() string {
 	return fmt.Sprintf("%s %s", c.Name, c.Args)
 }
 
-// Uint8Arg parses the i-th command argument as a uint8.
-func (c Command) Uint8Arg(i int) uint8 {
-	if i < len(c.Args) {
-		v, err := c.Args[i].Int32Value()
-		if err != nil {
-			panic(err)
-		}
-		return uint8(v)
+// RuneArg returns the i-th argument as a rune.
+func (c Command) RuneArg(i int) rune {
+	if i >= len(c.Args) {
+		panic("invalid argument index")
 	}
-	panic("invalid argument index")
+	return []rune(c.Args[i].IDValue())[0]
 }
 
-// Uint32Arg parses the i-th command argument as a uint32.
-func (c Command) Uint32Arg(i int) uint32 {
-	if i < len(c.Args) {
-		v, err := c.Args[i].Int32Value()
-		if err != nil {
-			panic(err)
-		}
-		return uint32(v)
+// StringValueArg returns the i-th string literal value argument.
+func (c Command) StringValueArg(i int) string {
+	if i >= len(c.Args) {
+		panic("invalid argument index")
 	}
-	panic("invalid argument index")
+	return c.Args[i].StringValue()
+}
+
+// Uint8Arg returns the i-th argument as a uint8.
+func (c Command) Uint8Arg(i int) uint8 {
+	if i >= len(c.Args) {
+		panic("invalid argument index")
+	}
+	v, err := c.Args[i].Int32Value()
+	if err != nil {
+		panic(err)
+	}
+	return uint8(v)
+}
+
+// Uint32Arg returns the i-th argument as a uint32.
+func (c Command) Uint32Arg(i int) uint32 {
+	if i >= len(c.Args) {
+		panic("invalid argument index")
+	}
+	v, err := c.Args[i].Int32Value()
+	if err != nil {
+		panic(err)
+	}
+	return uint32(v)
 }
 
 // NewCommand creates a command from name and optional arguments.

@@ -87,14 +87,14 @@ func TestValidInputs(t *testing.T) {
 			"kk[kk]kk[kk]kk",
 			match{
 				BeAssignableToTypeOf(ast.NoteList(nil)),
-				// ContainSubstring("k4"),
+				ContainSubstring("k4 k4 k4 k4 k4 k4 k4 k4 k4 k4"),
 			},
 		},
 		{
 			"[[k]]8",
 			match{
 				BeAssignableToTypeOf(ast.NoteList(nil)),
-				// ContainSubstring("k4"),
+				ContainSubstring("k8"),
 			},
 		},
 		{
@@ -219,7 +219,10 @@ func TestForbiddenDuplicateProperty(t *testing.T) {
 	for _, input := range []string{
 		"k##",
 		"k$$",
+		"k^^",
+		"k))",
 		"k/3/3",
+		"k**",
 	} {
 		t.Run(input, func(t *testing.T) {
 			g := NewGomegaWithT(t)

@@ -165,13 +165,13 @@ go install github.com/mgnsk/gong@latest
   // Expands to
   x8/3 x8/3 x8/3
   // Nested groups are also supported:
-  [[cde] [cde]#]8
+  [[fcg] [fcg]#]8
   // Expands to
-  c8 d8 e8 c#8 d#8 e#8
+  f8 c8 g8 f#8 c#8 g#8
   ```
 - #### Bars
 
-  Bars are used to to specify multiple tracks playing at once.
+  Bars are used to specify multiple tracks playing at once.
 
   ```
   // Define a bar.
@@ -229,23 +229,23 @@ assign g 41
 
 // Start the first bar with a crash cymbal and let it ring.
 bar "bonham 1"
-[[c*-o]    [x^-x]    [x^-x] [x^-x]]8/3
--          [-s)-]8/3 s      [-s)-]8/3
-[k^-k]8/3  [--k]8/3  -      [--k]8/3
--          X
+[[c*-o]   [x^-x]    [x^-x] [x^-x]]8/3
+-         [-s)-]8/3 s      [-s)-]8/3
+[k^-k]8/3 [--k]8/3  -      [--k]8/3
+-         X
 end
 
 bar "bonham 2"
-[[x^-o]    [x^-x]    [x^-x] [x^-x]]8/3
--          [-s)-]8/3 s      [-s)-]8/3
-[k^-k]8/3  [--k]8/3  -      [--k]8/3
--          X
+[[x^-o]   [x^-x]    [x^-x] [x^-x]]8/3
+-         [-s)-]8/3 s      [-s)-]8/3
+[k^-k]8/3 [--k]8/3  -      [--k]8/3
+-         X
 end
 
 bar "fill"
-[[x^-s]  [sss] [ssq] [qgg]]8/3
-[[k-k]   [--k]]8/3
--        X     X     X
+[[x^-s] [sss] [ssq] [qgg]]8/3
+[[k-k]  [--k]]8/3
+-       X     X     X
 end
 
 // Count in.
@@ -303,8 +303,8 @@ end
 
 // 16th rests instead of ties (unimplemented).
 bar "bar 2"
-g2                  a$      [- f d$ c]16
-[-GB$d]16  g2               [f   e]8
+g2                  a$      [-fd$c]16
+[-GB$d]16  g2               [f e]8
 B$        [-EDE]16 [FCFG]16  A$
 end
 

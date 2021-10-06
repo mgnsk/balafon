@@ -25,23 +25,23 @@ assign g 41
 
 // Start the first bar with a crash cymbal and let it ring.
 bar "bonham 1"
-[[c*-o]    [x^-x]    [x^-x] [x^-x]]8/3
--          [-s)-]8/3 s      [-s)-]8/3
-[k^-k]8/3  [--k]8/3  -      [--k]8/3
--          X
+[[c*-o]   [x^-x]    [x^-x] [x^-x]]8/3
+-         [-s)-]8/3 s      [-s)-]8/3
+[k^-k]8/3 [--k]8/3  -      [--k]8/3
+-         X
 end
 
 bar "bonham 2"
-[[x^-o]    [x^-x]    [x^-x] [x^-x]]8/3
--          [-s)-]8/3 s      [-s)-]8/3
-[k^-k]8/3  [--k]8/3  -      [--k]8/3
--          X
+[[x^-o]   [x^-x]    [x^-x] [x^-x]]8/3
+-         [-s)-]8/3 s      [-s)-]8/3
+[k^-k]8/3 [--k]8/3  -      [--k]8/3
+-         X
 end
 
 bar "fill"
-[[x^-s]  [sss] [ssq] [qgg]]8/3
-[[k-k]   [--k]]8/3
--        X     X     X
+[[x^-s] [sss] [ssq] [qgg]]8/3
+[[k-k]  [--k]]8/3
+-       X     X     X
 end
 
 // Count in.
