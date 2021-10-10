@@ -71,6 +71,7 @@ Property
 Command:
     : "assign" char uint            << ast.NewCmdAssign($T1, $T2) >>
     | "tempo" uint                  << ast.NewCmdTempo($T1) >>
+    | "timesig" uint uint           << ast.NewCmdTimeSig($T1, $T2) >>
     | "channel" uint                << ast.NewCmdChannel($T1) >>
     | "velocity" uint               << ast.NewCmdVelocity($T1) >>
     | "program" uint                << ast.NewCmdProgram($T1) >>

@@ -22,36 +22,37 @@ type Message struct {
 
 // Interpreter evaluates messages from raw line input.
 type Interpreter struct {
-	parser          *parser.Parser
-	notes           map[rune]uint8
-	ringing         map[uint16]struct{}
-	bars            map[string][]ast.NoteList
-	barBuffer       []ast.NoteList
-	currentBar      string
-	currentTick     uint64
-	currentChannel  uint8
-	currentVelocity uint8
+	parser       *parser.Parser
+	notes        map[rune]uint8
+	ringing      map[uint16]struct{}
+	bars         map[string][]ast.NoteList
+	barBuffer    []ast.NoteList
+	curBar       string
+	curTick      uint64
+	curBarLength uint64
+	curChannel   uint8
+	curVelocity  uint8
 }
 
 // Suggest returns suggestions for the next input.
 // It is not safe to call Suggest concurrently
 // with Eval.
-func (i *Interpreter) Suggest() []string {
+func (it *Interpreter) Suggest() []string {
 	var sug []string
 
 	// Suggest assigned notes at any time.
-	for note := range i.notes {
+	for note := range it.notes {
 		sug = append(sug, string(note))
 	}
 
-	if i.currentBar != "" {
+	if it.curBar != "" {
 		// Suggest ending the current bar if we're in the middle of a bar.
 		sug = append(sug, "end")
 	} else {
 		// Suggest commands.
 		sug = append(sug, "assign", "tempo", "channel", "velocity", "program", "control", "bar")
 		// Suggest playing a bar.
-		for name := range i.bars {
+		for name := range it.bars {
 			sug = append(sug, "play "+name)
 		}
 	}
@@ -61,14 +62,14 @@ func (i *Interpreter) Suggest() []string {
 
 // Eval evaluates a single input line.
 // If both return values are nil, more input is needed.
-func (i *Interpreter) Eval(input string) ([]Message, error) {
+func (it *Interpreter) Eval(input string) ([]Message, error) {
 	if len(strings.TrimSpace(input)) == 0 {
 		return nil, nil
 	}
 
-	i.parser.Reset()
+	it.parser.Reset()
 
-	res, err := i.parser.Parse(lexer.NewLexer([]byte(input + "\n")))
+	res, err := it.parser.Parse(lexer.NewLexer([]byte(input + "\n")))
 	if err != nil {
 		return nil, err
 	}
@@ -78,109 +79,126 @@ func (i *Interpreter) Eval(input string) ([]Message, error) {
 		return nil, nil
 	}
 
-	return i.evalResult(res)
+	return it.evalResult(res)
 }
 
-func (i *Interpreter) errBarNotEnded(want string) error {
-	return fmt.Errorf("cannot %s: bar '%s' is not ended", want, i.currentBar)
+func (it *Interpreter) errBarNotEnded(want string) error {
+	return fmt.Errorf("cannot %s: bar '%s' is not ended", want, it.curBar)
 }
 
-func (i *Interpreter) evalResult(res interface{}) ([]Message, error) {
+func (it *Interpreter) evalResult(res interface{}) ([]Message, error) {
 	switch r := res.(type) {
 	case ast.NoteList:
-		if i.currentBar != "" {
-			i.barBuffer = append(i.barBuffer, r)
+		if it.curBar != "" {
+			if it.curBarLength > 0 {
+				barLength := uint64(0)
+				for _, note := range r {
+					barLength += noteLength(note)
+				}
+				if barLength != it.curBarLength {
+					return nil, fmt.Errorf("invalid bar length")
+				}
+			}
+			it.barBuffer = append(it.barBuffer, r)
 			return nil, nil
 		}
-		return i.parseBar(r)
+		return it.parseBar(r)
 
 	case ast.CmdAssign:
-		if i.currentBar != "" {
-			return nil, i.errBarNotEnded("assign note")
+		if it.curBar != "" {
+			return nil, it.errBarNotEnded("assign note")
 		}
-		i.notes[r.Note] = r.Key
+		it.notes[r.Note] = r.Key
 		return nil, nil
 
 	case ast.CmdTempo:
-		if i.currentBar != "" {
-			return nil, i.errBarNotEnded("change tempo")
+		if it.curBar != "" {
+			return nil, it.errBarNotEnded("change tempo")
 		}
 		return []Message{{
 			Tempo: uint16(r),
 		}}, nil
 
-	case ast.CmdChannel:
-		if i.currentBar != "" {
-			return nil, i.errBarNotEnded("change channel")
+	case ast.CmdTimeSig:
+		if it.curBar == "" {
+			return nil, fmt.Errorf("timesig can only be set inside a bar")
 		}
-		i.currentChannel = uint8(r)
+		it.curBarLength = uint64(r.Beats) * (4 * constants.TicksPerQuarter / uint64(r.Value))
+		return nil, nil
+
+	case ast.CmdChannel:
+		if it.curBar != "" {
+			return nil, it.errBarNotEnded("change channel")
+		}
+		it.curChannel = uint8(r)
 		return nil, nil
 
 	case ast.CmdVelocity:
-		if i.currentBar != "" {
-			return nil, i.errBarNotEnded("change velocity")
+		if it.curBar != "" {
+			return nil, it.errBarNotEnded("change velocity")
 		}
-		i.currentVelocity = uint8(r)
+		it.curVelocity = uint8(r)
 		return nil, nil
 
 	case ast.CmdProgram:
-		if i.currentBar != "" {
-			return nil, i.errBarNotEnded("change program")
+		if it.curBar != "" {
+			return nil, it.errBarNotEnded("change program")
 		}
 		return []Message{{
-			Msg: midi.NewMessage(midi.Channel(i.currentChannel).ProgramChange(uint8(r))),
+			Msg: midi.NewMessage(midi.Channel(it.curChannel).ProgramChange(uint8(r))),
 		}}, nil
 
 	case ast.CmdControl:
-		if i.currentBar != "" {
-			return nil, i.errBarNotEnded("change control")
+		if it.curBar != "" {
+			return nil, it.errBarNotEnded("change control")
 		}
 		return []Message{{
-			Msg: midi.NewMessage(midi.Channel(i.currentChannel).ControlChange(r.Control, r.Value)),
+			Msg: midi.NewMessage(midi.Channel(it.curChannel).ControlChange(r.Control, r.Value)),
 		}}, nil
 
 	case ast.CmdBar:
-		if i.currentBar != "" {
-			return nil, i.errBarNotEnded("begin bar")
+		if it.curBar != "" {
+			return nil, it.errBarNotEnded("begin bar")
 		}
 		bar := string(r)
-		if _, ok := i.bars[bar]; ok {
+		if _, ok := it.bars[bar]; ok {
 			return nil, fmt.Errorf("bar '%s' already defined", bar)
 		}
-		i.currentBar = bar
+		it.curBar = bar
 		return nil, nil
 
 	case ast.CmdEnd:
-		if i.currentBar == "" {
+		if it.curBar == "" {
 			return nil, errors.New("cannot end bar: no active bar")
 		}
-		i.bars[i.currentBar] = i.barBuffer
-		i.currentBar = ""
-		i.barBuffer = nil
+		it.curBarLength = 0
+		it.bars[it.curBar] = it.barBuffer
+		it.curBar = ""
+		it.barBuffer = nil
 		return nil, nil
 
 	case ast.CmdPlay:
-		if i.currentBar != "" {
-			return nil, i.errBarNotEnded("play bar")
+		if it.curBar != "" {
+			return nil, it.errBarNotEnded("play bar")
 		}
 		bar := string(r)
-		noteList, ok := i.bars[bar]
+		noteList, ok := it.bars[bar]
 		if !ok {
 			return nil, fmt.Errorf("bar '%s' does not exist", bar)
 		}
-		return i.parseBar(noteList...)
+		return it.parseBar(noteList...)
 
 	case ast.CmdStart:
-		if i.currentBar != "" {
-			return nil, i.errBarNotEnded("start")
+		if it.curBar != "" {
+			return nil, it.errBarNotEnded("start")
 		}
 		return []Message{{
 			Msg: midi.NewMessage(midi.Start()),
 		}}, nil
 
 	case ast.CmdStop:
-		if i.currentBar != "" {
-			return nil, i.errBarNotEnded("stop")
+		if it.curBar != "" {
+			return nil, it.errBarNotEnded("stop")
 		}
 		return []Message{{
 			Msg: midi.NewMessage(midi.Stop()),
@@ -191,7 +209,7 @@ func (i *Interpreter) evalResult(res interface{}) ([]Message, error) {
 	}
 }
 
-func (i *Interpreter) parseBar(tracks ...ast.NoteList) ([]Message, error) {
+func (it *Interpreter) parseBar(tracks ...ast.NoteList) ([]Message, error) {
 	var (
 		messages     []Message
 		furthestTick uint64
@@ -199,6 +217,7 @@ func (i *Interpreter) parseBar(tracks ...ast.NoteList) ([]Message, error) {
 
 	for _, track := range tracks {
 		var tick uint64
+
 		for _, note := range track {
 			length := noteLength(note)
 
@@ -207,7 +226,7 @@ func (i *Interpreter) parseBar(tracks ...ast.NoteList) ([]Message, error) {
 				continue
 			}
 
-			key, ok := i.notes[note.Name]
+			key, ok := it.notes[note.Name]
 			if !ok {
 				return nil, fmt.Errorf("key '%c' undefined", note.Name)
 			}
@@ -224,7 +243,7 @@ func (i *Interpreter) parseBar(tracks ...ast.NoteList) ([]Message, error) {
 				key--
 			}
 
-			velocity := i.currentVelocity
+			velocity := it.curVelocity
 			if note.IsAccent() {
 				velocity *= 2
 				if velocity > 127 {
@@ -234,32 +253,32 @@ func (i *Interpreter) parseBar(tracks ...ast.NoteList) ([]Message, error) {
 				velocity /= 2
 			}
 
-			r := uint16(i.currentChannel)<<8 | uint16(key)
-			if _, ok := i.ringing[r]; ok {
-				delete(i.ringing, r)
+			r := uint16(it.curChannel)<<8 | uint16(key)
+			if _, ok := it.ringing[r]; ok {
+				delete(it.ringing, r)
 				messages = append(messages,
 					Message{
-						Tick: i.currentTick + tick,
-						Msg:  midi.NewMessage(midi.Channel(i.currentChannel).NoteOff(key)),
+						Tick: it.curTick + tick,
+						Msg:  midi.NewMessage(midi.Channel(it.curChannel).NoteOff(key)),
 					},
 					Message{
-						Tick: i.currentTick + tick,
-						Msg:  midi.NewMessage(midi.Channel(i.currentChannel).NoteOn(key, velocity)),
+						Tick: it.curTick + tick,
+						Msg:  midi.NewMessage(midi.Channel(it.curChannel).NoteOn(key, velocity)),
 					},
 				)
 			} else {
 				messages = append(messages, Message{
-					Tick: i.currentTick + tick,
-					Msg:  midi.NewMessage(midi.Channel(i.currentChannel).NoteOn(key, velocity)),
+					Tick: it.curTick + tick,
+					Msg:  midi.NewMessage(midi.Channel(it.curChannel).NoteOn(key, velocity)),
 				})
 			}
 
 			if note.LetRing() {
-				i.ringing[r] = struct{}{}
+				it.ringing[r] = struct{}{}
 			} else {
 				messages = append(messages, Message{
-					Tick: i.currentTick + tick + length,
-					Msg:  midi.NewMessage(midi.Channel(i.currentChannel).NoteOff(key)),
+					Tick: it.curTick + tick + length,
+					Msg:  midi.NewMessage(midi.Channel(it.curChannel).NoteOff(key)),
 				})
 			}
 
@@ -269,9 +288,12 @@ func (i *Interpreter) parseBar(tracks ...ast.NoteList) ([]Message, error) {
 				furthestTick = tick
 			}
 		}
+
+		// check if tick  equals bar length
+
 	}
 
-	i.currentTick += furthestTick
+	it.curTick += furthestTick
 
 	// Sort the messages so that every note is off before on.
 	sort.Sort(byMessageTypeOrKey(messages))
@@ -282,11 +304,11 @@ func (i *Interpreter) parseBar(tracks ...ast.NoteList) ([]Message, error) {
 // New creates an interpreter.
 func New() *Interpreter {
 	return &Interpreter{
-		parser:          parser.NewParser(),
-		notes:           map[rune]uint8{},
-		ringing:         map[uint16]struct{}{},
-		bars:            map[string][]ast.NoteList{},
-		currentVelocity: 127,
+		parser:      parser.NewParser(),
+		notes:       map[rune]uint8{},
+		ringing:     map[uint16]struct{}{},
+		bars:        map[string][]ast.NoteList{},
+		curVelocity: 127,
 	}
 }
 

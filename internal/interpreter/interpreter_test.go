@@ -240,6 +240,31 @@ func TestCommandForbiddenInBar(t *testing.T) {
 	}
 }
 
+func TestTimeSigForbiddenOutsideBar(t *testing.T) {
+	g := NewGomegaWithT(t)
+
+	it := interpreter.New()
+
+	messages, err := it.Eval("timesig 4 4")
+	g.Expect(err).To(HaveOccurred())
+	g.Expect(err.Error()).To(ContainSubstring("timesig"))
+	g.Expect(messages).To(BeNil())
+}
+
+func TestInvalidBarLength(t *testing.T) {
+	g := NewGomegaWithT(t)
+
+	it := interpreter.New()
+
+	evalExpectNil(g, it, `bar "bar"`)
+	evalExpectNil(g, it, `timesig 3 8`)
+
+	messages, err := it.Eval("[kk]8")
+	g.Expect(err).To(HaveOccurred())
+	g.Expect(err.Error()).To(ContainSubstring("invalid bar length"))
+	g.Expect(messages).To(BeNil())
+}
+
 func TestBar(t *testing.T) {
 	g := NewGomegaWithT(t)
 

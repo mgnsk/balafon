@@ -42,6 +42,34 @@ func NewCmdTempo(bpm *token.Token) (CmdTempo, error) {
 	return CmdTempo(v), nil
 }
 
+// CmdTimeSig is a time signature change command.
+type CmdTimeSig struct {
+	Beats uint8
+	Value uint8
+}
+
+// NewCmdTimeSig creates a time signature change command.
+func NewCmdTimeSig(beats, value *token.Token) (CmdTimeSig, error) {
+	b, err := beats.Int32Value()
+	if err != nil {
+		return CmdTimeSig{}, err
+	}
+	v, err := value.Int32Value()
+	if err != nil {
+		return CmdTimeSig{}, err
+	}
+	if err := validateRange(b, 1, 128); err != nil {
+		return CmdTimeSig{}, err
+	}
+	if err := validateNoteValue(v); err != nil {
+		return CmdTimeSig{}, err
+	}
+	return CmdTimeSig{
+		Beats: uint8(b),
+		Value: uint8(v),
+	}, nil
+}
+
 // CmdChannel is a channel change command.
 type CmdChannel uint8
 

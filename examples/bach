@@ -18,20 +18,22 @@ assign g 67
 assign a 69
 assign b 71
 
-tempo 73
-velocity 100
-
 bar "bar 1"
+timesig 4 4
 c.            d8 [e$ e f f#]8
 [-CE$G]16 c2          [B$A]8
 end
 
 // 16th rests instead of ties (unimplemented).
 bar "bar 2"
+timesig 4 4
 g2                  a$      [-fd$c]16
 [-GB$d]16  g2               [f e]8
 B$        [-EDE]16 [FCFG]16  A$
 end
+
+tempo 73
+velocity 100
 
 play "bar 1"
 play "bar 2"

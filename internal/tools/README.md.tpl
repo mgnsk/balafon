@@ -59,6 +59,9 @@ go install github.com/mgnsk/gong@latest
   assign c 60
   // Set the tempo.
   tempo 120
+  // Set the time signature.
+  // Optional and applicable only inside a bar.
+  timesig 4 4
   // Set the MIDI channel.
   channel 10
   // Set velocity.
@@ -156,11 +159,13 @@ go install github.com/mgnsk/gong@latest
   ```
 - #### Bars
 
-  Bars are used to specify multiple tracks playing at once.
+  Bars are used to specify multiple tracks playing at once with an optional time signature.
 
   ```
   // Define a bar.
   bar "Rock beat"
+  // Setting timesig makes the interpreter validate the bar length.
+  timesig 4 4
   [xx xx xx xx]8
   // Using braces for nice alignment.
   [k  s  k  s]

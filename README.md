@@ -74,6 +74,9 @@ go install github.com/mgnsk/gong@latest
   assign c 60
   // Set the tempo.
   tempo 120
+  // Set the time signature.
+  // Optional and applicable only inside a bar.
+  timesig 4 4
   // Set the MIDI channel.
   channel 10
   // Set velocity.
@@ -171,11 +174,13 @@ go install github.com/mgnsk/gong@latest
   ```
 - #### Bars
 
-  Bars are used to specify multiple tracks playing at once.
+  Bars are used to specify multiple tracks playing at once with an optional time signature.
 
   ```
   // Define a bar.
   bar "Rock beat"
+  // Setting timesig makes the interpreter validate the bar length.
+  timesig 4 4
   [xx xx xx xx]8
   // Using braces for nice alignment.
   [k  s  k  s]
@@ -204,9 +209,6 @@ $ gong play examples/bonham
 ```
 // A simplified Bonham half time shuffle
 
-tempo 132
-velocity 100
-
 // Percussion channel.
 channel 10
 
@@ -229,24 +231,30 @@ assign g 41
 
 // Start the first bar with a crash cymbal and let it ring.
 bar "bonham 1"
+timesig 4 4
 [[c*-o]   [x^-x]    [x^-x] [x^-x]]8/3
 -         [-s)-]8/3 s      [-s)-]8/3
 [k^-k]8/3 [--k]8/3  -      [--k]8/3
--         X
+-         X         -2
 end
 
 bar "bonham 2"
+timesig 4 4
 [[x^-o]   [x^-x]    [x^-x] [x^-x]]8/3
 -         [-s)-]8/3 s      [-s)-]8/3
 [k^-k]8/3 [--k]8/3  -      [--k]8/3
--         X
+-         X         -2
 end
 
 bar "fill"
+timesig 4 4
 [[x^-s] [sss] [ssq] [qgg]]8/3
-[[k-k]  [--k]]8/3
+[[k-k]  [--k]]8/3   -2
 -       X     X     X
 end
+
+tempo 132
+velocity 100
 
 // Count in.
 xxxo
@@ -293,20 +301,22 @@ assign g 67
 assign a 69
 assign b 71
 
-tempo 73
-velocity 100
-
 bar "bar 1"
+timesig 4 4
 c.            d8 [e$ e f f#]8
 [-CE$G]16 c2          [B$A]8
 end
 
 // 16th rests instead of ties (unimplemented).
 bar "bar 2"
+timesig 4 4
 g2                  a$      [-fd$c]16
 [-GB$d]16  g2               [f e]8
 B$        [-EDE]16 [FCFG]16  A$
 end
+
+tempo 73
+velocity 100
 
 play "bar 1"
 play "bar 2"

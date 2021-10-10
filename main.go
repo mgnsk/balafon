@@ -164,6 +164,7 @@ func playFile(c *cobra.Command, args []string) error {
 		input := s.Text()
 		messages, err := it.Eval(input)
 		if err != nil {
+			fmt.Println(input)
 			return err
 		}
 		resultC <- result{input, messages}

@@ -24,6 +24,10 @@ func TestValidCommands(t *testing.T) {
 			Equal(ast.CmdTempo(120)),
 		},
 		{
+			`timesig 1 1`,
+			Equal(ast.CmdTimeSig{1, 1}),
+		},
+		{
 			`channel 15`,
 			Equal(ast.CmdChannel(15)),
 		},
@@ -79,11 +83,32 @@ func TestInvalidArgumentRange(t *testing.T) {
 		`assign k 128`,
 		`tempo 0`,
 		`tempo 65536`,
+		`timesig 0 1`,
+		`timesig 1 0`,
+		`timesig 1 129`,
+		`timesig 129 1`,
 		`channel 16`,
 		`velocity 128`,
 		`program 128`,
 		`control 0 128`,
 		`control 128 0`,
+	} {
+		t.Run(input, func(t *testing.T) {
+			g := NewGomegaWithT(t)
+			lex := lexer.NewLexer([]byte(input))
+			p := parser.NewParser()
+
+			_, err := p.Parse(lex)
+			g.Expect(err).To(HaveOccurred())
+			g.Expect(err.Error()).To(ContainSubstring("range"))
+		})
+	}
+}
+
+func TestInvalidTimeSig(t *testing.T) {
+	for _, input := range []string{
+		`timesig 4 5`,
+		`timesig 2 3`,
 	} {
 		t.Run(input, func(t *testing.T) {
 			g := NewGomegaWithT(t)
