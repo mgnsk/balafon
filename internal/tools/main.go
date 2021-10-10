@@ -65,6 +65,14 @@ func createReadmeData() readmeData {
 		log.Fatal(err, string(helpText))
 	}
 
+	if output, err := exec.Command("go", "run", "../../.", "lint", "../../examples/bonham").CombinedOutput(); err != nil {
+		log.Fatal(err, string(output))
+	}
+
+	if output, err := exec.Command("go", "run", "../../.", "lint", "../../examples/bach").CombinedOutput(); err != nil {
+		log.Fatal(err, string(output))
+	}
+
 	bonhamExample, err := ioutil.ReadFile("../../examples/bonham")
 	if err != nil {
 		log.Fatal(err)
