@@ -25,11 +25,18 @@ import (
 	_ "gitlab.com/gomidi/midi/v2/drivers/rtmididrv"
 )
 
-func main() {
-	os.Exit(run())
+func handleExit() {
+	if e := recover(); e != nil {
+		if err, ok := e.(error); ok {
+			fmt.Println(err)
+			os.Exit(1)
+		}
+		panic(e)
+	}
 }
 
-func run() int {
+func main() {
+	defer handleExit()
 	defer midi.CloseDriver()
 
 	root := &cobra.Command{
@@ -37,7 +44,9 @@ func run() int {
 		CompletionOptions: cobra.CompletionOptions{
 			DisableDefaultCmd: true,
 		},
-		RunE: runShell,
+		SilenceErrors: true,
+		SilenceUsage:  true,
+		RunE:          runShell,
 	}
 
 	root.PersistentFlags().String("port", "0", "MIDI output port")
@@ -72,10 +81,8 @@ func run() int {
 	})
 
 	if err := root.Execute(); err != nil {
-		return 1
+		panic(err)
 	}
-
-	return 0
 }
 
 type result struct {
@@ -222,8 +229,10 @@ func playFile(c *cobra.Command, args []string) error {
 		input := s.Text()
 		messages, err := it.Eval(input)
 		if err != nil {
-			fmt.Println(lineError{line, err})
-			return err
+			close(resultC)
+			wg.Wait()
+			fmt.Println(input)
+			return lineError{line, err}
 		}
 		line++
 		resultC <- result{input, messages}
