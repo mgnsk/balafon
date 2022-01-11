@@ -3,12 +3,9 @@
 package main
 
 import (
-	"bufio"
-	"bytes"
 	"context"
 	"errors"
 	"fmt"
-	"io/ioutil"
 	"log"
 	"os"
 	"os/exec"
@@ -77,7 +74,18 @@ func main() {
 		Use:   "lint [file]",
 		Short: "Lint a file",
 		Args:  cobra.ExactArgs(1),
-		RunE:  lintFile,
+		RunE: func(_ *cobra.Command, args []string) error {
+			f, err := os.Open(args[0])
+			if err != nil {
+				return err
+			}
+			defer f.Close()
+			if _, err := interpreter.LoadAll(f); err != nil {
+				fmt.Println(err)
+				return nil
+			}
+			return nil
+		},
 	})
 
 	if err := root.Execute(); err != nil {
@@ -154,54 +162,20 @@ func runShell(c *cobra.Command, _ []string) error {
 	return nil
 }
 
-type lineError struct {
-	nr  int
-	err error
-}
-
-func (e lineError) Error() string {
-	return fmt.Sprintf("line %d: %s", e.nr, e.err)
-}
-
-func lintFile(_ *cobra.Command, args []string) error {
-	input, err := ioutil.ReadFile(args[0])
-	if err != nil {
-		return err
-	}
-
-	it := interpreter.New()
-	s := bufio.NewScanner(bytes.NewReader(input))
-
-	var format strings.Builder
-
-	line := 1
-	for s.Scan() {
-		input := s.Text()
-		_, err := it.Eval(input)
-		if err != nil {
-			format.WriteString(lineError{line, err}.Error())
-			format.WriteString("\n")
-		}
-		line++
-	}
-
-	if err := s.Err(); err != nil {
-		return err
-	}
-
-	if format.Len() > 0 {
-		return errors.New(format.String())
-	}
-
-	return nil
-}
-
 func playFile(c *cobra.Command, args []string) error {
 	f, err := os.Open(args[0])
 	if err != nil {
 		return err
 	}
-	defer f.Close()
+
+	messages, err := interpreter.LoadAll(f)
+	if err != nil {
+		fmt.Println(err)
+		f.Close()
+		return nil
+	}
+
+	f.Close()
 
 	out, err := getPort(c.Flag("port").Value.String())
 	if err != nil {
@@ -212,36 +186,25 @@ func playFile(c *cobra.Command, args []string) error {
 		return err
 	}
 
-	it := interpreter.New()
-	s := bufio.NewScanner(f)
+	playAll(context.Background(), out, messages)
 
-	resultC := make(chan result)
+	return nil
+}
 
-	var wg sync.WaitGroup
-	wg.Add(1)
-	go func() {
-		defer wg.Done()
-		startPlayer(context.Background(), out, resultC)
-	}()
+func playAll(ctx context.Context, out midi.Sender, messages [][]interpreter.Message) {
+	runtime.LockOSThread()
 
-	line := 0
-	for s.Scan() {
-		input := s.Text()
-		messages, err := it.Eval(input)
-		if err != nil {
-			close(resultC)
-			wg.Wait()
-			fmt.Println(input)
-			return lineError{line, err}
+	p := player.New(out)
+	for _, ms := range messages {
+		for _, msg := range ms {
+			if err := p.Play(ctx, msg); err != nil {
+				if errors.Is(err, context.Canceled) {
+					return
+				}
+				log.Fatal(err)
+			}
 		}
-		line++
-		resultC <- result{input, messages}
 	}
-
-	close(resultC)
-	wg.Wait()
-
-	return s.Err()
 }
 
 func startPlayer(ctx context.Context, out midi.Sender, resultC <-chan result) {

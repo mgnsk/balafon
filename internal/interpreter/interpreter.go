@@ -1,8 +1,10 @@
 package interpreter
 
 import (
+	"bufio"
 	"errors"
 	"fmt"
+	"io"
 	"sort"
 	"strings"
 
@@ -310,6 +312,38 @@ func New() *Interpreter {
 		bars:        map[string][]ast.NoteList{},
 		curVelocity: 127,
 	}
+}
+
+// LoadAll loads all messages from r.
+func LoadAll(r io.Reader) ([][]Message, error) {
+	it := New()
+	s := bufio.NewScanner(r)
+
+	var format strings.Builder
+
+	var messages [][]Message
+
+	line := 0
+	for s.Scan() {
+		line++
+		ms, err := it.Eval(s.Text())
+		if err != nil {
+			format.WriteString(lineError{line, err}.Error())
+			format.WriteString("\n")
+		} else if ms != nil {
+			messages = append(messages, ms)
+		}
+	}
+
+	if err := s.Err(); err != nil {
+		return nil, err
+	}
+
+	if format.Len() > 0 {
+		return nil, errors.New(format.String())
+	}
+
+	return messages, nil
 }
 
 func noteLength(note ast.Note) uint64 {
