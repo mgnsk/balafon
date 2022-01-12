@@ -7,6 +7,7 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/mgnsk/gong/internal/constants"
 	"github.com/mgnsk/gong/internal/parser/token"
 )
 
@@ -76,6 +77,21 @@ type Note struct {
 	Name  rune
 }
 
+// Length returns the note duration in ticks.
+func (n Note) Length() uint64 {
+	value := n.Value()
+	length := 4 * constants.TicksPerQuarter / uint64(value)
+	newLength := length
+	for i := uint(0); i < n.Dots(); i++ {
+		length /= 2
+		newLength += length
+	}
+	if division := n.Tuplet(); division > 0 {
+		newLength = uint64(float64(newLength) * 2.0 / float64(division))
+	}
+	return newLength
+}
+
 // IsSharp reports whether the note is sharp.
 func (n Note) IsSharp() bool {
 	_, ok := n.Props.Find(sharpType)
@@ -139,8 +155,8 @@ func (n Note) Tuplet() uint {
 	return 0
 }
 
-// LetRing reports whether the note must ring.
-func (n Note) LetRing() bool {
+// IsLetRing reports whether the note must ring.
+func (n Note) IsLetRing() bool {
 	_, ok := n.Props.Find(letRingType)
 	return ok
 }

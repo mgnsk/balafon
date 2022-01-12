@@ -95,7 +95,7 @@ func (it *Interpreter) evalResult(res interface{}) ([]Message, error) {
 			if it.curBarLength > 0 {
 				barLength := uint64(0)
 				for _, note := range r {
-					barLength += noteLength(note)
+					barLength += note.Length()
 				}
 				if barLength != it.curBarLength {
 					return nil, fmt.Errorf("invalid bar length")
@@ -221,7 +221,7 @@ func (it *Interpreter) parseBar(tracks ...ast.NoteList) ([]Message, error) {
 		var tick uint64
 
 		for _, note := range track {
-			length := noteLength(note)
+			length := note.Length()
 
 			if note.Name == '-' {
 				tick += length
@@ -275,7 +275,7 @@ func (it *Interpreter) parseBar(tracks ...ast.NoteList) ([]Message, error) {
 				})
 			}
 
-			if note.LetRing() {
+			if note.IsLetRing() {
 				it.ringing[r] = struct{}{}
 			} else {
 				messages = append(messages, Message{
@@ -344,20 +344,6 @@ func LoadAll(r io.Reader) ([][]Message, error) {
 	}
 
 	return messages, nil
-}
-
-func noteLength(note ast.Note) uint64 {
-	value := note.Value()
-	length := 4 * constants.TicksPerQuarter / uint64(value)
-	newLength := length
-	for i := uint(0); i < note.Dots(); i++ {
-		length /= 2
-		newLength += length
-	}
-	if division := note.Tuplet(); division > 0 {
-		newLength = uint64(float64(newLength) * 2.0 / float64(division))
-	}
-	return newLength
 }
 
 type byMessageTypeOrKey []Message
