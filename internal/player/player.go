@@ -16,7 +16,7 @@ type Player struct {
 	timer        *time.Timer
 	tickDuration time.Duration
 	once         sync.Once
-	currentTick  uint64
+	currentTick  uint32
 }
 
 // Play the message.

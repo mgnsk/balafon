@@ -167,31 +167,31 @@ func TestAccentutedNoteRange(t *testing.T) {
 func TestNoteLengths(t *testing.T) {
 	for _, tc := range []struct {
 		input string
-		offAt uint64
+		offAt uint32
 	}{
 		{
 			input: "k", // Quarter note.
-			offAt: uint64(constants.TicksPerQuarter),
+			offAt: uint32(constants.TicksPerQuarter),
 		},
 		{
 			input: "k.", // Dotted quarter note, x1.5.
-			offAt: uint64(constants.TicksPerQuarter * 3 / 2),
+			offAt: uint32(constants.TicksPerQuarter * 3 / 2),
 		},
 		{
 			input: "k..", // Double dotted quarter note, x1.75.
-			offAt: uint64(constants.TicksPerQuarter * 7 / 4),
+			offAt: uint32(constants.TicksPerQuarter * 7 / 4),
 		},
 		{
 			input: "k...", // Triplet dotted quarter note, x1.875.
-			offAt: uint64(constants.TicksPerQuarter * 15 / 8),
+			offAt: uint32(constants.TicksPerQuarter * 15 / 8),
 		},
 		{
 			input: "k/5", // Quintuplet quarter note.
-			offAt: uint64(constants.TicksPerQuarter * 2 / 5),
+			offAt: uint32(constants.TicksPerQuarter * 2 / 5),
 		},
 		{
 			input: "k./3", // Dotted triplet quarter note == quarter note.
-			offAt: uint64(constants.TicksPerQuarter),
+			offAt: uint32(constants.TicksPerQuarter),
 		},
 	} {
 		t.Run(tc.input, func(t *testing.T) {
@@ -204,7 +204,7 @@ func TestNoteLengths(t *testing.T) {
 			messages, err := it.Eval(tc.input)
 			g.Expect(err).NotTo(HaveOccurred())
 			g.Expect(messages).To(HaveLen(2))
-			g.Expect(messages[0].Tick).To(Equal(uint64(0)))
+			g.Expect(messages[0].Tick).To(Equal(uint32(0)))
 			g.Expect(messages[0].Msg).To(ContainSubstring("Channel0Msg & NoteOnMsg key: 36"))
 			g.Expect(messages[1].Tick).To(Equal(tc.offAt))
 			g.Expect(messages[1].Msg).To(ContainSubstring("Channel0Msg & NoteOffMsg key: 36"))
@@ -287,28 +287,28 @@ func TestBar(t *testing.T) {
 	g.Expect(err).NotTo(HaveOccurred())
 	g.Expect(messages).To(HaveLen(8))
 
-	g.Expect(messages[0].Tick).To(Equal(uint64(0)))
+	g.Expect(messages[0].Tick).To(Equal(uint32(0)))
 	g.Expect(messages[0].Msg).To(ContainSubstring("Channel10Msg & NoteOnMsg key: 36 velocity: 100"))
 
-	g.Expect(messages[1].Tick).To(Equal(uint64(0)))
+	g.Expect(messages[1].Tick).To(Equal(uint32(0)))
 	g.Expect(messages[1].Msg).To(ContainSubstring("Channel10Msg & NoteOnMsg key: 38 velocity: 100"))
 
-	g.Expect(messages[2].Tick).To(Equal(uint64(constants.TicksPerQuarter / 2)))
+	g.Expect(messages[2].Tick).To(Equal(uint32(constants.TicksPerQuarter / 2)))
 	g.Expect(messages[2].Msg).To(ContainSubstring("Channel10Msg & NoteOffMsg key: 36"))
 
-	g.Expect(messages[3].Tick).To(Equal(uint64(constants.TicksPerQuarter / 2)))
+	g.Expect(messages[3].Tick).To(Equal(uint32(constants.TicksPerQuarter / 2)))
 	g.Expect(messages[3].Msg).To(ContainSubstring("Channel10Msg & NoteOffMsg key: 38"))
 
-	g.Expect(messages[4].Tick).To(Equal(uint64(constants.TicksPerQuarter / 2)))
+	g.Expect(messages[4].Tick).To(Equal(uint32(constants.TicksPerQuarter / 2)))
 	g.Expect(messages[4].Msg).To(ContainSubstring("Channel10Msg & NoteOnMsg key: 36 velocity: 100"))
 
-	g.Expect(messages[5].Tick).To(Equal(uint64(constants.TicksPerQuarter / 2)))
+	g.Expect(messages[5].Tick).To(Equal(uint32(constants.TicksPerQuarter / 2)))
 	g.Expect(messages[5].Msg).To(ContainSubstring("Channel10Msg & NoteOnMsg key: 38 velocity: 100"))
 
-	g.Expect(messages[6].Tick).To(Equal(uint64(constants.TicksPerQuarter)))
+	g.Expect(messages[6].Tick).To(Equal(uint32(constants.TicksPerQuarter)))
 	g.Expect(messages[6].Msg).To(ContainSubstring("Channel10Msg & NoteOffMsg key: 36"))
 
-	g.Expect(messages[7].Tick).To(Equal(uint64(constants.TicksPerQuarter)))
+	g.Expect(messages[7].Tick).To(Equal(uint32(constants.TicksPerQuarter)))
 	g.Expect(messages[7].Msg).To(ContainSubstring("Channel10Msg & NoteOffMsg key: 38"))
 }
 
@@ -323,7 +323,7 @@ func TestLetRing(t *testing.T) {
 	g.Expect(err).NotTo(HaveOccurred())
 	g.Expect(messages).To(HaveLen(1))
 
-	g.Expect(messages[0].Tick).To(Equal(uint64(0)))
+	g.Expect(messages[0].Tick).To(Equal(uint32(0)))
 	g.Expect(messages[0].Msg).To(ContainSubstring("Channel0Msg & NoteOnMsg key: 36"))
 
 	// Change to channel 1 and expect that the note on channel 0 stays ringing.
@@ -333,10 +333,10 @@ func TestLetRing(t *testing.T) {
 	g.Expect(err).NotTo(HaveOccurred())
 	g.Expect(messages).To(HaveLen(2))
 
-	g.Expect(messages[0].Tick).To(Equal(uint64(constants.TicksPerQuarter)))
+	g.Expect(messages[0].Tick).To(Equal(uint32(constants.TicksPerQuarter)))
 	g.Expect(messages[0].Msg).To(ContainSubstring("Channel1Msg & NoteOnMsg key: 36"))
 
-	g.Expect(messages[1].Tick).To(Equal(uint64(constants.TicksPerQuarter * 2)))
+	g.Expect(messages[1].Tick).To(Equal(uint32(constants.TicksPerQuarter * 2)))
 	g.Expect(messages[1].Msg).To(ContainSubstring("Channel1Msg & NoteOffMsg key: 36"))
 
 	// Change back to channel 0 and expect the ringing note to be turned off.
@@ -346,12 +346,12 @@ func TestLetRing(t *testing.T) {
 	g.Expect(err).NotTo(HaveOccurred())
 	g.Expect(messages).To(HaveLen(3))
 
-	g.Expect(messages[0].Tick).To(Equal(uint64(constants.TicksPerQuarter * 2)))
+	g.Expect(messages[0].Tick).To(Equal(uint32(constants.TicksPerQuarter * 2)))
 	g.Expect(messages[0].Msg).To(ContainSubstring("Channel0Msg & NoteOffMsg key: 36"))
 
-	g.Expect(messages[1].Tick).To(Equal(uint64(constants.TicksPerQuarter * 2)))
+	g.Expect(messages[1].Tick).To(Equal(uint32(constants.TicksPerQuarter * 2)))
 	g.Expect(messages[1].Msg).To(ContainSubstring("Channel0Msg & NoteOnMsg key: 36"))
 
-	g.Expect(messages[2].Tick).To(Equal(uint64(constants.TicksPerQuarter * 3)))
+	g.Expect(messages[2].Tick).To(Equal(uint32(constants.TicksPerQuarter * 3)))
 	g.Expect(messages[2].Msg).To(ContainSubstring("Channel0Msg & NoteOffMsg key: 36"))
 }

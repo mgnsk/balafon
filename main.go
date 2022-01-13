@@ -20,6 +20,7 @@ import (
 	"github.com/spf13/cobra"
 	"gitlab.com/gomidi/midi/v2"
 	_ "gitlab.com/gomidi/midi/v2/drivers/rtmididrv"
+	"gitlab.com/gomidi/midi/v2/smf"
 )
 
 func handleExit() {
@@ -69,6 +70,15 @@ func main() {
 		Args:  cobra.ExactArgs(1),
 		RunE:  playFile,
 	})
+
+	compile := &cobra.Command{
+		Use:   "compile [file]",
+		Short: "Compile a gong file to SMF",
+		Args:  cobra.ExactArgs(1),
+		RunE:  compileFile,
+	}
+	compile.Flags().StringP("output", "o", "out.mid", "Output file")
+	root.AddCommand(compile)
 
 	root.AddCommand(&cobra.Command{
 		Use:   "lint [file]",
@@ -162,6 +172,39 @@ func runShell(c *cobra.Command, _ []string) error {
 	return nil
 }
 
+func compileFile(_ *cobra.Command, args []string) error {
+	f, err := os.Open(args[0])
+	if err != nil {
+		return err
+	}
+
+	messages, err := interpreter.LoadAll(f)
+	if err != nil {
+		fmt.Println(err)
+		f.Close()
+		return nil
+	}
+
+	f.Close()
+
+	track := smf.NewTrack()
+
+	delta := uint32(0)
+	for _, msg := range messages {
+		if msg.Tempo > 0 {
+			track.Add(msg.Tick-delta, midi.MetaTempo(float64(msg.Tempo)))
+			continue
+		}
+		track.Add(msg.Tick-delta, msg.Msg.Data)
+		delta = msg.Tick
+	}
+
+	s := smf.New()
+	s.AddAndClose(0, track)
+
+	return s.WriteFile(args[0] + ".mid")
+}
+
 func playFile(c *cobra.Command, args []string) error {
 	f, err := os.Open(args[0])
 	if err != nil {
@@ -191,18 +234,16 @@ func playFile(c *cobra.Command, args []string) error {
 	return nil
 }
 
-func playAll(ctx context.Context, out midi.Sender, messages [][]interpreter.Message) {
+func playAll(ctx context.Context, out midi.Sender, messages []interpreter.Message) {
 	runtime.LockOSThread()
 
 	p := player.New(out)
-	for _, ms := range messages {
-		for _, msg := range ms {
-			if err := p.Play(ctx, msg); err != nil {
-				if errors.Is(err, context.Canceled) {
-					return
-				}
-				log.Fatal(err)
+	for _, msg := range messages {
+		if err := p.Play(ctx, msg); err != nil {
+			if errors.Is(err, context.Canceled) {
+				return
 			}
+			log.Fatal(err)
 		}
 	}
 }

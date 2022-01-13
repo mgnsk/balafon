@@ -45,6 +45,11 @@ go install github.com/mgnsk/gong@latest
   ```sh
   $ gong lint examples/bonham
   ```
+- Compile a file:
+  ```sh
+  $ gong compile -o examples/bonham.mid examples/bonham
+  $ gong compile -o examples/bach.mid examples/bach
+  ```
 - Help.
 
   ```sh
@@ -217,5 +222,4 @@ It is possible to write melodies using gong in a limited way. Here's 2 bars of B
 
 - Tie (a curved line connecting the heads of two notes of the same pitch) - no idea about the syntax. Can be partially emulated by using dotted notes if the rhythm is simple enough.
 - WebAssembly support with Web MIDI for running in browsers.
-- Generating an SMF midi file.
 - Accelerando/Ritardando.

@@ -78,16 +78,16 @@ type Note struct {
 }
 
 // Length returns the note duration in ticks.
-func (n Note) Length() uint64 {
+func (n Note) Length() uint32 {
 	value := n.Value()
-	length := 4 * constants.TicksPerQuarter / uint64(value)
+	length := 4 * constants.TicksPerQuarter / uint32(value)
 	newLength := length
 	for i := uint(0); i < n.Dots(); i++ {
 		length /= 2
 		newLength += length
 	}
 	if division := n.Tuplet(); division > 0 {
-		newLength = uint64(float64(newLength) * 2.0 / float64(division))
+		newLength = uint32(float64(newLength) * 2.0 / float64(division))
 	}
 	return newLength
 }

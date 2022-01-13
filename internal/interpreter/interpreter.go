@@ -18,7 +18,7 @@ import (
 // Message is a tempo or a MIDI message.
 type Message struct {
 	Msg   midi.Message
-	Tick  uint64
+	Tick  uint32
 	Tempo uint16
 }
 
@@ -30,8 +30,8 @@ type Interpreter struct {
 	bars         map[string][]ast.NoteList
 	barBuffer    []ast.NoteList
 	curBar       string
-	curTick      uint64
-	curBarLength uint64
+	curTick      uint32
+	curBarLength uint32
 	curChannel   uint8
 	curVelocity  uint8
 }
@@ -93,7 +93,7 @@ func (it *Interpreter) evalResult(res interface{}) ([]Message, error) {
 	case ast.NoteList:
 		if it.curBar != "" {
 			if it.curBarLength > 0 {
-				barLength := uint64(0)
+				barLength := uint32(0)
 				for _, note := range r {
 					barLength += note.Length()
 				}
@@ -125,7 +125,7 @@ func (it *Interpreter) evalResult(res interface{}) ([]Message, error) {
 		if it.curBar == "" {
 			return nil, fmt.Errorf("timesig can only be set inside a bar")
 		}
-		it.curBarLength = uint64(r.Beats) * (4 * constants.TicksPerQuarter / uint64(r.Value))
+		it.curBarLength = uint32(r.Beats) * (4 * constants.TicksPerQuarter / uint32(r.Value))
 		return nil, nil
 
 	case ast.CmdChannel:
@@ -214,11 +214,11 @@ func (it *Interpreter) evalResult(res interface{}) ([]Message, error) {
 func (it *Interpreter) parseBar(tracks ...ast.NoteList) ([]Message, error) {
 	var (
 		messages     []Message
-		furthestTick uint64
+		furthestTick uint32
 	)
 
 	for _, track := range tracks {
-		var tick uint64
+		var tick uint32
 
 		for _, note := range track {
 			length := note.Length()
@@ -290,9 +290,6 @@ func (it *Interpreter) parseBar(tracks ...ast.NoteList) ([]Message, error) {
 				furthestTick = tick
 			}
 		}
-
-		// check if tick  equals bar length
-
 	}
 
 	it.curTick += furthestTick
@@ -315,13 +312,13 @@ func New() *Interpreter {
 }
 
 // LoadAll loads all messages from r.
-func LoadAll(r io.Reader) ([][]Message, error) {
+func LoadAll(r io.Reader) ([]Message, error) {
 	it := New()
 	s := bufio.NewScanner(r)
 
 	var format strings.Builder
 
-	var messages [][]Message
+	var messages []Message
 
 	line := 0
 	for s.Scan() {
@@ -331,7 +328,7 @@ func LoadAll(r io.Reader) ([][]Message, error) {
 			format.WriteString(lineError{line, err}.Error())
 			format.WriteString("\n")
 		} else if ms != nil {
-			messages = append(messages, ms)
+			messages = append(messages, ms...)
 		}
 	}
 
