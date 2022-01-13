@@ -84,6 +84,37 @@ func (it *Interpreter) Eval(input string) ([]Message, error) {
 	return it.evalResult(res)
 }
 
+// EvalAll evaluates all messages from r.
+func (it *Interpreter) EvalAll(r io.Reader) ([]Message, error) {
+	s := bufio.NewScanner(r)
+
+	var format strings.Builder
+
+	var messages []Message
+
+	line := 0
+	for s.Scan() {
+		line++
+		ms, err := it.Eval(s.Text())
+		if err != nil {
+			format.WriteString(lineError{line, err}.Error())
+			format.WriteString("\n")
+		} else if ms != nil {
+			messages = append(messages, ms...)
+		}
+	}
+
+	if err := s.Err(); err != nil {
+		return nil, err
+	}
+
+	if format.Len() > 0 {
+		return nil, errors.New(format.String())
+	}
+
+	return messages, nil
+}
+
 func (it *Interpreter) errBarNotEnded(want string) error {
 	return fmt.Errorf("cannot %s: bar '%s' is not ended", want, it.curBar)
 }
@@ -118,6 +149,7 @@ func (it *Interpreter) evalResult(res interface{}) ([]Message, error) {
 			return nil, it.errBarNotEnded("change tempo")
 		}
 		return []Message{{
+			Tick:  it.curTick,
 			Tempo: uint16(r),
 		}}, nil
 
@@ -147,7 +179,8 @@ func (it *Interpreter) evalResult(res interface{}) ([]Message, error) {
 			return nil, it.errBarNotEnded("change program")
 		}
 		return []Message{{
-			Msg: midi.NewMessage(midi.Channel(it.curChannel).ProgramChange(uint8(r))),
+			Tick: it.curTick,
+			Msg:  midi.NewMessage(midi.Channel(it.curChannel).ProgramChange(uint8(r))),
 		}}, nil
 
 	case ast.CmdControl:
@@ -155,7 +188,8 @@ func (it *Interpreter) evalResult(res interface{}) ([]Message, error) {
 			return nil, it.errBarNotEnded("change control")
 		}
 		return []Message{{
-			Msg: midi.NewMessage(midi.Channel(it.curChannel).ControlChange(r.Control, r.Value)),
+			Tick: it.curTick,
+			Msg:  midi.NewMessage(midi.Channel(it.curChannel).ControlChange(r.Control, r.Value)),
 		}}, nil
 
 	case ast.CmdBar:
@@ -195,7 +229,8 @@ func (it *Interpreter) evalResult(res interface{}) ([]Message, error) {
 			return nil, it.errBarNotEnded("start")
 		}
 		return []Message{{
-			Msg: midi.NewMessage(midi.Start()),
+			Tick: it.curTick,
+			Msg:  midi.NewMessage(midi.Start()),
 		}}, nil
 
 	case ast.CmdStop:
@@ -203,7 +238,8 @@ func (it *Interpreter) evalResult(res interface{}) ([]Message, error) {
 			return nil, it.errBarNotEnded("stop")
 		}
 		return []Message{{
-			Msg: midi.NewMessage(midi.Stop()),
+			Tick: it.curTick,
+			Msg:  midi.NewMessage(midi.Stop()),
 		}}, nil
 
 	default:
@@ -263,17 +299,13 @@ func (it *Interpreter) parseBar(tracks ...ast.NoteList) ([]Message, error) {
 						Tick: it.curTick + tick,
 						Msg:  midi.NewMessage(midi.Channel(it.curChannel).NoteOff(key)),
 					},
-					Message{
-						Tick: it.curTick + tick,
-						Msg:  midi.NewMessage(midi.Channel(it.curChannel).NoteOn(key, velocity)),
-					},
 				)
-			} else {
-				messages = append(messages, Message{
-					Tick: it.curTick + tick,
-					Msg:  midi.NewMessage(midi.Channel(it.curChannel).NoteOn(key, velocity)),
-				})
 			}
+
+			messages = append(messages, Message{
+				Tick: it.curTick + tick,
+				Msg:  midi.NewMessage(midi.Channel(it.curChannel).NoteOn(key, velocity)),
+			})
 
 			if note.IsLetRing() {
 				it.ringing[r] = struct{}{}
@@ -309,38 +341,6 @@ func New() *Interpreter {
 		bars:        map[string][]ast.NoteList{},
 		curVelocity: 127,
 	}
-}
-
-// LoadAll loads all messages from r.
-func LoadAll(r io.Reader) ([]Message, error) {
-	it := New()
-	s := bufio.NewScanner(r)
-
-	var format strings.Builder
-
-	var messages []Message
-
-	line := 0
-	for s.Scan() {
-		line++
-		ms, err := it.Eval(s.Text())
-		if err != nil {
-			format.WriteString(lineError{line, err}.Error())
-			format.WriteString("\n")
-		} else if ms != nil {
-			messages = append(messages, ms...)
-		}
-	}
-
-	if err := s.Err(); err != nil {
-		return nil, err
-	}
-
-	if format.Len() > 0 {
-		return nil, errors.New(format.String())
-	}
-
-	return messages, nil
 }
 
 type byMessageTypeOrKey []Message

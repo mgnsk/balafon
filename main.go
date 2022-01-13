@@ -6,6 +6,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"io"
 	"log"
 	"os"
 	"os/exec"
@@ -44,7 +45,7 @@ func main() {
 		},
 		SilenceErrors: true,
 		SilenceUsage:  true,
-		RunE:          runShell,
+		RunE:          createRunShellCommand(interpreter.New()),
 	}
 
 	root.PersistentFlags().String("port", "0", "MIDI output port")
@@ -61,6 +62,30 @@ func main() {
 				fmt.Printf("%d: %s\n", out.Number(), out.String())
 			}
 			return nil
+		},
+	})
+
+	root.AddCommand(&cobra.Command{
+		Use:   "load [file]",
+		Short: "Load a file and continue in a gong shell",
+		Args:  cobra.ExactArgs(1),
+		RunE: func(c *cobra.Command, args []string) error {
+			f, err := os.Open(args[0])
+			if err != nil {
+				return err
+			}
+
+			it := interpreter.New()
+
+			_, err = it.EvalAll(io.TeeReader(f, os.Stdout))
+			if err != nil {
+				fmt.Println(err)
+				f.Close()
+				return nil
+			}
+			f.Close()
+
+			return createRunShellCommand(it)(c, args)
 		},
 	})
 
@@ -90,10 +115,13 @@ func main() {
 				return err
 			}
 			defer f.Close()
-			if _, err := interpreter.LoadAll(f); err != nil {
+
+			it := interpreter.New()
+			if _, err := it.EvalAll(f); err != nil {
 				fmt.Println(err)
 				return nil
 			}
+
 			return nil
 		},
 	})
@@ -108,77 +136,78 @@ type result struct {
 	messages []interpreter.Message
 }
 
-func runShell(c *cobra.Command, _ []string) error {
-	if strings.Contains(runtime.GOOS, "linux") {
-		// TODO: eventually remove this when the bugs get fixed.
-		defer func() {
-			// Fix Ctrl+C not working after exit (https://github.com/c-bata/go-prompt/issues/228)
-			rawModeOff := exec.Command("/bin/stty", "-raw", "echo")
-			rawModeOff.Stdin = os.Stdin
-			_ = rawModeOff.Run()
-			rawModeOff.Wait()
+func createRunShellCommand(it *interpreter.Interpreter) func(*cobra.Command, []string) error {
+	return func(c *cobra.Command, _ []string) error {
+		if strings.Contains(runtime.GOOS, "linux") {
+			// TODO: eventually remove this when the bugs get fixed.
+			defer func() {
+				// Fix Ctrl+C not working after exit (https://github.com/c-bata/go-prompt/issues/228)
+				rawModeOff := exec.Command("/bin/stty", "-raw", "echo")
+				rawModeOff.Stdin = os.Stdin
+				_ = rawModeOff.Run()
+				rawModeOff.Wait()
+			}()
+		}
+
+		out, err := getPort(c.Flag("port").Value.String())
+		if err != nil {
+			return err
+		}
+
+		if err := out.Open(); err != nil {
+			return err
+		}
+
+		fmt.Printf("Welcome to the gong shell on MIDI port '%d: %s'!\n", out.Number(), out.String())
+
+		resultC := make(chan result)
+		ctx, cancel := context.WithCancel(context.Background())
+		defer cancel()
+
+		var wg sync.WaitGroup
+		wg.Add(1)
+		go func() {
+			defer wg.Done()
+			startPlayer(ctx, out, resultC)
 		}()
+
+		prompt.New(
+			func(input string) {
+				messages, err := it.Eval(input)
+				if err != nil {
+					fmt.Println(err)
+					return
+				}
+				resultC <- result{"", messages}
+			},
+			func(in prompt.Document) []prompt.Suggest {
+				var sug []prompt.Suggest
+				for _, text := range it.Suggest() {
+					sug = append(sug, prompt.Suggest{Text: text})
+				}
+				return prompt.FilterHasPrefix(sug, in.GetWordBeforeCursor(), true)
+			},
+			prompt.OptionPrefixTextColor(prompt.Yellow),
+			prompt.OptionPreviewSuggestionTextColor(prompt.Blue),
+			prompt.OptionSelectedSuggestionBGColor(prompt.LightGray),
+			prompt.OptionSuggestionBGColor(prompt.DarkGray),
+		).Run()
+
+		cancel()
+		wg.Wait()
+
+		return nil
 	}
-
-	out, err := getPort(c.Flag("port").Value.String())
-	if err != nil {
-		return err
-	}
-
-	if err := out.Open(); err != nil {
-		return err
-	}
-
-	fmt.Printf("Welcome to the gong shell on MIDI port '%d: %s'!\n", out.Number(), out.String())
-
-	it := interpreter.New()
-
-	resultC := make(chan result)
-	ctx, cancel := context.WithCancel(context.Background())
-	defer cancel()
-
-	var wg sync.WaitGroup
-	wg.Add(1)
-	go func() {
-		defer wg.Done()
-		startPlayer(ctx, out, resultC)
-	}()
-
-	prompt.New(
-		func(input string) {
-			messages, err := it.Eval(input)
-			if err != nil {
-				fmt.Println(err)
-				return
-			}
-			resultC <- result{"", messages}
-		},
-		func(in prompt.Document) []prompt.Suggest {
-			var sug []prompt.Suggest
-			for _, text := range it.Suggest() {
-				sug = append(sug, prompt.Suggest{Text: text})
-			}
-			return prompt.FilterHasPrefix(sug, in.GetWordBeforeCursor(), true)
-		},
-		prompt.OptionPrefixTextColor(prompt.Yellow),
-		prompt.OptionPreviewSuggestionTextColor(prompt.Blue),
-		prompt.OptionSelectedSuggestionBGColor(prompt.LightGray),
-		prompt.OptionSuggestionBGColor(prompt.DarkGray),
-	).Run()
-
-	cancel()
-	wg.Wait()
-
-	return nil
 }
 
-func compileFile(_ *cobra.Command, args []string) error {
+func compileFile(c *cobra.Command, args []string) error {
 	f, err := os.Open(args[0])
 	if err != nil {
 		return err
 	}
 
-	messages, err := interpreter.LoadAll(f)
+	it := interpreter.New()
+	messages, err := it.EvalAll(f)
 	if err != nil {
 		fmt.Println(err)
 		f.Close()
@@ -202,7 +231,7 @@ func compileFile(_ *cobra.Command, args []string) error {
 	s := smf.New()
 	s.AddAndClose(0, track)
 
-	return s.WriteFile(args[0] + ".mid")
+	return s.WriteFile(c.Flag("output").Value.String())
 }
 
 func playFile(c *cobra.Command, args []string) error {
@@ -211,7 +240,8 @@ func playFile(c *cobra.Command, args []string) error {
 		return err
 	}
 
-	messages, err := interpreter.LoadAll(f)
+	it := interpreter.New()
+	messages, err := it.EvalAll(f)
 	if err != nil {
 		fmt.Println(err)
 		f.Close()

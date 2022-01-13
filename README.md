@@ -41,6 +41,11 @@ go install github.com/mgnsk/gong@latest
   Welcome to the gong shell on MIDI port '1: VMPK Input:in 128:0'!
   >
   ```
+- Load a file and enter a live shell:
+  ```sh
+  $ gong load examples/bonham
+  >
+  ```
 - Lint a file:
   ```sh
   $ gong lint examples/bonham
@@ -64,6 +69,7 @@ go install github.com/mgnsk/gong@latest
     help        Help about any command
     lint        Lint a file
     list        List available MIDI output ports
+    load        Load a file and continue in a gong shell
     play        Play a file
 
   Flags:
