@@ -81,6 +81,17 @@ func evalExpectNil(g *gomega.WithT, it *interpreter.Interpreter, input string) {
 	g.Expect(messages).To(BeNil())
 }
 
+func TestNoteAlreadyAssigned(t *testing.T) {
+	g := NewGomegaWithT(t)
+
+	it := interpreter.New()
+
+	evalExpectNil(g, it, "assign c 60")
+
+	_, err := it.Eval("assign c 61")
+	g.Expect(err).To(HaveOccurred())
+}
+
 func TestSharpNote(t *testing.T) {
 	g := NewGomegaWithT(t)
 
@@ -218,8 +229,6 @@ func TestCommandForbiddenInBar(t *testing.T) {
 		`bar "forbidden"`,
 		`play "forbidden"`,
 		`tempo 120`,
-		`channel 0`,
-		`velocity 0`,
 		`program 0`,
 		`control 0 0`,
 		`start`,
@@ -273,11 +282,17 @@ func TestBar(t *testing.T) {
 	for _, input := range []string{
 		`assign k 36`,
 		`assign s 38`,
+		`velocity 127`,
+		`channel 1`,
+		`bar "verse"`,
 		`velocity 100`,
 		`channel 10`,
-		`bar "verse"`,
 		`[kk]8`,
 		`[ss]8`,
+		`end`,
+		// This bar should have channel 1 and velocity 127.
+		`bar "default"`,
+		`k`,
 		`end`,
 	} {
 		evalExpectNil(g, it, input)
@@ -310,6 +325,16 @@ func TestBar(t *testing.T) {
 
 	g.Expect(messages[7].Tick).To(Equal(uint32(constants.TicksPerQuarter)))
 	g.Expect(messages[7].Msg).To(ContainSubstring("Channel10Msg & NoteOffMsg key: 38"))
+
+	messages, err = it.Eval(`play "default"`)
+	g.Expect(err).NotTo(HaveOccurred())
+	g.Expect(messages).To(HaveLen(2))
+
+	g.Expect(messages[0].Tick).To(Equal(uint32(constants.TicksPerQuarter)))
+	g.Expect(messages[0].Msg).To(ContainSubstring("Channel1Msg & NoteOnMsg key: 36 velocity: 127"))
+
+	g.Expect(messages[1].Tick).To(Equal(uint32(constants.TicksPerQuarter * 2)))
+	g.Expect(messages[1].Msg).To(ContainSubstring("Channel1Msg & NoteOffMsg key: 36"))
 }
 
 func TestLetRing(t *testing.T) {
@@ -354,4 +379,55 @@ func TestLetRing(t *testing.T) {
 
 	g.Expect(messages[2].Tick).To(Equal(uint32(constants.TicksPerQuarter * 3)))
 	g.Expect(messages[2].Msg).To(ContainSubstring("Channel0Msg & NoteOffMsg key: 36"))
+}
+
+func TestMultiChannelBar(t *testing.T) {
+	g := NewGomegaWithT(t)
+
+	it := interpreter.New()
+
+	for _, input := range []string{
+		`assign k 36`,
+		`assign s 38`,
+		`assign C 48`,
+		`assign c 60`,
+		`bar "verse"`,
+		`channel 10`,
+		`k`,
+		`s`,
+		`channel 1`,
+		`c`,
+		`C`,
+		`end`,
+	} {
+		evalExpectNil(g, it, input)
+	}
+
+	messages, err := it.Eval(`play "verse"`)
+	g.Expect(err).NotTo(HaveOccurred())
+	g.Expect(messages).To(HaveLen(8))
+
+	g.Expect(messages[0].Tick).To(Equal(uint32(0)))
+	g.Expect(messages[0].Msg).To(ContainSubstring("Channel10Msg & NoteOnMsg key: 36"))
+
+	g.Expect(messages[1].Tick).To(Equal(uint32(0)))
+	g.Expect(messages[1].Msg).To(ContainSubstring("Channel10Msg & NoteOnMsg key: 38"))
+
+	g.Expect(messages[2].Tick).To(Equal(uint32(0)))
+	g.Expect(messages[2].Msg).To(ContainSubstring("Channel1Msg & NoteOnMsg key: 48"))
+
+	g.Expect(messages[3].Tick).To(Equal(uint32(0)))
+	g.Expect(messages[3].Msg).To(ContainSubstring("Channel1Msg & NoteOnMsg key: 60"))
+
+	g.Expect(messages[4].Tick).To(Equal(uint32(constants.TicksPerQuarter)))
+	g.Expect(messages[4].Msg).To(ContainSubstring("Channel10Msg & NoteOffMsg key: 36"))
+
+	g.Expect(messages[4].Tick).To(Equal(uint32(constants.TicksPerQuarter)))
+	g.Expect(messages[5].Msg).To(ContainSubstring("Channel10Msg & NoteOffMsg key: 38"))
+
+	g.Expect(messages[4].Tick).To(Equal(uint32(constants.TicksPerQuarter)))
+	g.Expect(messages[6].Msg).To(ContainSubstring("Channel1Msg & NoteOffMsg key: 48"))
+
+	g.Expect(messages[4].Tick).To(Equal(uint32(constants.TicksPerQuarter)))
+	g.Expect(messages[7].Msg).To(ContainSubstring("Channel1Msg & NoteOffMsg key: 60"))
 }

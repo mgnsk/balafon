@@ -20,6 +20,8 @@ assign q 45
 // Floor tom 2.
 assign g 41
 
+velocity 100
+
 // Start the first bar with a crash cymbal and let it ring.
 bar "bonham 1"
 timesig 4 4
@@ -45,7 +47,6 @@ timesig 4 4
 end
 
 tempo 132
-velocity 100
 
 // Count in.
 xxxo

@@ -95,8 +95,10 @@ go install github.com/mgnsk/gong@latest
   // Optional and applicable only inside a bar.
   timesig 4 4
   // Set the MIDI channel.
+  // Channel can be overridden in a bar. See a multichannel bar example below.
   channel 10
   // Set velocity.
+  // Velocity can be overridden in a bar.
   velocity 127
   // Program change message.
   program 0
@@ -246,6 +248,8 @@ assign q 45
 // Floor tom 2.
 assign g 41
 
+velocity 100
+
 // Start the first bar with a crash cymbal and let it ring.
 bar "bonham 1"
 timesig 4 4
@@ -271,7 +275,6 @@ timesig 4 4
 end
 
 tempo 132
-velocity 100
 
 // Count in.
 xxxo
@@ -318,6 +321,8 @@ assign g 67
 assign a 69
 assign b 71
 
+velocity 100
+
 bar "bar 1"
 timesig 4 4
 c.            d8 [e$ e f f#]8
@@ -333,10 +338,41 @@ B$        [-EDE]16 [FCFG]16  A$
 end
 
 tempo 73
-velocity 100
 
 play "bar 1"
 play "bar 2"
+```
+
+### Multichannel
+
+The file is included in the `examples` directory.
+
+```
+// Kick drum.
+assign k 36
+// Acoustic snare drum.
+assign s 38
+// Hi-Hat closed.
+assign x 42
+
+assign C 48
+assign c 60
+assign e 64
+assign g 67
+
+bar "bar 1"
+timesig 4 4
+
+channel 10
+xxxx
+ksks
+
+channel 1
+cegc
+C1
+end
+
+play "bar 1"
 ```
 
 ## Possible features in the future

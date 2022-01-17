@@ -18,6 +18,8 @@ assign g 67
 assign a 69
 assign b 71
 
+velocity 100
+
 bar "bar 1"
 timesig 4 4
 c.            d8 [e$ e f f#]8
@@ -33,7 +35,6 @@ B$        [-EDE]16 [FCFG]16  A$
 end
 
 tempo 73
-velocity 100
 
 play "bar 1"
 play "bar 2"

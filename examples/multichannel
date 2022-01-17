@@ -1,0 +1,25 @@
+// Kick drum.
+assign k 36
+// Acoustic snare drum.
+assign s 38
+// Hi-Hat closed.
+assign x 42
+
+assign C 48
+assign c 60
+assign e 64
+assign g 67
+
+bar "bar 1"
+timesig 4 4
+
+channel 10
+xxxx
+ksks
+
+channel 1
+cegc
+C1
+end
+
+play "bar 1"

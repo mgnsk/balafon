@@ -92,6 +92,11 @@ func (n Note) Length() uint32 {
 	return newLength
 }
 
+// IsPause reports whether the note is a pause.
+func (n Note) IsPause() bool {
+	return n.Name == '-'
+}
+
 // IsSharp reports whether the note is sharp.
 func (n Note) IsSharp() bool {
 	_, ok := n.Props.Find(sharpType)

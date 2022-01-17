@@ -17,23 +17,26 @@ import (
 
 // Message is a tempo or a MIDI message.
 type Message struct {
-	Msg   midi.Message
-	Tick  uint32
-	Tempo uint16
+	Msg        midi.Message
+	Tick       uint32
+	NoteLength uint32
+	Tempo      uint16
 }
 
 // Interpreter evaluates messages from raw line input.
 type Interpreter struct {
-	parser       *parser.Parser
-	notes        map[rune]uint8
-	ringing      map[uint16]struct{}
-	bars         map[string][]ast.NoteList
-	barBuffer    []ast.NoteList
-	curBar       string
-	curTick      uint32
-	curBarLength uint32
-	curChannel   uint8
-	curVelocity  uint8
+	parser          *parser.Parser
+	notes           map[rune]uint8
+	ringing         map[uint16]struct{}
+	bars            map[string][]Message
+	barBuffer       []Message
+	curBar          string
+	curTick         uint32
+	curBarLength    uint32
+	curChannel      uint8
+	curVelocity     uint8
+	defaultChannel  uint8
+	defaultVelocity uint8
 }
 
 // Suggest returns suggestions for the next input.
@@ -119,6 +122,22 @@ func (it *Interpreter) errBarNotEnded(want string) error {
 	return fmt.Errorf("cannot %s: bar '%s' is not ended", want, it.curBar)
 }
 
+func (it *Interpreter) play(messages []Message) []Message {
+	// Offset relative messages to absolute tick.
+	ms := make([]Message, len(messages))
+	for i, m := range messages {
+		m.Tick = it.curTick + m.Tick
+		ms[i] = m
+	}
+	lastMsg := messages[len(messages)-1]
+	if lastMsg.Msg.IsNoteStart() {
+		it.curTick += lastMsg.Tick + lastMsg.NoteLength
+	} else {
+		it.curTick += lastMsg.Tick
+	}
+	return ms
+}
+
 func (it *Interpreter) evalResult(res interface{}) ([]Message, error) {
 	switch r := res.(type) {
 	case ast.NoteList:
@@ -132,14 +151,27 @@ func (it *Interpreter) evalResult(res interface{}) ([]Message, error) {
 					return nil, fmt.Errorf("invalid bar length")
 				}
 			}
-			it.barBuffer = append(it.barBuffer, r)
+			ms, err := it.parseNoteList(r)
+			if err != nil {
+				return nil, err
+			}
+			it.barBuffer = append(it.barBuffer, ms...)
 			return nil, nil
 		}
-		return it.parseBar(r)
+
+		messages, err := it.parseNoteList(r)
+		if err != nil {
+			return nil, err
+		}
+
+		return it.play(messages), nil
 
 	case ast.CmdAssign:
 		if it.curBar != "" {
 			return nil, it.errBarNotEnded("assign note")
+		}
+		if key, ok := it.notes[r.Note]; ok {
+			return nil, fmt.Errorf("note '%c' already assigned to '%d'", r.Note, key)
 		}
 		it.notes[r.Note] = r.Key
 		return nil, nil
@@ -161,15 +193,15 @@ func (it *Interpreter) evalResult(res interface{}) ([]Message, error) {
 		return nil, nil
 
 	case ast.CmdChannel:
-		if it.curBar != "" {
-			return nil, it.errBarNotEnded("change channel")
+		if it.curBar == "" {
+			it.defaultChannel = uint8(r)
 		}
 		it.curChannel = uint8(r)
 		return nil, nil
 
 	case ast.CmdVelocity:
-		if it.curBar != "" {
-			return nil, it.errBarNotEnded("change velocity")
+		if it.curBar == "" {
+			it.defaultVelocity = uint8(r)
 		}
 		it.curVelocity = uint8(r)
 		return nil, nil
@@ -207,22 +239,25 @@ func (it *Interpreter) evalResult(res interface{}) ([]Message, error) {
 		if it.curBar == "" {
 			return nil, errors.New("cannot end bar: no active bar")
 		}
+		sort.Sort(byMessageTypeOrKey(it.barBuffer))
 		it.curBarLength = 0
 		it.bars[it.curBar] = it.barBuffer
 		it.curBar = ""
 		it.barBuffer = nil
+		it.curChannel = it.defaultChannel
+		it.curVelocity = it.defaultVelocity
 		return nil, nil
 
 	case ast.CmdPlay:
 		if it.curBar != "" {
 			return nil, it.errBarNotEnded("play bar")
 		}
-		bar := string(r)
-		noteList, ok := it.bars[bar]
+		messages, ok := it.bars[string(r)]
 		if !ok {
-			return nil, fmt.Errorf("bar '%s' does not exist", bar)
+			return nil, fmt.Errorf("bar '%s' does not exist", string(r))
 		}
-		return it.parseBar(noteList...)
+
+		return it.play(messages), nil
 
 	case ast.CmdStart:
 		if it.curBar != "" {
@@ -247,86 +282,77 @@ func (it *Interpreter) evalResult(res interface{}) ([]Message, error) {
 	}
 }
 
-func (it *Interpreter) parseBar(tracks ...ast.NoteList) ([]Message, error) {
+// parseNoteList parses a note list into messages with relative ticks.
+func (it *Interpreter) parseNoteList(noteList ast.NoteList) ([]Message, error) {
 	var (
-		messages     []Message
-		furthestTick uint32
+		messages []Message
+		tick     uint32
 	)
 
-	for _, track := range tracks {
-		var tick uint32
+	for _, note := range noteList {
+		length := note.Length()
 
-		for _, note := range track {
-			length := note.Length()
-
-			if note.Name == '-' {
-				tick += length
-				continue
-			}
-
-			key, ok := it.notes[note.Name]
-			if !ok {
-				return nil, fmt.Errorf("key '%c' undefined", note.Name)
-			}
-
-			if note.IsSharp() {
-				if key == 127 {
-					return nil, fmt.Errorf("sharp note '%s' out of MIDI range", note)
-				}
-				key++
-			} else if note.IsFlat() {
-				if key == 0 {
-					return nil, fmt.Errorf("flat note '%s' out of MIDI range", note)
-				}
-				key--
-			}
-
-			velocity := it.curVelocity
-			if note.IsAccent() {
-				velocity *= 2
-				if velocity > 127 {
-					velocity = 127
-				}
-			} else if note.IsGhost() {
-				velocity /= 2
-			}
-
-			r := uint16(it.curChannel)<<8 | uint16(key)
-			if _, ok := it.ringing[r]; ok {
-				delete(it.ringing, r)
-				messages = append(messages,
-					Message{
-						Tick: it.curTick + tick,
-						Msg:  midi.NewMessage(midi.Channel(it.curChannel).NoteOff(key)),
-					},
-				)
-			}
-
-			messages = append(messages, Message{
-				Tick: it.curTick + tick,
-				Msg:  midi.NewMessage(midi.Channel(it.curChannel).NoteOn(key, velocity)),
-			})
-
-			if note.IsLetRing() {
-				it.ringing[r] = struct{}{}
-			} else {
-				messages = append(messages, Message{
-					Tick: it.curTick + tick + length,
-					Msg:  midi.NewMessage(midi.Channel(it.curChannel).NoteOff(key)),
-				})
-			}
-
+		if note.IsPause() {
 			tick += length
-
-			if tick > furthestTick {
-				furthestTick = tick
-			}
+			continue
 		}
+
+		key, ok := it.notes[note.Name]
+		if !ok {
+			return nil, fmt.Errorf("note '%c' undefined", note.Name)
+		}
+
+		if note.IsSharp() {
+			if key == constants.MaxKey {
+				return nil, fmt.Errorf("sharp note '%s' out of MIDI range", note)
+			}
+			key++
+		} else if note.IsFlat() {
+			if key == constants.MinKey {
+				return nil, fmt.Errorf("flat note '%s' out of MIDI range", note)
+			}
+			key--
+		}
+
+		velocity := it.curVelocity
+		if note.IsAccent() {
+			velocity *= 2
+			if velocity > constants.MaxVelocity {
+				velocity = constants.MaxVelocity
+			}
+		} else if note.IsGhost() {
+			velocity /= 2
+		}
+
+		r := uint16(it.curChannel)<<8 | uint16(key)
+		if _, ok := it.ringing[r]; ok {
+			delete(it.ringing, r)
+			messages = append(messages,
+				Message{
+					Tick: tick,
+					Msg:  midi.NewMessage(midi.Channel(it.curChannel).NoteOff(key)),
+				},
+			)
+		}
+
+		messages = append(messages, Message{
+			Tick:       tick,
+			NoteLength: length,
+			Msg:        midi.NewMessage(midi.Channel(it.curChannel).NoteOn(key, velocity)),
+		})
+
+		if note.IsLetRing() {
+			it.ringing[r] = struct{}{}
+		} else {
+			messages = append(messages, Message{
+				Tick: tick + length,
+				Msg:  midi.NewMessage(midi.Channel(it.curChannel).NoteOff(key)),
+			})
+		}
+
+		tick += length
 	}
 
-	it.curTick += furthestTick
-
-	// Sort the messages so that every note is off before on.
 	sort.Sort(byMessageTypeOrKey(messages))
 
 	return messages, nil
@@ -338,8 +364,8 @@ func New() *Interpreter {
 		parser:      parser.NewParser(),
 		notes:       map[rune]uint8{},
 		ringing:     map[uint16]struct{}{},
-		bars:        map[string][]ast.NoteList{},
-		curVelocity: 127,
+		bars:        map[string][]Message{},
+		curVelocity: constants.MaxVelocity,
 	}
 }
 
@@ -352,14 +378,16 @@ func (s byMessageTypeOrKey) Less(i, j int) bool {
 		a := s[i].Msg
 		b := s[j].Msg
 
-		if a.IsNoteEnd() {
-			if b.IsNoteEnd() {
-				// When both are NoteOff, sort by key.
-				return a.Key() < b.Key()
-			}
-			// NoteOff before any other messages on the same tick.
+		if a.IsNoteEnd() && !b.IsNoteEnd() {
 			return true
 		}
+
+		if a.MsgType == b.MsgType {
+			return a.Key() < b.Key()
+		}
+
+		return false
 	}
+
 	return s[i].Tick < s[j].Tick
 }

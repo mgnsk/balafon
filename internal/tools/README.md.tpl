@@ -77,8 +77,10 @@ go install github.com/mgnsk/gong@latest
   // Optional and applicable only inside a bar.
   timesig 4 4
   // Set the MIDI channel.
+  // Channel can be overridden in a bar. See a multichannel bar example below.
   channel 10
   // Set velocity.
+  // Velocity can be overridden in a bar.
   velocity 127
   // Program change message.
   program 0
@@ -221,6 +223,14 @@ It is possible to write melodies using gong in a limited way. Here's 2 bars of B
 
 ```
 {{.BachExample | trim_trailing_newlines}}
+```
+
+### Multichannel
+
+The file is included in the `examples` directory.
+
+```
+{{.MultiExample | trim_trailing_newlines}}
 ```
 
 ## Possible features in the future

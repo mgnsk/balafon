@@ -31,6 +31,7 @@ type readmeData struct {
 	HelpSection   string
 	BonhamExample string
 	BachExample   string
+	MultiExample  string
 }
 
 func main() {
@@ -73,6 +74,10 @@ func createReadmeData() readmeData {
 		log.Fatal(err, string(output))
 	}
 
+	if output, err := exec.Command("go", "run", "../../.", "lint", "../../examples/multichannel").CombinedOutput(); err != nil {
+		log.Fatal(err, string(output))
+	}
+
 	bonhamExample, err := ioutil.ReadFile("../../examples/bonham")
 	if err != nil {
 		log.Fatal(err)
@@ -83,10 +88,16 @@ func createReadmeData() readmeData {
 		log.Fatal(err)
 	}
 
+	multiExample, err := ioutil.ReadFile("../../examples/multichannel")
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	data := readmeData{
 		HelpSection:   string(helpText),
 		BonhamExample: string(bonhamExample),
 		BachExample:   string(bachExample),
+		MultiExample:  string(multiExample),
 	}
 
 	return data

@@ -200,6 +200,26 @@ func createRunShellCommand(it *interpreter.Interpreter) func(*cobra.Command, []s
 	}
 }
 
+type midiTrack struct {
+	track    *smf.Track
+	lastTick uint32
+}
+
+func newMidiTrack() *midiTrack {
+	return &midiTrack{
+		track: smf.NewTrack(),
+	}
+}
+
+func (t *midiTrack) Add(msg interpreter.Message) {
+	if msg.Tempo > 0 {
+		t.track.Add(msg.Tick-t.lastTick, midi.MetaTempo(float64(msg.Tempo)))
+		return
+	}
+	t.track.Add(msg.Tick-t.lastTick, msg.Msg.Data)
+	t.lastTick = msg.Tick
+}
+
 func compileFile(c *cobra.Command, args []string) error {
 	f, err := os.Open(args[0])
 	if err != nil {
@@ -216,20 +236,33 @@ func compileFile(c *cobra.Command, args []string) error {
 
 	f.Close()
 
-	track := smf.NewTrack()
+	tracks := map[int8]*midiTrack{}
 
-	delta := uint32(0)
+	// First pass, create tracks.
+	for _, msg := range messages {
+		if msg.Msg.IsNoteStart() {
+			ch := msg.Msg.Channel()
+			if _, ok := tracks[ch]; !ok {
+				tracks[ch] = newMidiTrack()
+			}
+		}
+	}
+
+	// Second pass.
 	for _, msg := range messages {
 		if msg.Tempo > 0 {
-			track.Add(msg.Tick-delta, midi.MetaTempo(float64(msg.Tempo)))
+			for _, t := range tracks {
+				t.Add(msg)
+			}
 			continue
 		}
-		track.Add(msg.Tick-delta, msg.Msg.Data)
-		delta = msg.Tick
+		tracks[msg.Msg.Channel()].Add(msg)
 	}
 
 	s := smf.New()
-	s.AddAndClose(0, track)
+	for _, t := range tracks {
+		s.AddAndClose(0, t.track)
+	}
 
 	return s.WriteFile(c.Flag("output").Value.String())
 }
