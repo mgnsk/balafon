@@ -61,7 +61,7 @@ func NewCmdTimeSig(beats, value *token.Token) (CmdTimeSig, error) {
 	if err := validateRange(b, 1, 128); err != nil {
 		return CmdTimeSig{}, err
 	}
-	if err := validateNoteValue(v); err != nil {
+	if err := validateNoteValue(int(v)); err != nil {
 		return CmdTimeSig{}, err
 	}
 	return CmdTimeSig{

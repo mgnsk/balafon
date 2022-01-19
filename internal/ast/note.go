@@ -14,7 +14,7 @@ import (
 // Note: some list operations may be implemented with side effects.
 
 // NoteList is a list of notes.
-type NoteList []Note
+type NoteList []*Note
 
 func (l NoteList) String() string {
 	notes := make([]string, len(l))
@@ -27,15 +27,23 @@ func (l NoteList) String() string {
 // NewNoteList creates a list of notes.
 func NewNoteList(note, inner interface{}) (list NoteList) {
 	switch n := note.(type) {
-	case Note:
-		list = NoteList{n}
+	case *Note:
+		if innerList, ok := inner.(NoteList); ok {
+			list = make(NoteList, len(innerList)+1)
+			list[0] = n
+			copy(list[1:], innerList)
+		} else {
+			list = NoteList{n}
+		}
 	case NoteList:
 		list = n
+		if innerList, ok := inner.(NoteList); ok {
+			list = make(NoteList, len(innerList)+len(n))
+			copy(list, n)
+			copy(list[len(n):], innerList)
+		}
 	default:
 		panic("NewNoteList: invalid argument type")
-	}
-	if innerList, ok := inner.(NoteList); ok {
-		list = append(list, innerList...)
 	}
 	return list
 }
@@ -55,20 +63,22 @@ func NewNoteListFromGroup(notes, props interface{}) (NoteList, error) {
 
 	// Apply the properties to all notes, replacing duplicate
 	// property types if needed.
-	list := make(NoteList, len(noteList))
-	for i, note := range noteList {
+	for _, note := range noteList {
+		needSort := false
 		for _, p := range propList {
 			if idx, ok := note.Props.Find(p.Type); ok {
 				note.Props[idx] = p
 			} else {
 				note.Props = append(note.Props, p)
+				needSort = true
 			}
 		}
-		sort.Sort(note.Props)
-		list[i] = note
+		if needSort {
+			sort.Sort(note.Props)
+		}
 	}
 
-	return list, nil
+	return noteList, nil
 }
 
 // Note is a single note with sorted properties.
@@ -78,7 +88,7 @@ type Note struct {
 }
 
 // Length returns the note duration in ticks.
-func (n Note) Length() uint32 {
+func (n *Note) Length() uint32 {
 	value := n.Value()
 	length := 4 * constants.TicksPerQuarter / uint32(value)
 	newLength := length
@@ -93,41 +103,41 @@ func (n Note) Length() uint32 {
 }
 
 // IsPause reports whether the note is a pause.
-func (n Note) IsPause() bool {
+func (n *Note) IsPause() bool {
 	return n.Name == '-'
 }
 
 // IsSharp reports whether the note is sharp.
-func (n Note) IsSharp() bool {
+func (n *Note) IsSharp() bool {
 	_, ok := n.Props.Find(sharpType)
 	return ok
 }
 
 // IsFlat reports whether the note is flat.
-func (n Note) IsFlat() bool {
+func (n *Note) IsFlat() bool {
 	_, ok := n.Props.Find(flatType)
 	return ok
 }
 
 // IsAccent reports whether the note is accentuated.
-func (n Note) IsAccent() bool {
+func (n *Note) IsAccent() bool {
 	_, ok := n.Props.Find(accentType)
 	return ok
 }
 
 // IsGhost reports whether the note is a ghost note.
-func (n Note) IsGhost() bool {
+func (n *Note) IsGhost() bool {
 	_, ok := n.Props.Find(ghostType)
 	return ok
 }
 
 // Value returns the note value (1th, 2th, 4th, 8th, 16th, 32th and so on).
-func (n Note) Value() uint8 {
+func (n *Note) Value() uint8 {
 	i, ok := n.Props.Find(uintType)
 	if !ok {
 		panic("ast.Note: missing note value")
 	}
-	v, err := n.Props[i].Int32Value()
+	v, err := strconv.Atoi(string(n.Props[i].Lit))
 	if err != nil {
 		panic(err)
 	}
@@ -136,7 +146,7 @@ func (n Note) Value() uint8 {
 }
 
 // Dots reports the number of dot properties in the note.
-func (n Note) Dots() uint {
+func (n *Note) Dots() uint {
 	dots := uint(0)
 	for _, t := range n.Props {
 		if t.Type == dotType {
@@ -147,7 +157,7 @@ func (n Note) Dots() uint {
 }
 
 // Tuplet returns the irregular division value if the note is a tuplet.
-func (n Note) Tuplet() uint {
+func (n *Note) Tuplet() uint {
 	if i, ok := n.Props.Find(tupletType); ok {
 		// Extract the division number.
 		// For example "3" for a triplet denoted by "/3".
@@ -161,17 +171,17 @@ func (n Note) Tuplet() uint {
 }
 
 // IsLetRing reports whether the note must ring.
-func (n Note) IsLetRing() bool {
+func (n *Note) IsLetRing() bool {
 	_, ok := n.Props.Find(letRingType)
 	return ok
 }
 
-func (n Note) String() string {
+func (n *Note) String() string {
 	return fmt.Sprintf("%c%s", n.Name, n.Props)
 }
 
 // NewNote creates a note with properties.
-func NewNote(note string, props interface{}) Note {
+func NewNote(note string, props interface{}) *Note {
 	var propList PropertyList
 	if list, ok := props.(PropertyList); ok {
 		propList = list
@@ -179,16 +189,17 @@ func NewNote(note string, props interface{}) Note {
 
 	if _, ok := propList.Find(uintType); !ok {
 		// Implicit quarter note.
-		propList = append(propList, token.Token{
-			Type: uintType,
-			Lit:  []byte("4"),
-		})
+		propList = append(propList, quarterNoteToken)
+		sort.Sort(propList)
 	}
 
-	sort.Sort(propList)
-
-	return Note{
+	return &Note{
 		Name:  []rune(note)[0],
 		Props: propList,
 	}
+}
+
+var quarterNoteToken = &token.Token{
+	Type: uintType,
+	Lit:  []byte("4"),
 }

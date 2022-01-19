@@ -240,11 +240,9 @@ func compileFile(c *cobra.Command, args []string) error {
 
 	// First pass, create tracks.
 	for _, msg := range messages {
-		if msg.Msg.IsNoteStart() {
-			ch := msg.Msg.Channel()
-			if _, ok := tracks[ch]; !ok {
-				tracks[ch] = newMidiTrack()
-			}
+		ch := msg.Msg.Channel()
+		if _, ok := tracks[ch]; !ok {
+			tracks[ch] = newMidiTrack()
 		}
 	}
 

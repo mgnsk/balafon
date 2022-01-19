@@ -1,7 +1,11 @@
 package interpreter_test
 
 import (
+	"bytes"
+	"fmt"
+	"io/ioutil"
 	"testing"
+	"time"
 
 	"github.com/mgnsk/gong/internal/constants"
 	"github.com/mgnsk/gong/internal/interpreter"
@@ -430,4 +434,44 @@ func TestMultiChannelBar(t *testing.T) {
 
 	g.Expect(messages[4].Tick).To(Equal(uint32(constants.TicksPerQuarter)))
 	g.Expect(messages[7].Msg).To(ContainSubstring("Channel1Msg & NoteOffMsg key: 60"))
+}
+
+var (
+	testFile  []byte
+	lineCount int
+)
+
+func init() {
+	b, err := ioutil.ReadFile("../../examples/bonham")
+	if err != nil {
+		panic(err)
+	}
+	testFile = b
+	lineCount = bytes.Count(testFile, []byte{'\n'})
+}
+
+func BenchmarkInterpreter(b *testing.B) {
+	start := time.Now()
+
+	b.ReportAllocs()
+	b.ResetTimer()
+
+	var err error
+
+	for i := 0; i < b.N; i++ {
+		it := interpreter.New()
+		_, err = it.EvalAll(bytes.NewReader(testFile))
+	}
+
+	b.StopTimer()
+
+	if err != nil {
+		panic(err)
+	}
+
+	elapsed := time.Since(start)
+
+	linesPerNano := float64(b.N*lineCount) / float64(elapsed)
+
+	fmt.Printf("lines per second: %f\n", linesPerNano*float64(time.Second))
 }

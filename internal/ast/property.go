@@ -2,26 +2,20 @@ package ast
 
 import (
 	"fmt"
+	"sort"
+	"strconv"
 	"strings"
 
 	"github.com/mgnsk/gong/internal/parser/token"
 )
 
 // PropertyList is a list of note properties.
-type PropertyList []token.Token
+type PropertyList []*token.Token
 
 func (p PropertyList) Len() int      { return len(p) }
 func (p PropertyList) Swap(i, j int) { p[i], p[j] = p[j], p[i] }
 func (p PropertyList) Less(i, j int) bool {
-	a, ok := propOrder[p[i].Type]
-	if !ok {
-		panic(fmt.Sprintf("PropertyList: invalid token type '%s'", token.TokMap.StringType(p[i].Type)))
-	}
-	b, ok := propOrder[p[j].Type]
-	if !ok {
-		panic(fmt.Sprintf("PropertyList: invalid token type '%s'", token.TokMap.StringType(p[j].Type)))
-	}
-	return a < b
+	return p[i].Type < p[j].Type
 }
 
 // Find the property with specified type.
@@ -45,7 +39,7 @@ func (p PropertyList) String() string {
 // NewPropertyList creates a note property list.
 func NewPropertyList(t *token.Token, inner interface{}) (PropertyList, error) {
 	if t.Type == uintType {
-		v, err := t.Int32Value()
+		v, err := strconv.Atoi(string(t.Lit))
 		if err != nil {
 			return nil, err
 		}
@@ -70,12 +64,13 @@ func NewPropertyList(t *token.Token, inner interface{}) (PropertyList, error) {
 			}
 		}
 		p := make(PropertyList, len(props)+1)
-		p[0] = *t
+		p[0] = t
 		copy(p[1:], props)
+		sort.Sort(p)
 		return p, nil
 	}
 
-	return PropertyList{*t}, nil
+	return PropertyList{t}, nil
 }
 
 var (
@@ -88,14 +83,3 @@ var (
 	tupletType  = token.TokMap.Type("tuplet")
 	letRingType = token.TokMap.Type("letRing")
 )
-
-var propOrder = map[token.Type]int{
-	sharpType:   0,
-	flatType:    1,
-	accentType:  2,
-	ghostType:   3,
-	uintType:    4,
-	dotType:     5,
-	tupletType:  6,
-	letRingType: 7,
-}
