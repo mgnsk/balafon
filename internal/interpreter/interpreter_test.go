@@ -9,7 +9,6 @@ import (
 
 	"github.com/mgnsk/gong/internal/constants"
 	"github.com/mgnsk/gong/internal/interpreter"
-	"github.com/onsi/gomega"
 	. "github.com/onsi/gomega"
 )
 
@@ -79,7 +78,7 @@ func TestUndefinedKey(t *testing.T) {
 	g.Expect(messages).To(BeNil())
 }
 
-func evalExpectNil(g *gomega.WithT, it *interpreter.Interpreter, input string) {
+func evalExpectNil(g *WithT, it *interpreter.Interpreter, input string) {
 	messages, err := it.Eval(input)
 	g.Expect(err).NotTo(HaveOccurred())
 	g.Expect(messages).To(BeNil())
@@ -233,8 +232,6 @@ func TestCommandForbiddenInBar(t *testing.T) {
 		`bar "forbidden"`,
 		`play "forbidden"`,
 		`tempo 120`,
-		`program 0`,
-		`control 0 0`,
 		`start`,
 		`stop`,
 	} {
@@ -292,9 +289,10 @@ func TestBar(t *testing.T) {
 		`velocity 100`,
 		`channel 10`,
 		`[kk]8`,
+		`channel 11`,
 		`[ss]8`,
 		`end`,
-		// This bar should have channel 1 and velocity 127.
+		// The channel is still 11 and velocity 100.
 		`bar "default"`,
 		`k`,
 		`end`,
@@ -310,35 +308,35 @@ func TestBar(t *testing.T) {
 	g.Expect(messages[0].Msg).To(ContainSubstring("Channel10Msg & NoteOnMsg key: 36 velocity: 100"))
 
 	g.Expect(messages[1].Tick).To(Equal(uint32(0)))
-	g.Expect(messages[1].Msg).To(ContainSubstring("Channel10Msg & NoteOnMsg key: 38 velocity: 100"))
+	g.Expect(messages[1].Msg).To(ContainSubstring("Channel11Msg & NoteOnMsg key: 38 velocity: 100"))
 
 	g.Expect(messages[2].Tick).To(Equal(uint32(constants.TicksPerQuarter / 2)))
 	g.Expect(messages[2].Msg).To(ContainSubstring("Channel10Msg & NoteOffMsg key: 36"))
 
 	g.Expect(messages[3].Tick).To(Equal(uint32(constants.TicksPerQuarter / 2)))
-	g.Expect(messages[3].Msg).To(ContainSubstring("Channel10Msg & NoteOffMsg key: 38"))
+	g.Expect(messages[3].Msg).To(ContainSubstring("Channel11Msg & NoteOffMsg key: 38"))
 
 	g.Expect(messages[4].Tick).To(Equal(uint32(constants.TicksPerQuarter / 2)))
 	g.Expect(messages[4].Msg).To(ContainSubstring("Channel10Msg & NoteOnMsg key: 36 velocity: 100"))
 
 	g.Expect(messages[5].Tick).To(Equal(uint32(constants.TicksPerQuarter / 2)))
-	g.Expect(messages[5].Msg).To(ContainSubstring("Channel10Msg & NoteOnMsg key: 38 velocity: 100"))
+	g.Expect(messages[5].Msg).To(ContainSubstring("Channel11Msg & NoteOnMsg key: 38 velocity: 100"))
 
 	g.Expect(messages[6].Tick).To(Equal(uint32(constants.TicksPerQuarter)))
 	g.Expect(messages[6].Msg).To(ContainSubstring("Channel10Msg & NoteOffMsg key: 36"))
 
 	g.Expect(messages[7].Tick).To(Equal(uint32(constants.TicksPerQuarter)))
-	g.Expect(messages[7].Msg).To(ContainSubstring("Channel10Msg & NoteOffMsg key: 38"))
+	g.Expect(messages[7].Msg).To(ContainSubstring("Channel11Msg & NoteOffMsg key: 38"))
 
 	messages, err = it.Eval(`play "default"`)
 	g.Expect(err).NotTo(HaveOccurred())
 	g.Expect(messages).To(HaveLen(2))
 
 	g.Expect(messages[0].Tick).To(Equal(uint32(constants.TicksPerQuarter)))
-	g.Expect(messages[0].Msg).To(ContainSubstring("Channel1Msg & NoteOnMsg key: 36 velocity: 127"))
+	g.Expect(messages[0].Msg).To(ContainSubstring("Channel11Msg & NoteOnMsg key: 36 velocity: 100"))
 
 	g.Expect(messages[1].Tick).To(Equal(uint32(constants.TicksPerQuarter * 2)))
-	g.Expect(messages[1].Msg).To(ContainSubstring("Channel1Msg & NoteOffMsg key: 36"))
+	g.Expect(messages[1].Msg).To(ContainSubstring("Channel11Msg & NoteOffMsg key: 36"))
 }
 
 func TestLetRing(t *testing.T) {
@@ -383,57 +381,6 @@ func TestLetRing(t *testing.T) {
 
 	g.Expect(messages[2].Tick).To(Equal(uint32(constants.TicksPerQuarter * 3)))
 	g.Expect(messages[2].Msg).To(ContainSubstring("Channel0Msg & NoteOffMsg key: 36"))
-}
-
-func TestMultiChannelBar(t *testing.T) {
-	g := NewGomegaWithT(t)
-
-	it := interpreter.New()
-
-	for _, input := range []string{
-		`assign k 36`,
-		`assign s 38`,
-		`assign C 48`,
-		`assign c 60`,
-		`bar "verse"`,
-		`channel 10`,
-		`k`,
-		`s`,
-		`channel 1`,
-		`c`,
-		`C`,
-		`end`,
-	} {
-		evalExpectNil(g, it, input)
-	}
-
-	messages, err := it.Eval(`play "verse"`)
-	g.Expect(err).NotTo(HaveOccurred())
-	g.Expect(messages).To(HaveLen(8))
-
-	g.Expect(messages[0].Tick).To(Equal(uint32(0)))
-	g.Expect(messages[0].Msg).To(ContainSubstring("Channel10Msg & NoteOnMsg key: 36"))
-
-	g.Expect(messages[1].Tick).To(Equal(uint32(0)))
-	g.Expect(messages[1].Msg).To(ContainSubstring("Channel10Msg & NoteOnMsg key: 38"))
-
-	g.Expect(messages[2].Tick).To(Equal(uint32(0)))
-	g.Expect(messages[2].Msg).To(ContainSubstring("Channel1Msg & NoteOnMsg key: 48"))
-
-	g.Expect(messages[3].Tick).To(Equal(uint32(0)))
-	g.Expect(messages[3].Msg).To(ContainSubstring("Channel1Msg & NoteOnMsg key: 60"))
-
-	g.Expect(messages[4].Tick).To(Equal(uint32(constants.TicksPerQuarter)))
-	g.Expect(messages[4].Msg).To(ContainSubstring("Channel10Msg & NoteOffMsg key: 36"))
-
-	g.Expect(messages[4].Tick).To(Equal(uint32(constants.TicksPerQuarter)))
-	g.Expect(messages[5].Msg).To(ContainSubstring("Channel10Msg & NoteOffMsg key: 38"))
-
-	g.Expect(messages[4].Tick).To(Equal(uint32(constants.TicksPerQuarter)))
-	g.Expect(messages[6].Msg).To(ContainSubstring("Channel1Msg & NoteOffMsg key: 48"))
-
-	g.Expect(messages[4].Tick).To(Equal(uint32(constants.TicksPerQuarter)))
-	g.Expect(messages[7].Msg).To(ContainSubstring("Channel1Msg & NoteOffMsg key: 60"))
 }
 
 var (

@@ -10,16 +10,27 @@ assign c 60
 assign e 64
 assign g 67
 
-bar "bar 1"
-timesig 4 4
+bar "setup tracks"
+	channel 1
+	program 1
 
-channel 10
-xxxx
-ksks
-
-channel 1
-cegc
-C1
+	channel 2
+	program 2
 end
 
+bar "bar 1"
+	timesig 4 4
+
+	channel 1
+	control 1 1
+	xxxx
+	ksks
+
+	channel 2
+	control 2 2
+	cegc
+	C1
+end
+
+play "setup tracks"
 play "bar 1"

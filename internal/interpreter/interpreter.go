@@ -25,24 +25,24 @@ type Message struct {
 
 // Interpreter evaluates messages from raw line input.
 type Interpreter struct {
-	parser          *parser.Parser
-	notes           map[rune]uint8
-	ringing         map[uint16]struct{}
-	bars            map[string][]Message
-	barBuffer       []Message
-	curBar          string
-	curTick         uint32
-	curBarLength    uint32
-	curChannel      uint8
-	curVelocity     uint8
-	defaultChannel  uint8
-	defaultVelocity uint8
+	parser       *parser.Parser
+	notes        map[rune]uint8
+	ringing      map[uint16]struct{}
+	bars         map[string][]Message
+	barBuffer    []Message
+	curBar       string
+	curTick      uint32
+	curBarLength uint32
+	curChannel   uint8
+	curVelocity  uint8
 }
 
 var sugInsideBar = []string{
 	"timesig",
 	"channel",
 	"velocity",
+	"program",
+	"control",
 	"end",
 }
 
@@ -210,22 +210,20 @@ func (it *Interpreter) evalResult(res interface{}) ([]Message, error) {
 		return nil, nil
 
 	case ast.CmdChannel:
-		if it.curBar == "" {
-			it.defaultChannel = uint8(r)
-		}
 		it.curChannel = uint8(r)
 		return nil, nil
 
 	case ast.CmdVelocity:
-		if it.curBar == "" {
-			it.defaultVelocity = uint8(r)
-		}
 		it.curVelocity = uint8(r)
 		return nil, nil
 
 	case ast.CmdProgram:
 		if it.curBar != "" {
-			return nil, it.errBarNotEnded("change program")
+			it.barBuffer = append(it.barBuffer, Message{
+				Tick: it.curTick,
+				Msg:  midi.NewMessage(midi.Channel(it.curChannel).ProgramChange(uint8(r))),
+			})
+			return nil, nil
 		}
 		return []Message{{
 			Tick: it.curTick,
@@ -234,11 +232,15 @@ func (it *Interpreter) evalResult(res interface{}) ([]Message, error) {
 
 	case ast.CmdControl:
 		if it.curBar != "" {
-			return nil, it.errBarNotEnded("change control")
+			it.barBuffer = append(it.barBuffer, Message{
+				Tick: it.curTick,
+				Msg:  midi.NewMessage(midi.Channel(it.curChannel).ControlChange(r.Control, r.Parameter)),
+			})
+			return nil, nil
 		}
 		return []Message{{
 			Tick: it.curTick,
-			Msg:  midi.NewMessage(midi.Channel(it.curChannel).ControlChange(r.Control, r.Value)),
+			Msg:  midi.NewMessage(midi.Channel(it.curChannel).ControlChange(r.Control, r.Parameter)),
 		}}, nil
 
 	case ast.CmdBar:
@@ -261,8 +263,6 @@ func (it *Interpreter) evalResult(res interface{}) ([]Message, error) {
 		it.bars[it.curBar] = it.barBuffer
 		it.curBar = ""
 		it.barBuffer = nil
-		it.curChannel = it.defaultChannel
-		it.curVelocity = it.defaultVelocity
 		return nil, nil
 
 	case ast.CmdPlay:

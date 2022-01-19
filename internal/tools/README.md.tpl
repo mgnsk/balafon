@@ -77,10 +77,8 @@ go install github.com/mgnsk/gong@latest
   // Optional and applicable only inside a bar.
   timesig 4 4
   // Set the MIDI channel.
-  // Channel can be overridden in a bar. See a multichannel bar example below.
   channel 10
   // Set velocity.
-  // Velocity can be overridden in a bar.
   velocity 127
   // Program change message.
   program 0
@@ -91,6 +89,7 @@ go install github.com/mgnsk/gong@latest
   // Stop message.
   stop
   ```
+
 - #### Note assignment
   Assign a MIDI note number to a note letter.
   ```
@@ -175,7 +174,11 @@ go install github.com/mgnsk/gong@latest
   ```
 - #### Bars
 
-  Bars are used to specify multiple tracks playing at once with an optional time signature.
+  Bars are used to specify multiple tracks playing at once.
+  Commands used inside bars are not scoped and have global state.
+  For example setting a channel, it becomes the default for all following messages.
+  In multi-channel files, each bar must specify the its channel.
+  See a multi-channel example at the end of this document.
 
   ```
   // Define a bar.

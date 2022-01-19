@@ -117,8 +117,8 @@ func NewCmdProgram(value *token.Token) (CmdProgram, error) {
 
 // CmdControl is a control change command.
 type CmdControl struct {
-	Control uint8
-	Value   uint8
+	Control   uint8
+	Parameter uint8
 }
 
 // NewCmdControl creates a control change command.
@@ -138,8 +138,8 @@ func NewCmdControl(control, value *token.Token) (CmdControl, error) {
 		return CmdControl{}, err
 	}
 	return CmdControl{
-		Control: uint8(c),
-		Value:   uint8(v),
+		Control:   uint8(c),
+		Parameter: uint8(v),
 	}, nil
 }
 
