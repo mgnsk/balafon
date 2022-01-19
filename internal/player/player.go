@@ -22,7 +22,7 @@ type Player struct {
 // Play the message.
 func (p *Player) Play(ctx context.Context, msg interpreter.Message) error {
 	if msg.Tempo > 0 {
-		p.setTempo(msg.Tempo)
+		p.SetTempo(msg.Tempo)
 		return nil
 	}
 
@@ -43,7 +43,8 @@ func (p *Player) Play(ctx context.Context, msg interpreter.Message) error {
 	return p.out.Send(msg.Msg.Data)
 }
 
-func (p *Player) setTempo(bpm uint16) {
+// SetTempo sets the current tempo.
+func (p *Player) SetTempo(bpm uint16) {
 	p.tickDuration = time.Duration(float64(time.Minute) / float64(bpm) / float64(constants.TicksPerQuarter))
 }
 
@@ -55,6 +56,6 @@ func New(out midi.Sender) *Player {
 		out:   out,
 		timer: timer,
 	}
-	p.setTempo(120)
+	p.SetTempo(120)
 	return p
 }

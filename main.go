@@ -3,10 +3,12 @@
 package main
 
 import (
+	"bytes"
 	"context"
 	"errors"
 	"fmt"
 	"io"
+	"io/ioutil"
 	"log"
 	"os"
 	"os/exec"
@@ -45,7 +47,7 @@ func main() {
 		},
 		SilenceErrors: true,
 		SilenceUsage:  true,
-		RunE:          createRunShellCommand(interpreter.New()),
+		RunE:          createRunShellCommand(nil),
 	}
 
 	root.PersistentFlags().String("port", "0", "MIDI output port")
@@ -70,22 +72,11 @@ func main() {
 		Short: "Load a file and continue in a gong shell",
 		Args:  cobra.ExactArgs(1),
 		RunE: func(c *cobra.Command, args []string) error {
-			f, err := os.Open(args[0])
+			file, err := ioutil.ReadFile(args[0])
 			if err != nil {
 				return err
 			}
-
-			it := interpreter.New()
-
-			_, err = it.EvalAll(io.TeeReader(f, os.Stdout))
-			if err != nil {
-				fmt.Println(err)
-				f.Close()
-				return nil
-			}
-			f.Close()
-
-			return createRunShellCommand(it)(c, args)
+			return createRunShellCommand(io.TeeReader(bytes.NewReader(file), os.Stdout))(c, args)
 		},
 	})
 
@@ -136,7 +127,7 @@ type result struct {
 	messages []interpreter.Message
 }
 
-func createRunShellCommand(it *interpreter.Interpreter) func(*cobra.Command, []string) error {
+func createRunShellCommand(input io.Reader) func(*cobra.Command, []string) error {
 	return func(c *cobra.Command, _ []string) error {
 		if strings.Contains(runtime.GOOS, "linux") {
 			// TODO: eventually remove this when the bugs get fixed.
@@ -158,6 +149,21 @@ func createRunShellCommand(it *interpreter.Interpreter) func(*cobra.Command, []s
 			return err
 		}
 
+		it := interpreter.New()
+
+		var tempo uint16
+		if input != nil {
+			messages, err := it.EvalAll(input)
+			if err != nil {
+				return err
+			}
+			for _, msg := range messages {
+				if msg.Tempo > 0 {
+					tempo = msg.Tempo
+				}
+			}
+		}
+
 		fmt.Printf("Welcome to the gong shell on MIDI port '%d: %s'!\n", out.Number(), out.String())
 
 		resultC := make(chan result)
@@ -168,7 +174,7 @@ func createRunShellCommand(it *interpreter.Interpreter) func(*cobra.Command, []s
 		wg.Add(1)
 		go func() {
 			defer wg.Done()
-			startPlayer(ctx, out, resultC)
+			startPlayer(ctx, out, resultC, tempo)
 		}()
 
 		prompt.New(
@@ -309,10 +315,13 @@ func playAll(ctx context.Context, out midi.Sender, messages []interpreter.Messag
 	}
 }
 
-func startPlayer(ctx context.Context, out midi.Sender, resultC <-chan result) {
+func startPlayer(ctx context.Context, out midi.Sender, resultC <-chan result, tempo uint16) {
 	runtime.LockOSThread()
 
 	p := player.New(out)
+	if tempo > 0 {
+		p.SetTempo(tempo)
+	}
 	for {
 		select {
 		case <-ctx.Done():
