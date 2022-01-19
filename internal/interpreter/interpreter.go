@@ -39,6 +39,25 @@ type Interpreter struct {
 	defaultVelocity uint8
 }
 
+var sugInsideBar = []string{
+	"timesig",
+	"channel",
+	"velocity",
+	"end",
+}
+
+var sugOutsideBar = []string{
+	"assign",
+	"tempo",
+	"channel",
+	"velocity",
+	"program",
+	"control",
+	"bar",
+	"start",
+	"stop",
+}
+
 // Suggest returns suggestions for the next input.
 // It is not safe to call Suggest concurrently
 // with Eval.
@@ -51,14 +70,12 @@ func (it *Interpreter) Suggest() []string {
 	}
 
 	if it.curBar != "" {
-		// Suggest ending the current bar if we're in the middle of a bar.
-		sug = append(sug, "end")
+		sug = append(sug, sugInsideBar...)
 	} else {
-		// Suggest commands.
-		sug = append(sug, "assign", "tempo", "channel", "velocity", "program", "control", "bar")
+		sug = append(sug, sugOutsideBar...)
 		// Suggest playing a bar.
 		for name := range it.bars {
-			sug = append(sug, "play "+name)
+			sug = append(sug, fmt.Sprintf(`play "%s"`, name))
 		}
 	}
 
