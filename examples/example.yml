@@ -1,0 +1,81 @@
+---
+instruments:
+  - channel: 1
+    assign:
+      c: 60
+      d: 62
+      e: 64
+      f: 65
+      g: 67
+      a: 69
+      b: 71
+
+  - channel: 2
+    assign:
+      C: 48
+      D: 50
+      E: 52
+      F: 53
+      G: 55
+      A: 57
+      B: 59
+
+  - channel: 10
+    assign:
+      # kick
+      k: 36
+      # snare
+      s: 38
+      # hat
+      x: 42
+
+bars:
+  - name: setup channels
+    tracks:
+      - channel: 1
+        program: 1
+        control: 1
+        parameter: 1
+      - channel: 2
+        program: 2
+        control: 2
+        parameter: 2
+      - channel: 10
+        program: 127
+
+  - name: cool sound preset
+    tracks:
+      - channel: 1
+        program: 10
+        control: 10
+        parameter: 10
+      - channel: 2
+        program: 20
+        control: 20
+        parameter: 20
+
+  - name: Verse
+    time: 4
+    sig: 4
+    tracks:
+      - channel: 1
+        voices:
+          - cegc
+          - "[cg]2"
+
+      - channel: 2
+        voices:
+          - CEC2
+
+      - channel: 10
+        control: 3
+        parameter: 3
+        voices:
+          - xxxx
+          - ksks
+
+play:
+  - setup channels
+  - Verse
+  - cool sound preset
+  - Verse

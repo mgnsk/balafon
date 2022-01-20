@@ -18,6 +18,7 @@ import (
 	"sync"
 
 	"github.com/c-bata/go-prompt"
+	"github.com/mgnsk/gong/internal/frontend"
 	"github.com/mgnsk/gong/internal/interpreter"
 	"github.com/mgnsk/gong/internal/player"
 	"github.com/spf13/cobra"
@@ -83,25 +84,33 @@ func main() {
 	root.AddCommand(&cobra.Command{
 		Use:   "play [file]",
 		Short: "Play a file",
-		Args:  cobra.ExactArgs(1),
+		Args:  cobra.MaximumNArgs(1),
 		RunE:  playFile,
 	})
 
-	compile := &cobra.Command{
-		Use:   "compile [file]",
+	compileSMF := &cobra.Command{
+		Use:   "smf [file]",
 		Short: "Compile a gong file to SMF",
-		Args:  cobra.ExactArgs(1),
-		RunE:  compileFile,
+		Args:  cobra.MaximumNArgs(1),
+		RunE:  compileToSMF,
 	}
-	compile.Flags().StringP("output", "o", "out.mid", "Output file")
-	root.AddCommand(compile)
+	compileSMF.Flags().StringP("output", "o", "out.mid", "Output file")
+	root.AddCommand(compileSMF)
+
+	compileToGong := &cobra.Command{
+		Use:   "compile [file]",
+		Short: "Compile a YAML file to gong script",
+		Args:  cobra.MaximumNArgs(1),
+		RunE:  compileYAML,
+	}
+	root.AddCommand(compileToGong)
 
 	root.AddCommand(&cobra.Command{
 		Use:   "lint [file]",
 		Short: "Lint a file",
 		Args:  cobra.ExactArgs(1),
 		RunE: func(_ *cobra.Command, args []string) error {
-			f, err := os.Open(args[0])
+			f, err := stdinOrFile(args)
 			if err != nil {
 				return err
 			}
@@ -226,21 +235,53 @@ func (t *midiTrack) Add(msg interpreter.Message) {
 	t.lastTick = msg.Tick
 }
 
-func compileFile(c *cobra.Command, args []string) error {
+func stdinOrFile(args []string) (io.ReadCloser, error) {
+	if args[0] == "-" {
+		return os.Stdin, nil
+	} else if args[0] == "" {
+		return nil, fmt.Errorf("file argument or '-' for stdin required")
+	}
 	f, err := os.Open(args[0])
+	if err != nil {
+		return nil, err
+	}
+	return f, nil
+}
+
+func compileYAML(c *cobra.Command, args []string) error {
+	f, err := stdinOrFile(args)
+	if err != nil {
+		return err
+	}
+	defer f.Close()
+
+	b, err := ioutil.ReadAll(f)
 	if err != nil {
 		return err
 	}
 
+	script, err := frontend.Compile(b)
+	if err != nil {
+		return err
+	}
+
+	fmt.Printf(string(script))
+
+	return nil
+}
+
+func compileToSMF(c *cobra.Command, args []string) error {
+	f, err := stdinOrFile(args)
+	if err != nil {
+		return err
+	}
+	defer f.Close()
+
 	it := interpreter.New()
 	messages, err := it.EvalAll(f)
 	if err != nil {
-		fmt.Println(err)
-		f.Close()
-		return nil
+		return err
 	}
-
-	f.Close()
 
 	tracks := map[int8]*midiTrack{}
 
@@ -272,20 +313,17 @@ func compileFile(c *cobra.Command, args []string) error {
 }
 
 func playFile(c *cobra.Command, args []string) error {
-	f, err := os.Open(args[0])
+	f, err := stdinOrFile(args)
 	if err != nil {
 		return err
 	}
+	defer f.Close()
 
 	it := interpreter.New()
 	messages, err := it.EvalAll(f)
 	if err != nil {
-		fmt.Println(err)
-		f.Close()
-		return nil
+		return err
 	}
-
-	f.Close()
 
 	out, err := getPort(c.Flag("port").Value.String())
 	if err != nil {

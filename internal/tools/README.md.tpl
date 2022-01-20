@@ -1,7 +1,9 @@
 ## Introduction
 
-gong is a small domain-specific language for controlling MIDI devices.
+gong is a small low-level domain-specific language for controlling MIDI devices.
 It includes a live interpreter and can play back standalone text files.
+
+There also exists a high-level YAML specification that compiles down to gong script.
 
 ## Install
 
@@ -24,6 +26,10 @@ go install github.com/mgnsk/gong@latest
 - Play a file through a specific port. The port name must contain the passed in flag value:
   ```sh
   $ gong play --port "VM" examples/piano
+  ```
+  Piped input is accepted:
+  ```sh
+  $ cat examples/piano | gong play --port "VM" -
   ```
 - Port can also be specified by its number:
   ```sh
@@ -50,10 +56,14 @@ go install github.com/mgnsk/gong@latest
   ```sh
   $ gong lint examples/bonham
   ```
-- Compile a file:
+- Compile to SMF:
   ```sh
-  $ gong compile -o examples/bonham.mid examples/bonham
-  $ gong compile -o examples/bach.mid examples/bach
+  $ gong smf -o examples/bonham.mid examples/bonham
+  $ cat examples/bach | gong smf -o examples/bach.mid -
+  ```
+- Compile a YAML file to gong script and play it:
+  ```sh
+  $ gong compile examples/example.yml | gong play -
   ```
 - Help.
 
@@ -234,6 +244,14 @@ The file is included in the `examples` directory.
 
 ```
 {{.MultiExample | trim_trailing_newlines}}
+```
+
+### YAML example
+
+The file is included in the `examples` directory.
+
+```
+{{.YAMLExample | trim_trailing_newlines}}
 ```
 
 ## Possible features in the future

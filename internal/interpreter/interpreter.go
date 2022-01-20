@@ -25,16 +25,16 @@ type Message struct {
 
 // Interpreter evaluates messages from raw line input.
 type Interpreter struct {
-	parser       *parser.Parser
-	notes        map[rune]uint8
-	ringing      map[uint16]struct{}
-	bars         map[string][]Message
-	barBuffer    []Message
-	curBar       string
-	curTick      uint32
-	curBarLength uint32
-	curChannel   uint8
-	curVelocity  uint8
+	parser        *parser.Parser
+	channelKeymap map[uint8]map[rune]uint8
+	ringing       map[uint16]struct{}
+	bars          map[string][]Message
+	barBuffer     []Message
+	curBar        string
+	curTick       uint32
+	curBarLength  uint32
+	curChannel    uint8
+	curVelocity   uint8
 }
 
 var sugInsideBar = []string{
@@ -65,7 +65,7 @@ func (it *Interpreter) Suggest() []string {
 	var sug []string
 
 	// Suggest assigned notes at any time.
-	for note := range it.notes {
+	for note := range it.channelKeymap {
 		sug = append(sug, string(note))
 	}
 
@@ -187,10 +187,10 @@ func (it *Interpreter) evalResult(res interface{}) ([]Message, error) {
 		if it.curBar != "" {
 			return nil, it.errBarNotEnded("assign note")
 		}
-		if key, ok := it.notes[r.Note]; ok {
+		if key, ok := it.channelKeymap[it.curChannel][r.Note]; ok {
 			return nil, fmt.Errorf("note '%c' already assigned to '%d'", r.Note, key)
 		}
-		it.notes[r.Note] = r.Key
+		it.channelKeymap[it.curChannel][r.Note] = r.Key
 		return nil, nil
 
 	case ast.CmdTempo:
@@ -211,6 +211,9 @@ func (it *Interpreter) evalResult(res interface{}) ([]Message, error) {
 
 	case ast.CmdChannel:
 		it.curChannel = uint8(r)
+		if _, ok := it.channelKeymap[it.curChannel]; !ok {
+			it.channelKeymap[it.curChannel] = map[rune]uint8{}
+		}
 		return nil, nil
 
 	case ast.CmdVelocity:
@@ -314,7 +317,7 @@ func (it *Interpreter) parseNoteList(noteList ast.NoteList) ([]Message, error) {
 			continue
 		}
 
-		key, ok := it.notes[note.Name]
+		key, ok := it.channelKeymap[it.curChannel][note.Name]
 		if !ok {
 			return nil, fmt.Errorf("note '%c' undefined", note.Name)
 		}
@@ -378,11 +381,11 @@ func (it *Interpreter) parseNoteList(noteList ast.NoteList) ([]Message, error) {
 // New creates an interpreter.
 func New() *Interpreter {
 	return &Interpreter{
-		parser:      parser.NewParser(),
-		notes:       map[rune]uint8{},
-		ringing:     map[uint16]struct{}{},
-		bars:        map[string][]Message{},
-		curVelocity: constants.MaxVelocity,
+		parser:        parser.NewParser(),
+		channelKeymap: map[uint8]map[rune]uint8{0: map[rune]uint8{}},
+		ringing:       map[uint16]struct{}{},
+		bars:          map[string][]Message{},
+		curVelocity:   constants.MaxVelocity,
 	}
 }
 

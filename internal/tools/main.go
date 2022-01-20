@@ -32,6 +32,7 @@ type readmeData struct {
 	BonhamExample string
 	BachExample   string
 	MultiExample  string
+	YAMLExample   string
 }
 
 func main() {
@@ -78,6 +79,10 @@ func createReadmeData() readmeData {
 		log.Fatal(err, string(output))
 	}
 
+	if output, err := exec.Command("bash", "-c", "set -eou pipefail; go run ../../. compile ../../examples/example.yml | go run ../../. lint -").CombinedOutput(); err != nil {
+		log.Fatal(err, string(output))
+	}
+
 	bonhamExample, err := ioutil.ReadFile("../../examples/bonham")
 	if err != nil {
 		log.Fatal(err)
@@ -93,11 +98,17 @@ func createReadmeData() readmeData {
 		log.Fatal(err)
 	}
 
+	yamlExample, err := ioutil.ReadFile("../../examples/example.yml")
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	data := readmeData{
 		HelpSection:   string(helpText),
 		BonhamExample: string(bonhamExample),
 		BachExample:   string(bachExample),
 		MultiExample:  string(multiExample),
+		YAMLExample:   string(yamlExample),
 	}
 
 	return data

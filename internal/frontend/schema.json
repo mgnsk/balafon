@@ -1,0 +1,124 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "definitions": {
+    "uint": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 127
+    },
+    "powerOf2": {
+      "type": "integer",
+      "enum": [1, 2, 4, 8, 16, 32, 64, 128]
+    },
+    "instrument": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "channel": {
+          "$ref": "#/definitions/uint"
+        },
+        "assign": {
+          "type": "object",
+          "minProperties": 1,
+          "additionalProperties": {
+            "$ref": "#/definitions/uint"
+          }
+        }
+      },
+      "required": ["channel", "assign"],
+      "dependencies": {
+        "control": ["parameter"],
+        "parameter": ["control"]
+      }
+    },
+    "instrumentArray": {
+      "type": "array",
+      "minLength": 1,
+      "items": {
+        "$ref": "#/definitions/instrument"
+      }
+    },
+    "voice": {
+      "type": "string"
+    },
+    "track": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "channel": {
+          "$ref": "#/definitions/uint"
+        },
+        "program": {
+          "$ref": "#/definitions/uint"
+        },
+        "control": {
+          "$ref": "#/definitions/uint"
+        },
+        "parameter": {
+          "$ref": "#/definitions/uint"
+        },
+        "voices": {
+          "type": "array",
+          "minLength": 1,
+          "items": {
+            "$ref": "#/definitions/voice"
+          }
+        }
+      },
+      "required": ["channel"],
+      "dependencies": {
+        "program": ["channel"],
+        "control": ["parameter", "channel"],
+        "parameter": ["control"],
+        "voices": ["channel"]
+      }
+    },
+    "bar": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "time": {
+          "$ref": "#/definitions/powerOf2"
+        },
+        "sig": {
+          "$ref": "#/definitions/powerOf2"
+        },
+        "tracks": {
+          "type": "array",
+          "minLength": 1,
+          "items": {
+            "$ref": "#/definitions/track"
+          }
+        }
+      },
+      "required": ["name", "tracks"]
+    },
+    "barArray": {
+      "type": "array",
+      "minLength": 1,
+      "items": {
+        "$ref": "#/definitions/bar"
+      }
+    }
+  },
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "instruments": {
+      "$ref": "#/definitions/instrumentArray"
+    },
+    "bars": {
+      "$ref": "#/definitions/barArray"
+    },
+    "play": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "required": ["instruments", "bars"]
+}

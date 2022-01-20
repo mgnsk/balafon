@@ -1,7 +1,9 @@
 ## Introduction
 
-gong is a small domain-specific language for controlling MIDI devices.
+gong is a small low-level domain-specific language for controlling MIDI devices.
 It includes a live interpreter and can play back standalone text files.
+
+There also exists a high-level YAML specification that compiles down to gong script.
 
 ## Install
 
@@ -24,6 +26,10 @@ go install github.com/mgnsk/gong@latest
 - Play a file through a specific port. The port name must contain the passed in flag value:
   ```sh
   $ gong play --port "VM" examples/piano
+  ```
+  Piped input is accepted:
+  ```sh
+  $ cat examples/piano | gong play --port "VM" -
   ```
 - Port can also be specified by its number:
   ```sh
@@ -50,10 +56,14 @@ go install github.com/mgnsk/gong@latest
   ```sh
   $ gong lint examples/bonham
   ```
-- Compile a file:
+- Compile to SMF:
   ```sh
-  $ gong compile -o examples/bonham.mid examples/bonham
-  $ gong compile -o examples/bach.mid examples/bach
+  $ gong smf -o examples/bonham.mid examples/bonham
+  $ cat examples/bach | gong smf -o examples/bach.mid -
+  ```
+- Compile a YAML file to gong script and play it:
+  ```sh
+  $ gong compile examples/example.yml | gong play -
   ```
 - Help.
 
@@ -65,12 +75,13 @@ go install github.com/mgnsk/gong@latest
      [command]
 
   Available Commands:
-    compile     Compile a gong file to SMF
+    compile     Compile a YAML file to gong script
     help        Help about any command
     lint        Lint a file
     list        List available MIDI output ports
     load        Load a file and continue in a gong shell
     play        Play a file
+    smf         Compile a gong file to SMF
 
   Flags:
     -h, --help          help for this command
@@ -351,6 +362,8 @@ play "bar 2"
 The file is included in the `examples` directory.
 
 ```
+channel 10
+program 1
 // Kick drum.
 assign k 36
 // Acoustic snare drum.
@@ -358,18 +371,12 @@ assign s 38
 // Hi-Hat closed.
 assign x 42
 
+channel 2
+program 2
 assign C 48
 assign c 60
 assign e 64
 assign g 67
-
-bar "setup tracks"
-	channel 1
-	program 1
-
-	channel 2
-	program 2
-end
 
 bar "bar 1"
 	timesig 4 4
@@ -387,6 +394,94 @@ end
 
 play "setup tracks"
 play "bar 1"
+```
+
+### YAML example
+
+The file is included in the `examples` directory.
+
+```
+---
+instruments:
+  - channel: 1
+    assign:
+      c: 60
+      d: 62
+      e: 64
+      f: 65
+      g: 67
+      a: 69
+      b: 71
+
+  - channel: 2
+    assign:
+      C: 48
+      D: 50
+      E: 52
+      F: 53
+      G: 55
+      A: 57
+      B: 59
+
+  - channel: 10
+    assign:
+      # kick
+      k: 36
+      # snare
+      s: 38
+      # hat
+      x: 42
+
+bars:
+  - name: setup channels
+    tracks:
+      - channel: 1
+        program: 1
+        control: 1
+        parameter: 1
+      - channel: 2
+        program: 2
+        control: 2
+        parameter: 2
+      - channel: 10
+        program: 127
+
+  - name: cool sound preset
+    tracks:
+      - channel: 1
+        program: 10
+        control: 10
+        parameter: 10
+      - channel: 2
+        program: 20
+        control: 20
+        parameter: 20
+
+  - name: Verse
+    time: 4
+    sig: 4
+    tracks:
+      - channel: 1
+        voices:
+          - cegc
+          - "[cg]2"
+
+      - channel: 2
+        voices:
+          - CEC2
+
+      - channel: 10
+        control: 3
+        parameter: 3
+        voices:
+          - xxxx
+          - ksks
+
+play:
+  - setup channels
+  - Verse
+  - cool sound preset
+  - Verse
 ```
 
 ## Possible features in the future
