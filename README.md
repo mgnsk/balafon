@@ -400,7 +400,7 @@ play "bar 1"
 
 The file is included in the `examples` directory.
 
-```
+```yaml
 ---
 instruments:
   - channel: 1
