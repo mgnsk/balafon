@@ -81,32 +81,32 @@ go install github.com/mgnsk/gong@latest
   ```
   // Assign a note.
   assign c 60
-  //
+
   // Start message. Useful for controlling a DAW which records MIDI input.
   start
-  //
+
   // Stop message.
   stop
-  //
+
   // Set the time signature.
   // Optional and applicable only as the first command in a bar.
   timesig 4 4
-  //
+
   // The following commands, when used inside a bar,
   // apply to the beginning of the bar regardless of position.
-  //
+
   // Set the current global tempo.
   tempo 120
-  //
+
   // Set the current global MIDI channel.
   channel 10
-  //
+
   // Set current global velocity.
   velocity 127
-  //
+
   // Program change message on the current channel.
   program 0
-  //
+
   // Control change message on the current channel.
   control 1 127
   ```
@@ -184,10 +184,12 @@ go install github.com/mgnsk/gong@latest
   x8 x16 x16
   // Can be written as:
   x8[xx]16
+
   // Three 8th triplet notes.
   [xxx]8/3
   // Expands to
   x8/3 x8/3 x8/3
+
   // Nested groups are also supported:
   [[fcg] [fcg]#]8
   // Expands to
@@ -261,7 +263,7 @@ The file is included in the `examples` directory.
 
 The file is included in the `examples` directory.
 
-```
+```yaml
 {{.YAMLExample | trim_trailing_newlines}}
 ```
 
