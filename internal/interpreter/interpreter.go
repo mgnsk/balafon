@@ -194,17 +194,22 @@ func (it *Interpreter) evalResult(res interface{}) ([]Message, error) {
 		return nil, nil
 
 	case ast.CmdTempo:
-		if it.curBar != "" {
-			return nil, it.errBarNotEnded("change tempo")
-		}
-		return []Message{{
+		msg := Message{
 			Tick:  it.curTick,
 			Tempo: uint16(r),
-		}}, nil
+		}
+		if it.curBar != "" {
+			it.barBuffer = append(it.barBuffer, msg)
+			return nil, nil
+		}
+		return []Message{msg}, nil
 
 	case ast.CmdTimeSig:
 		if it.curBar == "" {
 			return nil, fmt.Errorf("timesig can only be set inside a bar")
+		}
+		if len(it.barBuffer) > 0 {
+			return nil, fmt.Errorf("timesig must be the first command inside a bar")
 		}
 		it.curBarLength = uint32(r.Beats) * (4 * constants.TicksPerQuarter / uint32(r.Value))
 		return nil, nil
@@ -221,30 +226,26 @@ func (it *Interpreter) evalResult(res interface{}) ([]Message, error) {
 		return nil, nil
 
 	case ast.CmdProgram:
-		if it.curBar != "" {
-			it.barBuffer = append(it.barBuffer, Message{
-				Tick: it.curTick,
-				Msg:  midi.NewMessage(midi.Channel(it.curChannel).ProgramChange(uint8(r))),
-			})
-			return nil, nil
-		}
-		return []Message{{
+		msg := Message{
 			Tick: it.curTick,
 			Msg:  midi.NewMessage(midi.Channel(it.curChannel).ProgramChange(uint8(r))),
-		}}, nil
-
-	case ast.CmdControl:
+		}
 		if it.curBar != "" {
-			it.barBuffer = append(it.barBuffer, Message{
-				Tick: it.curTick,
-				Msg:  midi.NewMessage(midi.Channel(it.curChannel).ControlChange(r.Control, r.Parameter)),
-			})
+			it.barBuffer = append(it.barBuffer, msg)
 			return nil, nil
 		}
-		return []Message{{
+		return []Message{msg}, nil
+
+	case ast.CmdControl:
+		msg := Message{
 			Tick: it.curTick,
 			Msg:  midi.NewMessage(midi.Channel(it.curChannel).ControlChange(r.Control, r.Parameter)),
-		}}, nil
+		}
+		if it.curBar != "" {
+			it.barBuffer = append(it.barBuffer, msg)
+			return nil, nil
+		}
+		return []Message{msg}, nil
 
 	case ast.CmdBar:
 		if it.curBar != "" {
@@ -276,7 +277,9 @@ func (it *Interpreter) evalResult(res interface{}) ([]Message, error) {
 		if !ok {
 			return nil, fmt.Errorf("bar '%s' does not exist", string(r))
 		}
-
+		if len(messages) == 0 {
+			return nil, fmt.Errorf("invalid bar '%s'", string(r))
+		}
 		return it.play(messages), nil
 
 	case ast.CmdStart:
@@ -382,7 +385,7 @@ func (it *Interpreter) parseNoteList(noteList ast.NoteList) ([]Message, error) {
 func New() *Interpreter {
 	return &Interpreter{
 		parser:        parser.NewParser(),
-		channelKeymap: map[uint8]map[rune]uint8{0: map[rune]uint8{}},
+		channelKeymap: map[uint8]map[rune]uint8{0: {}},
 		ringing:       map[uint16]struct{}{},
 		bars:          map[string][]Message{},
 		curVelocity:   constants.MaxVelocity,
@@ -395,6 +398,10 @@ func (s byMessageTypeOrKey) Len() int      { return len(s) }
 func (s byMessageTypeOrKey) Swap(i, j int) { s[i], s[j] = s[j], s[i] }
 func (s byMessageTypeOrKey) Less(i, j int) bool {
 	if s[i].Tick == s[j].Tick {
+		if s[i].Tempo > 0 && s[j].Tempo == 0 {
+			return true
+		}
+
 		a := s[i].Msg
 		b := s[j].Msg
 

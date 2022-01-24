@@ -100,23 +100,34 @@ go install github.com/mgnsk/gong@latest
   ```
   // Assign a note.
   assign c 60
-  // Set the tempo.
-  tempo 120
-  // Set the time signature.
-  // Optional and applicable only inside a bar.
-  timesig 4 4
-  // Set the MIDI channel.
-  channel 10
-  // Set velocity.
-  velocity 127
-  // Program change message.
-  program 0
-  // Control change message.
-  control 1 127
+  //
   // Start message. Useful for controlling a DAW which records MIDI input.
   start
+  //
   // Stop message.
   stop
+  //
+  // Set the time signature.
+  // Optional and applicable only as the first command in a bar.
+  timesig 4 4
+  //
+  // The following commands, when used inside a bar,
+  // apply to the beginning of the bar regardless of position.
+  //
+  // Set the current global tempo.
+  tempo 120
+  //
+  // Set the current global MIDI channel.
+  channel 10
+  //
+  // Set current global velocity.
+  velocity 127
+  //
+  // Program change message on the current channel.
+  program 0
+  //
+  // Control change message on the current channel.
+  control 1 127
   ```
 
 - #### Note assignment
@@ -407,34 +418,20 @@ instruments:
     assign:
       c: 60
       d: 62
-      e: 64
-      f: 65
-      g: 67
-      a: 69
-      b: 71
 
   - channel: 2
     assign:
-      C: 48
-      D: 50
-      E: 52
-      F: 53
-      G: 55
-      A: 57
-      B: 59
+      c: 48
+      d: 50
 
   - channel: 10
     assign:
-      # kick
       k: 36
-      # snare
       s: 38
-      # hat
-      x: 42
 
 bars:
   - name: setup channels
-    tracks:
+    params:
       - channel: 1
         program: 1
         control: 1
@@ -447,7 +444,7 @@ bars:
         program: 127
 
   - name: cool sound preset
-    tracks:
+    params:
       - channel: 1
         program: 10
         control: 10
@@ -457,30 +454,33 @@ bars:
         control: 20
         parameter: 20
 
+  - name: tempo 2
+    params:
+      - tempo: 200
+
   - name: Verse
     time: 4
     sig: 4
     tracks:
       - channel: 1
         voices:
-          - cegc
-          - "[cg]2"
+          - cccc
+          - d1
 
       - channel: 2
         voices:
-          - CEC2
+          - dddd
+          - c1
 
       - channel: 10
-        control: 3
-        parameter: 3
         voices:
-          - xxxx
           - ksks
 
 play:
   - setup channels
   - Verse
   - cool sound preset
+  - tempo 2
   - Verse
 ```
 

@@ -3,6 +3,7 @@ module github.com/mgnsk/gong
 go 1.16
 
 require (
+	github.com/acarl005/stripansi v0.0.0-20180116102854-5a71ef0e047d
 	github.com/c-bata/go-prompt v0.2.6
 	github.com/goccy/go-yaml v1.9.5
 	github.com/onsi/gomega v1.14.0

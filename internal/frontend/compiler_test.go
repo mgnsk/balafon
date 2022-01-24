@@ -5,6 +5,7 @@ import (
 	"io/ioutil"
 	"testing"
 
+	"github.com/acarl005/stripansi"
 	"github.com/mgnsk/gong/internal/frontend"
 	"github.com/mgnsk/gong/internal/interpreter"
 	. "github.com/onsi/gomega"
@@ -22,23 +23,12 @@ func TestCompiler(t *testing.T) {
 	g.Expect(string(b)).To(Equal(`channel 1
 assign c 60
 assign d 62
-assign e 64
-assign f 65
-assign g 67
-assign a 69
-assign b 71
 channel 2
-assign C 48
-assign D 50
-assign E 52
-assign F 53
-assign G 55
-assign A 57
-assign B 59
+assign c 48
+assign d 50
 channel 10
 assign k 36
 assign s 38
-assign x 42
 
 bar "setup channels"
 channel 1
@@ -60,16 +50,19 @@ program 20
 control 20 20
 end
 
+bar "tempo 2"
+tempo 200
+end
+
 bar "Verse"
 timesig 4 4
 channel 1
-cegc
-[cg]2
+cccc
+d1
 channel 2
-CEC2
+dddd
+c1
 channel 10
-control 3 3
-xxxx
 ksks
 end
 
@@ -79,10 +72,57 @@ play "Verse"
 
 play "cool sound preset"
 
+play "tempo 2"
+
 play "Verse"
 `))
 
 	it := interpreter.New()
 	_, err = it.EvalAll(bytes.NewReader(b))
 	g.Expect(err).NotTo(HaveOccurred())
+}
+
+func TestCompileInvalidInput(t *testing.T) {
+	input := []byte(`
+instruments:
+  - channel: 1
+bars:
+  - name: bar
+    tracks:
+      - channel: 1
+        voices:
+          - a
+play:
+  - bar
+`)
+
+	g := NewGomegaWithT(t)
+
+	_, err := frontend.Compile(input)
+	g.Expect(err).To(HaveOccurred())
+
+	cleanMsg := stripansi.Strip(err.Error())
+	g.Expect(cleanMsg).To(Equal(`missing properties: 'assign':
+   2 | instruments:
+>  3 |   - channel: 1
+                  ^
+   4 | bars:
+   5 |   - name: bar
+   6 |     tracks:
+note 'a' undefined:
+   6 |     tracks:
+   7 |       - channel: 1
+   8 |         voices:
+>  9 |           - a
+                   ^
+  10 | play:
+  11 |   - bar
+invalid bar 'bar':
+   8 |         voices:
+   9 |           - a
+  10 | play:
+> 11 |   - bar
+           ^
+
+`))
 }

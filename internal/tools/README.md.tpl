@@ -81,23 +81,34 @@ go install github.com/mgnsk/gong@latest
   ```
   // Assign a note.
   assign c 60
-  // Set the tempo.
-  tempo 120
-  // Set the time signature.
-  // Optional and applicable only inside a bar.
-  timesig 4 4
-  // Set the MIDI channel.
-  channel 10
-  // Set velocity.
-  velocity 127
-  // Program change message.
-  program 0
-  // Control change message.
-  control 1 127
+  //
   // Start message. Useful for controlling a DAW which records MIDI input.
   start
+  //
   // Stop message.
   stop
+  //
+  // Set the time signature.
+  // Optional and applicable only as the first command in a bar.
+  timesig 4 4
+  //
+  // The following commands, when used inside a bar,
+  // apply to the beginning of the bar regardless of position.
+  //
+  // Set the current global tempo.
+  tempo 120
+  //
+  // Set the current global MIDI channel.
+  channel 10
+  //
+  // Set current global velocity.
+  velocity 127
+  //
+  // Program change message on the current channel.
+  program 0
+  //
+  // Control change message on the current channel.
+  control 1 127
   ```
 
 - #### Note assignment
