@@ -38,6 +38,7 @@ type Interpreter struct {
 }
 
 var sugInsideBar = []string{
+	"tempo",
 	"timesig",
 	"channel",
 	"velocity",
