@@ -13,6 +13,7 @@ import (
 	"os"
 	"os/exec"
 	"runtime"
+	"sort"
 	"strconv"
 	"strings"
 	"sync"
@@ -216,13 +217,15 @@ func createRunShellCommand(input io.Reader) func(*cobra.Command, []string) error
 }
 
 type midiTrack struct {
+	channel  uint8
 	track    *smf.Track
 	lastTick uint32
 }
 
-func newMidiTrack() *midiTrack {
+func newMidiTrack(ch uint8) *midiTrack {
 	return &midiTrack{
-		track: smf.NewTrack(),
+		channel: ch,
+		track:   smf.NewTrack(),
 	}
 }
 
@@ -283,16 +286,16 @@ func compileToSMF(c *cobra.Command, args []string) error {
 
 	// First pass, create tracks.
 	for _, msg := range messages {
-		ch := msg.Msg.Channel()
-		if _, ok := tracks[ch]; !ok {
-			tracks[ch] = newMidiTrack()
+		if ch := msg.Msg.Channel(); ch >= 0 {
+			if _, ok := tracks[ch]; !ok {
+				tracks[ch] = newMidiTrack(uint8(ch))
+			}
 		}
 	}
 
 	// Second pass.
 	for _, msg := range messages {
-		if msg.Msg.Is(midi.MetaTempoMsg) {
-			// Add tempo to all channels.
+		if msg.Msg.Is(midi.MetaTempoMsg) || msg.Msg.Channel() == -1 {
 			for _, t := range tracks {
 				t.Add(msg)
 			}
@@ -300,6 +303,15 @@ func compileToSMF(c *cobra.Command, args []string) error {
 		}
 		tracks[msg.Msg.Channel()].Add(msg)
 	}
+
+	trackList := make([]*midiTrack, 0, len(tracks))
+	for _, track := range tracks {
+		trackList = append(trackList, track)
+	}
+
+	sort.Slice(trackList, func(i, j int) bool {
+		return trackList[i].channel < trackList[j].channel
+	})
 
 	s := smf.New()
 	for _, t := range tracks {
