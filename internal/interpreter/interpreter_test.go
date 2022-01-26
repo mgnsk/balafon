@@ -12,18 +12,6 @@ import (
 	. "github.com/onsi/gomega"
 )
 
-func TestTempoCommand(t *testing.T) {
-	g := NewGomegaWithT(t)
-
-	it := interpreter.New()
-
-	messages, err := it.Eval("tempo 120")
-	g.Expect(err).NotTo(HaveOccurred())
-	g.Expect(messages).To(ConsistOf(interpreter.Message{
-		Tempo: 120,
-	}))
-}
-
 func TestProgramChangeCommand(t *testing.T) {
 	g := NewGomegaWithT(t)
 
@@ -276,7 +264,7 @@ func TestInvalidBarLength(t *testing.T) {
 	g.Expect(messages).To(BeNil())
 }
 
-func TestTempoInBar(t *testing.T) {
+func TestTempoAndTimeSigInBar(t *testing.T) {
 	g := NewGomegaWithT(t)
 
 	it := interpreter.New()
@@ -284,33 +272,33 @@ func TestTempoInBar(t *testing.T) {
 	evalExpectNil(g, it, "assign k 36")
 	evalExpectNil(g, it, "assign s 38")
 	evalExpectNil(g, it, `bar "bar"`)
-	evalExpectNil(g, it, `k`)
 	evalExpectNil(g, it, `tempo 200`)
+	evalExpectNil(g, it, `timesig 1 4`)
+	evalExpectNil(g, it, `k`)
 	evalExpectNil(g, it, `s`)
 	evalExpectNil(g, it, `end`)
 
 	messages, err := it.Eval(`play "bar"`)
 	g.Expect(err).NotTo(HaveOccurred())
-	g.Expect(messages).To(HaveLen(5))
+	g.Expect(messages).To(HaveLen(6))
 
 	g.Expect(messages[0].Tick).To(Equal(uint32(0)))
-	g.Expect(messages[0].Tempo).To(Equal(uint16(200)))
+	g.Expect(messages[0].Msg).To(ContainSubstring("MetaTempoMsg bpm: 200"))
 
 	g.Expect(messages[1].Tick).To(Equal(uint32(0)))
-	g.Expect(messages[1].Msg).To(ContainSubstring("Channel0Msg & NoteOnMsg key: 36"))
-	g.Expect(messages[1].Tempo).To(BeZero())
+	g.Expect(messages[1].Msg).To(ContainSubstring("MetaTimeSigMsg meter: 1/4"))
 
 	g.Expect(messages[2].Tick).To(Equal(uint32(0)))
-	g.Expect(messages[2].Msg).To(ContainSubstring("Channel0Msg & NoteOnMsg key: 38"))
-	g.Expect(messages[2].Tempo).To(BeZero())
+	g.Expect(messages[2].Msg).To(ContainSubstring("Channel0Msg & NoteOnMsg key: 36"))
 
-	g.Expect(messages[3].Tick).To(Equal(uint32(constants.TicksPerQuarter)))
-	g.Expect(messages[3].Msg).To(ContainSubstring("Channel0Msg & NoteOffMsg key: 36"))
-	g.Expect(messages[3].Tempo).To(BeZero())
+	g.Expect(messages[3].Tick).To(Equal(uint32(0)))
+	g.Expect(messages[3].Msg).To(ContainSubstring("Channel0Msg & NoteOnMsg key: 38"))
 
 	g.Expect(messages[4].Tick).To(Equal(uint32(constants.TicksPerQuarter)))
-	g.Expect(messages[4].Msg).To(ContainSubstring("Channel0Msg & NoteOffMsg key: 38"))
-	g.Expect(messages[4].Tempo).To(BeZero())
+	g.Expect(messages[4].Msg).To(ContainSubstring("Channel0Msg & NoteOffMsg key: 36"))
+
+	g.Expect(messages[5].Tick).To(Equal(uint32(constants.TicksPerQuarter)))
+	g.Expect(messages[5].Msg).To(ContainSubstring("Channel0Msg & NoteOffMsg key: 38"))
 }
 
 func TestBar(t *testing.T) {

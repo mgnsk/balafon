@@ -15,12 +15,11 @@ import (
 	"gitlab.com/gomidi/midi/v2"
 )
 
-// Message is a tempo or a MIDI message.
+// Message is a MIDI message.
 type Message struct {
 	Msg        midi.Message
 	Tick       uint32
 	NoteLength uint32
-	Tempo      uint16
 }
 
 // Interpreter evaluates messages from raw line input.
@@ -196,10 +195,13 @@ func (it *Interpreter) evalResult(res interface{}) ([]Message, error) {
 
 	case ast.CmdTempo:
 		msg := Message{
-			Tick:  it.curTick,
-			Tempo: uint16(r),
+			Tick: it.curTick,
+			Msg:  midi.NewMessage(midi.MetaTempo(float64(r))),
 		}
 		if it.curBar != "" {
+			if containsNotes(it.barBuffer) {
+				return nil, fmt.Errorf("tempo command must be at the beginning of bar")
+			}
 			it.barBuffer = append(it.barBuffer, msg)
 			return nil, nil
 		}
@@ -209,10 +211,14 @@ func (it *Interpreter) evalResult(res interface{}) ([]Message, error) {
 		if it.curBar == "" {
 			return nil, fmt.Errorf("timesig can only be set inside a bar")
 		}
-		if len(it.barBuffer) > 0 {
-			return nil, fmt.Errorf("timesig must be the first command inside a bar")
+		if containsNotes(it.barBuffer) {
+			return nil, fmt.Errorf("timesig command must be at the beginning of bar")
 		}
 		it.curBarLength = uint32(r.Beats) * (4 * constants.TicksPerQuarter / uint32(r.Value))
+		it.barBuffer = append(it.barBuffer, Message{
+			Tick: it.curTick,
+			Msg:  midi.NewMessage(midi.MetaMeter(r.Beats, r.Value)),
+		})
 		return nil, nil
 
 	case ast.CmdChannel:
@@ -399,10 +405,6 @@ func (s byMessageTypeOrKey) Len() int      { return len(s) }
 func (s byMessageTypeOrKey) Swap(i, j int) { s[i], s[j] = s[j], s[i] }
 func (s byMessageTypeOrKey) Less(i, j int) bool {
 	if s[i].Tick == s[j].Tick {
-		if s[i].Tempo > 0 && s[j].Tempo == 0 {
-			return true
-		}
-
 		a := s[i].Msg
 		b := s[j].Msg
 
@@ -418,4 +420,13 @@ func (s byMessageTypeOrKey) Less(i, j int) bool {
 	}
 
 	return s[i].Tick < s[j].Tick
+}
+
+func containsNotes(messages []Message) bool {
+	for _, msg := range messages {
+		if msg.Msg.IsNoteStart() || msg.Msg.IsNoteEnd() {
+			return true
+		}
+	}
+	return false
 }

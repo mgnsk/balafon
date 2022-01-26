@@ -21,8 +21,8 @@ type Player struct {
 
 // Play the message.
 func (p *Player) Play(ctx context.Context, msg interpreter.Message) error {
-	if msg.Tempo > 0 {
-		p.SetTempo(msg.Tempo)
+	if msg.Msg.Is(midi.MetaTempoMsg) {
+		p.SetTempo(uint16(msg.Msg.BPM()))
 		return nil
 	}
 

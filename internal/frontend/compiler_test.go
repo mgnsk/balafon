@@ -65,6 +65,12 @@ ccdd
 [cd]2
 end
 
+bar "Fill"
+timesig 3 8
+channel 10
+[ksk]8
+end
+
 play "sound A"
 
 play "lead reverb on"
@@ -74,6 +80,8 @@ play "Verse"
 play "lead reverb off"
 
 play "tempo 2"
+
+play "Fill"
 
 play "Verse"
 `))

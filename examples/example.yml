@@ -55,10 +55,18 @@ bars:
       drums:
         - ksks
 
+  - name: Fill
+    time: 3
+    sig: 8
+    tracks:
+      drums:
+        - "[ksk]8"
+
 play:
   - sound A
   - lead reverb on
   - Verse
   - lead reverb off
   - tempo 2
+  - Fill
   - Verse

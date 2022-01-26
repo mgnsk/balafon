@@ -65,6 +65,11 @@ go install github.com/mgnsk/gong@latest
   ```sh
   $ gong compile examples/example.yml | gong play -
   ```
+- Compile a YAML file to SMF:
+  ```sh
+  $ gong compile examples/example.yml | gong smf -o example.mid -
+  ```
+
 - Help.
 
   ```sh
@@ -470,12 +475,20 @@ bars:
       drums:
         - ksks
 
+  - name: Fill
+    time: 3
+    sig: 8
+    tracks:
+      drums:
+        - "[ksk]8"
+
 play:
   - sound A
   - lead reverb on
   - Verse
   - lead reverb off
   - tempo 2
+  - Fill
   - Verse
 ```
 

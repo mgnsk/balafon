@@ -65,6 +65,11 @@ go install github.com/mgnsk/gong@latest
   ```sh
   $ gong compile examples/example.yml | gong play -
   ```
+- Compile a YAML file to SMF:
+  ```sh
+  $ gong compile examples/example.yml | gong smf -o example.mid -
+  ```
+
 - Help.
 
   ```sh

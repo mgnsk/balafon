@@ -167,8 +167,8 @@ func createRunShellCommand(input io.Reader) func(*cobra.Command, []string) error
 				return err
 			}
 			for _, msg := range messages {
-				if msg.Tempo > 0 {
-					tempo = msg.Tempo
+				if bpm := msg.Msg.BPM(); bpm > 0 {
+					tempo = uint16(bpm)
 				}
 			}
 		}
@@ -227,10 +227,6 @@ func newMidiTrack() *midiTrack {
 }
 
 func (t *midiTrack) Add(msg interpreter.Message) {
-	if msg.Tempo > 0 {
-		t.track.Add(msg.Tick-t.lastTick, midi.MetaTempo(float64(msg.Tempo)))
-		return
-	}
 	t.track.Add(msg.Tick-t.lastTick, msg.Msg.Data)
 	t.lastTick = msg.Tick
 }
@@ -295,7 +291,8 @@ func compileToSMF(c *cobra.Command, args []string) error {
 
 	// Second pass.
 	for _, msg := range messages {
-		if msg.Tempo > 0 {
+		if msg.Msg.Is(midi.MetaTempoMsg) {
+			// Add tempo to all channels.
 			for _, t := range tracks {
 				t.Add(msg)
 			}
