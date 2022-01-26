@@ -73,6 +73,8 @@ go install github.com/mgnsk/gong@latest
 
 ## Syntax
 
+The language consists of commands and note lists. It is possible to group commands and notes in bars.
+
 - #### Comments
   ```
   // This is a line comment.
@@ -91,9 +93,6 @@ go install github.com/mgnsk/gong@latest
   // Set the time signature.
   // Optional and applicable only as the first command in a bar.
   timesig 4 4
-
-  // The following commands, when used inside a bar,
-  // apply to the beginning of the bar regardless of position.
 
   // Set the current global tempo.
   tempo 120

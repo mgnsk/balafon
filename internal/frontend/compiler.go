@@ -38,7 +38,6 @@ func Compile(b []byte) ([]byte, error) {
 			for _, e := range verr.BasicOutput().Errors {
 				// Skip generic jsonschema errors.
 				if !strings.HasPrefix(e.Error, "doesn't validate with") {
-
 					if match := additionalPropertiesPattern.FindStringSubmatch(e.Error); len(match) == 2 {
 						// Add the invalid path element for annotation.
 						e.InstanceLocation = e.InstanceLocation + "/" + match[1]
@@ -69,7 +68,14 @@ func Compile(b []byte) ([]byte, error) {
 	}
 
 	var buf strings.Builder
-	for _, line := range render(jsonDoc) {
+
+	lines, err := render(jsonDoc)
+	if err != nil {
+		// Already caught by validation.
+		panic(err)
+	}
+
+	for _, line := range lines {
 		buf.WriteString(line.output)
 	}
 
@@ -86,16 +92,34 @@ type assignment struct {
 	key  int
 }
 
-// render renders the JSON document. Invalid keys are skipped.
-func render(doc map[string]interface{}) []outputLine {
-	var lines []outputLine
+type invalidInstrumentError struct {
+	instName string
+	path     string
+}
 
-	if instruments, ok := doc["instruments"].([]interface{}); ok {
-		for instIndex, instrument := range instruments {
-			if inst, ok := instrument.(map[string]interface{}); ok {
+func (e invalidInstrumentError) Error() string {
+	return fmt.Sprintf("instrument '%s' not defined", e.instName)
+}
+
+// render renders the JSON document. Invalid keys are skipped.
+func render(doc map[string]interface{}) ([]outputLine, error) {
+	var lines []outputLine
+	channels := map[string]int{}
+
+	if instruments, ok := doc["instruments"].(map[string]interface{}); ok {
+		names := make([]string, 0, len(instruments))
+		for instName := range instruments {
+			names = append(names, instName)
+		}
+		sort.Strings(names)
+
+		for _, instName := range names {
+			if inst, ok := instruments[instName].(map[string]interface{}); ok {
 				if v, ok := inst["channel"].(float64); ok {
+					channels[instName] = int(v)
+
 					lines = append(lines, outputLine{
-						path:   fmt.Sprintf("/instruments/%d/channel", instIndex),
+						path:   fmt.Sprintf("/instruments/%s/channel", instName),
 						output: fmt.Sprintf("channel %d\n", int(v)),
 					})
 				}
@@ -117,94 +141,114 @@ func render(doc map[string]interface{}) []outputLine {
 
 					for _, s := range assignments {
 						lines = append(lines, outputLine{
-							path:   fmt.Sprintf("/instruments/%d/assign/%s", instIndex, s.note),
+							path:   fmt.Sprintf("/instruments/%s/assign/%s", instName, s.note),
 							output: fmt.Sprintf("assign %s %d\n", s.note, s.key),
 						})
 					}
 				}
 			}
 		}
+	}
 
-		if bars, ok := doc["bars"].([]interface{}); ok {
-			for barIndex, bar := range bars {
-				if bar, ok := bar.(map[string]interface{}); ok {
+	if bars, ok := doc["bars"].([]interface{}); ok {
+		for barIndex, bar := range bars {
+			if bar, ok := bar.(map[string]interface{}); ok {
+				lines = append(lines, outputLine{
+					path:   fmt.Sprintf("/bars/%d", barIndex),
+					output: fmt.Sprintf("\nbar \"%v\"\n", bar["name"]),
+				})
+
+				if time, ok := bar["time"].(float64); ok {
+					if sig, ok := bar["sig"].(float64); ok {
+						lines = append(lines, outputLine{
+							path:   fmt.Sprintf("/bars/%d/time", barIndex),
+							output: fmt.Sprintf("timesig %d %d\n", int(time), int(sig)),
+						})
+					}
+				}
+
+				if v, ok := bar["tempo"].(float64); ok {
 					lines = append(lines, outputLine{
-						path:   fmt.Sprintf("/bars/%d", barIndex),
-						output: fmt.Sprintf("\nbar \"%v\"\n", bar["name"]),
-					})
-
-					if time, ok := bar["time"].(float64); ok {
-						if sig, ok := bar["sig"].(float64); ok {
-							lines = append(lines, outputLine{
-								path:   fmt.Sprintf("/bars/%d/time", barIndex),
-								output: fmt.Sprintf("timesig %d %d\n", int(time), int(sig)),
-							})
-						}
-					}
-
-					if params, ok := bar["params"].([]interface{}); ok {
-						for paramIndex, param := range params {
-							if param, ok := param.(map[string]interface{}); ok {
-								if v, ok := param["channel"].(float64); ok {
-									lines = append(lines, outputLine{
-										path:   fmt.Sprintf("/bars/%d/params/%d/channel", barIndex, paramIndex),
-										output: fmt.Sprintf("channel %d\n", int(v)),
-									})
-								}
-
-								if v, ok := param["tempo"].(float64); ok {
-									lines = append(lines, outputLine{
-										path:   fmt.Sprintf("/bars/%d/params/%d/tempo", barIndex, paramIndex),
-										output: fmt.Sprintf("tempo %d\n", int(v)),
-									})
-								}
-
-								if v, ok := param["program"].(float64); ok {
-									lines = append(lines, outputLine{
-										path:   fmt.Sprintf("/bars/%d/params/%d/program", barIndex, paramIndex),
-										output: fmt.Sprintf("program %d\n", int(v)),
-									})
-								}
-
-								if control, ok := param["control"].(float64); ok {
-									if parameter, ok := param["parameter"].(float64); ok {
-										lines = append(lines, outputLine{
-											path:   fmt.Sprintf("/bars/%d/params/%d/control", barIndex, paramIndex),
-											output: fmt.Sprintf("control %d %d\n", int(control), int(parameter)),
-										})
-									}
-								}
-							}
-						}
-					}
-
-					if tracks, ok := bar["tracks"].([]interface{}); ok {
-						for trackIndex, track := range tracks {
-							if track, ok := track.(map[string]interface{}); ok {
-								if v, ok := track["channel"].(float64); ok {
-									lines = append(lines, outputLine{
-										path:   fmt.Sprintf("/bars/%d/tracks/%d/channel", barIndex, trackIndex),
-										output: fmt.Sprintf("channel %d\n", int(v)),
-									})
-								}
-
-								if voices, ok := track["voices"].([]interface{}); ok {
-									for voiceIndex, voice := range voices {
-										lines = append(lines, outputLine{
-											path:   fmt.Sprintf("/bars/%d/tracks/%d/voices/%d", barIndex, trackIndex, voiceIndex),
-											output: voice.(string) + "\n",
-										})
-									}
-								}
-							}
-						}
-					}
-
-					lines = append(lines, outputLine{
-						path:   fmt.Sprintf("/bars/%d", barIndex),
-						output: "end\n",
+						path:   fmt.Sprintf("/bars/%d/tempo", barIndex),
+						output: fmt.Sprintf("tempo %d\n", int(v)),
 					})
 				}
+
+				if params, ok := bar["params"].(map[string]interface{}); ok {
+					names := make([]string, 0, len(params))
+					for instName := range params {
+						names = append(names, instName)
+					}
+					sort.Strings(names)
+
+					for _, instName := range names {
+						path := fmt.Sprintf("/bars/%d/params/%s", barIndex, instName)
+
+						channel, ok := channels[instName]
+						if !ok {
+							return nil, invalidInstrumentError{instName, path}
+						}
+
+						lines = append(lines, outputLine{
+							path:   path,
+							output: fmt.Sprintf("channel %d\n", channel),
+						})
+
+						if param, ok := params[instName].(map[string]interface{}); ok {
+							if v, ok := param["program"].(float64); ok {
+								lines = append(lines, outputLine{
+									path:   fmt.Sprintf("/bars/%d/params/%s/program", barIndex, instName),
+									output: fmt.Sprintf("program %d\n", int(v)),
+								})
+							}
+
+							if control, ok := param["control"].(float64); ok {
+								if parameter, ok := param["parameter"].(float64); ok {
+									lines = append(lines, outputLine{
+										path:   fmt.Sprintf("/bars/%d/params/%s/control", barIndex, instName),
+										output: fmt.Sprintf("control %d %d\n", int(control), int(parameter)),
+									})
+								}
+							}
+						}
+					}
+				}
+
+				if tracks, ok := bar["tracks"].(map[string]interface{}); ok {
+					names := make([]string, 0, len(tracks))
+					for instName := range tracks {
+						names = append(names, instName)
+					}
+					sort.Strings(names)
+
+					for _, instName := range names {
+						path := fmt.Sprintf("/bars/%d/tracks/%s", barIndex, instName)
+
+						channel, ok := channels[instName]
+						if !ok {
+							return nil, invalidInstrumentError{instName, path}
+						}
+
+						lines = append(lines, outputLine{
+							path:   fmt.Sprintf("/bars/%d/tracks/%s", barIndex, instName),
+							output: fmt.Sprintf("channel %d\n", channel),
+						})
+
+						if voices, ok := tracks[instName].([]interface{}); ok {
+							for voiceIndex, voice := range voices {
+								lines = append(lines, outputLine{
+									path:   fmt.Sprintf("/bars/%d/tracks/%s/%d", barIndex, instName, voiceIndex),
+									output: voice.(string) + "\n",
+								})
+							}
+						}
+					}
+				}
+
+				lines = append(lines, outputLine{
+					path:   fmt.Sprintf("/bars/%d", barIndex),
+					output: "end\n",
+				})
 			}
 		}
 	}
@@ -218,5 +262,5 @@ func render(doc map[string]interface{}) []outputLine {
 		}
 	}
 
-	return lines
+	return lines, nil
 }

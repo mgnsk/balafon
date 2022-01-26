@@ -27,10 +27,10 @@
       },
       "required": ["channel", "assign"]
     },
-    "instrumentArray": {
-      "type": "array",
-      "minLength": 1,
-      "items": {
+    "instrumentMap": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": {
         "$ref": "#/definitions/instrument"
       }
     },
@@ -38,13 +38,6 @@
       "type": "object",
       "additionalProperties": false,
       "properties": {
-        "channel": {
-          "$ref": "#/definitions/uint"
-        },
-        "tempo": {
-          "type": "integer",
-          "minimum": 0
-        },
         "program": {
           "$ref": "#/definitions/uint"
         },
@@ -59,31 +52,9 @@
           "enum": ["start", "stop"]
         }
       },
-      "oneOf": [{ "required": ["channel"] }, { "required": ["tempo"] }],
       "dependencies": {
-        "program": ["channel"],
-        "control": ["parameter", "channel"],
+        "control": ["parameter"],
         "parameter": ["control"]
-      }
-    },
-    "voiceTrack": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "channel": {
-          "$ref": "#/definitions/uint"
-        },
-        "voices": {
-          "type": "array",
-          "minLength": 1,
-          "items": {
-            "type": "string"
-          }
-        }
-      },
-      "required": ["channel"],
-      "dependencies": {
-        "voices": ["channel"]
       }
     },
     "bar": {
@@ -93,6 +64,10 @@
         "name": {
           "type": "string"
         },
+        "tempo": {
+          "type": "integer",
+          "minimum": 0
+        },
         "time": {
           "$ref": "#/definitions/powerOf2"
         },
@@ -100,21 +75,25 @@
           "$ref": "#/definitions/powerOf2"
         },
         "params": {
-          "type": "array",
-          "items": {
+          "type": "object",
+          "minProperties": 1,
+          "additionalProperties": {
             "$ref": "#/definitions/paramTrack"
           }
         },
         "tracks": {
-          "type": "array",
-          "minLength": 1,
-          "items": {
-            "$ref": "#/definitions/voiceTrack"
+          "type": "object",
+          "minProperties": 1,
+          "additionalProperties": {
+            "type": "array",
+            "minLength": 1,
+            "items": {
+              "type": "string"
+            }
           }
         }
       },
-      "required": ["name"],
-      "anyOf": [{ "required": ["params"] }, { "required": ["tracks"] }]
+      "required": ["name"]
     },
     "barArray": {
       "type": "array",
@@ -128,7 +107,7 @@
   "additionalProperties": false,
   "properties": {
     "instruments": {
-      "$ref": "#/definitions/instrumentArray"
+      "$ref": "#/definitions/instrumentMap"
     },
     "bars": {
       "$ref": "#/definitions/barArray"
@@ -140,6 +119,6 @@
       }
     }
   },
-  "required": ["instruments", "bars"],
+  "required": ["instruments", "bars", "play"],
   "interpret": true
 }

@@ -3,6 +3,7 @@ package frontend
 import (
 	"bytes"
 	_ "embed"
+	"errors"
 
 	"github.com/mgnsk/gong/internal/interpreter"
 	"github.com/santhosh-tekuri/jsonschema/v5"
@@ -34,8 +35,23 @@ func (ext interpreterValidator) Validate(ctx jsonschema.ValidationContext, v int
 	case map[string]interface{}:
 		it := interpreter.New()
 
-		var verr error
-		for _, line := range render(doc) {
+		var (
+			verr    error
+			errInst invalidInstrumentError
+		)
+
+		lines, err := render(doc)
+		if err != nil {
+			if errors.As(err, &errInst) {
+				return &jsonschema.ValidationError{
+					InstanceLocation: errInst.path,
+					Message:          errInst.Error(),
+				}
+			}
+			panic(err)
+		}
+
+		for _, line := range lines {
 			if _, err := it.Eval(line.output); err != nil {
 				perr := &jsonschema.ValidationError{
 					InstanceLocation: line.path,

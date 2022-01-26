@@ -92,6 +92,8 @@ go install github.com/mgnsk/gong@latest
 
 ## Syntax
 
+The language consists of commands and note lists. It is possible to group commands and notes in bars.
+
 - #### Comments
   ```
   // This is a line comment.
@@ -110,9 +112,6 @@ go install github.com/mgnsk/gong@latest
   // Set the time signature.
   // Optional and applicable only as the first command in a bar.
   timesig 4 4
-
-  // The following commands, when used inside a bar,
-  // apply to the beginning of the bar regardless of position.
 
   // Set the current global tempo.
   tempo 120
@@ -416,72 +415,66 @@ The file is included in the `examples` directory.
 ```yaml
 ---
 instruments:
-  - channel: 1
+  lead:
+    channel: 1
     assign:
       c: 60
       d: 62
 
-  - channel: 2
+  bass:
+    channel: 2
     assign:
       c: 48
       d: 50
 
-  - channel: 10
+  drums:
+    channel: 10
     assign:
       k: 36
       s: 38
 
 bars:
-  - name: setup channels
+  - name: sound A
     params:
-      - channel: 1
+      lead:
         program: 1
-        control: 1
-        parameter: 1
-      - channel: 2
-        program: 2
-        control: 2
-        parameter: 2
-      - channel: 10
+      bass:
+        program: 1
+      drums:
         program: 127
 
-  - name: cool sound preset
+  - name: lead reverb on
     params:
-      - channel: 1
-        program: 10
-        control: 10
-        parameter: 10
-      - channel: 2
-        program: 20
-        control: 20
-        parameter: 20
+      lead:
+        control: 100
+        parameter: 100
+
+  - name: lead reverb off
+    params:
+      lead:
+        control: 100
+        parameter: 0
 
   - name: tempo 2
-    params:
-      - tempo: 200
+    tempo: 200
 
   - name: Verse
     time: 4
     sig: 4
     tracks:
-      - channel: 1
-        voices:
-          - cccc
-          - d1
-
-      - channel: 2
-        voices:
-          - dddd
-          - c1
-
-      - channel: 10
-        voices:
-          - ksks
+      bass:
+        - "[cd]2"
+      lead:
+        - ccdd
+        - "[cd]2"
+      drums:
+        - ksks
 
 play:
-  - setup channels
+  - sound A
+  - lead reverb on
   - Verse
-  - cool sound preset
+  - lead reverb off
   - tempo 2
   - Verse
 ```
