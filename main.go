@@ -5,27 +5,21 @@ package main
 import (
 	"bytes"
 	"context"
-	"errors"
 	"fmt"
 	"io"
 	"io/ioutil"
-	"log"
 	"os"
 	"os/exec"
 	"runtime"
-	"sort"
 	"strconv"
 	"strings"
 	"sync"
 
 	"github.com/c-bata/go-prompt"
-	"github.com/mgnsk/gong/internal/frontend"
 	"github.com/mgnsk/gong/internal/interpreter"
-	"github.com/mgnsk/gong/internal/player"
 	"github.com/spf13/cobra"
 	"gitlab.com/gomidi/midi/v2"
 	_ "gitlab.com/gomidi/midi/v2/drivers/rtmididrv"
-	"gitlab.com/gomidi/midi/v2/smf"
 )
 
 func handleExit() {
@@ -89,20 +83,20 @@ func main() {
 		RunE:  playFile,
 	})
 
-	compileSMF := &cobra.Command{
+	compileToSMF := &cobra.Command{
 		Use:   "smf [file]",
 		Short: "Compile a gong file to SMF",
 		Args:  cobra.MaximumNArgs(1),
 		RunE:  compileToSMF,
 	}
-	compileSMF.Flags().StringP("output", "o", "out.mid", "Output file")
-	root.AddCommand(compileSMF)
+	compileToSMF.Flags().StringP("output", "o", "out.mid", "Output file")
+	root.AddCommand(compileToSMF)
 
 	compileToGong := &cobra.Command{
 		Use:   "compile [file]",
 		Short: "Compile a YAML file to gong script",
 		Args:  cobra.MaximumNArgs(1),
-		RunE:  compileYAML,
+		RunE:  compileToGong,
 	}
 	root.AddCommand(compileToGong)
 
@@ -117,7 +111,6 @@ func main() {
 			}
 			defer f.Close()
 
-			it := interpreter.New()
 			if _, err := it.EvalAll(f); err != nil {
 				fmt.Println(err)
 				return nil
@@ -159,8 +152,6 @@ func createRunShellCommand(input io.Reader) func(*cobra.Command, []string) error
 			return err
 		}
 
-		it := interpreter.New()
-
 		var tempo uint16
 		if input != nil {
 			messages, err := it.EvalAll(input)
@@ -187,14 +178,19 @@ func createRunShellCommand(input io.Reader) func(*cobra.Command, []string) error
 			startPlayer(ctx, out, resultC, tempo)
 		}()
 
+		parser := prompt.NewStandardInputParser()
+
+		sh := &shell{
+			parser:  parser,
+			writer:  prompt.NewStandardOutputWriter(),
+			results: resultC,
+		}
+
 		prompt.New(
 			func(input string) {
-				messages, err := it.Eval(input)
-				if err != nil {
+				if err := sh.handleInputLine(input); err != nil {
 					fmt.Println(err)
-					return
 				}
-				resultC <- result{"", messages}
 			},
 			func(in prompt.Document) []prompt.Suggest {
 				var sug []prompt.Suggest
@@ -203,6 +199,7 @@ func createRunShellCommand(input io.Reader) func(*cobra.Command, []string) error
 				}
 				return prompt.FilterHasPrefix(sug, in.GetWordBeforeCursor(), true)
 			},
+			prompt.OptionParser(parser),
 			prompt.OptionPrefixTextColor(prompt.Yellow),
 			prompt.OptionPreviewSuggestionTextColor(prompt.Blue),
 			prompt.OptionSelectedSuggestionBGColor(prompt.LightGray),
@@ -216,22 +213,12 @@ func createRunShellCommand(input io.Reader) func(*cobra.Command, []string) error
 	}
 }
 
-type midiTrack struct {
-	channel  uint8
-	track    *smf.Track
-	lastTick uint32
-}
-
-func newMidiTrack(ch uint8) *midiTrack {
-	return &midiTrack{
-		channel: ch,
-		track:   smf.NewTrack(),
+func getPort(port string) (midi.Out, error) {
+	portNum, err := strconv.Atoi(port)
+	if err == nil {
+		return midi.OutByNumber(portNum)
 	}
-}
-
-func (t *midiTrack) Add(msg interpreter.Message) {
-	t.track.Add(msg.Tick-t.lastTick, msg.Msg.Data)
-	t.lastTick = msg.Tick
+	return midi.OutByName(port)
 }
 
 func stdinOrFile(args []string) (io.ReadCloser, error) {
@@ -245,157 +232,4 @@ func stdinOrFile(args []string) (io.ReadCloser, error) {
 		return nil, err
 	}
 	return f, nil
-}
-
-func compileYAML(c *cobra.Command, args []string) error {
-	f, err := stdinOrFile(args)
-	if err != nil {
-		return err
-	}
-	defer f.Close()
-
-	b, err := ioutil.ReadAll(f)
-	if err != nil {
-		return err
-	}
-
-	script, err := frontend.Compile(b)
-	if err != nil {
-		return err
-	}
-
-	fmt.Printf(string(script))
-
-	return nil
-}
-
-func compileToSMF(c *cobra.Command, args []string) error {
-	f, err := stdinOrFile(args)
-	if err != nil {
-		return err
-	}
-	defer f.Close()
-
-	it := interpreter.New()
-	messages, err := it.EvalAll(f)
-	if err != nil {
-		return err
-	}
-
-	tracks := map[int8]*midiTrack{}
-
-	// First pass, create tracks.
-	for _, msg := range messages {
-		if ch := msg.Msg.Channel(); ch >= 0 {
-			if _, ok := tracks[ch]; !ok {
-				tracks[ch] = newMidiTrack(uint8(ch))
-			}
-		}
-	}
-
-	// Second pass.
-	for _, msg := range messages {
-		if msg.Msg.Is(midi.MetaTempoMsg) || msg.Msg.Channel() == -1 {
-			for _, t := range tracks {
-				t.Add(msg)
-			}
-			continue
-		}
-		tracks[msg.Msg.Channel()].Add(msg)
-	}
-
-	trackList := make([]*midiTrack, 0, len(tracks))
-	for _, track := range tracks {
-		trackList = append(trackList, track)
-	}
-
-	sort.Slice(trackList, func(i, j int) bool {
-		return trackList[i].channel < trackList[j].channel
-	})
-
-	s := smf.New()
-	for _, t := range tracks {
-		s.AddAndClose(0, t.track)
-	}
-
-	return s.WriteFile(c.Flag("output").Value.String())
-}
-
-func playFile(c *cobra.Command, args []string) error {
-	f, err := stdinOrFile(args)
-	if err != nil {
-		return err
-	}
-	defer f.Close()
-
-	it := interpreter.New()
-	messages, err := it.EvalAll(f)
-	if err != nil {
-		return err
-	}
-
-	out, err := getPort(c.Flag("port").Value.String())
-	if err != nil {
-		return err
-	}
-
-	if err := out.Open(); err != nil {
-		return err
-	}
-
-	playAll(context.Background(), out, messages)
-
-	return nil
-}
-
-func playAll(ctx context.Context, out midi.Sender, messages []interpreter.Message) {
-	runtime.LockOSThread()
-
-	p := player.New(out)
-	for _, msg := range messages {
-		if err := p.Play(ctx, msg); err != nil {
-			if errors.Is(err, context.Canceled) {
-				return
-			}
-			log.Fatal(err)
-		}
-	}
-}
-
-func startPlayer(ctx context.Context, out midi.Sender, resultC <-chan result, tempo uint16) {
-	runtime.LockOSThread()
-
-	p := player.New(out)
-	if tempo > 0 {
-		p.SetTempo(tempo)
-	}
-	for {
-		select {
-		case <-ctx.Done():
-			return
-		case res, ok := <-resultC:
-			if !ok {
-				return
-			}
-			if res.input != "" {
-				fmt.Println(res.input)
-			}
-			for _, msg := range res.messages {
-				if err := p.Play(ctx, msg); err != nil {
-					if errors.Is(err, context.Canceled) {
-						return
-					}
-					log.Fatal(err)
-				}
-			}
-		}
-	}
-}
-
-func getPort(port string) (midi.Out, error) {
-	portNum, err := strconv.Atoi(port)
-	if err == nil {
-		return midi.OutByNumber(portNum)
-	}
-	return midi.OutByName(port)
 }

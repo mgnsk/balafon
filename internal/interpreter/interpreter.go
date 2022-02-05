@@ -32,6 +32,7 @@ type Interpreter struct {
 	curBar        string
 	curTick       uint32
 	curBarLength  uint32
+	curTempo      uint16
 	curChannel    uint8
 	curVelocity   uint8
 }
@@ -82,16 +83,54 @@ func (it *Interpreter) Suggest() []string {
 	return sug
 }
 
-// Eval evaluates a single input line.
-// If both return values are nil, more input is needed.
-func (it *Interpreter) Eval(input string) ([]Message, error) {
+// Tempo returns the current tempo.
+func (it *Interpreter) Tempo() uint16 {
+	return it.curTempo
+}
+
+// NoteOn creates a MIDI NoteOn event on the zero tick with an optional preceding NoteOff if the note was ringing.
+// All notes creates this way are left ringing.
+func (it *Interpreter) NoteOn(note rune) ([]Message, error) {
+	key, ok := it.channelKeymap[it.curChannel][note]
+	if !ok {
+		return nil, fmt.Errorf("note '%c' undefined", note)
+	}
+
+	velocity := it.curVelocity
+	messages := make([]Message, 0, 2)
+
+	r := uint16(it.curChannel)<<8 | uint16(key)
+	if _, ok := it.ringing[r]; ok {
+		delete(it.ringing, r)
+		messages = append(messages, Message{
+			Msg: midi.NewMessage(midi.Channel(it.curChannel).NoteOff(key)),
+		})
+	}
+
+	messages = append(messages, Message{
+		Msg: midi.NewMessage(midi.Channel(it.curChannel).NoteOn(key, velocity)),
+	})
+
+	it.ringing[r] = struct{}{}
+
+	return messages, nil
+}
+
+// Parse a single input line into an AST node.
+func (it *Interpreter) Parse(input string) (interface{}, error) {
 	if len(strings.TrimSpace(input)) == 0 {
 		return nil, nil
 	}
 
 	it.parser.Reset()
 
-	res, err := it.parser.Parse(lexer.NewLexer([]byte(input + "\n")))
+	return it.parser.Parse(lexer.NewLexer([]byte(input + "\n")))
+}
+
+// Eval evaluates a single input line.
+// If both return values are nil, more input is needed.
+func (it *Interpreter) Eval(input string) ([]Message, error) {
+	res, err := it.Parse(input)
 	if err != nil {
 		return nil, err
 	}
@@ -203,8 +242,10 @@ func (it *Interpreter) evalResult(res interface{}) ([]Message, error) {
 				return nil, fmt.Errorf("tempo command must be at the beginning of bar")
 			}
 			it.barBuffer = append(it.barBuffer, msg)
+			it.curTempo = uint16(r)
 			return nil, nil
 		}
+		it.curTempo = uint16(r)
 		return []Message{msg}, nil
 
 	case ast.CmdTimeSig:
@@ -396,6 +437,7 @@ func New() *Interpreter {
 		ringing:       map[uint16]struct{}{},
 		bars:          map[string][]Message{},
 		curVelocity:   constants.MaxVelocity,
+		curTempo:      constants.DefaultTempo,
 	}
 }
 

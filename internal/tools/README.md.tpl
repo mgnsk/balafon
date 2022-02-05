@@ -1,9 +1,9 @@
 ## Introduction
 
-gong is a small low-level domain-specific language for controlling MIDI devices.
-It includes a live interpreter and can play back standalone text files.
+gong is a multitrack MIDI control language. It consists of a shell with live mode,
+an SMF compiler, and a playback engine.
 
-There also exists a high-level YAML specification that compiles down to gong script.
+There exists a strict YAML specification that compiles down to gong script.
 
 ## Install
 
@@ -20,38 +20,50 @@ go install github.com/mgnsk/gong@latest
   ```sh
   $ gong list
   0: Midi Through:Midi Through Port-0 14:0
-  1: VMPK Input:in 128:0
-  2: Hydrogen:Hydrogen Midi-In 135:0
+  1: Hydrogen:Hydrogen Midi-In 135:0
+  2: VMPK Input:in 128:0
   ```
 - Play a file through a specific port. The port name must contain the passed in flag value:
   ```sh
-  $ gong play --port "VM" examples/piano
+  $ gong play --port "VMPK" examples/bach
   ```
-  Piped input is accepted:
+  To use piped input, pass `-` as the argument:
   ```sh
-  $ cat examples/piano | gong play --port "VM" -
+  $ cat examples/bach | gong play --port "VMPK" -
   ```
 - Port can also be specified by its number:
   ```sh
   $ gong play --port 2 examples/bonham
   ```
-- Enter the live shell on the default port:
+- Enter a shell on the default port:
   ```sh
   $ gong
   Welcome to the gong shell on MIDI port '0: Midi Through:Midi Through Port-0 14:0'!
   >
   ```
-- Enter a live shell on a specific port:
+  A shell is a line-based shell for the gong language.
+- Enter a shell on a specific port:
   ```sh
-  $ gong --port "VM"
-  Welcome to the gong shell on MIDI port '1: VMPK Input:in 128:0'!
+  $ gong --port "Hydrogen"
+  Welcome to the gong shell on MIDI port '1: Hydrogen:Hydrogen Midi-In 128:0'!
   >
   ```
-- Load a file and enter a live shell:
+- Load a file and enter a shell:
   ```sh
-  $ gong load examples/bonham
+  $ gong --port "Hydrogen" load examples/bonham
+  Welcome to the gong shell on MIDI port '1: Hydrogen:Hydrogen Midi-In 128:0'!
   >
   ```
+- Enter live mode:
+  ```sh
+  $ gong --port "Hydrogen" load examples/bonham
+  Welcome to the gong shell on MIDI port '1: Hydrogen:Hydrogen Midi-In 128:0'!
+  > live
+  Entered live mode. Press Ctrl+D to exit.
+  ```
+  Live mode is an unbuffered input mode in the shell. Whenever an assigned key is pressed,
+  the corresponding MIDI note on event is immediately sent to the port. In this mode, all notes
+  are left ringing and a note off event is sent only when a key is pressed more than once.
 - Lint a file:
   ```sh
   $ gong lint examples/bonham
@@ -59,6 +71,9 @@ go install github.com/mgnsk/gong@latest
 - Compile to SMF:
   ```sh
   $ gong smf -o examples/bonham.mid examples/bonham
+  ```
+  Piping is also supported:
+  ```sh
   $ cat examples/bach | gong smf -o examples/bach.mid -
   ```
 - Compile a YAML file to gong script and play it:
@@ -264,6 +279,8 @@ The file is included in the `examples` directory.
 ```
 
 ### YAML example
+
+The gong language has a strict YAML wrapper that compiles to valid gong script.
 
 The file is included in the `examples` directory.
 

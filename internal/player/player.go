@@ -56,6 +56,6 @@ func New(out midi.Sender) *Player {
 		out:   out,
 		timer: timer,
 	}
-	p.SetTempo(120)
+	p.SetTempo(constants.DefaultTempo)
 	return p
 }

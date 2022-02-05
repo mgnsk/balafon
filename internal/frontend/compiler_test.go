@@ -50,6 +50,10 @@ channel 1
 control 100 0
 end
 
+bar "tempo 1"
+tempo 120
+end
+
 bar "tempo 2"
 tempo 200
 end
@@ -70,6 +74,8 @@ timesig 3 8
 channel 10
 [ksk]8
 end
+
+play "tempo 1"
 
 play "sound A"
 
