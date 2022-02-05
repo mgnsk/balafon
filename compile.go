@@ -78,7 +78,7 @@ func compileToSMF(c *cobra.Command, args []string) error {
 
 	// Second pass.
 	for _, msg := range messages {
-		if msg.Msg.Is(midi.MetaMsg) {
+		if msg.Msg.Is(midi.MetaTempoMsg) || msg.Msg.Is(midi.MetaTimeSigMsg) {
 			for _, t := range tracks {
 				t.Add(msg)
 			}
