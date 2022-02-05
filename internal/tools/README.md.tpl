@@ -7,11 +7,14 @@ There exists a strict YAML specification that compiles down to gong script.
 
 ## Install
 
-To install gong from source, `go` and `rtmidi` are required.
+To install the `gong` command from source, `go` and `rtmidi` are required.
 Not tested on platforms other than Linux.
 
 ```sh
-go install github.com/mgnsk/gong@latest
+go install github.com/mgnsk/gong/cmd/gong@latest # Requires rtmidi development package.
+go install github.com/mgnsk/gong/cmd/gong2smf@latest
+go install github.com/mgnsk/gong/cmd/gonglint@latest
+go install github.com/mgnsk/gong/cmd/yaml2gong@latest
 ```
 
 ## Running
@@ -66,23 +69,23 @@ go install github.com/mgnsk/gong@latest
   are left ringing and a note off event is sent only when a key is pressed more than once.
 - Lint a file:
   ```sh
-  $ gong lint examples/bonham
+  $ gonglint examples/bonham
   ```
 - Compile to SMF:
   ```sh
-  $ gong smf -o examples/bonham.mid examples/bonham
+  $ gong2smf -o examples/bonham.mid examples/bonham
   ```
   Piping is also supported:
   ```sh
-  $ cat examples/bach | gong smf -o examples/bach.mid -
+  $ cat examples/bach | gong2smf -o examples/bach.mid -
   ```
 - Compile a YAML file to gong script and play it:
   ```sh
-  $ gong compile examples/example.yml | gong play -
+  $ yaml2gong examples/example.yml | gong play -
   ```
 - Compile a YAML file to SMF:
   ```sh
-  $ gong compile examples/example.yml | gong smf -o example.mid -
+  $ yaml2gong examples/example.yml | gong2smf -o example.mid -
   ```
 
 - Help.

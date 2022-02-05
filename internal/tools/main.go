@@ -62,24 +62,24 @@ func main() {
 }
 
 func createReadmeData() readmeData {
-	helpText, err := exec.Command("go", "run", "../../.", "--help").CombinedOutput()
+	helpText, err := exec.Command("go", "run", "../../cmd/gong/.", "--help").CombinedOutput()
 	if err != nil {
 		log.Fatal(err, string(helpText))
 	}
 
-	if output, err := exec.Command("go", "run", "../../.", "lint", "../../examples/bonham").CombinedOutput(); err != nil {
+	if output, err := exec.Command("go", "run", "../../cmd/gonglint/.", "../../examples/bonham").CombinedOutput(); err != nil {
 		log.Fatal(err, string(output))
 	}
 
-	if output, err := exec.Command("go", "run", "../../.", "lint", "../../examples/bach").CombinedOutput(); err != nil {
+	if output, err := exec.Command("go", "run", "../../cmd/gonglint/.", "../../examples/bach").CombinedOutput(); err != nil {
 		log.Fatal(err, string(output))
 	}
 
-	if output, err := exec.Command("go", "run", "../../.", "lint", "../../examples/multichannel").CombinedOutput(); err != nil {
+	if output, err := exec.Command("go", "run", "../../cmd/gonglint/.", "../../examples/multichannel").CombinedOutput(); err != nil {
 		log.Fatal(err, string(output))
 	}
 
-	if output, err := exec.Command("bash", "-c", "set -eou pipefail; go run ../../. compile ../../examples/example.yml | go run ../../. lint -").CombinedOutput(); err != nil {
+	if output, err := exec.Command("bash", "-c", "set -eou pipefail; go run ../../cmd/yaml2gong/. ../../examples/example.yml | go run ../../cmd/gonglint/. -").CombinedOutput(); err != nil {
 		log.Fatal(err, string(output))
 	}
 

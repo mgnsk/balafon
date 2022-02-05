@@ -15,12 +15,6 @@ import (
 
 var it = interpreter.New()
 
-type shell struct {
-	parser  prompt.ConsoleParser
-	writer  prompt.ConsoleWriter
-	results chan<- result
-}
-
 const (
 	// Keycode for Ctrl+D.
 	eot = 4
@@ -42,6 +36,12 @@ func printGrid(buf *bytes.Buffer, reso, current uint) {
 			buf.WriteString(gridBG)
 		}
 	}
+}
+
+type shell struct {
+	parser  prompt.ConsoleParser
+	writer  prompt.ConsoleWriter
+	results chan<- result
 }
 
 func (s *shell) runMetronomePrinter(ctx context.Context, reso uint) {

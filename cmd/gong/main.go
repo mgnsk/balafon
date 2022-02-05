@@ -1,5 +1,3 @@
-//go:generate gocc -o internal/parser gong.bnf
-
 package main
 
 import (
@@ -17,30 +15,18 @@ import (
 
 	"github.com/c-bata/go-prompt"
 	"github.com/mgnsk/gong/internal/interpreter"
+	"github.com/mgnsk/gong/internal/util"
 	"github.com/spf13/cobra"
 	"gitlab.com/gomidi/midi/v2"
 	_ "gitlab.com/gomidi/midi/v2/drivers/rtmididrv"
 )
 
-func handleExit() {
-	if e := recover(); e != nil {
-		if err, ok := e.(error); ok {
-			fmt.Println(err)
-			os.Exit(1)
-		}
-		panic(e)
-	}
-}
-
 func main() {
-	defer handleExit()
+	defer util.HandleExit()
 	defer midi.CloseDriver()
 
 	root := &cobra.Command{
-		Short: "gong is a MIDI control language and interpreter.",
-		CompletionOptions: cobra.CompletionOptions{
-			DisableDefaultCmd: true,
-		},
+		Short:         "gong is a MIDI control language and interpreter.",
 		SilenceErrors: true,
 		SilenceUsage:  true,
 		RunE:          createRunShellCommand(nil),
@@ -51,7 +37,7 @@ func main() {
 	root.AddCommand(&cobra.Command{
 		Use:   "list",
 		Short: "List available MIDI output ports",
-		RunE: func(c *cobra.Command, _ []string) error {
+		RunE: func(c *cobra.Command, args []string) error {
 			outs, err := midi.Outs()
 			if err != nil {
 				return err
@@ -81,43 +67,6 @@ func main() {
 		Short: "Play a file",
 		Args:  cobra.MaximumNArgs(1),
 		RunE:  playFile,
-	})
-
-	compileToSMF := &cobra.Command{
-		Use:   "smf [file]",
-		Short: "Compile a gong file to SMF",
-		Args:  cobra.MaximumNArgs(1),
-		RunE:  compileToSMF,
-	}
-	compileToSMF.Flags().StringP("output", "o", "out.mid", "Output file")
-	root.AddCommand(compileToSMF)
-
-	compileToGong := &cobra.Command{
-		Use:   "compile [file]",
-		Short: "Compile a YAML file to gong script",
-		Args:  cobra.MaximumNArgs(1),
-		RunE:  compileToGong,
-	}
-	root.AddCommand(compileToGong)
-
-	root.AddCommand(&cobra.Command{
-		Use:   "lint [file]",
-		Short: "Lint a file",
-		Args:  cobra.ExactArgs(1),
-		RunE: func(_ *cobra.Command, args []string) error {
-			f, err := stdinOrFile(args)
-			if err != nil {
-				return err
-			}
-			defer f.Close()
-
-			if _, err := it.EvalAll(f); err != nil {
-				fmt.Println(err)
-				return nil
-			}
-
-			return nil
-		},
 	})
 
 	if err := root.Execute(); err != nil {
@@ -219,17 +168,4 @@ func getPort(port string) (midi.Out, error) {
 		return midi.OutByNumber(portNum)
 	}
 	return midi.OutByName(port)
-}
-
-func stdinOrFile(args []string) (io.ReadCloser, error) {
-	if args[0] == "-" {
-		return os.Stdin, nil
-	} else if args[0] == "" {
-		return nil, fmt.Errorf("file argument or '-' for stdin required")
-	}
-	f, err := os.Open(args[0])
-	if err != nil {
-		return nil, err
-	}
-	return f, nil
 }

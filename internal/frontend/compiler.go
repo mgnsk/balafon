@@ -13,11 +13,11 @@ import (
 )
 
 // Compile YAML bytes to gong script.
-func Compile(b []byte) ([]byte, error) {
+func Compile(b []byte) (string, error) {
 	var yamlDoc map[string]interface{}
 
 	if err := yaml.UnmarshalWithOptions(b, &yamlDoc, yaml.Strict()); err != nil {
-		return nil, fmt.Errorf(yaml.FormatError(err, true, true))
+		return "", fmt.Errorf(yaml.FormatError(err, true, true))
 	}
 
 	jsonBytes, err := YAMLToJSON(b)
@@ -61,10 +61,10 @@ func Compile(b []byte) ([]byte, error) {
 				panic("invalid jsonschema error")
 			}
 
-			return nil, fmt.Errorf("%s", format.String())
+			return "", fmt.Errorf("%s", format.String())
 		}
 
-		return nil, err
+		return "", err
 	}
 
 	var buf strings.Builder
@@ -79,7 +79,7 @@ func Compile(b []byte) ([]byte, error) {
 		buf.WriteString(line.output)
 	}
 
-	return []byte(buf.String()), nil
+	return buf.String(), nil
 }
 
 type outputLine struct {

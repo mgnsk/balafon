@@ -1,7 +1,6 @@
 package frontend_test
 
 import (
-	"bytes"
 	"io/ioutil"
 	"strings"
 	"testing"
@@ -21,7 +20,7 @@ func TestCompiler(t *testing.T) {
 	b, err := frontend.Compile(input)
 	g.Expect(err).NotTo(HaveOccurred())
 
-	g.Expect(string(b)).To(Equal(`channel 2
+	g.Expect(b).To(Equal(`channel 2
 assign c 48
 assign d 50
 channel 10
@@ -93,7 +92,7 @@ play "Verse"
 `))
 
 	it := interpreter.New()
-	_, err = it.EvalAll(bytes.NewReader(b))
+	_, err = it.EvalAll(strings.NewReader(b))
 	g.Expect(err).NotTo(HaveOccurred())
 }
 

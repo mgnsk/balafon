@@ -9,12 +9,13 @@ import (
 
 	"github.com/mgnsk/gong/internal/interpreter"
 	"github.com/mgnsk/gong/internal/player"
+	"github.com/mgnsk/gong/internal/util"
 	"github.com/spf13/cobra"
 	"gitlab.com/gomidi/midi/v2"
 )
 
 func playFile(c *cobra.Command, args []string) error {
-	f, err := stdinOrFile(args)
+	f, err := util.Open(args[0])
 	if err != nil {
 		return err
 	}
