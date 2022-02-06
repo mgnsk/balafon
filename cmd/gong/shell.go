@@ -13,8 +13,6 @@ import (
 	"github.com/mgnsk/gong/internal/interpreter"
 )
 
-var it = interpreter.New()
-
 const (
 	// Keycode for Ctrl+D.
 	eot = 4
@@ -38,15 +36,23 @@ func printGrid(buf *bytes.Buffer, reso, current uint) {
 	}
 }
 
+func newShell(parser prompt.ConsoleParser, it *interpreter.Interpreter, results chan<- result) *shell {
+	return &shell{
+		parser:  parser,
+		it:      it,
+		results: results,
+	}
+}
+
 type shell struct {
 	parser  prompt.ConsoleParser
-	writer  prompt.ConsoleWriter
+	it      *interpreter.Interpreter
 	results chan<- result
 }
 
 func (s *shell) runMetronomePrinter(ctx context.Context, reso uint) {
-	tickDuration := time.Duration(float64(time.Minute) / float64(it.Tempo()) / float64(constants.TicksPerQuarter))
-	resoDuration := time.Duration(must(it.Parse(fmt.Sprintf("x%d", reso))).(ast.NoteList)[0].Length() * uint32(tickDuration))
+	tickDuration := time.Duration(float64(time.Minute) / float64(s.it.Tempo()) / float64(constants.TicksPerQuarter))
+	resoDuration := time.Duration(must(s.it.Parse(fmt.Sprintf("x%d", reso))).(ast.NoteList)[0].Length() * uint32(tickDuration))
 
 	ticker := time.NewTicker(resoDuration)
 	defer ticker.Stop()
@@ -61,8 +67,7 @@ func (s *shell) runMetronomePrinter(ctx context.Context, reso uint) {
 		case <-ticker.C:
 			printGrid(&buf, reso, i%reso)
 
-			s.writer.WriteRawStr("\r" + buf.String())
-			s.writer.Flush()
+			fmt.Print("\r" + buf.String())
 			buf.Reset()
 
 			i++
@@ -87,7 +92,7 @@ func (s *shell) runLive(reso uint) error {
 			return nil
 		}
 
-		messages, err := it.NoteOn(r)
+		messages, err := s.it.NoteOn(r)
 		if err != nil {
 			// Ignore errors.
 			continue
@@ -99,8 +104,7 @@ func (s *shell) runLive(reso uint) error {
 
 func (s *shell) handleInputLine(input string) error {
 	if input == "live" {
-		s.writer.WriteRawStr("Entered live mode. Press Ctrl+D to exit.\n")
-		s.writer.Flush()
+		fmt.Print("Entered live mode. Press Ctrl+D to exit.\n")
 
 		if err := s.runLive(defaultReso); err != nil {
 			return err
@@ -108,7 +112,7 @@ func (s *shell) handleInputLine(input string) error {
 		return nil
 	}
 
-	messages, err := it.Eval(input)
+	messages, err := s.it.Eval(input)
 	if err != nil {
 		return err
 	}

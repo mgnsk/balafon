@@ -101,17 +101,10 @@ func createRunShellCommand(input io.Reader) func(*cobra.Command, []string) error
 			return err
 		}
 
-		var tempo uint16
-		if input != nil {
-			messages, err := it.EvalAll(input)
-			if err != nil {
-				return err
-			}
-			for _, msg := range messages {
-				if bpm := msg.Msg.BPM(); bpm > 0 {
-					tempo = uint16(bpm)
-				}
-			}
+		it := interpreter.New()
+
+		if _, err := it.EvalAll(input); err != nil {
+			return err
 		}
 
 		fmt.Printf("Welcome to the gong shell on MIDI port '%d: %s'!\n", out.Number(), out.String())
@@ -124,16 +117,11 @@ func createRunShellCommand(input io.Reader) func(*cobra.Command, []string) error
 		wg.Add(1)
 		go func() {
 			defer wg.Done()
-			startPlayer(ctx, out, resultC, tempo)
+			startPlayer(ctx, out, resultC, it.Tempo())
 		}()
 
 		parser := prompt.NewStandardInputParser()
-
-		sh := &shell{
-			parser:  parser,
-			writer:  prompt.NewStandardOutputWriter(),
-			results: resultC,
-		}
+		sh := newShell(parser, it, resultC)
 
 		prompt.New(
 			func(input string) {
