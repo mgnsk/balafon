@@ -1,75 +1,23 @@
 package frontend
 
 import (
-	"encoding/json"
-	"errors"
 	"fmt"
 	"sort"
 	"strings"
 
-	"github.com/goccy/go-yaml"
-	"github.com/santhosh-tekuri/jsonschema/v5"
-	. "sigs.k8s.io/yaml"
+	"github.com/mgnsk/gong/strictyaml"
 )
 
 // Compile YAML bytes to gong script.
 func Compile(b []byte) (string, error) {
-	var yamlDoc map[string]interface{}
-
-	if err := yaml.UnmarshalWithOptions(b, &yamlDoc, yaml.Strict()); err != nil {
-		return "", fmt.Errorf(yaml.FormatError(err, true, true))
-	}
-
-	jsonBytes, err := YAMLToJSON(b)
+	doc, err := strictyaml.UnmarshalToJSON(b, validator)
 	if err != nil {
-		panic(err)
-	}
-
-	var jsonDoc map[string]interface{}
-	if err := json.Unmarshal(jsonBytes, &jsonDoc); err != nil {
-		panic(err)
-	}
-
-	if err := validator.Validate(jsonDoc); err != nil {
-		var verr *jsonschema.ValidationError
-		if errors.As(err, &verr) {
-			var format strings.Builder
-
-			for _, e := range verr.BasicOutput().Errors {
-				// Skip generic jsonschema errors.
-				if !strings.HasPrefix(e.Error, "doesn't validate with") {
-					if match := additionalPropertiesPattern.FindStringSubmatch(e.Error); len(match) == 2 {
-						// Add the invalid path element for annotation.
-						e.InstanceLocation = e.InstanceLocation + "/" + match[1]
-					}
-
-					path, err := yaml.PathString(jsonPathToYAML(e.InstanceLocation))
-					if err != nil {
-						panic(err)
-					}
-
-					res, err := path.AnnotateSource(b, true)
-					if err != nil {
-						panic(err)
-					}
-
-					format.WriteString(fmt.Sprintf("%s:\n%s\n", e.Error, string(res)))
-				}
-			}
-
-			if format.Len() == 0 {
-				panic("invalid jsonschema error")
-			}
-
-			return "", fmt.Errorf("%s", format.String())
-		}
-
 		return "", err
 	}
 
 	var buf strings.Builder
 
-	lines, err := render(jsonDoc)
+	lines, err := render(doc)
 	if err != nil {
 		// Already caught by validation.
 		panic(err)
