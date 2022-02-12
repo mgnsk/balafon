@@ -90,7 +90,7 @@ type Note struct {
 // Length returns the note duration in ticks.
 func (n *Note) Length() uint32 {
 	value := n.Value()
-	length := 4 * constants.TicksPerQuarter / uint32(value)
+	length := constants.TicksPerWhole / uint32(value)
 	newLength := length
 	for i := uint(0); i < n.Dots(); i++ {
 		length /= 2

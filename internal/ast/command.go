@@ -3,6 +3,7 @@ package ast
 import (
 	"math"
 
+	"github.com/mgnsk/gong/internal/constants"
 	"github.com/mgnsk/gong/internal/parser/token"
 )
 
@@ -18,7 +19,7 @@ func NewCmdAssign(note, key *token.Token) (CmdAssign, error) {
 	if err != nil {
 		return CmdAssign{}, err
 	}
-	if err := validateRange(v, 0, 127); err != nil {
+	if err := validateRange(v, 0, constants.MaxValue); err != nil {
 		return CmdAssign{}, err
 	}
 	return CmdAssign{
@@ -58,7 +59,7 @@ func NewCmdTimeSig(beats, value *token.Token) (CmdTimeSig, error) {
 	if err != nil {
 		return CmdTimeSig{}, err
 	}
-	if err := validateRange(b, 1, 128); err != nil {
+	if err := validateRange(b, 1, constants.MaxBeatsPerBar); err != nil {
 		return CmdTimeSig{}, err
 	}
 	if err := validateNoteValue(int(v)); err != nil {
@@ -79,7 +80,7 @@ func NewCmdChannel(value *token.Token) (CmdChannel, error) {
 	if err != nil {
 		return 0, err
 	}
-	if err := validateRange(v, 0, 15); err != nil {
+	if err := validateRange(v, 0, constants.MaxChannel); err != nil {
 		return 0, err
 	}
 	return CmdChannel(v), nil
@@ -94,7 +95,7 @@ func NewCmdVelocity(value *token.Token) (CmdVelocity, error) {
 	if err != nil {
 		return 0, err
 	}
-	if err := validateRange(v, 0, 127); err != nil {
+	if err := validateRange(v, 0, constants.MaxValue); err != nil {
 		return 0, err
 	}
 	return CmdVelocity(v), nil
@@ -109,7 +110,7 @@ func NewCmdProgram(value *token.Token) (CmdProgram, error) {
 	if err != nil {
 		return 0, err
 	}
-	if err := validateRange(v, 0, 127); err != nil {
+	if err := validateRange(v, 0, constants.MaxValue); err != nil {
 		return 0, err
 	}
 	return CmdProgram(v), nil
@@ -127,14 +128,14 @@ func NewCmdControl(control, value *token.Token) (CmdControl, error) {
 	if err != nil {
 		return CmdControl{}, err
 	}
-	if err := validateRange(c, 0, 127); err != nil {
+	if err := validateRange(c, 0, constants.MaxValue); err != nil {
 		return CmdControl{}, err
 	}
 	v, err := value.Int32Value()
 	if err != nil {
 		return CmdControl{}, err
 	}
-	if err := validateRange(v, 0, 127); err != nil {
+	if err := validateRange(v, 0, constants.MaxValue); err != nil {
 		return CmdControl{}, err
 	}
 	return CmdControl{

@@ -3,8 +3,10 @@ package constants
 // Constant definitions.
 const (
 	TicksPerQuarter = 960
-	MaxKey          = 127
-	MinKey          = 0
-	MaxVelocity     = 127
+	TicksPerWhole   = 4 * TicksPerQuarter
 	DefaultTempo    = 120
+	MinValue        = 0
+	MaxValue        = 127
+	MaxBeatsPerBar  = 128
+	MaxChannel      = 15
 )

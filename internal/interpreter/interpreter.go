@@ -374,12 +374,12 @@ func (it *Interpreter) parseNoteList(noteList ast.NoteList) ([]Message, error) {
 		}
 
 		if note.IsSharp() {
-			if key == constants.MaxKey {
+			if key == constants.MaxValue {
 				return nil, fmt.Errorf("sharp note '%s' out of MIDI range", note)
 			}
 			key++
 		} else if note.IsFlat() {
-			if key == constants.MinKey {
+			if key == constants.MinValue {
 				return nil, fmt.Errorf("flat note '%s' out of MIDI range", note)
 			}
 			key--
@@ -388,8 +388,8 @@ func (it *Interpreter) parseNoteList(noteList ast.NoteList) ([]Message, error) {
 		velocity := it.curVelocity
 		if note.IsAccent() {
 			velocity *= 2
-			if velocity > constants.MaxVelocity {
-				velocity = constants.MaxVelocity
+			if velocity > constants.MaxValue {
+				velocity = constants.MaxValue
 			}
 		} else if note.IsGhost() {
 			velocity /= 2
@@ -436,7 +436,7 @@ func New() *Interpreter {
 		channelKeymap: map[uint8]map[rune]uint8{0: {}},
 		ringing:       map[uint16]struct{}{},
 		bars:          map[string][]Message{},
-		curVelocity:   constants.MaxVelocity,
+		curVelocity:   constants.MaxValue,
 		curTempo:      constants.DefaultTempo,
 	}
 }
@@ -466,7 +466,7 @@ func (s byMessageTypeOrKey) Less(i, j int) bool {
 
 func containsNotes(messages []Message) bool {
 	for _, msg := range messages {
-		if msg.Msg.IsNoteStart() || msg.Msg.IsNoteEnd() {
+		if msg.Msg.IsNoteStart() {
 			return true
 		}
 	}
