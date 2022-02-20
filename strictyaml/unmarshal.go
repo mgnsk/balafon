@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"regexp"
+	"sort"
 	"strconv"
 	"strings"
 
@@ -17,8 +18,8 @@ import (
 func UnmarshalToJSON(b []byte, sch *jsonschema.Schema) (map[string]interface{}, error) {
 	var yamlDoc map[string]interface{}
 
-	if err := yaml.UnmarshalWithOptions(b, &yamlDoc, yaml.Strict()); err != nil {
-		return nil, fmt.Errorf(yaml.FormatError(err, true, true))
+	if err := Unmarshal(b, &yamlDoc, sch); err != nil {
+		return nil, err
 	}
 
 	jsonBytes, err := kyaml.YAMLToJSON(b)
@@ -32,60 +33,67 @@ func UnmarshalToJSON(b []byte, sch *jsonschema.Schema) (map[string]interface{}, 
 		return nil, err
 	}
 
-	if err := sch.Validate(jsonDoc); err != nil {
-		var verr *jsonschema.ValidationError
-		if errors.As(err, &verr) {
-			var format strings.Builder
+	return jsonDoc, nil
+}
 
-			for _, e := range verr.BasicOutput().Errors {
-				// Skip generic jsonschema errors.
-				if !strings.HasPrefix(e.Error, "doesn't validate with") {
-					if match := additionalPropertiesPattern.FindStringSubmatch(e.Error); len(match) == 2 {
-						// Add the invalid path element for annotation.
-						e.InstanceLocation = e.InstanceLocation + "/" + match[1]
-					}
-
-					path, err := yaml.PathString(jsonPathToYAML(e.InstanceLocation))
-					if err != nil {
-						return nil, err
-					}
-
-					res, err := path.AnnotateSource(b, true)
-					if err != nil {
-						return nil, err
-					}
-
-					format.WriteString(fmt.Sprintf("%s:\n%s\n", e.Error, string(res)))
-				}
-			}
-
-			if format.Len() == 0 {
-				panic("invalid jsonschema error")
-			}
-
-			return nil, fmt.Errorf("%s", format.String())
-		}
-
-		return nil, err
+// Unmarshal unmarshals YAML with JSON schema validation and annotated source errors.
+func Unmarshal(b []byte, target interface{}, sch *jsonschema.Schema) error {
+	if err := yaml.UnmarshalWithOptions(b, target, yaml.Strict()); err != nil {
+		return fmt.Errorf(yaml.FormatError(err, true, true))
 	}
 
-	return jsonDoc, nil
+	jsonBytes, err := kyaml.YAMLToJSON(b)
+	if err != nil {
+		return err
+	}
+
+	var jsonDoc map[string]interface{}
+
+	if err := json.Unmarshal(jsonBytes, &jsonDoc); err != nil {
+		return err
+	}
+
+	if err := sch.Validate(jsonDoc); err != nil {
+		var verr *jsonschema.ValidationError
+
+		if errors.As(err, &verr) {
+			errs := verr.BasicOutput().Errors
+
+			// Get the deepest error.
+			sort.Slice(errs, func(i, j int) bool {
+				return len(errs[i].InstanceLocation) < len(errs[j].InstanceLocation)
+			})
+
+			berr := errs[len(errs)-1]
+
+			if match := additionalPropertiesPattern.FindStringSubmatch(berr.Error); len(match) == 2 {
+				// Add the invalid path element for annotation.
+				berr.InstanceLocation = berr.InstanceLocation + "/" + match[1]
+			}
+
+			return NewError(b, jsonPathToYAML(berr.InstanceLocation), berr.Error)
+		}
+
+		return err
+	}
+
+	return nil
 }
 
 var additionalPropertiesPattern = regexp.MustCompile(`additionalProperties '(.*)' not allowed`)
 
-func jsonPathToYAML(path string) string {
-	var format strings.Builder
-	format.WriteString("$")
+func jsonPathToYAML(path string) *yaml.Path {
+	builder := &yaml.PathBuilder{}
+	builder = builder.Root()
 
 	for _, elem := range strings.Split(path, "/")[1:] {
-		num, err := strconv.ParseUint(elem, 10, 64)
+		num, err := strconv.Atoi(elem)
 		if err != nil {
-			format.WriteString("." + elem)
+			builder.Child(elem)
 		} else {
-			format.WriteString(fmt.Sprintf("[%d]", num))
+			builder.Index(uint(num))
 		}
 	}
 
-	return format.String()
+	return builder.Build()
 }

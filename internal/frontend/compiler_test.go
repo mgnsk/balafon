@@ -116,15 +116,8 @@ play:
 	g.Expect(err).To(HaveOccurred())
 
 	cleanMsg := strings.TrimSpace(stripansi.Strip(err.Error()))
-	g.Expect(cleanMsg).To(Equal(`missing properties: 'assign':
-   2 | instruments:
-   3 |   lead:
->  4 |     channel: 1
-                  ^
-   5 | bars:
-   6 |   - name: bar
-   7 |     tracks:
-instrument 'bass' not defined:
+
+	g.Expect(cleanMsg).To(Equal(`instrument 'bass' not defined:
    6 |   - name: bar
    7 |     tracks:
    8 |       bass:

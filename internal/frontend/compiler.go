@@ -10,14 +10,14 @@ import (
 
 // Compile YAML bytes to gong script.
 func Compile(b []byte) (string, error) {
-	doc, err := strictyaml.UnmarshalToJSON(b, validator)
+	jsonDoc, err := strictyaml.UnmarshalToJSON(b, validator)
 	if err != nil {
 		return "", err
 	}
 
 	var buf strings.Builder
 
-	lines, err := render(doc)
+	lines, err := render(jsonDoc)
 	if err != nil {
 		// Already caught by validation.
 		panic(err)

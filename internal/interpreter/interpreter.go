@@ -22,19 +22,24 @@ type Message struct {
 	NoteLength uint32
 }
 
+type midiKey struct {
+	channel uint8
+	note    rune
+}
+
 // Interpreter evaluates messages from raw line input.
 type Interpreter struct {
-	parser        *parser.Parser
-	channelKeymap map[uint8]map[rune]uint8
-	ringing       map[uint16]struct{}
-	bars          map[string][]Message
-	barBuffer     []Message
-	curBar        string
-	curTick       uint32
-	curBarLength  uint32
-	curTempo      uint16
-	curChannel    uint8
-	curVelocity   uint8
+	parser       *parser.Parser
+	keymap       map[midiKey]uint8
+	ringing      map[midiKey]struct{}
+	bars         map[string][]Message
+	barBuffer    []Message
+	curBar       string
+	curTick      uint32
+	curBarLength uint32
+	curTempo     uint16
+	curChannel   uint8
+	curVelocity  uint8
 }
 
 var sugInsideBar = []string{
@@ -66,8 +71,8 @@ func (it *Interpreter) Suggest() []string {
 	var sug []string
 
 	// Suggest assigned notes at any time.
-	for note := range it.channelKeymap {
-		sug = append(sug, string(note))
+	for note := range it.keymap {
+		sug = append(sug, string(note.note))
 	}
 
 	if it.curBar != "" {
@@ -88,34 +93,6 @@ func (it *Interpreter) Tempo() uint16 {
 	return it.curTempo
 }
 
-// NoteOn creates a MIDI NoteOn event on the zero tick with an optional preceding NoteOff if the note was ringing.
-// All notes creates this way are left ringing.
-func (it *Interpreter) NoteOn(note rune) ([]Message, error) {
-	key, ok := it.channelKeymap[it.curChannel][note]
-	if !ok {
-		return nil, fmt.Errorf("note '%c' undefined", note)
-	}
-
-	velocity := it.curVelocity
-	messages := make([]Message, 0, 2)
-
-	r := uint16(it.curChannel)<<8 | uint16(key)
-	if _, ok := it.ringing[r]; ok {
-		delete(it.ringing, r)
-		messages = append(messages, Message{
-			Msg: midi.NewMessage(midi.Channel(it.curChannel).NoteOff(key)),
-		})
-	}
-
-	messages = append(messages, Message{
-		Msg: midi.NewMessage(midi.Channel(it.curChannel).NoteOn(key, velocity)),
-	})
-
-	it.ringing[r] = struct{}{}
-
-	return messages, nil
-}
-
 // Parse a single input line into an AST node.
 func (it *Interpreter) Parse(input string) (interface{}, error) {
 	if len(strings.TrimSpace(input)) == 0 {
@@ -125,6 +102,33 @@ func (it *Interpreter) Parse(input string) (interface{}, error) {
 	it.parser.Reset()
 
 	return it.parser.Parse(lexer.NewLexer([]byte(input + "\n")))
+}
+
+// NoteOn creates a real time note on event on zero tick with an optional preceding NoteOff if the note was ringing.
+// All notes are left ringing.
+func (it *Interpreter) NoteOn(note rune) ([]Message, error) {
+	key, ok := it.get(note)
+	if !ok {
+		return nil, fmt.Errorf("note '%c' undefined", note)
+	}
+
+	velocity := it.curVelocity
+	messages := make([]Message, 0, 2)
+
+	if it.isRinging(note) {
+		it.setRingingOff(note)
+		messages = append(messages, Message{
+			Msg: midi.NewMessage(midi.Channel(it.curChannel).NoteOff(key)),
+		})
+	}
+
+	messages = append(messages, Message{
+		Msg: midi.NewMessage(midi.Channel(it.curChannel).NoteOn(key, velocity)),
+	})
+
+	it.setRingingOn(note)
+
+	return messages, nil
 }
 
 // Eval evaluates a single input line.
@@ -226,10 +230,9 @@ func (it *Interpreter) evalResult(res interface{}) ([]Message, error) {
 		if it.curBar != "" {
 			return nil, it.errBarNotEnded("assign note")
 		}
-		if key, ok := it.channelKeymap[it.curChannel][r.Note]; ok {
-			return nil, fmt.Errorf("note '%c' already assigned to '%d'", r.Note, key)
+		if err := it.assign(r.Note, r.Key); err != nil {
+			return nil, err
 		}
-		it.channelKeymap[it.curChannel][r.Note] = r.Key
 		return nil, nil
 
 	case ast.CmdTempo:
@@ -264,9 +267,6 @@ func (it *Interpreter) evalResult(res interface{}) ([]Message, error) {
 
 	case ast.CmdChannel:
 		it.curChannel = uint8(r)
-		if _, ok := it.channelKeymap[it.curChannel]; !ok {
-			it.channelKeymap[it.curChannel] = map[rune]uint8{}
-		}
 		return nil, nil
 
 	case ast.CmdVelocity:
@@ -368,7 +368,7 @@ func (it *Interpreter) parseNoteList(noteList ast.NoteList) ([]Message, error) {
 			continue
 		}
 
-		key, ok := it.channelKeymap[it.curChannel][note.Name]
+		key, ok := it.get(note.Name)
 		if !ok {
 			return nil, fmt.Errorf("note '%c' undefined", note.Name)
 		}
@@ -395,9 +395,8 @@ func (it *Interpreter) parseNoteList(noteList ast.NoteList) ([]Message, error) {
 			velocity /= 2
 		}
 
-		r := uint16(it.curChannel)<<8 | uint16(key)
-		if _, ok := it.ringing[r]; ok {
-			delete(it.ringing, r)
+		if it.isRinging(note.Name) {
+			it.setRingingOff(note.Name)
 			messages = append(messages,
 				Message{
 					Tick: tick,
@@ -413,7 +412,7 @@ func (it *Interpreter) parseNoteList(noteList ast.NoteList) ([]Message, error) {
 		})
 
 		if note.IsLetRing() {
-			it.ringing[r] = struct{}{}
+			it.setRingingOn(note.Name)
 		} else {
 			messages = append(messages, Message{
 				Tick: tick + length,
@@ -429,15 +428,41 @@ func (it *Interpreter) parseNoteList(noteList ast.NoteList) ([]Message, error) {
 	return messages, nil
 }
 
+func (it *Interpreter) get(note rune) (uint8, bool) {
+	key, ok := it.keymap[midiKey{it.curChannel, note}]
+	return key, ok
+}
+
+func (it *Interpreter) assign(note rune, key uint8) error {
+	if k, ok := it.get(note); ok {
+		return fmt.Errorf("note '%c' already assigned to '%d' on channel '%d'", note, k, it.curChannel)
+	}
+	it.keymap[midiKey{it.curChannel, note}] = key
+	return nil
+}
+
+func (it *Interpreter) isRinging(note rune) bool {
+	_, ok := it.ringing[midiKey{it.curChannel, note}]
+	return ok
+}
+
+func (it *Interpreter) setRingingOn(note rune) {
+	it.ringing[midiKey{it.curChannel, note}] = struct{}{}
+}
+
+func (it *Interpreter) setRingingOff(note rune) {
+	delete(it.ringing, midiKey{it.curChannel, note})
+}
+
 // New creates an interpreter.
 func New() *Interpreter {
 	return &Interpreter{
-		parser:        parser.NewParser(),
-		channelKeymap: map[uint8]map[rune]uint8{0: {}},
-		ringing:       map[uint16]struct{}{},
-		bars:          map[string][]Message{},
-		curVelocity:   constants.MaxValue,
-		curTempo:      constants.DefaultTempo,
+		parser:      parser.NewParser(),
+		keymap:      map[midiKey]uint8{},
+		ringing:     map[midiKey]struct{}{},
+		bars:        map[string][]Message{},
+		curVelocity: constants.MaxValue,
+		curTempo:    constants.DefaultTempo,
 	}
 }
 
