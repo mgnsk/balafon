@@ -5,7 +5,7 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/mgnsk/gong/strictyaml"
+	"github.com/mgnsk/gong/internal/strictyaml"
 )
 
 // Compile YAML bytes to gong script.
