@@ -107,7 +107,7 @@ func (it *Interpreter) Parse(input string) (interface{}, error) {
 // NoteOn creates a real time note on event on zero tick with an optional preceding NoteOff if the note was ringing.
 // All notes are left ringing.
 func (it *Interpreter) NoteOn(note rune) ([]Message, error) {
-	key, ok := it.get(note)
+	key, ok := it.getKey(note)
 	if !ok {
 		return nil, fmt.Errorf("note '%c' undefined", note)
 	}
@@ -368,7 +368,7 @@ func (it *Interpreter) parseNoteList(noteList ast.NoteList) ([]Message, error) {
 			continue
 		}
 
-		key, ok := it.get(note.Name)
+		key, ok := it.getKey(note.Name)
 		if !ok {
 			return nil, fmt.Errorf("note '%c' undefined", note.Name)
 		}
@@ -428,13 +428,13 @@ func (it *Interpreter) parseNoteList(noteList ast.NoteList) ([]Message, error) {
 	return messages, nil
 }
 
-func (it *Interpreter) get(note rune) (uint8, bool) {
+func (it *Interpreter) getKey(note rune) (uint8, bool) {
 	key, ok := it.keymap[midiKey{it.curChannel, note}]
 	return key, ok
 }
 
 func (it *Interpreter) assign(note rune, key uint8) error {
-	if k, ok := it.get(note); ok {
+	if k, ok := it.getKey(note); ok {
 		return fmt.Errorf("note '%c' already assigned to '%d' on channel '%d'", note, k, it.curChannel)
 	}
 	it.keymap[midiKey{it.curChannel, note}] = key
