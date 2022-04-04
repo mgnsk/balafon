@@ -24,18 +24,9 @@ func main() {
 	defer midi.CloseDriver()
 
 	root := &cobra.Command{
-		Short:         "gong is a MIDI control language and interpreter.",
-		SilenceErrors: true,
-		SilenceUsage:  true,
-		RunE:          createRunShellCommand(nil),
-	}
-
-	root.PersistentFlags().String("port", "0", "MIDI output port")
-
-	root.AddCommand(&cobra.Command{
-		Use:   "list",
-		Short: "List available MIDI output ports",
+		Short: "gong is a MIDI control language and interpreter.",
 		RunE: func(c *cobra.Command, args []string) error {
+			fmt.Println("Available MIDI ports:")
 			outs, err := midi.Outs()
 			if err != nil {
 				return err
@@ -45,6 +36,16 @@ func main() {
 			}
 			return nil
 		},
+	}
+
+	root.PersistentFlags().String("port", "0", "MIDI output port")
+
+	root.AddCommand(&cobra.Command{
+		Use:           "shell",
+		Short:         "Run a gong shell",
+		SilenceErrors: true,
+		SilenceUsage:  true,
+		RunE:          createRunShellCommand(nil),
 	})
 
 	root.AddCommand(&cobra.Command{
@@ -101,8 +102,10 @@ func createRunShellCommand(input io.Reader) func(*cobra.Command, []string) error
 
 		it := interpreter.New()
 
-		if _, err := it.EvalAll(input); err != nil {
-			return err
+		if input != nil {
+			if _, err := it.EvalAll(input); err != nil {
+				return err
+			}
 		}
 
 		fmt.Printf("Welcome to the gong shell on MIDI port '%d: %s'!\n", out.Number(), out.String())

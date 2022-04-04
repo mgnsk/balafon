@@ -1,6 +1,6 @@
 ## Introduction
 
-gong is a multitrack MIDI control language. It consists of a shell with live mode,
+gong is a small multitrack MIDI control language. It consists of a shell with live mode,
 an SMF compiler, and a playback engine.
 
 There exists a strict YAML specification that compiles down to gong script.
@@ -19,9 +19,9 @@ go install github.com/mgnsk/gong/cmd/yaml2gong@latest
 
 ## Running
 
-- List the available MIDI ports. The default port is the first port in the list.
+- The default command lists the available MIDI ports. The default port is the 0 port.
   ```sh
-  $ gong list
+  $ gong
   0: Midi Through:Midi Through Port-0 14:0
   1: Hydrogen:Hydrogen Midi-In 135:0
   2: VMPK Input:in 128:0
@@ -40,27 +40,25 @@ go install github.com/mgnsk/gong/cmd/yaml2gong@latest
   ```
 - Enter a shell on the default port:
   ```sh
-  $ gong
+  $ gong shell
   Welcome to the gong shell on MIDI port '0: Midi Through:Midi Through Port-0 14:0'!
   >
   ```
   A shell is a line-based shell for the gong language.
 - Enter a shell on a specific port:
   ```sh
-  $ gong --port "Hydrogen"
+  $ gong shell --port "Hydrogen"
   Welcome to the gong shell on MIDI port '1: Hydrogen:Hydrogen Midi-In 128:0'!
   >
   ```
 - Load a file and enter a shell:
   ```sh
-  $ gong --port "Hydrogen" load examples/bonham
+  $ gong load --port "Hydrogen" examples/bonham
   Welcome to the gong shell on MIDI port '1: Hydrogen:Hydrogen Midi-In 128:0'!
   >
   ```
-- Enter live mode:
+- Enter live mode by entering the `live` command:
   ```sh
-  $ gong --port "Hydrogen" load examples/bonham
-  Welcome to the gong shell on MIDI port '1: Hydrogen:Hydrogen Midi-In 128:0'!
   > live
   Entered live mode. Press Ctrl+D to exit.
   ```
