@@ -22,14 +22,3 @@ func Open(name string) (io.ReadCloser, error) {
 
 	return f, nil
 }
-
-// HandleExit catches a panic and exits with 1 if the panic contained an error.
-func HandleExit() {
-	if e := recover(); e != nil {
-		if err, ok := e.(error); ok {
-			fmt.Println(err)
-			os.Exit(1)
-		}
-		panic(e)
-	}
-}

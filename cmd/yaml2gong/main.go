@@ -10,8 +10,6 @@ import (
 )
 
 func main() {
-	defer util.HandleExit()
-
 	root := &cobra.Command{
 		Use:   "yaml2gong [file]",
 		Short: "Compile YAML to gong script.",

@@ -9,8 +9,6 @@ import (
 )
 
 func main() {
-	defer util.HandleExit()
-
 	root := &cobra.Command{
 		Use:   "gonglint [file]",
 		Short: "Lint a gong file.",

@@ -15,14 +15,12 @@ import (
 
 	"github.com/c-bata/go-prompt"
 	"github.com/mgnsk/gong/internal/interpreter"
-	"github.com/mgnsk/gong/internal/util"
 	"github.com/spf13/cobra"
 	"gitlab.com/gomidi/midi/v2"
 	_ "gitlab.com/gomidi/midi/v2/drivers/rtmididrv"
 )
 
 func main() {
-	defer util.HandleExit()
 	defer midi.CloseDriver()
 
 	root := &cobra.Command{

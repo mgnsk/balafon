@@ -11,8 +11,6 @@ import (
 )
 
 func main() {
-	defer util.HandleExit()
-
 	root := &cobra.Command{
 		Use:   "gong2smf [file]",
 		Short: "Compile gong script to SMF.",
