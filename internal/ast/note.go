@@ -92,7 +92,8 @@ func (n *Note) Length() uint32 {
 	value := n.Value()
 	length := constants.TicksPerWhole / uint32(value)
 	newLength := length
-	for i := uint(0); i < n.Dots(); i++ {
+	dots := n.Dots()
+	for i := uint(0); i < dots; i++ {
 		length /= 2
 		newLength += length
 	}
