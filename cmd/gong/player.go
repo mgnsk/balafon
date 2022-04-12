@@ -2,9 +2,8 @@ package main
 
 import (
 	"context"
-	"errors"
 	"fmt"
-	"log"
+	"io"
 	"runtime"
 
 	"github.com/mgnsk/gong/internal/interpreter"
@@ -22,6 +21,7 @@ func playFile(c *cobra.Command, args []string) error {
 	defer f.Close()
 
 	it := interpreter.New()
+
 	messages, err := it.EvalAll(f)
 	if err != nil {
 		return err
@@ -36,51 +36,52 @@ func playFile(c *cobra.Command, args []string) error {
 		return err
 	}
 
-	playAll(context.Background(), out, messages)
+	if err := playAll(context.TODO(), out, messages); err != nil {
+		return err
+	}
 
 	return nil
 }
 
-func playAll(ctx context.Context, out midi.Sender, messages []interpreter.Message) {
+func playAll(ctx context.Context, out midi.Sender, messages []interpreter.Message) error {
 	runtime.LockOSThread()
 	defer runtime.UnlockOSThread()
 
 	p := player.New(out)
+
 	for _, msg := range messages {
 		if err := p.Play(ctx, msg); err != nil {
-			if errors.Is(err, context.Canceled) {
-				return
-			}
-			log.Fatal(err)
+			return err
 		}
 	}
+
+	return nil
 }
 
-func startPlayer(ctx context.Context, out midi.Sender, resultC <-chan result, tempo uint16) {
+func runPlayer(ctx context.Context, out midi.Sender, resultC <-chan result, tempo uint16) error {
 	runtime.LockOSThread()
 	defer runtime.UnlockOSThread()
 
 	p := player.New(out)
+
 	if tempo > 0 {
 		p.SetTempo(tempo)
 	}
+
 	for {
 		select {
 		case <-ctx.Done():
-			return
+			return ctx.Err()
 		case res, ok := <-resultC:
 			if !ok {
-				return
+				return io.ErrClosedPipe
 			}
 			if res.input != "" {
 				fmt.Println(res.input)
 			}
 			for _, msg := range res.messages {
 				if err := p.Play(ctx, msg); err != nil {
-					if errors.Is(err, context.Canceled) {
-						return
-					}
-					log.Fatal(err)
+					return err
 				}
 			}
 		}

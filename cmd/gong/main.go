@@ -3,6 +3,7 @@ package main
 import (
 	"bytes"
 	"context"
+	"errors"
 	"fmt"
 	"io"
 	"io/ioutil"
@@ -108,8 +109,6 @@ func createRunShellCommand(input io.Reader) func(*cobra.Command, []string) error
 			}
 		}
 
-		fmt.Printf("Welcome to the gong shell on MIDI port '%d: %s'!\n", out.Number(), out.String())
-
 		resultC := make(chan result)
 		ctx, cancel := context.WithCancel(context.Background())
 		defer cancel()
@@ -118,11 +117,15 @@ func createRunShellCommand(input io.Reader) func(*cobra.Command, []string) error
 		wg.Add(1)
 		go func() {
 			defer wg.Done()
-			startPlayer(ctx, out, resultC, it.Tempo())
+			if err := runPlayer(ctx, out, resultC, it.Tempo()); err != nil && !errors.Is(err, context.Canceled) {
+				panic(err)
+			}
 		}()
 
 		parser := prompt.NewStandardInputParser()
 		sh := newShell(parser, it, resultC)
+
+		fmt.Printf("Welcome to the gong shell on MIDI port '%d: %s'!\n", out.Number(), out.String())
 
 		prompt.New(
 			func(input string) {
