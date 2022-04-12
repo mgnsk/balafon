@@ -36,7 +36,7 @@ func printGrid(buf *bytes.Buffer, reso, current uint) {
 	}
 }
 
-func newShell(parser prompt.ConsoleParser, it *interpreter.Interpreter, results chan<- result) *shell {
+func newShell(results chan<- result, it *interpreter.Interpreter, parser prompt.ConsoleParser) *shell {
 	return &shell{
 		parser:  parser,
 		it:      it,
@@ -48,6 +48,27 @@ type shell struct {
 	parser  prompt.ConsoleParser
 	it      *interpreter.Interpreter
 	results chan<- result
+}
+
+func (s *shell) Run() {
+	prompt.New(
+		func(input string) {
+			if err := s.handleInputLine(input); err != nil {
+				fmt.Println(err)
+			}
+		},
+		func(in prompt.Document) []prompt.Suggest {
+			var sug []prompt.Suggest
+			for _, text := range s.it.Suggest() {
+				sug = append(sug, prompt.Suggest{Text: text})
+			}
+			return prompt.FilterHasPrefix(sug, in.GetWordBeforeCursor(), true)
+		},
+		prompt.OptionPrefixTextColor(prompt.Yellow),
+		prompt.OptionPreviewSuggestionTextColor(prompt.Blue),
+		prompt.OptionSelectedSuggestionBGColor(prompt.LightGray),
+		prompt.OptionSuggestionBGColor(prompt.DarkGray),
+	).Run()
 }
 
 func (s *shell) runMetronomePrinter(ctx context.Context, reso uint) {

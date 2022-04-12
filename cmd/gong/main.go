@@ -122,30 +122,9 @@ func createRunShellCommand(input io.Reader) func(*cobra.Command, []string) error
 			}
 		}()
 
-		parser := prompt.NewStandardInputParser()
-		sh := newShell(parser, it, resultC)
-
 		fmt.Printf("Welcome to the gong shell on MIDI port '%d: %s'!\n", out.Number(), out.String())
 
-		prompt.New(
-			func(input string) {
-				if err := sh.handleInputLine(input); err != nil {
-					fmt.Println(err)
-				}
-			},
-			func(in prompt.Document) []prompt.Suggest {
-				var sug []prompt.Suggest
-				for _, text := range it.Suggest() {
-					sug = append(sug, prompt.Suggest{Text: text})
-				}
-				return prompt.FilterHasPrefix(sug, in.GetWordBeforeCursor(), true)
-			},
-			prompt.OptionParser(parser),
-			prompt.OptionPrefixTextColor(prompt.Yellow),
-			prompt.OptionPreviewSuggestionTextColor(prompt.Blue),
-			prompt.OptionSelectedSuggestionBGColor(prompt.LightGray),
-			prompt.OptionSuggestionBGColor(prompt.DarkGray),
-		).Run()
+		newShell(resultC, it, prompt.NewStandardInputParser()).Run()
 
 		cancel()
 		wg.Wait()
