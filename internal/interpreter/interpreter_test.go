@@ -10,6 +10,8 @@ import (
 	"github.com/mgnsk/gong/internal/constants"
 	"github.com/mgnsk/gong/internal/interpreter"
 	. "github.com/onsi/gomega"
+	"gitlab.com/gomidi/midi/v2"
+	"gitlab.com/gomidi/midi/v2/smf"
 )
 
 func TestProgramChangeCommand(t *testing.T) {
@@ -17,10 +19,10 @@ func TestProgramChangeCommand(t *testing.T) {
 
 	it := interpreter.New()
 
-	messages, err := it.Eval("program 0")
+	ms, err := it.Eval("program 0")
 	g.Expect(err).NotTo(HaveOccurred())
-	g.Expect(messages).To(HaveLen(1))
-	g.Expect(messages[0].Msg).To(ContainSubstring("Channel0Msg & ProgramChangeMsg program: 0"))
+	g.Expect(ms).To(HaveLen(1))
+	g.Expect(ms[0].Message).To(Equal(midi.ProgramChange(0, 0)))
 }
 
 func TestControlChangeCommand(t *testing.T) {
@@ -28,10 +30,10 @@ func TestControlChangeCommand(t *testing.T) {
 
 	it := interpreter.New()
 
-	messages, err := it.Eval("control 0 1")
+	ms, err := it.Eval("control 0 1")
 	g.Expect(err).NotTo(HaveOccurred())
-	g.Expect(messages).To(HaveLen(1))
-	g.Expect(messages[0].Msg).To(ContainSubstring("Channel0Msg & ControlChangeMsg controller: 0 change: 1"))
+	g.Expect(ms).To(HaveLen(1))
+	g.Expect(ms[0].Message).To(Equal(midi.ControlChange(0, 0, 1)))
 }
 
 func TestStartCommand(t *testing.T) {
@@ -39,10 +41,10 @@ func TestStartCommand(t *testing.T) {
 
 	it := interpreter.New()
 
-	messages, err := it.Eval("start")
+	ms, err := it.Eval("start")
 	g.Expect(err).NotTo(HaveOccurred())
-	g.Expect(messages).To(HaveLen(1))
-	g.Expect(messages[0].Msg).To(ContainSubstring("StartMsg"))
+	g.Expect(ms).To(HaveLen(1))
+	g.Expect(ms[0].Message).To(Equal(midi.Start()))
 }
 
 func TestStopCommand(t *testing.T) {
@@ -50,10 +52,10 @@ func TestStopCommand(t *testing.T) {
 
 	it := interpreter.New()
 
-	messages, err := it.Eval("stop")
+	ms, err := it.Eval("stop")
 	g.Expect(err).NotTo(HaveOccurred())
-	g.Expect(messages).To(HaveLen(1))
-	g.Expect(messages[0].Msg).To(ContainSubstring("StopMsg"))
+	g.Expect(ms).To(HaveLen(1))
+	g.Expect(ms[0].Message).To(Equal(midi.Stop()))
 }
 
 func TestUndefinedKey(t *testing.T) {
@@ -61,17 +63,17 @@ func TestUndefinedKey(t *testing.T) {
 
 	it := interpreter.New()
 
-	messages, err := it.Eval("k")
+	ms, err := it.Eval("k")
 	g.Expect(err).To(HaveOccurred())
-	g.Expect(messages).To(BeNil())
+	g.Expect(ms).To(BeNil())
 }
 
 func evalExpectNil(g *WithT, it *interpreter.Interpreter, input string) {
-	messages, err := it.Eval(input)
+	ms, err := it.Eval(input)
 	if err != nil {
 		panic(err)
 	}
-	g.Expect(messages).To(BeNil())
+	g.Expect(ms).To(BeNil())
 }
 
 func TestNoteAlreadyAssigned(t *testing.T) {
@@ -92,10 +94,10 @@ func TestSharpNote(t *testing.T) {
 
 	evalExpectNil(g, it, "assign c 60")
 
-	messages, err := it.Eval("c#")
+	ms, err := it.Eval("c#")
 	g.Expect(err).NotTo(HaveOccurred())
-	g.Expect(messages).To(HaveLen(2))
-	g.Expect(messages[0].Msg).To(ContainSubstring("Channel0Msg & NoteOnMsg key: 61"))
+	g.Expect(ms).To(HaveLen(2))
+	g.Expect(ms[0].Message).To(Equal(midi.NoteOn(0, 61, 127)))
 }
 
 func TestFlatNote(t *testing.T) {
@@ -105,10 +107,10 @@ func TestFlatNote(t *testing.T) {
 
 	evalExpectNil(g, it, "assign c 60")
 
-	messages, err := it.Eval("c$")
+	ms, err := it.Eval("c$")
 	g.Expect(err).NotTo(HaveOccurred())
-	g.Expect(messages).To(HaveLen(2))
-	g.Expect(messages[0].Msg).To(ContainSubstring("Channel0Msg & NoteOnMsg key: 59"))
+	g.Expect(ms).To(HaveLen(2))
+	g.Expect(ms[0].Message).To(Equal(midi.NoteOn(0, 59, 127)))
 }
 
 func TestSharpNoteRange(t *testing.T) {
@@ -118,9 +120,9 @@ func TestSharpNoteRange(t *testing.T) {
 
 	evalExpectNil(g, it, "assign c 127")
 
-	messages, err := it.Eval("c#")
+	ms, err := it.Eval("c#")
 	g.Expect(err).To(HaveOccurred())
-	g.Expect(messages).To(BeNil())
+	g.Expect(ms).To(BeNil())
 }
 
 func TestFlatNoteRange(t *testing.T) {
@@ -130,9 +132,9 @@ func TestFlatNoteRange(t *testing.T) {
 
 	evalExpectNil(g, it, "assign c 0")
 
-	messages, err := it.Eval("c$")
+	ms, err := it.Eval("c$")
 	g.Expect(err).To(HaveOccurred())
-	g.Expect(messages).To(BeNil())
+	g.Expect(ms).To(BeNil())
 }
 
 func TestAccentuatedAndGhostNote(t *testing.T) {
@@ -143,15 +145,15 @@ func TestAccentuatedAndGhostNote(t *testing.T) {
 	evalExpectNil(g, it, "velocity 50")
 	evalExpectNil(g, it, "assign c 60")
 
-	messages, err := it.Eval("c^")
+	ms, err := it.Eval("c^")
 	g.Expect(err).NotTo(HaveOccurred())
-	g.Expect(messages).To(HaveLen(2))
-	g.Expect(messages[0].Msg).To(ContainSubstring("velocity: 100"))
+	g.Expect(ms).To(HaveLen(2))
+	g.Expect(ms[0].Message).To(Equal(midi.NoteOn(0, 60, 100)))
 
-	messages, err = it.Eval("c)")
+	ms, err = it.Eval("c)")
 	g.Expect(err).NotTo(HaveOccurred())
-	g.Expect(messages).To(HaveLen(2))
-	g.Expect(messages[0].Msg).To(ContainSubstring("velocity: 25"))
+	g.Expect(ms).To(HaveLen(2))
+	g.Expect(ms[0].Message).To(Equal(midi.NoteOn(0, 60, 25)))
 }
 
 func TestAccentutedNoteRange(t *testing.T) {
@@ -162,10 +164,10 @@ func TestAccentutedNoteRange(t *testing.T) {
 	evalExpectNil(g, it, "velocity 127")
 	evalExpectNil(g, it, "assign c 60")
 
-	messages, err := it.Eval("c^")
+	ms, err := it.Eval("c^")
 	g.Expect(err).NotTo(HaveOccurred())
-	g.Expect(messages).To(HaveLen(2))
-	g.Expect(messages[0].Msg).To(ContainSubstring("velocity: 127"))
+	g.Expect(ms).To(HaveLen(2))
+	g.Expect(ms[0].Message).To(Equal(midi.NoteOn(0, 60, 127)))
 }
 
 func TestNoteLengths(t *testing.T) {
@@ -205,13 +207,13 @@ func TestNoteLengths(t *testing.T) {
 
 			evalExpectNil(g, it, "assign k 36")
 
-			messages, err := it.Eval(tc.input)
+			ms, err := it.Eval(tc.input)
 			g.Expect(err).NotTo(HaveOccurred())
-			g.Expect(messages).To(HaveLen(2))
-			g.Expect(messages[0].Tick).To(Equal(uint32(0)))
-			g.Expect(messages[0].Msg).To(ContainSubstring("Channel0Msg & NoteOnMsg key: 36"))
-			g.Expect(messages[1].Tick).To(Equal(tc.offAt))
-			g.Expect(messages[1].Msg).To(ContainSubstring("Channel0Msg & NoteOffMsg key: 36"))
+			g.Expect(ms).To(HaveLen(2))
+			g.Expect(ms[0].Tick).To(Equal(uint32(0)))
+			g.Expect(ms[0].Message).To(Equal(midi.NoteOn(0, 36, 127)))
+			g.Expect(ms[1].Tick).To(Equal(tc.offAt))
+			g.Expect(ms[1].Message).To(Equal(midi.NoteOff(0, 36)))
 		})
 	}
 }
@@ -231,10 +233,10 @@ func TestCommandForbiddenInBar(t *testing.T) {
 
 			evalExpectNil(g, it, `bar "bar"`)
 
-			messages, err := it.Eval(input)
+			ms, err := it.Eval(input)
 			g.Expect(err).To(HaveOccurred())
 			g.Expect(err.Error()).To(ContainSubstring("not ended"))
-			g.Expect(messages).To(BeNil())
+			g.Expect(ms).To(BeNil())
 		})
 	}
 }
@@ -244,10 +246,10 @@ func TestTimeSigForbiddenOutsideBar(t *testing.T) {
 
 	it := interpreter.New()
 
-	messages, err := it.Eval("timesig 4 4")
+	ms, err := it.Eval("timesig 4 4")
 	g.Expect(err).To(HaveOccurred())
 	g.Expect(err.Error()).To(ContainSubstring("timesig"))
-	g.Expect(messages).To(BeNil())
+	g.Expect(ms).To(BeNil())
 }
 
 func TestInvalidBarLength(t *testing.T) {
@@ -258,10 +260,10 @@ func TestInvalidBarLength(t *testing.T) {
 	evalExpectNil(g, it, `bar "bar"`)
 	evalExpectNil(g, it, `timesig 3 8`)
 
-	messages, err := it.Eval("[kk]8")
+	ms, err := it.Eval("[kk]8")
 	g.Expect(err).To(HaveOccurred())
 	g.Expect(err.Error()).To(ContainSubstring("invalid bar length"))
-	g.Expect(messages).To(BeNil())
+	g.Expect(ms).To(BeNil())
 }
 
 func TestTempoAndTimeSigInBar(t *testing.T) {
@@ -278,27 +280,29 @@ func TestTempoAndTimeSigInBar(t *testing.T) {
 	evalExpectNil(g, it, `s`)
 	evalExpectNil(g, it, `end`)
 
-	messages, err := it.Eval(`play "bar"`)
+	ms, err := it.Eval(`play "bar"`)
 	g.Expect(err).NotTo(HaveOccurred())
-	g.Expect(messages).To(HaveLen(6))
+	g.Expect(ms).To(HaveLen(6))
 
-	g.Expect(messages[0].Tick).To(Equal(uint32(0)))
-	g.Expect(messages[0].Msg).To(ContainSubstring("MetaTempoMsg bpm: 200"))
+	// TODO: consistof in any order
 
-	g.Expect(messages[1].Tick).To(Equal(uint32(0)))
-	g.Expect(messages[1].Msg).To(ContainSubstring("MetaTimeSigMsg meter: 1/4"))
+	g.Expect(ms[0].Tick).To(Equal(uint32(0)))
+	g.Expect(ms[0].Message).To(Equal(midi.Message(smf.MetaTempo(200))))
 
-	g.Expect(messages[2].Tick).To(Equal(uint32(0)))
-	g.Expect(messages[2].Msg).To(ContainSubstring("Channel0Msg & NoteOnMsg key: 36"))
+	g.Expect(ms[1].Tick).To(Equal(uint32(0)))
+	g.Expect(ms[1].Message).To(Equal(midi.Message(smf.MetaMeter(1, 4))))
 
-	g.Expect(messages[3].Tick).To(Equal(uint32(0)))
-	g.Expect(messages[3].Msg).To(ContainSubstring("Channel0Msg & NoteOnMsg key: 38"))
+	g.Expect(ms[2].Tick).To(Equal(uint32(0)))
+	g.Expect(ms[2].Message).To(Equal(midi.NoteOn(0, 36, 127)))
 
-	g.Expect(messages[4].Tick).To(Equal(uint32(constants.TicksPerQuarter)))
-	g.Expect(messages[4].Msg).To(ContainSubstring("Channel0Msg & NoteOffMsg key: 36"))
+	g.Expect(ms[3].Tick).To(Equal(uint32(0)))
+	g.Expect(ms[3].Message).To(Equal(midi.NoteOn(0, 38, 127)))
 
-	g.Expect(messages[5].Tick).To(Equal(uint32(constants.TicksPerQuarter)))
-	g.Expect(messages[5].Msg).To(ContainSubstring("Channel0Msg & NoteOffMsg key: 38"))
+	g.Expect(ms[4].Tick).To(Equal(uint32(constants.TicksPerQuarter)))
+	g.Expect(ms[4].Message).To(Equal(midi.NoteOff(0, 36)))
+
+	g.Expect(ms[5].Tick).To(Equal(uint32(constants.TicksPerQuarter)))
+	g.Expect(ms[5].Message).To(Equal(midi.NoteOff(0, 38)))
 }
 
 func TestBar(t *testing.T) {
@@ -328,31 +332,31 @@ func TestBar(t *testing.T) {
 		evalExpectNil(g, it, input)
 	}
 
-	messages, err := it.Eval(`play "verse"`)
+	ms, err := it.Eval(`play "verse"`)
 	g.Expect(err).NotTo(HaveOccurred())
-	g.Expect(messages).To(HaveLen(4))
+	g.Expect(ms).To(HaveLen(4))
 
-	g.Expect(messages[0].Tick).To(Equal(uint32(0)))
-	g.Expect(messages[0].Msg).To(ContainSubstring("Channel1Msg & NoteOnMsg key: 36 velocity: 100"))
+	g.Expect(ms[0].Tick).To(Equal(uint32(0)))
+	g.Expect(ms[0].Message).To(Equal(midi.NoteOn(1, 36, 100)))
 
-	g.Expect(messages[1].Tick).To(Equal(uint32(0)))
-	g.Expect(messages[1].Msg).To(ContainSubstring("Channel2Msg & NoteOnMsg key: 38 velocity: 100"))
+	g.Expect(ms[1].Tick).To(Equal(uint32(0)))
+	g.Expect(ms[1].Message).To(Equal(midi.NoteOn(2, 38, 100)))
 
-	g.Expect(messages[2].Tick).To(Equal(uint32(constants.TicksPerQuarter)))
-	g.Expect(messages[2].Msg).To(ContainSubstring("Channel1Msg & NoteOffMsg key: 36"))
+	g.Expect(ms[2].Tick).To(Equal(uint32(constants.TicksPerQuarter)))
+	g.Expect(ms[2].Message).To(Equal(midi.NoteOff(1, 36)))
 
-	g.Expect(messages[3].Tick).To(Equal(uint32(constants.TicksPerQuarter)))
-	g.Expect(messages[3].Msg).To(ContainSubstring("Channel2Msg & NoteOffMsg key: 38"))
+	g.Expect(ms[3].Tick).To(Equal(uint32(constants.TicksPerQuarter)))
+	g.Expect(ms[3].Message).To(Equal(midi.NoteOff(2, 38)))
 
-	messages, err = it.Eval(`play "default"`)
+	ms, err = it.Eval(`play "default"`)
 	g.Expect(err).NotTo(HaveOccurred())
-	g.Expect(messages).To(HaveLen(2))
+	g.Expect(ms).To(HaveLen(2))
 
-	g.Expect(messages[0].Tick).To(Equal(uint32(constants.TicksPerQuarter)))
-	g.Expect(messages[0].Msg).To(ContainSubstring("Channel2Msg & NoteOnMsg key: 38 velocity: 100"))
+	g.Expect(ms[0].Tick).To(Equal(uint32(constants.TicksPerQuarter)))
+	g.Expect(ms[0].Message).To(Equal(midi.NoteOn(2, 38, 100)))
 
-	g.Expect(messages[1].Tick).To(Equal(uint32(constants.TicksPerQuarter * 2)))
-	g.Expect(messages[1].Msg).To(ContainSubstring("Channel2Msg & NoteOffMsg key: 38"))
+	g.Expect(ms[1].Tick).To(Equal(uint32(constants.TicksPerQuarter * 2)))
+	g.Expect(ms[1].Message).To(Equal(midi.NoteOff(2, 38)))
 }
 
 func TestLetRing(t *testing.T) {
@@ -362,27 +366,27 @@ func TestLetRing(t *testing.T) {
 
 	evalExpectNil(g, it, `assign k 36`)
 
-	messages, err := it.Eval(`k*`)
+	ms, err := it.Eval(`k*`)
 	g.Expect(err).NotTo(HaveOccurred())
-	g.Expect(messages).To(HaveLen(1))
+	g.Expect(ms).To(HaveLen(1))
 
-	g.Expect(messages[0].Tick).To(Equal(uint32(0)))
-	g.Expect(messages[0].Msg).To(ContainSubstring("Channel0Msg & NoteOnMsg key: 36"))
+	g.Expect(ms[0].Tick).To(Equal(uint32(0)))
+	g.Expect(ms[0].Message).To(Equal(midi.NoteOn(0, 36, 127)))
 
 	// Expect the ringing note to be turned off.
 
-	messages, err = it.Eval(`k`)
+	ms, err = it.Eval(`k`)
 	g.Expect(err).NotTo(HaveOccurred())
-	g.Expect(messages).To(HaveLen(3))
+	g.Expect(ms).To(HaveLen(3))
 
-	g.Expect(messages[0].Tick).To(Equal(uint32(constants.TicksPerQuarter)))
-	g.Expect(messages[0].Msg).To(ContainSubstring("Channel0Msg & NoteOffMsg key: 36"))
+	g.Expect(ms[0].Tick).To(Equal(uint32(constants.TicksPerQuarter)))
+	g.Expect(ms[0].Message).To(Equal(midi.NoteOff(0, 36)))
 
-	g.Expect(messages[1].Tick).To(Equal(uint32(constants.TicksPerQuarter)))
-	g.Expect(messages[1].Msg).To(ContainSubstring("Channel0Msg & NoteOnMsg key: 36"))
+	g.Expect(ms[1].Tick).To(Equal(uint32(constants.TicksPerQuarter)))
+	g.Expect(ms[1].Message).To(Equal(midi.NoteOn(0, 36, 127)))
 
-	g.Expect(messages[2].Tick).To(Equal(uint32(constants.TicksPerQuarter * 2)))
-	g.Expect(messages[2].Msg).To(ContainSubstring("Channel0Msg & NoteOffMsg key: 36"))
+	g.Expect(ms[2].Tick).To(Equal(uint32(constants.TicksPerQuarter * 2)))
+	g.Expect(ms[2].Message).To(Equal(midi.NoteOff(0, 36)))
 }
 
 var (

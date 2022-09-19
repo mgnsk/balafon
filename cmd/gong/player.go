@@ -10,7 +10,7 @@ import (
 	"github.com/mgnsk/gong/internal/player"
 	"github.com/mgnsk/gong/internal/util"
 	"github.com/spf13/cobra"
-	"gitlab.com/gomidi/midi/v2"
+	"gitlab.com/gomidi/midi/v2/drivers"
 )
 
 func playFile(c *cobra.Command, args []string) error {
@@ -43,7 +43,7 @@ func playFile(c *cobra.Command, args []string) error {
 	return nil
 }
 
-func playAll(ctx context.Context, out midi.Sender, messages []interpreter.Message) error {
+func playAll(ctx context.Context, out drivers.Out, messages []interpreter.Message) error {
 	runtime.LockOSThread()
 	defer runtime.UnlockOSThread()
 
@@ -58,7 +58,7 @@ func playAll(ctx context.Context, out midi.Sender, messages []interpreter.Messag
 	return nil
 }
 
-func runPlayer(ctx context.Context, out midi.Sender, resultC <-chan result, tempo uint16) error {
+func runPlayer(ctx context.Context, out drivers.Out, resultC <-chan result, tempo uint16) error {
 	runtime.LockOSThread()
 	defer runtime.UnlockOSThread()
 

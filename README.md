@@ -96,7 +96,7 @@ go install github.com/mgnsk/gong/cmd/yaml2gong@latest
      [command]
 
   Available Commands:
-    completion  generate the autocompletion script for the specified shell
+    completion  Generate the autocompletion script for the specified shell
     help        Help about any command
     load        Load a file and continue in a gong shell
     play        Play a file

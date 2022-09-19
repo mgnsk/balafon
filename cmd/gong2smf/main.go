@@ -6,7 +6,6 @@ import (
 	"github.com/mgnsk/gong/internal/interpreter"
 	"github.com/mgnsk/gong/internal/util"
 	"github.com/spf13/cobra"
-	"gitlab.com/gomidi/midi/v2"
 	"gitlab.com/gomidi/midi/v2/smf"
 )
 
@@ -28,25 +27,29 @@ func main() {
 				return err
 			}
 
-			tracks := map[int8]*midiTrack{}
+			tracks := map[uint8]*midiTrack{}
 
 			// First pass, create tracks.
 			for _, msg := range messages {
-				if ch := msg.Msg.Channel(); ch >= 0 {
+				var ch uint8
+				if msg.GetChannel(&ch) {
 					if _, ok := tracks[ch]; !ok {
-						tracks[ch] = newMidiTrack(uint8(ch))
+						tracks[ch] = newMidiTrack(ch)
 					}
 				}
 			}
 
 			// Second pass.
 			for _, msg := range messages {
-				if msg.Msg.Is(midi.MetaTempoMsg) || msg.Msg.Is(midi.MetaTimeSigMsg) {
+				if msg.Is(smf.MetaTempoMsg) || msg.Is(smf.MetaTimeSigMsg) {
 					for _, t := range tracks {
 						t.Add(msg)
 					}
 				} else {
-					tracks[msg.Msg.Channel()].Add(msg)
+					var ch uint8
+					if msg.GetChannel(&ch) {
+						tracks[ch].Add(msg)
+					}
 				}
 			}
 
@@ -61,7 +64,10 @@ func main() {
 
 			s := smf.New()
 			for _, t := range trackList {
-				s.AddAndClose(0, t.track)
+				t.track.Close(0)
+				if err := s.Add(t.track); err != nil {
+					return err
+				}
 			}
 
 			return s.WriteFile(c.Flag("output").Value.String())
@@ -76,19 +82,19 @@ func main() {
 }
 
 type midiTrack struct {
-	track    *smf.Track
+	track    smf.Track
 	lastTick uint32
 	channel  uint8
 }
 
 func newMidiTrack(ch uint8) *midiTrack {
 	return &midiTrack{
-		track:   smf.NewTrack(),
+		track:   smf.Track{},
 		channel: ch,
 	}
 }
 
 func (t *midiTrack) Add(msg interpreter.Message) {
-	t.track.Add(msg.Tick-t.lastTick, msg.Msg.Data)
+	t.track.Add(msg.Tick-t.lastTick, msg.Message)
 	t.lastTick = msg.Tick
 }

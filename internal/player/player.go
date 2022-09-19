@@ -7,12 +7,13 @@ import (
 
 	"github.com/mgnsk/gong/internal/constants"
 	"github.com/mgnsk/gong/internal/interpreter"
-	"gitlab.com/gomidi/midi/v2"
+	"gitlab.com/gomidi/midi/v2/drivers"
+	"gitlab.com/gomidi/midi/v2/smf"
 )
 
 // Player plays back interpreted messages into a MIDI output port.
 type Player struct {
-	out          midi.Sender
+	out          drivers.Out
 	timer        *time.Timer
 	tickDuration time.Duration
 	once         sync.Once
@@ -21,8 +22,10 @@ type Player struct {
 
 // Play the message.
 func (p *Player) Play(ctx context.Context, msg interpreter.Message) error {
-	if msg.Msg.Is(midi.MetaTempoMsg) {
-		p.SetTempo(uint16(msg.Msg.BPM()))
+	var bpm float64
+
+	if smf.Message(msg.Message).GetMetaTempo(&bpm) {
+		p.SetTempo(uint16(bpm))
 		return nil
 	}
 
@@ -40,7 +43,7 @@ func (p *Player) Play(ctx context.Context, msg interpreter.Message) error {
 		p.currentTick = msg.Tick
 	}
 
-	return p.out.Send(msg.Msg.Data)
+	return p.out.Send(msg.Message)
 }
 
 // SetTempo sets the current tempo.
@@ -49,7 +52,7 @@ func (p *Player) SetTempo(bpm uint16) {
 }
 
 // New creates a new Player instance.
-func New(out midi.Sender) *Player {
+func New(out drivers.Out) *Player {
 	timer := time.NewTimer(0)
 	<-timer.C
 	p := &Player{

@@ -7,12 +7,12 @@ import (
 	"github.com/mgnsk/gong/internal/parser/lexer"
 	"github.com/mgnsk/gong/internal/parser/parser"
 	. "github.com/onsi/gomega"
-	. "github.com/onsi/gomega/types"
+	"github.com/onsi/gomega/types"
 )
 
 func TestValidInputs(t *testing.T) {
 	type (
-		match    []GomegaMatcher
+		match    []types.GomegaMatcher
 		testcase struct {
 			input string
 			match match

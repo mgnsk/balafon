@@ -18,6 +18,7 @@ import (
 	"github.com/mgnsk/gong/internal/interpreter"
 	"github.com/spf13/cobra"
 	"gitlab.com/gomidi/midi/v2"
+	"gitlab.com/gomidi/midi/v2/drivers"
 	_ "gitlab.com/gomidi/midi/v2/drivers/rtmididrv"
 )
 
@@ -28,11 +29,7 @@ func main() {
 		Short: "gong is a MIDI control language and interpreter.",
 		RunE: func(c *cobra.Command, args []string) error {
 			fmt.Println("Available MIDI ports:")
-			outs, err := midi.Outs()
-			if err != nil {
-				return err
-			}
-			for _, out := range outs {
+			for _, out := range midi.GetOutPorts() {
 				fmt.Printf("%d: %s\n", out.Number(), out.String())
 			}
 			return nil
@@ -65,7 +62,7 @@ func main() {
 	root.AddCommand(&cobra.Command{
 		Use:   "play [file]",
 		Short: "Play a file",
-		Args:  cobra.MaximumNArgs(1),
+		Args:  cobra.ExactArgs(1),
 		RunE:  playFile,
 	})
 
@@ -133,10 +130,10 @@ func createRunShellCommand(input io.Reader) func(*cobra.Command, []string) error
 	}
 }
 
-func getPort(port string) (midi.Out, error) {
+func getPort(port string) (drivers.Out, error) {
 	portNum, err := strconv.Atoi(port)
 	if err == nil {
-		return midi.OutByNumber(portNum)
+		return midi.OutPort(portNum)
 	}
-	return midi.OutByName(port)
+	return midi.FindOutPort(port)
 }

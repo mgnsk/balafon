@@ -13,11 +13,12 @@ import (
 	"github.com/mgnsk/gong/internal/parser/lexer"
 	"github.com/mgnsk/gong/internal/parser/parser"
 	"gitlab.com/gomidi/midi/v2"
+	"gitlab.com/gomidi/midi/v2/smf"
 )
 
 // Message is a MIDI message.
 type Message struct {
-	Msg        midi.Message
+	midi.Message
 	Tick       uint32
 	NoteLength uint32
 }
@@ -118,12 +119,12 @@ func (it *Interpreter) NoteOn(note rune) ([]Message, error) {
 	if it.isRinging(note) {
 		it.setRingingOff(note)
 		messages = append(messages, Message{
-			Msg: midi.NewMessage(midi.Channel(it.curChannel).NoteOff(key)),
+			Message: midi.NoteOff(it.curChannel, key),
 		})
 	}
 
 	messages = append(messages, Message{
-		Msg: midi.NewMessage(midi.Channel(it.curChannel).NoteOn(key, velocity)),
+		Message: midi.NoteOn(it.curChannel, key, velocity),
 	})
 
 	it.setRingingOn(note)
@@ -189,7 +190,7 @@ func (it *Interpreter) play(messages []Message) []Message {
 		ms[i] = m
 	}
 	lastMsg := messages[len(messages)-1]
-	if lastMsg.Msg.IsNoteStart() {
+	if lastMsg.Is(midi.NoteOnMsg) {
 		it.curTick += lastMsg.Tick + lastMsg.NoteLength
 	} else {
 		it.curTick += lastMsg.Tick
@@ -236,8 +237,8 @@ func (it *Interpreter) evalResult(res interface{}) ([]Message, error) {
 
 	case ast.CmdTempo:
 		msg := Message{
-			Tick: it.curTick,
-			Msg:  midi.NewMessage(midi.MetaTempo(float64(r))),
+			Tick:    it.curTick,
+			Message: midi.Message(smf.MetaTempo(float64(r))),
 		}
 		if it.curBar != "" {
 			if containsNotes(it.barBuffer) {
@@ -257,10 +258,10 @@ func (it *Interpreter) evalResult(res interface{}) ([]Message, error) {
 		if containsNotes(it.barBuffer) {
 			return nil, fmt.Errorf("timesig command must be at the beginning of bar")
 		}
-		it.curBarLength = uint32(r.Beats) * (4 * constants.TicksPerQuarter / uint32(r.Value))
+		it.curBarLength = uint32(r.Num) * (4 * constants.TicksPerQuarter / uint32(r.Denom))
 		it.barBuffer = append(it.barBuffer, Message{
-			Tick: it.curTick,
-			Msg:  midi.NewMessage(midi.MetaMeter(r.Beats, r.Value)),
+			Tick:    it.curTick,
+			Message: midi.Message(smf.MetaMeter(r.Num, r.Denom)),
 		})
 		return nil, nil
 
@@ -274,8 +275,8 @@ func (it *Interpreter) evalResult(res interface{}) ([]Message, error) {
 
 	case ast.CmdProgram:
 		msg := Message{
-			Tick: it.curTick,
-			Msg:  midi.NewMessage(midi.Channel(it.curChannel).ProgramChange(uint8(r))),
+			Tick:    it.curTick,
+			Message: midi.ProgramChange(it.curChannel, uint8(r)),
 		}
 		if it.curBar != "" {
 			it.barBuffer = append(it.barBuffer, msg)
@@ -285,8 +286,8 @@ func (it *Interpreter) evalResult(res interface{}) ([]Message, error) {
 
 	case ast.CmdControl:
 		msg := Message{
-			Tick: it.curTick,
-			Msg:  midi.NewMessage(midi.Channel(it.curChannel).ControlChange(r.Control, r.Parameter)),
+			Tick:    it.curTick,
+			Message: midi.ControlChange(it.curChannel, r.Control, r.Parameter),
 		}
 		if it.curBar != "" {
 			it.barBuffer = append(it.barBuffer, msg)
@@ -334,8 +335,8 @@ func (it *Interpreter) evalResult(res interface{}) ([]Message, error) {
 			return nil, it.errBarNotEnded("start")
 		}
 		return []Message{{
-			Tick: it.curTick,
-			Msg:  midi.NewMessage(midi.Start()),
+			Tick:    it.curTick,
+			Message: midi.Start(),
 		}}, nil
 
 	case ast.CmdStop:
@@ -343,8 +344,8 @@ func (it *Interpreter) evalResult(res interface{}) ([]Message, error) {
 			return nil, it.errBarNotEnded("stop")
 		}
 		return []Message{{
-			Tick: it.curTick,
-			Msg:  midi.NewMessage(midi.Stop()),
+			Tick:    it.curTick,
+			Message: midi.Stop(),
 		}}, nil
 
 	default:
@@ -398,8 +399,8 @@ func (it *Interpreter) parseNoteList(noteList ast.NoteList) ([]Message, error) {
 			it.setRingingOff(note.Name)
 			messages = append(messages,
 				Message{
-					Tick: tick,
-					Msg:  midi.NewMessage(midi.Channel(it.curChannel).NoteOff(key)),
+					Tick:    tick,
+					Message: midi.NoteOff(it.curChannel, key),
 				},
 			)
 		}
@@ -407,15 +408,15 @@ func (it *Interpreter) parseNoteList(noteList ast.NoteList) ([]Message, error) {
 		messages = append(messages, Message{
 			Tick:       tick,
 			NoteLength: length,
-			Msg:        midi.NewMessage(midi.Channel(it.curChannel).NoteOn(key, velocity)),
+			Message:    midi.NoteOn(it.curChannel, key, velocity),
 		})
 
 		if note.IsLetRing() {
 			it.setRingingOn(note.Name)
 		} else {
 			messages = append(messages, Message{
-				Tick: tick + length,
-				Msg:  midi.NewMessage(midi.Channel(it.curChannel).NoteOff(key)),
+				Tick:    tick + length,
+				Message: midi.NoteOff(it.curChannel, key),
 			})
 		}
 
@@ -471,15 +472,11 @@ func (s byMessageTypeOrKey) Len() int      { return len(s) }
 func (s byMessageTypeOrKey) Swap(i, j int) { s[i], s[j] = s[j], s[i] }
 func (s byMessageTypeOrKey) Less(i, j int) bool {
 	if s[i].Tick == s[j].Tick {
-		a := s[i].Msg
-		b := s[j].Msg
+		a := s[i].Message
+		b := s[j].Message
 
-		if a.IsNoteEnd() && !b.IsNoteEnd() {
+		if a.Is(midi.NoteOffMsg) && !b.Is(midi.NoteOffMsg) {
 			return true
-		}
-
-		if a.MsgType == b.MsgType {
-			return a.Key() < b.Key()
 		}
 
 		return false
@@ -490,7 +487,7 @@ func (s byMessageTypeOrKey) Less(i, j int) bool {
 
 func containsNotes(messages []Message) bool {
 	for _, msg := range messages {
-		if msg.Msg.IsNoteStart() {
+		if msg.Is(midi.NoteOnMsg) {
 			return true
 		}
 	}

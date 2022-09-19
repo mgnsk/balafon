@@ -7,13 +7,13 @@ import (
 	"github.com/mgnsk/gong/internal/parser/lexer"
 	"github.com/mgnsk/gong/internal/parser/parser"
 	. "github.com/onsi/gomega"
-	. "github.com/onsi/gomega/types"
+	"github.com/onsi/gomega/types"
 )
 
 func TestValidCommands(t *testing.T) {
 	for _, tc := range []struct {
 		input string
-		match GomegaMatcher
+		match types.GomegaMatcher
 	}{
 		{
 			`assign k 36`,
