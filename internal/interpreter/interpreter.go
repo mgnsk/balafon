@@ -160,8 +160,7 @@ func (it *Interpreter) EvalAll(r io.Reader) ([]Message, error) {
 		line++
 		ms, err := it.Eval(s.Text())
 		if err != nil {
-			format.WriteString(lineError{line, err}.Error())
-			format.WriteString("\n")
+			format.WriteString(fmt.Sprintf("[%d]: %s\n", line, err))
 		} else if ms != nil {
 			messages = append(messages, ms...)
 		}
