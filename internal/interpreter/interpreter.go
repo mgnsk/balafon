@@ -13,15 +13,17 @@ import (
 	"github.com/mgnsk/gong/internal/parser/lexer"
 	"github.com/mgnsk/gong/internal/parser/parser"
 	"gitlab.com/gomidi/midi/v2"
+	"gitlab.com/gomidi/midi/v2/sequencer"
 	"gitlab.com/gomidi/midi/v2/smf"
+	"golang.org/x/exp/slices"
 )
 
 // Message is a MIDI message.
-type Message struct {
-	midi.Message
-	Tick       uint32
-	NoteLength uint32
-}
+// type Message struct {
+// 	midi.Message
+// 	Tick       uint32
+// 	NoteLength uint32
+// }
 
 type midiKey struct {
 	channel uint8
@@ -33,12 +35,10 @@ type Interpreter struct {
 	parser       *parser.Parser
 	keymap       map[midiKey]uint8
 	ringing      map[midiKey]struct{}
-	bars         map[string][]Message
-	barBuffer    []Message
-	curBar       string
-	curTick      uint32
-	curBarLength uint32
-	curTempo     uint16
+	bars         map[string]sequencer.Events
+	barName      string
+	barBuffer    sequencer.Events
+	curBarLength smf.MetricTicks
 	curChannel   uint8
 	curVelocity  uint8
 }
@@ -71,28 +71,29 @@ var sugOutsideBar = []string{
 func (it *Interpreter) Suggest() []string {
 	var sug []string
 
-	// Suggest assigned notes at any time.
-	for note := range it.keymap {
-		sug = append(sug, string(note.note))
-	}
+	// TODO
+	// // Suggest assigned notes at any time.
+	// for note := range it.keymap {
+	// 	sug = append(sug, string(note.note))
+	// }
 
-	if it.curBar != "" {
-		sug = append(sug, sugInsideBar...)
-	} else {
-		sug = append(sug, sugOutsideBar...)
-		// Suggest playing a bar.
-		for name := range it.bars {
-			sug = append(sug, fmt.Sprintf(`play "%s"`, name))
-		}
-	}
+	// if it.curBar != "" {
+	// 	sug = append(sug, sugInsideBar...)
+	// } else {
+	// 	sug = append(sug, sugOutsideBar...)
+	// 	// Suggest playing a bar.
+	// 	for name := range it.bars {
+	// 		sug = append(sug, fmt.Sprintf(`play "%s"`, name))
+	// 	}
+	// }
 
 	return sug
 }
 
 // Tempo returns the current tempo.
-func (it *Interpreter) Tempo() uint16 {
-	return it.curTempo
-}
+// func (it *Interpreter) Tempo() uint16 {
+// 	return it.curTempo
+// }
 
 // Parse a single input line into an AST node.
 func (it *Interpreter) Parse(input string) (interface{}, error) {
@@ -107,34 +108,30 @@ func (it *Interpreter) Parse(input string) (interface{}, error) {
 
 // NoteOn creates a real time note on event on zero tick with an optional preceding NoteOff if the note was ringing.
 // All notes are left ringing.
-func (it *Interpreter) NoteOn(note rune) ([]Message, error) {
+func (it *Interpreter) NoteOn(note rune) ([]midi.Message, error) {
 	key, ok := it.getKey(note)
 	if !ok {
 		return nil, fmt.Errorf("note '%c' undefined", note)
 	}
 
 	velocity := it.curVelocity
-	messages := make([]Message, 0, 2)
+	ms := make([]midi.Message, 0, 2)
 
 	if it.isRinging(note) {
 		it.setRingingOff(note)
-		messages = append(messages, Message{
-			Message: midi.NoteOff(it.curChannel, key),
-		})
+		ms = append(ms, midi.NoteOff(it.curChannel, key))
 	}
 
-	messages = append(messages, Message{
-		Message: midi.NoteOn(it.curChannel, key, velocity),
-	})
+	ms = append(ms, midi.NoteOn(it.curChannel, key, velocity))
 
 	it.setRingingOn(note)
 
-	return messages, nil
+	return ms, nil
 }
 
 // Eval evaluates a single input line.
 // If both return values are nil, more input is needed.
-func (it *Interpreter) Eval(input string) ([]Message, error) {
+func (it *Interpreter) Eval(input string) (sequencer.Events, error) {
 	res, err := it.Parse(input)
 	if err != nil {
 		return nil, err
@@ -145,125 +142,26 @@ func (it *Interpreter) Eval(input string) ([]Message, error) {
 		return nil, nil
 	}
 
-	return it.evalResult(res)
-}
-
-// EvalAll evaluates all messages from r.
-func (it *Interpreter) EvalAll(r io.Reader) ([]Message, error) {
-	s := bufio.NewScanner(r)
-
-	var format strings.Builder
-
-	var messages []Message
-
-	line := 0
-	for s.Scan() {
-		line++
-		ms, err := it.Eval(s.Text())
-		if err != nil {
-			format.WriteString(fmt.Sprintf("[%d]: %s\n", line, err))
-		} else if ms != nil {
-			messages = append(messages, ms...)
-		}
-	}
-
-	if err := s.Err(); err != nil {
-		return nil, err
-	}
-
-	if format.Len() > 0 {
-		return nil, errors.New(format.String())
-	}
-
-	return messages, nil
-}
-
-func (it *Interpreter) errBarNotEnded(want string) error {
-	return fmt.Errorf("cannot %s: bar '%s' is not ended", want, it.curBar)
-}
-
-func (it *Interpreter) play(messages []Message) []Message {
-	// Offset relative messages to absolute tick.
-	ms := make([]Message, len(messages))
-	for i, m := range messages {
-		m.Tick = it.curTick + m.Tick
-		ms[i] = m
-	}
-	lastMsg := messages[len(messages)-1]
-	if lastMsg.Is(midi.NoteOnMsg) {
-		it.curTick += lastMsg.Tick + lastMsg.NoteLength
-	} else {
-		it.curTick += lastMsg.Tick
-	}
-	return ms
-}
-
-func (it *Interpreter) evalResult(res interface{}) ([]Message, error) {
 	switch r := res.(type) {
 	case ast.NoteList:
-		if it.curBar != "" {
-			if it.curBarLength > 0 {
-				barLength := uint32(0)
-				for _, note := range r {
-					barLength += note.Length()
-				}
-				if barLength != it.curBarLength {
-					return nil, fmt.Errorf("invalid bar length")
-				}
-			}
-			ms, err := it.parseNoteList(r)
-			if err != nil {
-				return nil, err
-			}
-			it.barBuffer = append(it.barBuffer, ms...)
-			return nil, nil
-		}
-
-		messages, err := it.parseNoteList(r)
-		if err != nil {
-			return nil, err
-		}
-
-		return it.play(messages), nil
+		return it.addNotes(r)
 
 	case ast.CmdAssign:
-		if it.curBar != "" {
-			return nil, it.errBarNotEnded("assign note")
-		}
 		if err := it.assign(r.Note, r.Key); err != nil {
 			return nil, err
 		}
 		return nil, nil
 
 	case ast.CmdTempo:
-		msg := Message{
-			Tick:    it.curTick,
-			Message: midi.Message(smf.MetaTempo(float64(r))),
-		}
-		if it.curBar != "" {
-			if containsNotes(it.barBuffer) {
-				return nil, fmt.Errorf("tempo command must be at the beginning of bar")
-			}
-			it.barBuffer = append(it.barBuffer, msg)
-			it.curTempo = uint16(r)
-			return nil, nil
-		}
-		it.curTempo = uint16(r)
-		return []Message{msg}, nil
+		return it.appendCommand(smf.MetaTempo(float64(r)))
 
 	case ast.CmdTimeSig:
-		if it.curBar == "" {
-			return nil, fmt.Errorf("timesig can only be set inside a bar")
+		events, err := it.appendCommand(smf.MetaMeter(r.Num, r.Denom))
+		if err != nil {
+			return nil, err
 		}
-		if containsNotes(it.barBuffer) {
-			return nil, fmt.Errorf("timesig command must be at the beginning of bar")
-		}
-		it.curBarLength = uint32(r.Num) * (4 * constants.TicksPerQuarter / uint32(r.Denom))
-		it.barBuffer = append(it.barBuffer, Message{
-			Tick:    it.curTick,
-			Message: midi.Message(smf.MetaMeter(r.Num, r.Denom)),
-		})
-		return nil, nil
+		it.curBarLength = smf.MetricTicks(r.Num) * (constants.TicksPerWhole / smf.MetricTicks(r.Denom))
+		return events, nil
 
 	case ast.CmdChannel:
 		it.curChannel = uint8(r)
@@ -274,94 +172,133 @@ func (it *Interpreter) evalResult(res interface{}) ([]Message, error) {
 		return nil, nil
 
 	case ast.CmdProgram:
-		msg := Message{
-			Tick:    it.curTick,
-			Message: midi.ProgramChange(it.curChannel, uint8(r)),
-		}
-		if it.curBar != "" {
-			it.barBuffer = append(it.barBuffer, msg)
-			return nil, nil
-		}
-		return []Message{msg}, nil
+		return it.appendCommand(midi.ProgramChange(it.curChannel, uint8(r)))
 
 	case ast.CmdControl:
-		msg := Message{
-			Tick:    it.curTick,
-			Message: midi.ControlChange(it.curChannel, r.Control, r.Parameter),
-		}
-		if it.curBar != "" {
-			it.barBuffer = append(it.barBuffer, msg)
-			return nil, nil
-		}
-		return []Message{msg}, nil
+		return it.appendCommand(midi.ControlChange(it.curChannel, r.Control, r.Parameter))
 
 	case ast.CmdBar:
-		if it.curBar != "" {
-			return nil, it.errBarNotEnded("begin bar")
+		if err := it.startBar(string(r)); err != nil {
+			return nil, err
 		}
-		bar := string(r)
-		if _, ok := it.bars[bar]; ok {
-			return nil, fmt.Errorf("bar '%s' already defined", bar)
-		}
-		it.curBar = bar
 		return nil, nil
 
 	case ast.CmdEnd:
-		if it.curBar == "" {
-			return nil, errors.New("cannot end bar: no active bar")
+		if err := it.endBar(); err != nil {
+			return nil, err
 		}
-		sort.Sort(byMessageTypeOrKey(it.barBuffer))
-		it.curBarLength = 0
-		it.bars[it.curBar] = it.barBuffer
-		it.curBar = ""
-		it.barBuffer = nil
 		return nil, nil
 
 	case ast.CmdPlay:
-		if it.curBar != "" {
+		if it.barName != "" {
 			return nil, it.errBarNotEnded("play bar")
 		}
-		messages, ok := it.bars[string(r)]
+		events, ok := it.bars[string(r)]
 		if !ok {
 			return nil, fmt.Errorf("bar '%s' does not exist", string(r))
 		}
-		if len(messages) == 0 {
-			return nil, fmt.Errorf("invalid bar '%s'", string(r))
-		}
-		return it.play(messages), nil
+		return events, nil
 
 	case ast.CmdStart:
-		if it.curBar != "" {
-			return nil, it.errBarNotEnded("start")
-		}
-		return []Message{{
-			Tick:    it.curTick,
-			Message: midi.Start(),
-		}}, nil
+		return it.appendCommand(midi.Start())
 
 	case ast.CmdStop:
-		if it.curBar != "" {
-			return nil, it.errBarNotEnded("stop")
-		}
-		return []Message{{
-			Tick:    it.curTick,
-			Message: midi.Stop(),
-		}}, nil
+		return it.appendCommand(midi.Stop())
 
 	default:
 		panic(fmt.Sprintf("invalid expression: %#v", r))
 	}
 }
 
+func getTimeSig(event *sequencer.Event) [2]uint8 {
+	var num, denom, c, ds uint8
+	if event.Message.GetMetaTimeSig(&num, &denom, &c, &ds) {
+		return [2]uint8{num, denom}
+	}
+	return [2]uint8{}
+}
+
+// EvalAll evaluates all messages from r.
+func (it *Interpreter) EvalAll(r io.Reader) (*sequencer.Song, error) {
+	s := bufio.NewScanner(r)
+
+	var errs strings.Builder
+
+	var bar sequencer.Bar
+	song := sequencer.New()
+
+	line := 0
+	for s.Scan() {
+		line++
+
+		if events, err := it.Eval(s.Text()); err != nil {
+			errs.WriteString(fmt.Sprintf("[%d]: %s\n", line, err))
+		} else if events != nil {
+			hasNotes := false
+
+			for _, event := range events {
+				switch event.Message.Type() {
+				case smf.MetaTimeSigMsg:
+					bar.TimeSig = getTimeSig(event)
+				case midi.NoteOnMsg:
+					hasNotes = true
+				}
+				bar.Events = append(bar.Events, event)
+			}
+
+			if hasNotes {
+				song.AddBar(bar)
+				bar = sequencer.Bar{}
+			}
+		}
+	}
+
+	if err := s.Err(); err != nil {
+		return nil, err
+	}
+
+	if errs.Len() > 0 {
+		return nil, errors.New(errs.String())
+	}
+
+	if len(bar.Events) > 0 {
+		song.AddBar(bar)
+	}
+
+	song.SetBarAbsTicks()
+
+	return song, nil
+}
+
+func (it *Interpreter) errBarNotEnded(want string) error {
+	return fmt.Errorf("cannot %s: bar '%s' is not ended", want, it.barName)
+}
+
+// func (it *Interpreter) play(events sequencer.Events) {
+// 	// Offset relative messages to absolute tick.
+// 	ms := make([]Message, len(events))
+// 	for i, m := range events {
+// 		m.Tick = it.curTick + m.Tick
+// 		ms[i] = m
+// 	}
+// 	lastMsg := events[len(events)-1]
+// 	if lastMsg.Is(midi.NoteOnMsg) {
+// 		it.curTick += lastMsg.Tick + lastMsg.NoteLength
+// 	} else {
+// 		it.curTick += lastMsg.Tick
+// 	}
+// 	return ms
+// }
+
 // parseNoteList parses a note list into messages with relative ticks.
-func (it *Interpreter) parseNoteList(noteList ast.NoteList) ([]Message, error) {
+func (it *Interpreter) parseNoteList(noteList ast.NoteList) (sequencer.Events, error) {
 	var (
-		messages []Message
-		tick     uint32
+		events sequencer.Events
+		tick   smf.MetricTicks
 	)
 
 	for _, note := range noteList {
-		length := note.Length()
+		length := note.Ticks()
 
 		if note.IsPause() {
 			tick += length
@@ -396,36 +333,39 @@ func (it *Interpreter) parseNoteList(noteList ast.NoteList) ([]Message, error) {
 		}
 
 		if it.isRinging(note.Name) {
+			// TODO
 			it.setRingingOff(note.Name)
-			messages = append(messages,
-				Message{
-					Tick:    tick,
-					Message: midi.NoteOff(it.curChannel, key),
-				},
-			)
 		}
 
-		messages = append(messages, Message{
-			Tick:       tick,
-			NoteLength: length,
-			Message:    midi.NoteOn(it.curChannel, key, velocity),
+		// TrackNo  int
+		// Pos      uint8       // in 32th
+		// Duration uint8       // in 32th for noteOn messages, it is the length of the note, for all other messages, it is 0
+		// Message  smf.Message // may only be channel messages or sysex messages. no noteon velocity 0, or noteoff messages, this is expressed via Duration
+		// absTicks int64       // just for smf import
+
+		var pos uint8
+		if tick > 0 {
+			pos = uint8(tick.Ticks32th())
+		}
+
+		events = append(events, &sequencer.Event{
+			TrackNo:  int(it.curChannel),
+			Pos:      pos,
+			Duration: uint8(length.Ticks32th()),
+			Message:  smf.Message(midi.NoteOn(it.curChannel, key, velocity)),
 		})
 
 		if note.IsLetRing() {
 			it.setRingingOn(note.Name)
-		} else {
-			messages = append(messages, Message{
-				Tick:    tick + length,
-				Message: midi.NoteOff(it.curChannel, key),
-			})
 		}
 
 		tick += length
 	}
 
-	sort.Sort(byMessageTypeOrKey(messages))
+	sort.Sort(events)
+	// sort.Sort(byMessageTypeOrKey(events))
 
-	return messages, nil
+	return events, nil
 }
 
 func (it *Interpreter) getKey(note rune) (uint8, bool) {
@@ -454,42 +394,117 @@ func (it *Interpreter) setRingingOff(note rune) {
 	delete(it.ringing, midiKey{it.curChannel, note})
 }
 
+func (it *Interpreter) startBar(name string) error {
+	if it.barName != "" {
+		return it.errBarNotEnded("begin bar")
+	}
+	if _, ok := it.bars[name]; ok {
+		return fmt.Errorf("bar '%s' already defined", name)
+	}
+	it.barName = name
+	return nil
+}
+
+func (it *Interpreter) endBar() error {
+	if it.barName == "" {
+		return errors.New("cannot end bar: no active bar")
+	}
+	if len(it.barBuffer) == 0 {
+		return fmt.Errorf("invalid bar '%s'", it.barName)
+	}
+	// TODO
+	// sort.Sort(it.barBuffer)
+	it.bars[it.barName] = it.barBuffer
+	it.barName = ""
+	it.barBuffer = nil
+	it.curBarLength = 0
+	return nil
+}
+
+func (it *Interpreter) addNotes(list ast.NoteList) (sequencer.Events, error) {
+	if it.barName != "" {
+		if it.curBarLength > 0 {
+			var barLength smf.MetricTicks
+			for _, note := range list {
+				barLength += note.Ticks()
+			}
+			if barLength != it.curBarLength {
+				return nil, fmt.Errorf("invalid bar length")
+			}
+		}
+		events, err := it.parseNoteList(list)
+		if err != nil {
+			return nil, err
+		}
+		it.barBuffer = append(it.barBuffer, events...)
+		return nil, nil
+	}
+
+	events, err := it.parseNoteList(list)
+	if err != nil {
+		return nil, err
+	}
+
+	return events, nil
+}
+
+func (it *Interpreter) appendCommand(msg []byte) (sequencer.Events, error) {
+	event := &sequencer.Event{
+		Message: smf.Message(msg),
+	}
+	if it.barName != "" {
+		if find(it.barBuffer, midi.NoteOnMsg) >= 0 {
+			return nil, fmt.Errorf("timesig command must be at the beginning of bar")
+		}
+		it.barBuffer = append(it.barBuffer, event)
+		return nil, nil
+	}
+	return sequencer.Events{event}, nil
+}
+
+// case ast.CmdControl:
+// 	event := &sequencer.Event{
+// 		// Tick:    it.curTick,
+// 		Message: smf.Message(midi.ControlChange(it.curChannel, r.Control, r.Parameter)),
+// 	}
+// 	if it.barName != "" {
+// 		it.barBuffer = append(it.barBuffer, event)
+// 		return nil, nil
+// 	}
+// 	return sequencer.Events{event}, nil
 // New creates an interpreter.
 func New() *Interpreter {
 	return &Interpreter{
 		parser:      parser.NewParser(),
 		keymap:      map[midiKey]uint8{},
 		ringing:     map[midiKey]struct{}{},
-		bars:        map[string][]Message{},
+		bars:        map[string]sequencer.Events{},
 		curVelocity: constants.MaxValue,
-		curTempo:    constants.DefaultTempo,
+		// curTempo:    constants.DefaultTempo,
 	}
 }
 
-type byMessageTypeOrKey []Message
+// type byMessageTypeOrKey []Message
 
-func (s byMessageTypeOrKey) Len() int      { return len(s) }
-func (s byMessageTypeOrKey) Swap(i, j int) { s[i], s[j] = s[j], s[i] }
-func (s byMessageTypeOrKey) Less(i, j int) bool {
-	if s[i].Tick == s[j].Tick {
-		a := s[i].Message
-		b := s[j].Message
+// func (s byMessageTypeOrKey) Len() int      { return len(s) }
+// func (s byMessageTypeOrKey) Swap(i, j int) { s[i], s[j] = s[j], s[i] }
+// func (s byMessageTypeOrKey) Less(i, j int) bool {
+// 	if s[i].Tick == s[j].Tick {
+// 		a := s[i].Message
+// 		b := s[j].Message
 
-		if a.Is(midi.NoteOffMsg) && !b.Is(midi.NoteOffMsg) {
-			return true
-		}
+// 		if a.Is(midi.NoteOffMsg) && !b.Is(midi.NoteOffMsg) {
+// 			return true
+// 		}
 
-		return false
-	}
+// 		return false
+// 	}
 
-	return s[i].Tick < s[j].Tick
-}
+// 	return s[i].Tick < s[j].Tick
+// }
 
-func containsNotes(messages []Message) bool {
-	for _, msg := range messages {
-		if msg.Is(midi.NoteOnMsg) {
-			return true
-		}
-	}
-	return false
+func find(events sequencer.Events, t midi.Type) int {
+	return slices.IndexFunc(events, func(e *sequencer.Event) bool {
+		return e.Message.Is(t)
+	})
 }

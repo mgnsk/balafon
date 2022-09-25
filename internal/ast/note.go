@@ -9,6 +9,7 @@ import (
 
 	"github.com/mgnsk/gong/internal/constants"
 	"github.com/mgnsk/gong/internal/parser/token"
+	"gitlab.com/gomidi/midi/v2/smf"
 )
 
 // Note: some list operations may be implemented with side effects.
@@ -87,10 +88,10 @@ type Note struct {
 	Name  rune
 }
 
-// Length returns the note duration in ticks.
-func (n *Note) Length() uint32 {
+// Ticks returns the note duration in ticks.
+func (n *Note) Ticks() smf.MetricTicks {
 	value := n.Value()
-	length := constants.TicksPerWhole / uint32(value)
+	length := constants.TicksPerWhole / smf.MetricTicks(value)
 	newLength := length
 	dots := n.Dots()
 	for i := uint(0); i < dots; i++ {
@@ -98,7 +99,7 @@ func (n *Note) Length() uint32 {
 		newLength += length
 	}
 	if division := n.Tuplet(); division > 0 {
-		newLength = uint32(float64(newLength) * 2.0 / float64(division))
+		newLength = newLength * 2 / smf.MetricTicks(division)
 	}
 	return newLength
 }
@@ -158,7 +159,7 @@ func (n *Note) Dots() uint {
 }
 
 // Tuplet returns the irregular division value if the note is a tuplet.
-func (n *Note) Tuplet() uint {
+func (n *Note) Tuplet() uint8 {
 	if i, ok := n.Props.Find(tupletType); ok {
 		// Extract the division number.
 		// For example "3" for a triplet denoted by "/3".
@@ -166,7 +167,7 @@ func (n *Note) Tuplet() uint {
 		if err != nil {
 			panic(err)
 		}
-		return uint(v)
+		return uint8(v)
 	}
 	return 0
 }

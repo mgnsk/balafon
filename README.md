@@ -82,6 +82,7 @@ go install github.com/mgnsk/gong/cmd/yaml2gong@latest
   $ yaml2gong examples/example.yml | gong play -
   ```
 - Compile a YAML file to SMF:
+
   ```sh
   $ yaml2gong examples/example.yml | gong2smf -o example.mid -
   ```
@@ -111,31 +112,32 @@ go install github.com/mgnsk/gong/cmd/yaml2gong@latest
 
 ## Syntax
 
-The language consists of commands and note lists. It is possible to group commands and notes in bars.
+The language consists of commands and note lists, it is evaluated line by line from top to bottom. This makes an implementation capable of using both live and file inputs.
+Commands apply globally unless specified in a named bar that can be called later.
 
 - #### Comments
   ```
   // This is a line comment.
   ```
 - #### Commands
+
   ```
   // Assign a note.
   assign c 60
 
-  // Start message. Useful for controlling a DAW which records MIDI input.
+  // Start message.
   start
 
   // Stop message.
   stop
 
   // Set the time signature.
-  // Optional and applicable only as the first command in a bar.
   timesig 4 4
 
-  // Set the current global tempo.
+  // Set the tempo.
   tempo 120
 
-  // Set the current global MIDI channel.
+  // Set the channel for all notes after this statement.
   channel 10
 
   // Set current global velocity.
@@ -215,7 +217,9 @@ The language consists of commands and note lists. It is possible to group comman
   c$
   ```
 - #### Note grouping
+
   Notes can be arbitrarily grouped and properties applied to multiple notes at once.
+
   ```
   // Ti-Tiri.
   x8 x16 x16
@@ -232,6 +236,7 @@ The language consists of commands and note lists. It is possible to group comman
   // Expands to
   f8 c8 g8 f#8 c#8 g#8
   ```
+
 - #### Bars
 
   Bars are used to specify multiple tracks playing at once.

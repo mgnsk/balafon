@@ -6,9 +6,8 @@ import (
 	"time"
 
 	"github.com/mgnsk/gong/internal/constants"
-	"github.com/mgnsk/gong/internal/interpreter"
 	"gitlab.com/gomidi/midi/v2/drivers"
-	"gitlab.com/gomidi/midi/v2/smf"
+	"gitlab.com/gomidi/midi/v2/sequencer"
 )
 
 // Player plays back interpreted messages into a MIDI output port.
@@ -17,33 +16,34 @@ type Player struct {
 	timer        *time.Timer
 	tickDuration time.Duration
 	once         sync.Once
-	currentTick  uint32
+	currentPos   uint32
 }
 
 // Play the message.
-func (p *Player) Play(ctx context.Context, msg interpreter.Message) error {
-	var bpm float64
+func (p *Player) Play(ctx context.Context, bar *sequencer.Bar) error {
+	return nil
+	// var bpm float64
 
-	if smf.Message(msg.Message).GetMetaTempo(&bpm) {
-		p.SetTempo(uint16(bpm))
-		return nil
-	}
+	// if smf.Message(event.Message).GetMetaTempo(&bpm) {
+	// 	p.SetTempo(uint16(bpm))
+	// 	return nil
+	// }
 
-	p.once.Do(func() {
-		p.currentTick = msg.Tick
-	})
+	// p.once.Do(func() {
+	// 	p.currentPos = uint32(bar.AbsTicks)
+	// })
 
-	if msg.Tick > p.currentTick {
-		p.timer.Reset(time.Duration(msg.Tick-p.currentTick) * p.tickDuration)
-		select {
-		case <-ctx.Done():
-			return ctx.Err()
-		case <-p.timer.C:
-		}
-		p.currentTick = msg.Tick
-	}
+	// if event.Tick > p.currentPos {
+	// 	p.timer.Reset(time.Duration(event.Tick-p.currentPos) * p.tickDuration)
+	// 	select {
+	// 	case <-ctx.Done():
+	// 		return ctx.Err()
+	// 	case <-p.timer.C:
+	// 	}
+	// 	p.currentPos = event.Tick
+	// }
 
-	return p.out.Send(msg.Message)
+	// return p.out.Send(event.Message)
 }
 
 // SetTempo sets the current tempo.

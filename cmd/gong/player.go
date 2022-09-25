@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"context"
 	"fmt"
 	"io"
@@ -11,6 +12,8 @@ import (
 	"github.com/mgnsk/gong/internal/util"
 	"github.com/spf13/cobra"
 	"gitlab.com/gomidi/midi/v2/drivers"
+	"gitlab.com/gomidi/midi/v2/sequencer"
+	"gitlab.com/gomidi/midi/v2/smf"
 )
 
 func playFile(c *cobra.Command, args []string) error {
@@ -22,7 +25,7 @@ func playFile(c *cobra.Command, args []string) error {
 
 	it := interpreter.New()
 
-	messages, err := it.EvalAll(f)
+	song, err := it.EvalAll(f)
 	if err != nil {
 		return err
 	}
@@ -36,24 +39,29 @@ func playFile(c *cobra.Command, args []string) error {
 		return err
 	}
 
-	if err := playAll(context.TODO(), out, messages); err != nil {
+	buf := &bytes.Buffer{}
+
+	s := song.ToSMF1()
+	if _, err := s.WriteTo(buf); err != nil {
 		return err
 	}
 
-	return nil
+	r := smf.ReadTracksFrom(buf)
+
+	return r.Play(out)
 }
 
-func playAll(ctx context.Context, out drivers.Out, messages []interpreter.Message) error {
+func playAll(ctx context.Context, out drivers.Out, events sequencer.Events) error {
 	runtime.LockOSThread()
 	defer runtime.UnlockOSThread()
 
-	p := player.New(out)
+	// p := player.New(out)
 
-	for _, msg := range messages {
-		if err := p.Play(ctx, msg); err != nil {
-			return err
-		}
-	}
+	// for _, msg := range events {
+	// 	if err := p.Play(ctx, msg); err != nil {
+	// 		return err
+	// 	}
+	// }
 
 	return nil
 }
