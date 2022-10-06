@@ -140,21 +140,21 @@ func TestValidInputs(t *testing.T) {
 			},
 		},
 		{
-			"k/3.#8\n",
+			"k/3.#8",
 			match{
 				BeAssignableToTypeOf(ast.NoteList(nil)),
 				ContainSubstring("k#8./3"),
 			},
 		},
 		{
-			"[[[[[k]/3].]#]8]^\n", // Testing the ordering of properties.
+			"[[[[[k]/3].]#]8]^", // Testing the ordering of properties.
 			match{
 				BeAssignableToTypeOf(ast.NoteList(nil)),
 				ContainSubstring("k#^8./3"),
 			},
 		},
 		{
-			"[[[[[k*]/3].]$]8])\n", // Testing the ordering of properties.
+			"[[[[[k*]/3].]$]8])", // Testing the ordering of properties.
 			match{
 				BeAssignableToTypeOf(ast.NoteList(nil)),
 				ContainSubstring("k$)8./3*"),

@@ -15,8 +15,6 @@ var TransTab = TransitionTable{
 		switch {
 		case r == 9: // ['\t','\t']
 			return 1
-		case r == 10: // ['\n','\n']
-			return 1
 		case r == 13: // ['\r','\r']
 			return 1
 		case r == 32: // [' ',' ']

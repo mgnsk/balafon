@@ -17,7 +17,7 @@ tuplet  : '/' _uint ;
 letRing : '*' ;
 
 !comment    : _lineComment ;
-!whitespace : ' ' | '\t' | '\n' | '\r' ;
+!whitespace : ' ' | '\t' | '\r' ;
 
 /* Syntax Part */
 

@@ -103,7 +103,7 @@ func (it *Interpreter) Parse(input string) (interface{}, error) {
 
 	it.parser.Reset()
 
-	return it.parser.Parse(lexer.NewLexer([]byte(input + "\n")))
+	return it.parser.Parse(lexer.NewLexer([]byte(input)))
 }
 
 // NoteOn creates a real time note on event on zero tick with an optional preceding NoteOff if the note was ringing.
