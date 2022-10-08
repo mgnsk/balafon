@@ -4,15 +4,13 @@ import (
 	"testing"
 
 	"github.com/mgnsk/gong/internal/ast"
-	"github.com/mgnsk/gong/internal/parser/lexer"
-	"github.com/mgnsk/gong/internal/parser/parser"
 	. "github.com/onsi/gomega"
 	"github.com/onsi/gomega/types"
 )
 
 func TestValidInputs(t *testing.T) {
 	type (
-		match    []types.GomegaMatcher
+		match    types.GomegaMatcher
 		testcase struct {
 			input string
 			match match
@@ -22,157 +20,95 @@ func TestValidInputs(t *testing.T) {
 	for _, tc := range []testcase{
 		{
 			"k",
-			match{
-				BeAssignableToTypeOf(ast.NoteList(nil)),
-				ContainSubstring("k4"),
-			},
+			ContainSubstring("k4"),
 		},
 		{
 			"kk",
-			match{
-				BeAssignableToTypeOf(ast.NoteList(nil)),
-				ContainSubstring("k4 k4"),
-			},
+			ContainSubstring("k4 k4"),
 		},
 		{
 			"k k",
-			match{
-				BeAssignableToTypeOf(ast.NoteList(nil)),
-				ContainSubstring("k4 k4"),
-			},
+			ContainSubstring("k4 k4"),
 		},
 		{
 			"k k8",
-			match{
-				BeAssignableToTypeOf(ast.NoteList(nil)),
-				ContainSubstring("k4 k8"),
-			},
+			ContainSubstring("k4 k8"),
 		},
 		{
 			"kk8.", // Properties apply only to the previous note symbol.
-			match{
-				BeAssignableToTypeOf(ast.NoteList(nil)),
-				ContainSubstring("k4 k8."),
-			},
+			ContainSubstring("k4 k8."),
 		},
 		{
 			"[kk.]8", // Group properties apply to all notes in the group.
-			match{
-				BeAssignableToTypeOf(ast.NoteList(nil)),
-				ContainSubstring("k8 k8."),
-			},
+			ContainSubstring("k8 k8."),
 		},
 		{
 			"[k.].", // Group properties override any duplicate properties the inner notes have.
-			match{
-				BeAssignableToTypeOf(ast.NoteList(nil)),
-				ContainSubstring("k4."),
-			},
+			ContainSubstring("k4."),
 		},
 		{
 			"[k]",
-			match{
-				BeAssignableToTypeOf(ast.NoteList(nil)),
-				ContainSubstring("k4"),
-			},
+			ContainSubstring("k4"),
 		},
 		{
 			"[k][k].",
-			match{
-				BeAssignableToTypeOf(ast.NoteList(nil)),
-				ContainSubstring("k4 k4."),
-			},
+			ContainSubstring("k4 k4."),
 		},
 		{
 			"kk[kk]kk[kk]kk",
-			match{
-				BeAssignableToTypeOf(ast.NoteList(nil)),
-				ContainSubstring("k4 k4 k4 k4 k4 k4 k4 k4 k4 k4"),
-			},
+			ContainSubstring("k4 k4 k4 k4 k4 k4 k4 k4 k4 k4"),
 		},
 		{
 			"[[k]]8",
-			match{
-				BeAssignableToTypeOf(ast.NoteList(nil)),
-				ContainSubstring("k8"),
-			},
+			ContainSubstring("k8"),
 		},
 		{
 			"k8kk16kkkk16",
-			match{
-				BeAssignableToTypeOf(ast.NoteList(nil)),
-				ContainSubstring("k8 k4 k16 k4 k4 k4 k16"),
-			},
+			ContainSubstring("k8 k4 k16 k4 k4 k4 k16"),
 		},
 		{
 			"k8 [kk]16 [kkkk]32",
-			match{
-				BeAssignableToTypeOf(ast.NoteList(nil)),
-				ContainSubstring("k8 k16 k16 k32 k32 k32 k32"),
-			},
+			ContainSubstring("k8 k16 k16 k32 k32 k32 k32"),
 		},
 		{
 			"k..", // Double dotted note.
-			match{
-				BeAssignableToTypeOf(ast.NoteList(nil)),
-				ContainSubstring("k4.."),
-			},
+			ContainSubstring("k4.."),
 		},
 		{
 			"k...", // Triple dotted note.
-			match{
-				BeAssignableToTypeOf(ast.NoteList(nil)),
-				ContainSubstring("k4..."),
-			},
+			ContainSubstring("k4..."),
 		},
 		{
 			"k4/3", // Triplet.
-			match{
-				BeAssignableToTypeOf(ast.NoteList(nil)),
-				ContainSubstring("k4/3"),
-			},
+			ContainSubstring("k4/3"),
 		},
 		{
 			"-", // Pause.
-			match{
-				BeAssignableToTypeOf(ast.NoteList(nil)),
-				ContainSubstring("-4"),
-			},
+			ContainSubstring("-4"),
 		},
 		{
 			"k/3.#8",
-			match{
-				BeAssignableToTypeOf(ast.NoteList(nil)),
-				ContainSubstring("k#8./3"),
-			},
+			ContainSubstring("k#8./3"),
 		},
 		{
 			"[[[[[k]/3].]#]8]^", // Testing the ordering of properties.
-			match{
-				BeAssignableToTypeOf(ast.NoteList(nil)),
-				ContainSubstring("k#^8./3"),
-			},
+			ContainSubstring("k#^8./3"),
 		},
 		{
 			"[[[[[k*]/3].]$]8])", // Testing the ordering of properties.
-			match{
-				BeAssignableToTypeOf(ast.NoteList(nil)),
-				ContainSubstring("k$)8./3*"),
-			},
+			ContainSubstring("k$)8./3*"),
 		},
 	} {
 		t.Run(tc.input, func(t *testing.T) {
 			g := NewGomegaWithT(t)
 
-			lex := lexer.NewLexer([]byte(tc.input))
-			p := parser.NewParser()
-
-			res, err := p.Parse(lex)
+			res, err := parse(tc.input)
 			g.Expect(err).NotTo(HaveOccurred())
 
-			for _, match := range tc.match {
-				g.Expect(res).To(match)
-			}
+			g.Expect(res).To(BeAssignableToTypeOf(ast.DeclList{}))
+			list := res.(ast.DeclList)
+			g.Expect(list).To(HaveLen(1))
+			g.Expect(list[0]).To(tc.match)
 		})
 	}
 }
@@ -187,10 +123,7 @@ func TestInvalidProperties(t *testing.T) {
 		t.Run(input, func(t *testing.T) {
 			g := NewGomegaWithT(t)
 
-			lex := lexer.NewLexer([]byte(input))
-			p := parser.NewParser()
-
-			_, err := p.Parse(lex)
+			_, err := parse(input)
 			g.Expect(err).To(HaveOccurred())
 		})
 	}
@@ -206,10 +139,7 @@ func TestInvalidNoteValue(t *testing.T) {
 		t.Run(input, func(t *testing.T) {
 			g := NewGomegaWithT(t)
 
-			lex := lexer.NewLexer([]byte(input))
-			p := parser.NewParser()
-
-			_, err := p.Parse(lex)
+			_, err := parse(input)
 			g.Expect(err).To(HaveOccurred())
 		})
 	}
@@ -227,10 +157,7 @@ func TestForbiddenDuplicateProperty(t *testing.T) {
 		t.Run(input, func(t *testing.T) {
 			g := NewGomegaWithT(t)
 
-			lex := lexer.NewLexer([]byte(input))
-			p := parser.NewParser()
-
-			_, err := p.Parse(lex)
+			_, err := parse(input)
 			g.Expect(err).To(HaveOccurred())
 		})
 	}

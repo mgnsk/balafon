@@ -1,5 +1,7 @@
 /* Lexical Part */
 
+terminator : ';' '\n' | ';' | '\n' ;
+
 _uint        : '0' | '1'-'9' {'0'-'9'} ;
 _lineComment : '/' '/' { . } '\n' ;
 
@@ -28,10 +30,26 @@ import (
 )
 >>
 
-Expr
-    : NoteList
-    | Command
+DeclList
+    : empty
+    | Decl DeclList << ast.NewDeclList($0, $1), nil >>
     ;
+
+Bar
+    : "bar" stringLit "{" DeclList "}"         << ast.NewBar($T1.StringValue(), $3), nil >>
+    ;
+
+/* TODO command general */
+Decl
+    /* : NoteList RepeatTerminator << ast.NewDeclList($0, $1), nil >> */
+    : Command RepeatTerminator << ast.NewDeclList($0, $1), nil >>
+    | Bar RepeatTerminator << ast.NewDeclList($0, $1), nil >>
+    ;
+
+RepeatTerminator
+        : terminator RepeatTerminator
+        | empty
+        ;
 
 NoteList
     : empty
@@ -76,7 +94,6 @@ Command:
     | "velocity" uint               << ast.NewCmdVelocity($T1) >>
     | "program" uint                << ast.NewCmdProgram($T1) >>
     | "control" uint uint           << ast.NewCmdControl($T1, $T2) >>
-    | "bar" stringLit               << ast.CmdBar($T1.StringValue()), nil >>
     | "end"                         << ast.CmdEnd{}, nil >>
     | "play" stringLit              << ast.CmdPlay($T1.StringValue()), nil >>
     | "start"                       << ast.CmdStart{}, nil >>

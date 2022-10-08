@@ -37,6 +37,7 @@ func NewNoteList(note, inner interface{}) (list NoteList) {
 			list = NoteList{n}
 		}
 	case NoteList:
+		// The first argument is NoteGroup.
 		list = n
 		if innerList, ok := inner.(NoteList); ok {
 			list = make(NoteList, len(innerList)+len(n))

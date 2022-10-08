@@ -3,16 +3,18 @@
 package lexer
 
 import (
+	"fmt"
 	"io/ioutil"
 	"unicode/utf8"
 
+	"github.com/mgnsk/gong/internal/parser/util"
 	"github.com/mgnsk/gong/internal/parser/token"
 )
 
 const (
 	NoState    = -1
-	NumStates  = 82
-	NumSymbols = 90
+	NumStates  = 86
+	NumSymbols = 96
 )
 
 type Lexer struct {
@@ -55,6 +57,7 @@ func NewLexerFile(fpath string) (*Lexer, error) {
 }
 
 func (l *Lexer) Scan() (tok *token.Token) {
+	fmt.Printf("Lexer.Scan() pos=%d\n", l.pos)
 	tok = &token.Token{}
 	if l.pos >= len(l.src) {
 		tok.Type = token.EOF
@@ -66,6 +69,7 @@ func (l *Lexer) Scan() (tok *token.Token) {
 	tok.Type = token.INVALID
 	state, rune1, size := 0, rune(-1), 0
 	for state != -1 {
+		fmt.Printf("\tpos=%d, line=%d, col=%d, state=%d\n", l.pos, l.line, l.column, state)
 		if l.pos >= len(l.src) {
 			rune1 = -1
 		} else {
@@ -76,6 +80,11 @@ func (l *Lexer) Scan() (tok *token.Token) {
 		nextState := -1
 		if rune1 != -1 {
 			nextState = TransTab[state](rune1)
+		}
+		fmt.Printf("\tS%d, : tok=%s, rune == %s(%x), next state == %d\n", state, token.TokMap.Id(tok.Type), util.RuneToString(rune1), rune1, nextState)
+		fmt.Printf("\t\tpos=%d, size=%d, start=%d, end=%d\n", l.pos, size, start, end)
+		if nextState != -1 {
+			fmt.Printf("\t\taction:%s\n", ActTab[nextState].String())
 		}
 		state = nextState
 
@@ -119,6 +128,7 @@ func (l *Lexer) Scan() (tok *token.Token) {
 	}
 	tok.Pos.Offset, tok.Pos.Line, tok.Pos.Column = start, startLine, startColumn
 	tok.Pos.Context = l.Context
+	fmt.Printf("Token at %s: %s \"%s\"\n", tok.String(), token.TokMap.Id(tok.Type), tok.Lit)
 
 	return
 }
@@ -129,94 +139,100 @@ func (l *Lexer) Reset() {
 
 /*
 Lexer symbols:
-0: '"'
-1: '"'
-2: '-'
-3: '#'
-4: '$'
-5: '^'
-6: ')'
-7: '.'
-8: '/'
-9: '*'
-10: '['
-11: ']'
-12: 'a'
-13: 's'
-14: 's'
-15: 'i'
-16: 'g'
-17: 'n'
-18: 't'
-19: 'e'
-20: 'm'
-21: 'p'
-22: 'o'
-23: 't'
+0: ';'
+1: '\n'
+2: ';'
+3: '\n'
+4: '"'
+5: '"'
+6: '-'
+7: '#'
+8: '$'
+9: '^'
+10: ')'
+11: '.'
+12: '/'
+13: '*'
+14: 'b'
+15: 'a'
+16: 'r'
+17: '{'
+18: '}'
+19: '['
+20: ']'
+21: 'a'
+22: 's'
+23: 's'
 24: 'i'
-25: 'm'
-26: 'e'
-27: 's'
-28: 'i'
-29: 'g'
-30: 'c'
-31: 'h'
-32: 'a'
-33: 'n'
-34: 'n'
+25: 'g'
+26: 'n'
+27: 't'
+28: 'e'
+29: 'm'
+30: 'p'
+31: 'o'
+32: 't'
+33: 'i'
+34: 'm'
 35: 'e'
-36: 'l'
-37: 'v'
-38: 'e'
-39: 'l'
-40: 'o'
-41: 'c'
-42: 'i'
-43: 't'
-44: 'y'
-45: 'p'
-46: 'r'
-47: 'o'
-48: 'g'
-49: 'r'
-50: 'a'
-51: 'm'
-52: 'c'
-53: 'o'
-54: 'n'
-55: 't'
-56: 'r'
-57: 'o'
-58: 'l'
-59: 'b'
-60: 'a'
-61: 'r'
-62: 'e'
+36: 's'
+37: 'i'
+38: 'g'
+39: 'c'
+40: 'h'
+41: 'a'
+42: 'n'
+43: 'n'
+44: 'e'
+45: 'l'
+46: 'v'
+47: 'e'
+48: 'l'
+49: 'o'
+50: 'c'
+51: 'i'
+52: 't'
+53: 'y'
+54: 'p'
+55: 'r'
+56: 'o'
+57: 'g'
+58: 'r'
+59: 'a'
+60: 'm'
+61: 'c'
+62: 'o'
 63: 'n'
-64: 'd'
-65: 'p'
-66: 'l'
-67: 'a'
-68: 'y'
-69: 's'
-70: 't'
-71: 'a'
-72: 'r'
-73: 't'
-74: 's'
-75: 't'
-76: 'o'
-77: 'p'
-78: '0'
-79: '/'
-80: '/'
-81: '\n'
-82: ' '
-83: '\t'
-84: '\r'
-85: 'a'-'z'
-86: 'A'-'Z'
-87: '1'-'9'
-88: '0'-'9'
-89: .
+64: 't'
+65: 'r'
+66: 'o'
+67: 'l'
+68: 'e'
+69: 'n'
+70: 'd'
+71: 'p'
+72: 'l'
+73: 'a'
+74: 'y'
+75: 's'
+76: 't'
+77: 'a'
+78: 'r'
+79: 't'
+80: 's'
+81: 't'
+82: 'o'
+83: 'p'
+84: '0'
+85: '/'
+86: '/'
+87: '\n'
+88: ' '
+89: '\t'
+90: '\r'
+91: 'a'-'z'
+92: 'A'-'Z'
+93: '1'-'9'
+94: '0'-'9'
+95: .
 */
