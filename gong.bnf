@@ -1,12 +1,12 @@
 /* Lexical Part */
 
-terminator : ';' '\n' | ';' | '\n' ;
+/* terminator : ';' '\n' | ';' | '\n' ; */
+terminator : '\n' ;
 
+uint      : _uint ;
 _uint        : '0' | '1'-'9' {'0'-'9'} ;
-_lineComment : '/' '/' { . } '\n' ;
 
 char      : 'a'-'z' | 'A'-'Z' ;
-uint      : _uint ;
 stringLit : '"' { . } '"' ;
 
 rest    : '-' ;
@@ -18,7 +18,7 @@ dot     : '.' ;
 tuplet  : '/' _uint ;
 letRing : '*' ;
 
-!comment    : _lineComment ;
+!comment    : '/' '/' { . } '\n' ;
 !whitespace : ' ' | '\t' | '\r' ;
 
 /* Syntax Part */
@@ -32,24 +32,23 @@ import (
 
 DeclList
     : empty
-    | Decl DeclList << ast.NewDeclList($0, $1), nil >>
-    ;
-
-Bar
-    : "bar" stringLit "{" DeclList "}"         << ast.NewBar($T1.StringValue(), $3), nil >>
-    ;
-
-/* TODO command general */
-Decl
-    /* : NoteList RepeatTerminator << ast.NewDeclList($0, $1), nil >> */
-    : Command RepeatTerminator << ast.NewDeclList($0, $1), nil >>
-    | Bar RepeatTerminator << ast.NewDeclList($0, $1), nil >>
+    | Command RepeatTerminator DeclList << ast.NewDeclList($0, $1), nil >>
+    /* | NoteList RepeatTerminator DeclList << ast.NewDeclList($0, $1), nil >> */
+    /* | BarDecl DeclList << ast.NewDeclList($0, $1), nil >> */
     ;
 
 RepeatTerminator
         : terminator RepeatTerminator
         | empty
         ;
+
+Bar
+    : "bar" stringLit "{" DeclList "}" << ast.NewBar($T1.StringValue(), $3), nil >>
+    ;
+
+/* NoteListDecl
+    : "=" NoteList terminator RepeatTerminator "=" << $0, nil >>
+    ; */
 
 NoteList
     : empty
@@ -86,7 +85,7 @@ Property
     | letRing
     ;
 
-Command:
+Command
     : "assign" char uint            << ast.NewCmdAssign($T1, $T2) >>
     | "tempo" uint                  << ast.NewCmdTempo($T1) >>
     | "timesig" uint uint           << ast.NewCmdTimeSig($T1, $T2) >>

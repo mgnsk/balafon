@@ -1,3 +1,3 @@
-//go:generate gocc -debug_lexer -debug_parser -o internal/parser gong.bnf
+//go:generate gocc -o internal/parser gong.bnf
 
 package main

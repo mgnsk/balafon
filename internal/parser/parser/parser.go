@@ -11,9 +11,9 @@ import (
 )
 
 const (
-	numProductions = 36
-	numStates      = 72
-	numSymbols     = 43
+	numProductions = 34
+	numStates      = 29
+	numSymbols     = 42
 )
 
 // Stack
@@ -193,7 +193,6 @@ func (p *Parser) Parse(scanner Scanner) (res interface{}, err error) {
 				panic("Error recovery led to invalid action")
 			}
 		}
-		fmt.Printf("S%d %s %s\n", p.stack.top(), token.TokMap.TokenString(p.nextToken), action)
 
 		switch act := action.(type) {
 		case accept:
