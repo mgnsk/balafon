@@ -32,8 +32,8 @@ import (
 
 DeclList
     : empty
-    | Command RepeatTerminator DeclList << ast.NewDeclList($0, $1), nil >>
-    /* | NoteList RepeatTerminator DeclList << ast.NewDeclList($0, $1), nil >> */
+    | Command terminator DeclList << ast.NewDeclList($0, $2), nil >>
+    | NoteList terminator DeclList << ast.NewDeclList($0, $2), nil >>
     /* | BarDecl DeclList << ast.NewDeclList($0, $1), nil >> */
     ;
 
@@ -45,10 +45,6 @@ RepeatTerminator
 Bar
     : "bar" stringLit "{" DeclList "}" << ast.NewBar($T1.StringValue(), $3), nil >>
     ;
-
-/* NoteListDecl
-    : "=" NoteList terminator RepeatTerminator "=" << $0, nil >>
-    ; */
 
 NoteList
     : empty
