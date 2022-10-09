@@ -20,6 +20,7 @@ func TestBar(t *testing.T) {
 	res, err := parse(input)
 	g.Expect(err).NotTo(HaveOccurred())
 
-	spew.Dump(res)
+	// TODO
 
+	spew.Dump(res)
 }

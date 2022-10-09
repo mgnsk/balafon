@@ -29,17 +29,18 @@ import (
     "github.com/mgnsk/gong/internal/parser/token"
 )
 >>
+/* TODO: forbid Bar in Bar? */
 
 DeclList
     : empty
     | Command terminator DeclList << ast.NewDeclList($0, $2), nil >>
     | NoteList terminator DeclList << ast.NewDeclList($0, $2), nil >>
-    /* | BarDecl DeclList << ast.NewDeclList($0, $1), nil >> */
+    | Bar terminator DeclList << ast.NewDeclList($0, $2), nil >>
     ;
 
 RepeatTerminator
-        : terminator RepeatTerminator
-        | empty
+        : empty
+        | terminator RepeatTerminator
         ;
 
 Bar
