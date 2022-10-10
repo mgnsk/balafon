@@ -9,7 +9,7 @@ _uint        : '0' | '1'-'9' {'0'-'9'} ;
 char      : 'a'-'z' | 'A'-'Z' ;
 stringLit : '"' { . } '"' ;
 
-rest    : '-' ;
+rest     : '-' ;
 sharp   : '#' ;
 flat    : '$' ;
 accent  : '^' ;
@@ -31,20 +31,15 @@ import (
 >>
 /* TODO: forbid Bar in Bar? */
 
-DeclList
+Song
     : empty
-    | Command terminator DeclList << ast.NewDeclList($0, $2), nil >>
-    | NoteList terminator DeclList << ast.NewDeclList($0, $2), nil >>
-    | Bar terminator DeclList << ast.NewDeclList($0, $2), nil >>
+    | Command terminator Song << ast.NewSong($0, $2), nil >>
+    | NoteList terminator Song << ast.NewSong($0, $2), nil >>
+    | Bar terminator Song << ast.NewSong($0, $2), nil >>
     ;
 
-RepeatTerminator
-        : empty
-        | terminator RepeatTerminator
-        ;
-
 Bar
-    : "bar" stringLit "{" DeclList "}" << ast.NewBar($T1.StringValue(), $3), nil >>
+    : "bar" stringLit "{" Song "}" << ast.NewBar($T1.StringValue(), $3), nil >>
     ;
 
 NoteList

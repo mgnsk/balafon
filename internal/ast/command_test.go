@@ -15,47 +15,47 @@ func TestValidCommands(t *testing.T) {
 	}{
 		{
 			`assign k 36`,
-			Equal(ast.DeclList{ast.CmdAssign{'k', 36}}),
+			Equal(ast.Song{ast.CmdAssign{'k', 36}}),
 		},
 		{
 			`tempo 120`,
-			Equal(ast.DeclList{ast.CmdTempo(120)}),
+			Equal(ast.Song{ast.CmdTempo(120)}),
 		},
 		{
 			`timesig 1 1`,
-			Equal(ast.DeclList{ast.CmdTimeSig{1, 1}}),
+			Equal(ast.Song{ast.CmdTimeSig{1, 1}}),
 		},
 		{
 			`channel 15`,
-			Equal(ast.DeclList{ast.CmdChannel(15)}),
+			Equal(ast.Song{ast.CmdChannel(15)}),
 		},
 		{
 			`velocity 127`,
-			Equal(ast.DeclList{ast.CmdVelocity(127)}),
+			Equal(ast.Song{ast.CmdVelocity(127)}),
 		},
 		{
 			`program 127`,
-			Equal(ast.DeclList{ast.CmdProgram(127)}),
+			Equal(ast.Song{ast.CmdProgram(127)}),
 		},
 		{
 			`control 127 127`,
-			Equal(ast.DeclList{ast.CmdControl{127, 127}}),
+			Equal(ast.Song{ast.CmdControl{127, 127}}),
 		},
 		{
 			`end`,
-			Equal(ast.DeclList{ast.CmdEnd{}}),
+			Equal(ast.Song{ast.CmdEnd{}}),
 		},
 		{
 			`play "chorus"`,
-			Equal(ast.DeclList{ast.CmdPlay("chorus")}),
+			Equal(ast.Song{ast.CmdPlay("chorus")}),
 		},
 		{
 			`start`,
-			Equal(ast.DeclList{ast.CmdStart{}}),
+			Equal(ast.Song{ast.CmdStart{}}),
 		},
 		{
 			`stop`,
-			Equal(ast.DeclList{ast.CmdStop{}}),
+			Equal(ast.Song{ast.CmdStop{}}),
 		},
 	} {
 		t.Run(tc.input, func(t *testing.T) {
