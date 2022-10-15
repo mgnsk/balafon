@@ -3,7 +3,6 @@ package ast_test
 import (
 	"testing"
 
-	"github.com/mgnsk/gong/internal/ast"
 	. "github.com/onsi/gomega"
 	"github.com/onsi/gomega/types"
 )
@@ -104,11 +103,7 @@ func TestValidInputs(t *testing.T) {
 
 			res, err := parse(tc.input)
 			g.Expect(err).NotTo(HaveOccurred())
-
-			g.Expect(res).To(BeAssignableToTypeOf(ast.Song{}))
-			list := res.(ast.Song)
-			g.Expect(list).To(HaveLen(1))
-			g.Expect(list[0]).To(tc.match)
+			g.Expect(res).To(tc.match)
 		})
 	}
 }

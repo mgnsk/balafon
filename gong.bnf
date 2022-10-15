@@ -1,7 +1,6 @@
 /* Lexical Part */
 
-/* terminator : ';' '\n' | ';' | '\n' ; */
-terminator : '\n' ;
+terminator : ';' '\n' | ';' | '\n' ;
 
 uint      : _uint ;
 _uint        : '0' | '1'-'9' {'0'-'9'} ;
@@ -18,42 +17,61 @@ dot     : '.' ;
 tuplet  : '/' _uint ;
 letRing : '*' ;
 
-!comment    : '/' '/' { . } '\n' ;
+lineComment  : '/' '/' { . } '\n' ;
+blockComment : '/' '*' { . | '*' } '*' '/' ;
+
 !whitespace : ' ' | '\t' | '\r' ;
 
 /* Syntax Part */
 
 <<
 import (
+    "fmt"
     "github.com/mgnsk/gong/internal/ast"
     "github.com/mgnsk/gong/internal/parser/token"
 )
 >>
 /* TODO: forbid Bar in Bar? */
 
-Song
+
+SourceFile
+        : RepeatTerminator StatementList << $1, nil >>
+        ;
+
+StatementList
+    : Statement terminator RepeatTerminator StatementList << ast.NewStmtList($0.(fmt.Stringer), $3.(ast.StmtList)), nil >>
+    | Statement RepeatTerminator  << ast.NewStmtList($0.(fmt.Stringer), nil), nil >>
+    ;
+
+RepeatTerminator
     : empty
-    | Command terminator Song << ast.NewSong($0, $2), nil >>
-    | NoteList terminator Song << ast.NewSong($0, $2), nil >>
-    | Bar terminator Song << ast.NewSong($0, $2), nil >>
+    | terminator RepeatTerminator
+    ;
+
+Statement
+    : Bar
+    | Command
+    | NoteList
+    | Comment
+    ;
+
+Comment
+    : lineComment << ast.NewLineComment($T0), nil >>
+    | blockComment << ast.NewBlockComment($T0), nil >>
     ;
 
 Bar
-    : "bar" stringLit "{" Song "}" << ast.NewBar($T1.StringValue(), $3), nil >>
+    : "bar" stringLit "{" RepeatTerminator StatementList "}" << ast.NewBar($T1.StringValue(), $4.(ast.StmtList)), nil >>
     ;
 
 NoteList
-    : empty
-    | NoteGroup NoteList            << ast.NewNoteList($0, $1), nil >>
-    | Note NoteList                 << ast.NewNoteList($0, $1), nil >>
+    : NoteObject << ast.NewNoteList($0.(fmt.Stringer), nil), nil >>
+    | NoteObject NoteList << ast.NewNoteList($0.(fmt.Stringer), $1.(ast.NoteList)), nil >>
     ;
 
-NoteGroup
-    : "[" NoteList "]" PropertyList << ast.NewNoteListFromGroup($1, $3) >>
-    ;
-
-Note
-    : NoteSymbol PropertyList       << ast.NewNote($T0.IDValue(), $1), nil >>
+NoteObject
+    : NoteSymbol PropertyList       << ast.NewNote($T0.IDValue(), $1.(ast.PropertyList)), nil >>
+    | "[" NoteList "]" PropertyList << ast.NewNoteListFromGroup($1.(ast.NoteList), $3.(ast.PropertyList)), nil >>
     ;
 
 NoteSymbol
@@ -62,7 +80,7 @@ NoteSymbol
     ;
 
 PropertyList
-    : empty
+    : empty                         << ast.PropertyList(nil), nil >>
     | Property PropertyList         << ast.NewPropertyList($T0, $1) >>
     ;
 
@@ -85,7 +103,6 @@ Command
     | "velocity" uint               << ast.NewCmdVelocity($T1) >>
     | "program" uint                << ast.NewCmdProgram($T1) >>
     | "control" uint uint           << ast.NewCmdControl($T1, $T2) >>
-    | "end"                         << ast.CmdEnd{}, nil >>
     | "play" stringLit              << ast.CmdPlay($T1.StringValue()), nil >>
     | "start"                       << ast.CmdStart{}, nil >>
     | "stop"                        << ast.CmdStop{}, nil >>

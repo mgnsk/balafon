@@ -1,16 +1,28 @@
 package ast
 
-import "github.com/mgnsk/gong/internal/parser/token"
+import (
+	"fmt"
+
+	"github.com/mgnsk/gong/internal/parser/token"
+)
 
 var (
-	charType      = token.TokMap.Type("char")
-	stringLitType = token.TokMap.Type("stringLit")
-	sharpType     = token.TokMap.Type("sharp")
-	flatType      = token.TokMap.Type("flat")
-	accentType    = token.TokMap.Type("accent")
-	ghostType     = token.TokMap.Type("ghost")
-	uintType      = token.TokMap.Type("uint")
-	dotType       = token.TokMap.Type("dot")
-	tupletType    = token.TokMap.Type("tuplet")
-	letRingType   = token.TokMap.Type("letRing")
+	charType      = mustGetType("char")
+	stringLitType = mustGetType("stringLit")
+	sharpType     = mustGetType("sharp")
+	flatType      = mustGetType("flat")
+	accentType    = mustGetType("accent")
+	ghostType     = mustGetType("ghost")
+	uintType      = mustGetType("uint")
+	dotType       = mustGetType("dot")
+	tupletType    = mustGetType("tuplet")
+	letRingType   = mustGetType("letRing")
 )
+
+func mustGetType(tok string) token.Type {
+	t := token.TokMap.Type(tok)
+	if t == token.INVALID {
+		panic(fmt.Sprintf("invalid token %s", tok))
+	}
+	return t
+}

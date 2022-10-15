@@ -15,47 +15,43 @@ func TestValidCommands(t *testing.T) {
 	}{
 		{
 			`assign k 36`,
-			Equal(ast.Song{ast.CmdAssign{'k', 36}}),
+			Equal(ast.CmdAssign{'k', 36}),
 		},
 		{
 			`tempo 120`,
-			Equal(ast.Song{ast.CmdTempo(120)}),
+			Equal(ast.CmdTempo(120)),
 		},
 		{
 			`timesig 1 1`,
-			Equal(ast.Song{ast.CmdTimeSig{1, 1}}),
+			Equal(ast.CmdTimeSig{1, 1}),
 		},
 		{
 			`channel 15`,
-			Equal(ast.Song{ast.CmdChannel(15)}),
+			Equal(ast.CmdChannel(15)),
 		},
 		{
 			`velocity 127`,
-			Equal(ast.Song{ast.CmdVelocity(127)}),
+			Equal(ast.CmdVelocity(127)),
 		},
 		{
 			`program 127`,
-			Equal(ast.Song{ast.CmdProgram(127)}),
+			Equal(ast.CmdProgram(127)),
 		},
 		{
 			`control 127 127`,
-			Equal(ast.Song{ast.CmdControl{127, 127}}),
-		},
-		{
-			`end`,
-			Equal(ast.Song{ast.CmdEnd{}}),
+			Equal(ast.CmdControl{127, 127}),
 		},
 		{
 			`play "chorus"`,
-			Equal(ast.Song{ast.CmdPlay("chorus")}),
+			Equal(ast.CmdPlay("chorus")),
 		},
 		{
 			`start`,
-			Equal(ast.Song{ast.CmdStart{}}),
+			Equal(ast.CmdStart{}),
 		},
 		{
 			`stop`,
-			Equal(ast.Song{ast.CmdStop{}}),
+			Equal(ast.CmdStop{}),
 		},
 	} {
 		t.Run(tc.input, func(t *testing.T) {
@@ -64,7 +60,12 @@ func TestValidCommands(t *testing.T) {
 			res, err := parse(tc.input)
 			g.Expect(err).NotTo(HaveOccurred())
 
-			g.Expect(res).To(tc.match)
+			var s ast.StmtList
+			g.Expect(res).To(BeAssignableToTypeOf(ast.StmtList{}))
+			s = res.(ast.StmtList)
+
+			g.Expect(s).To(HaveLen(1))
+			g.Expect(s[0]).To(tc.match)
 		})
 	}
 }

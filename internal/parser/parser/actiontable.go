@@ -15,17 +15,19 @@ var actionTab = actionTable{
 		canRecover: false,
 		actions: [numSymbols]action{
 			nil,       // INVALID
-			reduce(1), // $, reduce: Song
+			nil,       // $
+			shift(3),  // terminator
 			nil,       // empty
-			reduce(6), // terminator, reduce: NoteList
-			shift(5),  // bar
+			reduce(4), // lineComment, reduce: RepeatTerminator
+			reduce(4), // blockComment, reduce: RepeatTerminator
+			reduce(4), // bar, reduce: RepeatTerminator
 			nil,       // stringLit
 			nil,       // {
 			nil,       // }
-			shift(8),  // [
+			reduce(4), // [, reduce: RepeatTerminator
 			nil,       // ]
-			shift(10), // char
-			shift(11), // rest
+			reduce(4), // char, reduce: RepeatTerminator
+			reduce(4), // rest, reduce: RepeatTerminator
 			nil,       // sharp
 			nil,       // flat
 			nil,       // accent
@@ -34,17 +36,16 @@ var actionTab = actionTable{
 			nil,       // dot
 			nil,       // tuplet
 			nil,       // letRing
-			shift(12), // assign
-			shift(13), // tempo
-			shift(14), // timesig
-			shift(15), // channel
-			shift(16), // velocity
-			shift(17), // program
-			shift(18), // control
-			shift(19), // end
-			shift(20), // play
-			shift(21), // start
-			shift(22), // stop
+			reduce(4), // assign, reduce: RepeatTerminator
+			reduce(4), // tempo, reduce: RepeatTerminator
+			reduce(4), // timesig, reduce: RepeatTerminator
+			reduce(4), // channel, reduce: RepeatTerminator
+			reduce(4), // velocity, reduce: RepeatTerminator
+			reduce(4), // program, reduce: RepeatTerminator
+			reduce(4), // control, reduce: RepeatTerminator
+			reduce(4), // play, reduce: RepeatTerminator
+			reduce(4), // start, reduce: RepeatTerminator
+			reduce(4), // stop, reduce: RepeatTerminator
 		},
 	},
 	actionRow{ // S1
@@ -52,8 +53,10 @@ var actionTab = actionTable{
 		actions: [numSymbols]action{
 			nil,          // INVALID
 			accept(true), // $
-			nil,          // empty
 			nil,          // terminator
+			nil,          // empty
+			nil,          // lineComment
+			nil,          // blockComment
 			nil,          // bar
 			nil,          // stringLit
 			nil,          // {
@@ -77,7 +80,6 @@ var actionTab = actionTable{
 			nil,          // velocity
 			nil,          // program
 			nil,          // control
-			nil,          // end
 			nil,          // play
 			nil,          // start
 			nil,          // stop
@@ -88,16 +90,18 @@ var actionTab = actionTable{
 		actions: [numSymbols]action{
 			nil,       // INVALID
 			nil,       // $
+			nil,       // terminator
 			nil,       // empty
-			shift(23), // terminator
-			nil,       // bar
+			shift(10), // lineComment
+			shift(11), // blockComment
+			shift(12), // bar
 			nil,       // stringLit
 			nil,       // {
 			nil,       // }
-			nil,       // [
+			shift(15), // [
 			nil,       // ]
-			nil,       // char
-			nil,       // rest
+			shift(16), // char
+			shift(17), // rest
 			nil,       // sharp
 			nil,       // flat
 			nil,       // accent
@@ -106,17 +110,16 @@ var actionTab = actionTable{
 			nil,       // dot
 			nil,       // tuplet
 			nil,       // letRing
-			nil,       // assign
-			nil,       // tempo
-			nil,       // timesig
-			nil,       // channel
-			nil,       // velocity
-			nil,       // program
-			nil,       // control
-			nil,       // end
-			nil,       // play
-			nil,       // start
-			nil,       // stop
+			shift(18), // assign
+			shift(19), // tempo
+			shift(20), // timesig
+			shift(21), // channel
+			shift(22), // velocity
+			shift(23), // program
+			shift(24), // control
+			shift(25), // play
+			shift(26), // start
+			shift(27), // stop
 		},
 	},
 	actionRow{ // S3
@@ -124,16 +127,18 @@ var actionTab = actionTable{
 		actions: [numSymbols]action{
 			nil,       // INVALID
 			nil,       // $
+			shift(3),  // terminator
 			nil,       // empty
-			shift(24), // terminator
-			nil,       // bar
+			reduce(4), // lineComment, reduce: RepeatTerminator
+			reduce(4), // blockComment, reduce: RepeatTerminator
+			reduce(4), // bar, reduce: RepeatTerminator
 			nil,       // stringLit
 			nil,       // {
 			nil,       // }
-			nil,       // [
+			reduce(4), // [, reduce: RepeatTerminator
 			nil,       // ]
-			nil,       // char
-			nil,       // rest
+			reduce(4), // char, reduce: RepeatTerminator
+			reduce(4), // rest, reduce: RepeatTerminator
 			nil,       // sharp
 			nil,       // flat
 			nil,       // accent
@@ -142,26 +147,27 @@ var actionTab = actionTable{
 			nil,       // dot
 			nil,       // tuplet
 			nil,       // letRing
-			nil,       // assign
-			nil,       // tempo
-			nil,       // timesig
-			nil,       // channel
-			nil,       // velocity
-			nil,       // program
-			nil,       // control
-			nil,       // end
-			nil,       // play
-			nil,       // start
-			nil,       // stop
+			reduce(4), // assign, reduce: RepeatTerminator
+			reduce(4), // tempo, reduce: RepeatTerminator
+			reduce(4), // timesig, reduce: RepeatTerminator
+			reduce(4), // channel, reduce: RepeatTerminator
+			reduce(4), // velocity, reduce: RepeatTerminator
+			reduce(4), // program, reduce: RepeatTerminator
+			reduce(4), // control, reduce: RepeatTerminator
+			reduce(4), // play, reduce: RepeatTerminator
+			reduce(4), // start, reduce: RepeatTerminator
+			reduce(4), // stop, reduce: RepeatTerminator
 		},
 	},
 	actionRow{ // S4
 		canRecover: false,
 		actions: [numSymbols]action{
 			nil,       // INVALID
-			nil,       // $
+			reduce(1), // $, reduce: SourceFile
+			nil,       // terminator
 			nil,       // empty
-			shift(25), // terminator
+			nil,       // lineComment
+			nil,       // blockComment
 			nil,       // bar
 			nil,       // stringLit
 			nil,       // {
@@ -185,7 +191,6 @@ var actionTab = actionTable{
 			nil,       // velocity
 			nil,       // program
 			nil,       // control
-			nil,       // end
 			nil,       // play
 			nil,       // start
 			nil,       // stop
@@ -195,11 +200,13 @@ var actionTab = actionTable{
 		canRecover: false,
 		actions: [numSymbols]action{
 			nil,       // INVALID
-			nil,       // $
+			reduce(4), // $, reduce: RepeatTerminator
+			shift(30), // terminator
 			nil,       // empty
-			nil,       // terminator
+			nil,       // lineComment
+			nil,       // blockComment
 			nil,       // bar
-			shift(26), // stringLit
+			nil,       // stringLit
 			nil,       // {
 			nil,       // }
 			nil,       // [
@@ -221,7 +228,6 @@ var actionTab = actionTable{
 			nil,       // velocity
 			nil,       // program
 			nil,       // control
-			nil,       // end
 			nil,       // play
 			nil,       // start
 			nil,       // stop
@@ -231,17 +237,19 @@ var actionTab = actionTable{
 		canRecover: false,
 		actions: [numSymbols]action{
 			nil,       // INVALID
-			nil,       // $
+			reduce(6), // $, reduce: Statement
+			reduce(6), // terminator, reduce: Statement
 			nil,       // empty
-			reduce(6), // terminator, reduce: NoteList
+			nil,       // lineComment
+			nil,       // blockComment
 			nil,       // bar
 			nil,       // stringLit
 			nil,       // {
 			nil,       // }
-			shift(8),  // [
+			nil,       // [
 			nil,       // ]
-			shift(10), // char
-			shift(11), // rest
+			nil,       // char
+			nil,       // rest
 			nil,       // sharp
 			nil,       // flat
 			nil,       // accent
@@ -257,7 +265,6 @@ var actionTab = actionTable{
 			nil,       // velocity
 			nil,       // program
 			nil,       // control
-			nil,       // end
 			nil,       // play
 			nil,       // start
 			nil,       // stop
@@ -267,17 +274,19 @@ var actionTab = actionTable{
 		canRecover: false,
 		actions: [numSymbols]action{
 			nil,       // INVALID
-			nil,       // $
+			reduce(7), // $, reduce: Statement
+			reduce(7), // terminator, reduce: Statement
 			nil,       // empty
-			reduce(6), // terminator, reduce: NoteList
+			nil,       // lineComment
+			nil,       // blockComment
 			nil,       // bar
 			nil,       // stringLit
 			nil,       // {
 			nil,       // }
-			shift(8),  // [
+			nil,       // [
 			nil,       // ]
-			shift(10), // char
-			shift(11), // rest
+			nil,       // char
+			nil,       // rest
 			nil,       // sharp
 			nil,       // flat
 			nil,       // accent
@@ -293,7 +302,6 @@ var actionTab = actionTable{
 			nil,       // velocity
 			nil,       // program
 			nil,       // control
-			nil,       // end
 			nil,       // play
 			nil,       // start
 			nil,       // stop
@@ -303,17 +311,19 @@ var actionTab = actionTable{
 		canRecover: false,
 		actions: [numSymbols]action{
 			nil,       // INVALID
-			nil,       // $
+			reduce(8), // $, reduce: Statement
+			reduce(8), // terminator, reduce: Statement
 			nil,       // empty
-			nil,       // terminator
+			nil,       // lineComment
+			nil,       // blockComment
 			nil,       // bar
 			nil,       // stringLit
 			nil,       // {
 			nil,       // }
-			shift(32), // [
-			reduce(6), // ], reduce: NoteList
-			shift(34), // char
-			shift(35), // rest
+			nil,       // [
+			nil,       // ]
+			nil,       // char
+			nil,       // rest
 			nil,       // sharp
 			nil,       // flat
 			nil,       // accent
@@ -329,7 +339,6 @@ var actionTab = actionTable{
 			nil,       // velocity
 			nil,       // program
 			nil,       // control
-			nil,       // end
 			nil,       // play
 			nil,       // start
 			nil,       // stop
@@ -338,62 +347,65 @@ var actionTab = actionTable{
 	actionRow{ // S9
 		canRecover: false,
 		actions: [numSymbols]action{
-			nil,        // INVALID
-			nil,        // $
-			nil,        // empty
-			reduce(13), // terminator, reduce: PropertyList
-			nil,        // bar
-			nil,        // stringLit
-			nil,        // {
-			nil,        // }
-			reduce(13), // [, reduce: PropertyList
-			nil,        // ]
-			reduce(13), // char, reduce: PropertyList
-			reduce(13), // rest, reduce: PropertyList
-			shift(38),  // sharp
-			shift(39),  // flat
-			shift(40),  // accent
-			shift(41),  // ghost
-			shift(42),  // uint
-			shift(43),  // dot
-			shift(44),  // tuplet
-			shift(45),  // letRing
-			nil,        // assign
-			nil,        // tempo
-			nil,        // timesig
-			nil,        // channel
-			nil,        // velocity
-			nil,        // program
-			nil,        // control
-			nil,        // end
-			nil,        // play
-			nil,        // start
-			nil,        // stop
+			nil,       // INVALID
+			reduce(9), // $, reduce: Statement
+			reduce(9), // terminator, reduce: Statement
+			nil,       // empty
+			nil,       // lineComment
+			nil,       // blockComment
+			nil,       // bar
+			nil,       // stringLit
+			nil,       // {
+			nil,       // }
+			nil,       // [
+			nil,       // ]
+			nil,       // char
+			nil,       // rest
+			nil,       // sharp
+			nil,       // flat
+			nil,       // accent
+			nil,       // ghost
+			nil,       // uint
+			nil,       // dot
+			nil,       // tuplet
+			nil,       // letRing
+			nil,       // assign
+			nil,       // tempo
+			nil,       // timesig
+			nil,       // channel
+			nil,       // velocity
+			nil,       // program
+			nil,       // control
+			nil,       // play
+			nil,       // start
+			nil,       // stop
 		},
 	},
 	actionRow{ // S10
 		canRecover: false,
 		actions: [numSymbols]action{
 			nil,        // INVALID
-			nil,        // $
+			reduce(10), // $, reduce: Comment
+			reduce(10), // terminator, reduce: Comment
 			nil,        // empty
-			reduce(11), // terminator, reduce: NoteSymbol
+			nil,        // lineComment
+			nil,        // blockComment
 			nil,        // bar
 			nil,        // stringLit
 			nil,        // {
 			nil,        // }
-			reduce(11), // [, reduce: NoteSymbol
+			nil,        // [
 			nil,        // ]
-			reduce(11), // char, reduce: NoteSymbol
-			reduce(11), // rest, reduce: NoteSymbol
-			reduce(11), // sharp, reduce: NoteSymbol
-			reduce(11), // flat, reduce: NoteSymbol
-			reduce(11), // accent, reduce: NoteSymbol
-			reduce(11), // ghost, reduce: NoteSymbol
-			reduce(11), // uint, reduce: NoteSymbol
-			reduce(11), // dot, reduce: NoteSymbol
-			reduce(11), // tuplet, reduce: NoteSymbol
-			reduce(11), // letRing, reduce: NoteSymbol
+			nil,        // char
+			nil,        // rest
+			nil,        // sharp
+			nil,        // flat
+			nil,        // accent
+			nil,        // ghost
+			nil,        // uint
+			nil,        // dot
+			nil,        // tuplet
+			nil,        // letRing
 			nil,        // assign
 			nil,        // tempo
 			nil,        // timesig
@@ -401,7 +413,6 @@ var actionTab = actionTable{
 			nil,        // velocity
 			nil,        // program
 			nil,        // control
-			nil,        // end
 			nil,        // play
 			nil,        // start
 			nil,        // stop
@@ -411,25 +422,27 @@ var actionTab = actionTable{
 		canRecover: false,
 		actions: [numSymbols]action{
 			nil,        // INVALID
-			nil,        // $
+			reduce(11), // $, reduce: Comment
+			reduce(11), // terminator, reduce: Comment
 			nil,        // empty
-			reduce(12), // terminator, reduce: NoteSymbol
+			nil,        // lineComment
+			nil,        // blockComment
 			nil,        // bar
 			nil,        // stringLit
 			nil,        // {
 			nil,        // }
-			reduce(12), // [, reduce: NoteSymbol
+			nil,        // [
 			nil,        // ]
-			reduce(12), // char, reduce: NoteSymbol
-			reduce(12), // rest, reduce: NoteSymbol
-			reduce(12), // sharp, reduce: NoteSymbol
-			reduce(12), // flat, reduce: NoteSymbol
-			reduce(12), // accent, reduce: NoteSymbol
-			reduce(12), // ghost, reduce: NoteSymbol
-			reduce(12), // uint, reduce: NoteSymbol
-			reduce(12), // dot, reduce: NoteSymbol
-			reduce(12), // tuplet, reduce: NoteSymbol
-			reduce(12), // letRing, reduce: NoteSymbol
+			nil,        // char
+			nil,        // rest
+			nil,        // sharp
+			nil,        // flat
+			nil,        // accent
+			nil,        // ghost
+			nil,        // uint
+			nil,        // dot
+			nil,        // tuplet
+			nil,        // letRing
 			nil,        // assign
 			nil,        // tempo
 			nil,        // timesig
@@ -437,7 +450,6 @@ var actionTab = actionTable{
 			nil,        // velocity
 			nil,        // program
 			nil,        // control
-			nil,        // end
 			nil,        // play
 			nil,        // start
 			nil,        // stop
@@ -448,15 +460,17 @@ var actionTab = actionTable{
 		actions: [numSymbols]action{
 			nil,       // INVALID
 			nil,       // $
-			nil,       // empty
 			nil,       // terminator
+			nil,       // empty
+			nil,       // lineComment
+			nil,       // blockComment
 			nil,       // bar
-			nil,       // stringLit
+			shift(31), // stringLit
 			nil,       // {
 			nil,       // }
 			nil,       // [
 			nil,       // ]
-			shift(46), // char
+			nil,       // char
 			nil,       // rest
 			nil,       // sharp
 			nil,       // flat
@@ -473,7 +487,6 @@ var actionTab = actionTable{
 			nil,       // velocity
 			nil,       // program
 			nil,       // control
-			nil,       // end
 			nil,       // play
 			nil,       // start
 			nil,       // stop
@@ -482,73 +495,75 @@ var actionTab = actionTable{
 	actionRow{ // S13
 		canRecover: false,
 		actions: [numSymbols]action{
-			nil,       // INVALID
-			nil,       // $
-			nil,       // empty
-			nil,       // terminator
-			nil,       // bar
-			nil,       // stringLit
-			nil,       // {
-			nil,       // }
-			nil,       // [
-			nil,       // ]
-			nil,       // char
-			nil,       // rest
-			nil,       // sharp
-			nil,       // flat
-			nil,       // accent
-			nil,       // ghost
-			shift(47), // uint
-			nil,       // dot
-			nil,       // tuplet
-			nil,       // letRing
-			nil,       // assign
-			nil,       // tempo
-			nil,       // timesig
-			nil,       // channel
-			nil,       // velocity
-			nil,       // program
-			nil,       // control
-			nil,       // end
-			nil,       // play
-			nil,       // start
-			nil,       // stop
+			nil,        // INVALID
+			reduce(13), // $, reduce: NoteList
+			reduce(13), // terminator, reduce: NoteList
+			nil,        // empty
+			nil,        // lineComment
+			nil,        // blockComment
+			nil,        // bar
+			nil,        // stringLit
+			nil,        // {
+			nil,        // }
+			shift(15),  // [
+			nil,        // ]
+			shift(16),  // char
+			shift(17),  // rest
+			nil,        // sharp
+			nil,        // flat
+			nil,        // accent
+			nil,        // ghost
+			nil,        // uint
+			nil,        // dot
+			nil,        // tuplet
+			nil,        // letRing
+			nil,        // assign
+			nil,        // tempo
+			nil,        // timesig
+			nil,        // channel
+			nil,        // velocity
+			nil,        // program
+			nil,        // control
+			nil,        // play
+			nil,        // start
+			nil,        // stop
 		},
 	},
 	actionRow{ // S14
 		canRecover: false,
 		actions: [numSymbols]action{
-			nil,       // INVALID
-			nil,       // $
-			nil,       // empty
-			nil,       // terminator
-			nil,       // bar
-			nil,       // stringLit
-			nil,       // {
-			nil,       // }
-			nil,       // [
-			nil,       // ]
-			nil,       // char
-			nil,       // rest
-			nil,       // sharp
-			nil,       // flat
-			nil,       // accent
-			nil,       // ghost
-			shift(48), // uint
-			nil,       // dot
-			nil,       // tuplet
-			nil,       // letRing
-			nil,       // assign
-			nil,       // tempo
-			nil,       // timesig
-			nil,       // channel
-			nil,       // velocity
-			nil,       // program
-			nil,       // control
-			nil,       // end
-			nil,       // play
-			nil,       // start
-			nil,       // stop
+			nil,        // INVALID
+			reduce(19), // $, reduce: PropertyList
+			reduce(19), // terminator, reduce: PropertyList
+			nil,        // empty
+			nil,        // lineComment
+			nil,        // blockComment
+			nil,        // bar
+			nil,        // stringLit
+			nil,        // {
+			nil,        // }
+			reduce(19), // [, reduce: PropertyList
+			nil,        // ]
+			reduce(19), // char, reduce: PropertyList
+			reduce(19), // rest, reduce: PropertyList
+			shift(35),  // sharp
+			shift(36),  // flat
+			shift(37),  // accent
+			shift(38),  // ghost
+			shift(39),  // uint
+			shift(40),  // dot
+			shift(41),  // tuplet
+			shift(42),  // letRing
+			nil,        // assign
+			nil,        // tempo
+			nil,        // timesig
+			nil,        // channel
+			nil,        // velocity
+			nil,        // program
+			nil,        // control
+			nil,        // play
+			nil,        // start
+			nil,        // stop
 		},
 	},
 	actionRow{ // S15
@@ -556,21 +571,23 @@ var actionTab = actionTable{
 		actions: [numSymbols]action{
 			nil,       // INVALID
 			nil,       // $
-			nil,       // empty
 			nil,       // terminator
+			nil,       // empty
+			nil,       // lineComment
+			nil,       // blockComment
 			nil,       // bar
 			nil,       // stringLit
 			nil,       // {
 			nil,       // }
-			nil,       // [
+			shift(46), // [
 			nil,       // ]
-			nil,       // char
-			nil,       // rest
+			shift(47), // char
+			shift(48), // rest
 			nil,       // sharp
 			nil,       // flat
 			nil,       // accent
 			nil,       // ghost
-			shift(49), // uint
+			nil,       // uint
 			nil,       // dot
 			nil,       // tuplet
 			nil,       // letRing
@@ -581,7 +598,6 @@ var actionTab = actionTable{
 			nil,       // velocity
 			nil,       // program
 			nil,       // control
-			nil,       // end
 			nil,       // play
 			nil,       // start
 			nil,       // stop
@@ -590,10 +606,123 @@ var actionTab = actionTable{
 	actionRow{ // S16
 		canRecover: false,
 		actions: [numSymbols]action{
+			nil,        // INVALID
+			reduce(17), // $, reduce: NoteSymbol
+			reduce(17), // terminator, reduce: NoteSymbol
+			nil,        // empty
+			nil,        // lineComment
+			nil,        // blockComment
+			nil,        // bar
+			nil,        // stringLit
+			nil,        // {
+			nil,        // }
+			reduce(17), // [, reduce: NoteSymbol
+			nil,        // ]
+			reduce(17), // char, reduce: NoteSymbol
+			reduce(17), // rest, reduce: NoteSymbol
+			reduce(17), // sharp, reduce: NoteSymbol
+			reduce(17), // flat, reduce: NoteSymbol
+			reduce(17), // accent, reduce: NoteSymbol
+			reduce(17), // ghost, reduce: NoteSymbol
+			reduce(17), // uint, reduce: NoteSymbol
+			reduce(17), // dot, reduce: NoteSymbol
+			reduce(17), // tuplet, reduce: NoteSymbol
+			reduce(17), // letRing, reduce: NoteSymbol
+			nil,        // assign
+			nil,        // tempo
+			nil,        // timesig
+			nil,        // channel
+			nil,        // velocity
+			nil,        // program
+			nil,        // control
+			nil,        // play
+			nil,        // start
+			nil,        // stop
+		},
+	},
+	actionRow{ // S17
+		canRecover: false,
+		actions: [numSymbols]action{
+			nil,        // INVALID
+			reduce(18), // $, reduce: NoteSymbol
+			reduce(18), // terminator, reduce: NoteSymbol
+			nil,        // empty
+			nil,        // lineComment
+			nil,        // blockComment
+			nil,        // bar
+			nil,        // stringLit
+			nil,        // {
+			nil,        // }
+			reduce(18), // [, reduce: NoteSymbol
+			nil,        // ]
+			reduce(18), // char, reduce: NoteSymbol
+			reduce(18), // rest, reduce: NoteSymbol
+			reduce(18), // sharp, reduce: NoteSymbol
+			reduce(18), // flat, reduce: NoteSymbol
+			reduce(18), // accent, reduce: NoteSymbol
+			reduce(18), // ghost, reduce: NoteSymbol
+			reduce(18), // uint, reduce: NoteSymbol
+			reduce(18), // dot, reduce: NoteSymbol
+			reduce(18), // tuplet, reduce: NoteSymbol
+			reduce(18), // letRing, reduce: NoteSymbol
+			nil,        // assign
+			nil,        // tempo
+			nil,        // timesig
+			nil,        // channel
+			nil,        // velocity
+			nil,        // program
+			nil,        // control
+			nil,        // play
+			nil,        // start
+			nil,        // stop
+		},
+	},
+	actionRow{ // S18
+		canRecover: false,
+		actions: [numSymbols]action{
 			nil,       // INVALID
 			nil,       // $
-			nil,       // empty
 			nil,       // terminator
+			nil,       // empty
+			nil,       // lineComment
+			nil,       // blockComment
+			nil,       // bar
+			nil,       // stringLit
+			nil,       // {
+			nil,       // }
+			nil,       // [
+			nil,       // ]
+			shift(49), // char
+			nil,       // rest
+			nil,       // sharp
+			nil,       // flat
+			nil,       // accent
+			nil,       // ghost
+			nil,       // uint
+			nil,       // dot
+			nil,       // tuplet
+			nil,       // letRing
+			nil,       // assign
+			nil,       // tempo
+			nil,       // timesig
+			nil,       // channel
+			nil,       // velocity
+			nil,       // program
+			nil,       // control
+			nil,       // play
+			nil,       // start
+			nil,       // stop
+		},
+	},
+	actionRow{ // S19
+		canRecover: false,
+		actions: [numSymbols]action{
+			nil,       // INVALID
+			nil,       // $
+			nil,       // terminator
+			nil,       // empty
+			nil,       // lineComment
+			nil,       // blockComment
 			nil,       // bar
 			nil,       // stringLit
 			nil,       // {
@@ -617,19 +746,20 @@ var actionTab = actionTable{
 			nil,       // velocity
 			nil,       // program
 			nil,       // control
-			nil,       // end
 			nil,       // play
 			nil,       // start
 			nil,       // stop
 		},
 	},
-	actionRow{ // S17
+	actionRow{ // S20
 		canRecover: false,
 		actions: [numSymbols]action{
 			nil,       // INVALID
 			nil,       // $
-			nil,       // empty
 			nil,       // terminator
+			nil,       // empty
+			nil,       // lineComment
+			nil,       // blockComment
 			nil,       // bar
 			nil,       // stringLit
 			nil,       // {
@@ -653,19 +783,20 @@ var actionTab = actionTable{
 			nil,       // velocity
 			nil,       // program
 			nil,       // control
-			nil,       // end
 			nil,       // play
 			nil,       // start
 			nil,       // stop
 		},
 	},
-	actionRow{ // S18
+	actionRow{ // S21
 		canRecover: false,
 		actions: [numSymbols]action{
 			nil,       // INVALID
 			nil,       // $
-			nil,       // empty
 			nil,       // terminator
+			nil,       // empty
+			nil,       // lineComment
+			nil,       // blockComment
 			nil,       // bar
 			nil,       // stringLit
 			nil,       // {
@@ -689,57 +820,22 @@ var actionTab = actionTable{
 			nil,       // velocity
 			nil,       // program
 			nil,       // control
-			nil,       // end
 			nil,       // play
 			nil,       // start
 			nil,       // stop
 		},
 	},
-	actionRow{ // S19
-		canRecover: false,
-		actions: [numSymbols]action{
-			nil,        // INVALID
-			nil,        // $
-			nil,        // empty
-			reduce(30), // terminator, reduce: Command
-			nil,        // bar
-			nil,        // stringLit
-			nil,        // {
-			nil,        // }
-			nil,        // [
-			nil,        // ]
-			nil,        // char
-			nil,        // rest
-			nil,        // sharp
-			nil,        // flat
-			nil,        // accent
-			nil,        // ghost
-			nil,        // uint
-			nil,        // dot
-			nil,        // tuplet
-			nil,        // letRing
-			nil,        // assign
-			nil,        // tempo
-			nil,        // timesig
-			nil,        // channel
-			nil,        // velocity
-			nil,        // program
-			nil,        // control
-			nil,        // end
-			nil,        // play
-			nil,        // start
-			nil,        // stop
-		},
-	},
-	actionRow{ // S20
+	actionRow{ // S22
 		canRecover: false,
 		actions: [numSymbols]action{
 			nil,       // INVALID
 			nil,       // $
-			nil,       // empty
 			nil,       // terminator
+			nil,       // empty
+			nil,       // lineComment
+			nil,       // blockComment
 			nil,       // bar
-			shift(53), // stringLit
+			nil,       // stringLit
 			nil,       // {
 			nil,       // }
 			nil,       // [
@@ -750,7 +846,7 @@ var actionTab = actionTable{
 			nil,       // flat
 			nil,       // accent
 			nil,       // ghost
-			nil,       // uint
+			shift(53), // uint
 			nil,       // dot
 			nil,       // tuplet
 			nil,       // letRing
@@ -761,171 +857,102 @@ var actionTab = actionTable{
 			nil,       // velocity
 			nil,       // program
 			nil,       // control
-			nil,       // end
 			nil,       // play
 			nil,       // start
 			nil,       // stop
-		},
-	},
-	actionRow{ // S21
-		canRecover: false,
-		actions: [numSymbols]action{
-			nil,        // INVALID
-			nil,        // $
-			nil,        // empty
-			reduce(32), // terminator, reduce: Command
-			nil,        // bar
-			nil,        // stringLit
-			nil,        // {
-			nil,        // }
-			nil,        // [
-			nil,        // ]
-			nil,        // char
-			nil,        // rest
-			nil,        // sharp
-			nil,        // flat
-			nil,        // accent
-			nil,        // ghost
-			nil,        // uint
-			nil,        // dot
-			nil,        // tuplet
-			nil,        // letRing
-			nil,        // assign
-			nil,        // tempo
-			nil,        // timesig
-			nil,        // channel
-			nil,        // velocity
-			nil,        // program
-			nil,        // control
-			nil,        // end
-			nil,        // play
-			nil,        // start
-			nil,        // stop
-		},
-	},
-	actionRow{ // S22
-		canRecover: false,
-		actions: [numSymbols]action{
-			nil,        // INVALID
-			nil,        // $
-			nil,        // empty
-			reduce(33), // terminator, reduce: Command
-			nil,        // bar
-			nil,        // stringLit
-			nil,        // {
-			nil,        // }
-			nil,        // [
-			nil,        // ]
-			nil,        // char
-			nil,        // rest
-			nil,        // sharp
-			nil,        // flat
-			nil,        // accent
-			nil,        // ghost
-			nil,        // uint
-			nil,        // dot
-			nil,        // tuplet
-			nil,        // letRing
-			nil,        // assign
-			nil,        // tempo
-			nil,        // timesig
-			nil,        // channel
-			nil,        // velocity
-			nil,        // program
-			nil,        // control
-			nil,        // end
-			nil,        // play
-			nil,        // start
-			nil,        // stop
 		},
 	},
 	actionRow{ // S23
 		canRecover: false,
 		actions: [numSymbols]action{
 			nil,       // INVALID
-			reduce(1), // $, reduce: Song
+			nil,       // $
+			nil,       // terminator
 			nil,       // empty
-			reduce(6), // terminator, reduce: NoteList
-			shift(5),  // bar
+			nil,       // lineComment
+			nil,       // blockComment
+			nil,       // bar
 			nil,       // stringLit
 			nil,       // {
 			nil,       // }
-			shift(8),  // [
+			nil,       // [
 			nil,       // ]
-			shift(10), // char
-			shift(11), // rest
+			nil,       // char
+			nil,       // rest
 			nil,       // sharp
 			nil,       // flat
 			nil,       // accent
 			nil,       // ghost
-			nil,       // uint
+			shift(54), // uint
 			nil,       // dot
 			nil,       // tuplet
 			nil,       // letRing
-			shift(12), // assign
-			shift(13), // tempo
-			shift(14), // timesig
-			shift(15), // channel
-			shift(16), // velocity
-			shift(17), // program
-			shift(18), // control
-			shift(19), // end
-			shift(20), // play
-			shift(21), // start
-			shift(22), // stop
+			nil,       // assign
+			nil,       // tempo
+			nil,       // timesig
+			nil,       // channel
+			nil,       // velocity
+			nil,       // program
+			nil,       // control
+			nil,       // play
+			nil,       // start
+			nil,       // stop
 		},
 	},
 	actionRow{ // S24
 		canRecover: false,
 		actions: [numSymbols]action{
 			nil,       // INVALID
-			reduce(1), // $, reduce: Song
+			nil,       // $
+			nil,       // terminator
 			nil,       // empty
-			reduce(6), // terminator, reduce: NoteList
-			shift(5),  // bar
+			nil,       // lineComment
+			nil,       // blockComment
+			nil,       // bar
 			nil,       // stringLit
 			nil,       // {
 			nil,       // }
-			shift(8),  // [
+			nil,       // [
 			nil,       // ]
-			shift(10), // char
-			shift(11), // rest
+			nil,       // char
+			nil,       // rest
 			nil,       // sharp
 			nil,       // flat
 			nil,       // accent
 			nil,       // ghost
-			nil,       // uint
+			shift(55), // uint
 			nil,       // dot
 			nil,       // tuplet
 			nil,       // letRing
-			shift(12), // assign
-			shift(13), // tempo
-			shift(14), // timesig
-			shift(15), // channel
-			shift(16), // velocity
-			shift(17), // program
-			shift(18), // control
-			shift(19), // end
-			shift(20), // play
-			shift(21), // start
-			shift(22), // stop
+			nil,       // assign
+			nil,       // tempo
+			nil,       // timesig
+			nil,       // channel
+			nil,       // velocity
+			nil,       // program
+			nil,       // control
+			nil,       // play
+			nil,       // start
+			nil,       // stop
 		},
 	},
 	actionRow{ // S25
 		canRecover: false,
 		actions: [numSymbols]action{
 			nil,       // INVALID
-			reduce(1), // $, reduce: Song
+			nil,       // $
+			nil,       // terminator
 			nil,       // empty
-			reduce(6), // terminator, reduce: NoteList
-			shift(5),  // bar
-			nil,       // stringLit
+			nil,       // lineComment
+			nil,       // blockComment
+			nil,       // bar
+			shift(56), // stringLit
 			nil,       // {
 			nil,       // }
-			shift(8),  // [
+			nil,       // [
 			nil,       // ]
-			shift(10), // char
-			shift(11), // rest
+			nil,       // char
+			nil,       // rest
 			nil,       // sharp
 			nil,       // flat
 			nil,       // accent
@@ -934,89 +961,90 @@ var actionTab = actionTable{
 			nil,       // dot
 			nil,       // tuplet
 			nil,       // letRing
-			shift(12), // assign
-			shift(13), // tempo
-			shift(14), // timesig
-			shift(15), // channel
-			shift(16), // velocity
-			shift(17), // program
-			shift(18), // control
-			shift(19), // end
-			shift(20), // play
-			shift(21), // start
-			shift(22), // stop
+			nil,       // assign
+			nil,       // tempo
+			nil,       // timesig
+			nil,       // channel
+			nil,       // velocity
+			nil,       // program
+			nil,       // control
+			nil,       // play
+			nil,       // start
+			nil,       // stop
 		},
 	},
 	actionRow{ // S26
 		canRecover: false,
 		actions: [numSymbols]action{
-			nil,       // INVALID
-			nil,       // $
-			nil,       // empty
-			nil,       // terminator
-			nil,       // bar
-			nil,       // stringLit
-			shift(57), // {
-			nil,       // }
-			nil,       // [
-			nil,       // ]
-			nil,       // char
-			nil,       // rest
-			nil,       // sharp
-			nil,       // flat
-			nil,       // accent
-			nil,       // ghost
-			nil,       // uint
-			nil,       // dot
-			nil,       // tuplet
-			nil,       // letRing
-			nil,       // assign
-			nil,       // tempo
-			nil,       // timesig
-			nil,       // channel
-			nil,       // velocity
-			nil,       // program
-			nil,       // control
-			nil,       // end
-			nil,       // play
-			nil,       // start
-			nil,       // stop
+			nil,        // INVALID
+			reduce(37), // $, reduce: Command
+			reduce(37), // terminator, reduce: Command
+			nil,        // empty
+			nil,        // lineComment
+			nil,        // blockComment
+			nil,        // bar
+			nil,        // stringLit
+			nil,        // {
+			nil,        // }
+			nil,        // [
+			nil,        // ]
+			nil,        // char
+			nil,        // rest
+			nil,        // sharp
+			nil,        // flat
+			nil,        // accent
+			nil,        // ghost
+			nil,        // uint
+			nil,        // dot
+			nil,        // tuplet
+			nil,        // letRing
+			nil,        // assign
+			nil,        // tempo
+			nil,        // timesig
+			nil,        // channel
+			nil,        // velocity
+			nil,        // program
+			nil,        // control
+			nil,        // play
+			nil,        // start
+			nil,        // stop
 		},
 	},
 	actionRow{ // S27
 		canRecover: false,
 		actions: [numSymbols]action{
-			nil,       // INVALID
-			nil,       // $
-			nil,       // empty
-			reduce(7), // terminator, reduce: NoteList
-			nil,       // bar
-			nil,       // stringLit
-			nil,       // {
-			nil,       // }
-			nil,       // [
-			nil,       // ]
-			nil,       // char
-			nil,       // rest
-			nil,       // sharp
-			nil,       // flat
-			nil,       // accent
-			nil,       // ghost
-			nil,       // uint
-			nil,       // dot
-			nil,       // tuplet
-			nil,       // letRing
-			nil,       // assign
-			nil,       // tempo
-			nil,       // timesig
-			nil,       // channel
-			nil,       // velocity
-			nil,       // program
-			nil,       // control
-			nil,       // end
-			nil,       // play
-			nil,       // start
-			nil,       // stop
+			nil,        // INVALID
+			reduce(38), // $, reduce: Command
+			reduce(38), // terminator, reduce: Command
+			nil,        // empty
+			nil,        // lineComment
+			nil,        // blockComment
+			nil,        // bar
+			nil,        // stringLit
+			nil,        // {
+			nil,        // }
+			nil,        // [
+			nil,        // ]
+			nil,        // char
+			nil,        // rest
+			nil,        // sharp
+			nil,        // flat
+			nil,        // accent
+			nil,        // ghost
+			nil,        // uint
+			nil,        // dot
+			nil,        // tuplet
+			nil,        // letRing
+			nil,        // assign
+			nil,        // tempo
+			nil,        // timesig
+			nil,        // channel
+			nil,        // velocity
+			nil,        // program
+			nil,        // control
+			nil,        // play
+			nil,        // start
+			nil,        // stop
 		},
 	},
 	actionRow{ // S28
@@ -1024,8 +1052,47 @@ var actionTab = actionTable{
 		actions: [numSymbols]action{
 			nil,       // INVALID
 			nil,       // $
+			nil,       // terminator
 			nil,       // empty
-			reduce(8), // terminator, reduce: NoteList
+			reduce(5), // lineComment, reduce: RepeatTerminator
+			reduce(5), // blockComment, reduce: RepeatTerminator
+			reduce(5), // bar, reduce: RepeatTerminator
+			nil,       // stringLit
+			nil,       // {
+			nil,       // }
+			reduce(5), // [, reduce: RepeatTerminator
+			nil,       // ]
+			reduce(5), // char, reduce: RepeatTerminator
+			reduce(5), // rest, reduce: RepeatTerminator
+			nil,       // sharp
+			nil,       // flat
+			nil,       // accent
+			nil,       // ghost
+			nil,       // uint
+			nil,       // dot
+			nil,       // tuplet
+			nil,       // letRing
+			reduce(5), // assign, reduce: RepeatTerminator
+			reduce(5), // tempo, reduce: RepeatTerminator
+			reduce(5), // timesig, reduce: RepeatTerminator
+			reduce(5), // channel, reduce: RepeatTerminator
+			reduce(5), // velocity, reduce: RepeatTerminator
+			reduce(5), // program, reduce: RepeatTerminator
+			reduce(5), // control, reduce: RepeatTerminator
+			reduce(5), // play, reduce: RepeatTerminator
+			reduce(5), // start, reduce: RepeatTerminator
+			reduce(5), // stop, reduce: RepeatTerminator
+		},
+	},
+	actionRow{ // S29
+		canRecover: false,
+		actions: [numSymbols]action{
+			nil,       // INVALID
+			reduce(3), // $, reduce: StatementList
+			nil,       // terminator
+			nil,       // empty
+			nil,       // lineComment
+			nil,       // blockComment
 			nil,       // bar
 			nil,       // stringLit
 			nil,       // {
@@ -1049,43 +1116,6 @@ var actionTab = actionTable{
 			nil,       // velocity
 			nil,       // program
 			nil,       // control
-			nil,       // end
-			nil,       // play
-			nil,       // start
-			nil,       // stop
-		},
-	},
-	actionRow{ // S29
-		canRecover: false,
-		actions: [numSymbols]action{
-			nil,       // INVALID
-			nil,       // $
-			nil,       // empty
-			nil,       // terminator
-			nil,       // bar
-			nil,       // stringLit
-			nil,       // {
-			nil,       // }
-			nil,       // [
-			shift(58), // ]
-			nil,       // char
-			nil,       // rest
-			nil,       // sharp
-			nil,       // flat
-			nil,       // accent
-			nil,       // ghost
-			nil,       // uint
-			nil,       // dot
-			nil,       // tuplet
-			nil,       // letRing
-			nil,       // assign
-			nil,       // tempo
-			nil,       // timesig
-			nil,       // channel
-			nil,       // velocity
-			nil,       // program
-			nil,       // control
-			nil,       // end
 			nil,       // play
 			nil,       // start
 			nil,       // stop
@@ -1095,17 +1125,19 @@ var actionTab = actionTable{
 		canRecover: false,
 		actions: [numSymbols]action{
 			nil,       // INVALID
-			nil,       // $
+			reduce(4), // $, reduce: RepeatTerminator
+			shift(58), // terminator
 			nil,       // empty
-			nil,       // terminator
-			nil,       // bar
+			reduce(4), // lineComment, reduce: RepeatTerminator
+			reduce(4), // blockComment, reduce: RepeatTerminator
+			reduce(4), // bar, reduce: RepeatTerminator
 			nil,       // stringLit
 			nil,       // {
 			nil,       // }
-			shift(32), // [
-			reduce(6), // ], reduce: NoteList
-			shift(34), // char
-			shift(35), // rest
+			reduce(4), // [, reduce: RepeatTerminator
+			nil,       // ]
+			reduce(4), // char, reduce: RepeatTerminator
+			reduce(4), // rest, reduce: RepeatTerminator
 			nil,       // sharp
 			nil,       // flat
 			nil,       // accent
@@ -1114,17 +1146,16 @@ var actionTab = actionTable{
 			nil,       // dot
 			nil,       // tuplet
 			nil,       // letRing
-			nil,       // assign
-			nil,       // tempo
-			nil,       // timesig
-			nil,       // channel
-			nil,       // velocity
-			nil,       // program
-			nil,       // control
-			nil,       // end
-			nil,       // play
-			nil,       // start
-			nil,       // stop
+			reduce(4), // assign, reduce: RepeatTerminator
+			reduce(4), // tempo, reduce: RepeatTerminator
+			reduce(4), // timesig, reduce: RepeatTerminator
+			reduce(4), // channel, reduce: RepeatTerminator
+			reduce(4), // velocity, reduce: RepeatTerminator
+			reduce(4), // program, reduce: RepeatTerminator
+			reduce(4), // control, reduce: RepeatTerminator
+			reduce(4), // play, reduce: RepeatTerminator
+			reduce(4), // start, reduce: RepeatTerminator
+			reduce(4), // stop, reduce: RepeatTerminator
 		},
 	},
 	actionRow{ // S31
@@ -1132,16 +1163,18 @@ var actionTab = actionTable{
 		actions: [numSymbols]action{
 			nil,       // INVALID
 			nil,       // $
-			nil,       // empty
 			nil,       // terminator
+			nil,       // empty
+			nil,       // lineComment
+			nil,       // blockComment
 			nil,       // bar
 			nil,       // stringLit
-			nil,       // {
+			shift(59), // {
 			nil,       // }
-			shift(32), // [
-			reduce(6), // ], reduce: NoteList
-			shift(34), // char
-			shift(35), // rest
+			nil,       // [
+			nil,       // ]
+			nil,       // char
+			nil,       // rest
 			nil,       // sharp
 			nil,       // flat
 			nil,       // accent
@@ -1157,7 +1190,6 @@ var actionTab = actionTable{
 			nil,       // velocity
 			nil,       // program
 			nil,       // control
-			nil,       // end
 			nil,       // play
 			nil,       // start
 			nil,       // stop
@@ -1166,162 +1198,20 @@ var actionTab = actionTable{
 	actionRow{ // S32
 		canRecover: false,
 		actions: [numSymbols]action{
-			nil,       // INVALID
-			nil,       // $
-			nil,       // empty
-			nil,       // terminator
-			nil,       // bar
-			nil,       // stringLit
-			nil,       // {
-			nil,       // }
-			shift(32), // [
-			reduce(6), // ], reduce: NoteList
-			shift(34), // char
-			shift(35), // rest
-			nil,       // sharp
-			nil,       // flat
-			nil,       // accent
-			nil,       // ghost
-			nil,       // uint
-			nil,       // dot
-			nil,       // tuplet
-			nil,       // letRing
-			nil,       // assign
-			nil,       // tempo
-			nil,       // timesig
-			nil,       // channel
-			nil,       // velocity
-			nil,       // program
-			nil,       // control
-			nil,       // end
-			nil,       // play
-			nil,       // start
-			nil,       // stop
-		},
-	},
-	actionRow{ // S33
-		canRecover: false,
-		actions: [numSymbols]action{
 			nil,        // INVALID
-			nil,        // $
+			reduce(14), // $, reduce: NoteList
+			reduce(14), // terminator, reduce: NoteList
 			nil,        // empty
-			nil,        // terminator
+			nil,        // lineComment
+			nil,        // blockComment
 			nil,        // bar
 			nil,        // stringLit
 			nil,        // {
 			nil,        // }
-			reduce(13), // [, reduce: PropertyList
-			reduce(13), // ], reduce: PropertyList
-			reduce(13), // char, reduce: PropertyList
-			reduce(13), // rest, reduce: PropertyList
-			shift(64),  // sharp
-			shift(65),  // flat
-			shift(66),  // accent
-			shift(67),  // ghost
-			shift(68),  // uint
-			shift(69),  // dot
-			shift(70),  // tuplet
-			shift(71),  // letRing
-			nil,        // assign
-			nil,        // tempo
-			nil,        // timesig
-			nil,        // channel
-			nil,        // velocity
-			nil,        // program
-			nil,        // control
-			nil,        // end
-			nil,        // play
-			nil,        // start
-			nil,        // stop
-		},
-	},
-	actionRow{ // S34
-		canRecover: false,
-		actions: [numSymbols]action{
-			nil,        // INVALID
-			nil,        // $
-			nil,        // empty
-			nil,        // terminator
-			nil,        // bar
-			nil,        // stringLit
-			nil,        // {
-			nil,        // }
-			reduce(11), // [, reduce: NoteSymbol
-			reduce(11), // ], reduce: NoteSymbol
-			reduce(11), // char, reduce: NoteSymbol
-			reduce(11), // rest, reduce: NoteSymbol
-			reduce(11), // sharp, reduce: NoteSymbol
-			reduce(11), // flat, reduce: NoteSymbol
-			reduce(11), // accent, reduce: NoteSymbol
-			reduce(11), // ghost, reduce: NoteSymbol
-			reduce(11), // uint, reduce: NoteSymbol
-			reduce(11), // dot, reduce: NoteSymbol
-			reduce(11), // tuplet, reduce: NoteSymbol
-			reduce(11), // letRing, reduce: NoteSymbol
-			nil,        // assign
-			nil,        // tempo
-			nil,        // timesig
-			nil,        // channel
-			nil,        // velocity
-			nil,        // program
-			nil,        // control
-			nil,        // end
-			nil,        // play
-			nil,        // start
-			nil,        // stop
-		},
-	},
-	actionRow{ // S35
-		canRecover: false,
-		actions: [numSymbols]action{
-			nil,        // INVALID
-			nil,        // $
-			nil,        // empty
-			nil,        // terminator
-			nil,        // bar
-			nil,        // stringLit
-			nil,        // {
-			nil,        // }
-			reduce(12), // [, reduce: NoteSymbol
-			reduce(12), // ], reduce: NoteSymbol
-			reduce(12), // char, reduce: NoteSymbol
-			reduce(12), // rest, reduce: NoteSymbol
-			reduce(12), // sharp, reduce: NoteSymbol
-			reduce(12), // flat, reduce: NoteSymbol
-			reduce(12), // accent, reduce: NoteSymbol
-			reduce(12), // ghost, reduce: NoteSymbol
-			reduce(12), // uint, reduce: NoteSymbol
-			reduce(12), // dot, reduce: NoteSymbol
-			reduce(12), // tuplet, reduce: NoteSymbol
-			reduce(12), // letRing, reduce: NoteSymbol
-			nil,        // assign
-			nil,        // tempo
-			nil,        // timesig
-			nil,        // channel
-			nil,        // velocity
-			nil,        // program
-			nil,        // control
-			nil,        // end
-			nil,        // play
-			nil,        // start
-			nil,        // stop
-		},
-	},
-	actionRow{ // S36
-		canRecover: false,
-		actions: [numSymbols]action{
-			nil,        // INVALID
-			nil,        // $
-			nil,        // empty
-			reduce(10), // terminator, reduce: Note
-			nil,        // bar
-			nil,        // stringLit
-			nil,        // {
-			nil,        // }
-			reduce(10), // [, reduce: Note
+			nil,        // [
 			nil,        // ]
-			reduce(10), // char, reduce: Note
-			reduce(10), // rest, reduce: Note
+			nil,        // char
+			nil,        // rest
 			nil,        // sharp
 			nil,        // flat
 			nil,        // accent
@@ -1337,35 +1227,36 @@ var actionTab = actionTable{
 			nil,        // velocity
 			nil,        // program
 			nil,        // control
-			nil,        // end
 			nil,        // play
 			nil,        // start
 			nil,        // stop
 		},
 	},
-	actionRow{ // S37
+	actionRow{ // S33
 		canRecover: false,
 		actions: [numSymbols]action{
 			nil,        // INVALID
-			nil,        // $
+			reduce(15), // $, reduce: NoteObject
+			reduce(15), // terminator, reduce: NoteObject
 			nil,        // empty
-			reduce(13), // terminator, reduce: PropertyList
+			nil,        // lineComment
+			nil,        // blockComment
 			nil,        // bar
 			nil,        // stringLit
 			nil,        // {
 			nil,        // }
-			reduce(13), // [, reduce: PropertyList
+			reduce(15), // [, reduce: NoteObject
 			nil,        // ]
-			reduce(13), // char, reduce: PropertyList
-			reduce(13), // rest, reduce: PropertyList
-			shift(38),  // sharp
-			shift(39),  // flat
-			shift(40),  // accent
-			shift(41),  // ghost
-			shift(42),  // uint
-			shift(43),  // dot
-			shift(44),  // tuplet
-			shift(45),  // letRing
+			reduce(15), // char, reduce: NoteObject
+			reduce(15), // rest, reduce: NoteObject
+			nil,        // sharp
+			nil,        // flat
+			nil,        // accent
+			nil,        // ghost
+			nil,        // uint
+			nil,        // dot
+			nil,        // tuplet
+			nil,        // letRing
 			nil,        // assign
 			nil,        // tempo
 			nil,        // timesig
@@ -1373,35 +1264,36 @@ var actionTab = actionTable{
 			nil,        // velocity
 			nil,        // program
 			nil,        // control
-			nil,        // end
 			nil,        // play
 			nil,        // start
 			nil,        // stop
 		},
 	},
-	actionRow{ // S38
+	actionRow{ // S34
 		canRecover: false,
 		actions: [numSymbols]action{
 			nil,        // INVALID
-			nil,        // $
+			reduce(19), // $, reduce: PropertyList
+			reduce(19), // terminator, reduce: PropertyList
 			nil,        // empty
-			reduce(15), // terminator, reduce: Property
+			nil,        // lineComment
+			nil,        // blockComment
 			nil,        // bar
 			nil,        // stringLit
 			nil,        // {
 			nil,        // }
-			reduce(15), // [, reduce: Property
+			reduce(19), // [, reduce: PropertyList
 			nil,        // ]
-			reduce(15), // char, reduce: Property
-			reduce(15), // rest, reduce: Property
-			reduce(15), // sharp, reduce: Property
-			reduce(15), // flat, reduce: Property
-			reduce(15), // accent, reduce: Property
-			reduce(15), // ghost, reduce: Property
-			reduce(15), // uint, reduce: Property
-			reduce(15), // dot, reduce: Property
-			reduce(15), // tuplet, reduce: Property
-			reduce(15), // letRing, reduce: Property
+			reduce(19), // char, reduce: PropertyList
+			reduce(19), // rest, reduce: PropertyList
+			shift(35),  // sharp
+			shift(36),  // flat
+			shift(37),  // accent
+			shift(38),  // ghost
+			shift(39),  // uint
+			shift(40),  // dot
+			shift(41),  // tuplet
+			shift(42),  // letRing
 			nil,        // assign
 			nil,        // tempo
 			nil,        // timesig
@@ -1409,199 +1301,20 @@ var actionTab = actionTable{
 			nil,        // velocity
 			nil,        // program
 			nil,        // control
-			nil,        // end
 			nil,        // play
 			nil,        // start
 			nil,        // stop
 		},
 	},
-	actionRow{ // S39
+	actionRow{ // S35
 		canRecover: false,
 		actions: [numSymbols]action{
 			nil,        // INVALID
-			nil,        // $
-			nil,        // empty
-			reduce(16), // terminator, reduce: Property
-			nil,        // bar
-			nil,        // stringLit
-			nil,        // {
-			nil,        // }
-			reduce(16), // [, reduce: Property
-			nil,        // ]
-			reduce(16), // char, reduce: Property
-			reduce(16), // rest, reduce: Property
-			reduce(16), // sharp, reduce: Property
-			reduce(16), // flat, reduce: Property
-			reduce(16), // accent, reduce: Property
-			reduce(16), // ghost, reduce: Property
-			reduce(16), // uint, reduce: Property
-			reduce(16), // dot, reduce: Property
-			reduce(16), // tuplet, reduce: Property
-			reduce(16), // letRing, reduce: Property
-			nil,        // assign
-			nil,        // tempo
-			nil,        // timesig
-			nil,        // channel
-			nil,        // velocity
-			nil,        // program
-			nil,        // control
-			nil,        // end
-			nil,        // play
-			nil,        // start
-			nil,        // stop
-		},
-	},
-	actionRow{ // S40
-		canRecover: false,
-		actions: [numSymbols]action{
-			nil,        // INVALID
-			nil,        // $
-			nil,        // empty
-			reduce(17), // terminator, reduce: Property
-			nil,        // bar
-			nil,        // stringLit
-			nil,        // {
-			nil,        // }
-			reduce(17), // [, reduce: Property
-			nil,        // ]
-			reduce(17), // char, reduce: Property
-			reduce(17), // rest, reduce: Property
-			reduce(17), // sharp, reduce: Property
-			reduce(17), // flat, reduce: Property
-			reduce(17), // accent, reduce: Property
-			reduce(17), // ghost, reduce: Property
-			reduce(17), // uint, reduce: Property
-			reduce(17), // dot, reduce: Property
-			reduce(17), // tuplet, reduce: Property
-			reduce(17), // letRing, reduce: Property
-			nil,        // assign
-			nil,        // tempo
-			nil,        // timesig
-			nil,        // channel
-			nil,        // velocity
-			nil,        // program
-			nil,        // control
-			nil,        // end
-			nil,        // play
-			nil,        // start
-			nil,        // stop
-		},
-	},
-	actionRow{ // S41
-		canRecover: false,
-		actions: [numSymbols]action{
-			nil,        // INVALID
-			nil,        // $
-			nil,        // empty
-			reduce(18), // terminator, reduce: Property
-			nil,        // bar
-			nil,        // stringLit
-			nil,        // {
-			nil,        // }
-			reduce(18), // [, reduce: Property
-			nil,        // ]
-			reduce(18), // char, reduce: Property
-			reduce(18), // rest, reduce: Property
-			reduce(18), // sharp, reduce: Property
-			reduce(18), // flat, reduce: Property
-			reduce(18), // accent, reduce: Property
-			reduce(18), // ghost, reduce: Property
-			reduce(18), // uint, reduce: Property
-			reduce(18), // dot, reduce: Property
-			reduce(18), // tuplet, reduce: Property
-			reduce(18), // letRing, reduce: Property
-			nil,        // assign
-			nil,        // tempo
-			nil,        // timesig
-			nil,        // channel
-			nil,        // velocity
-			nil,        // program
-			nil,        // control
-			nil,        // end
-			nil,        // play
-			nil,        // start
-			nil,        // stop
-		},
-	},
-	actionRow{ // S42
-		canRecover: false,
-		actions: [numSymbols]action{
-			nil,        // INVALID
-			nil,        // $
-			nil,        // empty
-			reduce(19), // terminator, reduce: Property
-			nil,        // bar
-			nil,        // stringLit
-			nil,        // {
-			nil,        // }
-			reduce(19), // [, reduce: Property
-			nil,        // ]
-			reduce(19), // char, reduce: Property
-			reduce(19), // rest, reduce: Property
-			reduce(19), // sharp, reduce: Property
-			reduce(19), // flat, reduce: Property
-			reduce(19), // accent, reduce: Property
-			reduce(19), // ghost, reduce: Property
-			reduce(19), // uint, reduce: Property
-			reduce(19), // dot, reduce: Property
-			reduce(19), // tuplet, reduce: Property
-			reduce(19), // letRing, reduce: Property
-			nil,        // assign
-			nil,        // tempo
-			nil,        // timesig
-			nil,        // channel
-			nil,        // velocity
-			nil,        // program
-			nil,        // control
-			nil,        // end
-			nil,        // play
-			nil,        // start
-			nil,        // stop
-		},
-	},
-	actionRow{ // S43
-		canRecover: false,
-		actions: [numSymbols]action{
-			nil,        // INVALID
-			nil,        // $
-			nil,        // empty
-			reduce(20), // terminator, reduce: Property
-			nil,        // bar
-			nil,        // stringLit
-			nil,        // {
-			nil,        // }
-			reduce(20), // [, reduce: Property
-			nil,        // ]
-			reduce(20), // char, reduce: Property
-			reduce(20), // rest, reduce: Property
-			reduce(20), // sharp, reduce: Property
-			reduce(20), // flat, reduce: Property
-			reduce(20), // accent, reduce: Property
-			reduce(20), // ghost, reduce: Property
-			reduce(20), // uint, reduce: Property
-			reduce(20), // dot, reduce: Property
-			reduce(20), // tuplet, reduce: Property
-			reduce(20), // letRing, reduce: Property
-			nil,        // assign
-			nil,        // tempo
-			nil,        // timesig
-			nil,        // channel
-			nil,        // velocity
-			nil,        // program
-			nil,        // control
-			nil,        // end
-			nil,        // play
-			nil,        // start
-			nil,        // stop
-		},
-	},
-	actionRow{ // S44
-		canRecover: false,
-		actions: [numSymbols]action{
-			nil,        // INVALID
-			nil,        // $
-			nil,        // empty
+			reduce(21), // $, reduce: Property
 			reduce(21), // terminator, reduce: Property
+			nil,        // empty
+			nil,        // lineComment
+			nil,        // blockComment
 			nil,        // bar
 			nil,        // stringLit
 			nil,        // {
@@ -1625,19 +1338,20 @@ var actionTab = actionTable{
 			nil,        // velocity
 			nil,        // program
 			nil,        // control
-			nil,        // end
 			nil,        // play
 			nil,        // start
 			nil,        // stop
 		},
 	},
-	actionRow{ // S45
+	actionRow{ // S36
 		canRecover: false,
 		actions: [numSymbols]action{
 			nil,        // INVALID
-			nil,        // $
-			nil,        // empty
+			reduce(22), // $, reduce: Property
 			reduce(22), // terminator, reduce: Property
+			nil,        // empty
+			nil,        // lineComment
+			nil,        // blockComment
 			nil,        // bar
 			nil,        // stringLit
 			nil,        // {
@@ -1661,32 +1375,255 @@ var actionTab = actionTable{
 			nil,        // velocity
 			nil,        // program
 			nil,        // control
-			nil,        // end
 			nil,        // play
 			nil,        // start
 			nil,        // stop
 		},
 	},
-	actionRow{ // S46
+	actionRow{ // S37
+		canRecover: false,
+		actions: [numSymbols]action{
+			nil,        // INVALID
+			reduce(23), // $, reduce: Property
+			reduce(23), // terminator, reduce: Property
+			nil,        // empty
+			nil,        // lineComment
+			nil,        // blockComment
+			nil,        // bar
+			nil,        // stringLit
+			nil,        // {
+			nil,        // }
+			reduce(23), // [, reduce: Property
+			nil,        // ]
+			reduce(23), // char, reduce: Property
+			reduce(23), // rest, reduce: Property
+			reduce(23), // sharp, reduce: Property
+			reduce(23), // flat, reduce: Property
+			reduce(23), // accent, reduce: Property
+			reduce(23), // ghost, reduce: Property
+			reduce(23), // uint, reduce: Property
+			reduce(23), // dot, reduce: Property
+			reduce(23), // tuplet, reduce: Property
+			reduce(23), // letRing, reduce: Property
+			nil,        // assign
+			nil,        // tempo
+			nil,        // timesig
+			nil,        // channel
+			nil,        // velocity
+			nil,        // program
+			nil,        // control
+			nil,        // play
+			nil,        // start
+			nil,        // stop
+		},
+	},
+	actionRow{ // S38
+		canRecover: false,
+		actions: [numSymbols]action{
+			nil,        // INVALID
+			reduce(24), // $, reduce: Property
+			reduce(24), // terminator, reduce: Property
+			nil,        // empty
+			nil,        // lineComment
+			nil,        // blockComment
+			nil,        // bar
+			nil,        // stringLit
+			nil,        // {
+			nil,        // }
+			reduce(24), // [, reduce: Property
+			nil,        // ]
+			reduce(24), // char, reduce: Property
+			reduce(24), // rest, reduce: Property
+			reduce(24), // sharp, reduce: Property
+			reduce(24), // flat, reduce: Property
+			reduce(24), // accent, reduce: Property
+			reduce(24), // ghost, reduce: Property
+			reduce(24), // uint, reduce: Property
+			reduce(24), // dot, reduce: Property
+			reduce(24), // tuplet, reduce: Property
+			reduce(24), // letRing, reduce: Property
+			nil,        // assign
+			nil,        // tempo
+			nil,        // timesig
+			nil,        // channel
+			nil,        // velocity
+			nil,        // program
+			nil,        // control
+			nil,        // play
+			nil,        // start
+			nil,        // stop
+		},
+	},
+	actionRow{ // S39
+		canRecover: false,
+		actions: [numSymbols]action{
+			nil,        // INVALID
+			reduce(25), // $, reduce: Property
+			reduce(25), // terminator, reduce: Property
+			nil,        // empty
+			nil,        // lineComment
+			nil,        // blockComment
+			nil,        // bar
+			nil,        // stringLit
+			nil,        // {
+			nil,        // }
+			reduce(25), // [, reduce: Property
+			nil,        // ]
+			reduce(25), // char, reduce: Property
+			reduce(25), // rest, reduce: Property
+			reduce(25), // sharp, reduce: Property
+			reduce(25), // flat, reduce: Property
+			reduce(25), // accent, reduce: Property
+			reduce(25), // ghost, reduce: Property
+			reduce(25), // uint, reduce: Property
+			reduce(25), // dot, reduce: Property
+			reduce(25), // tuplet, reduce: Property
+			reduce(25), // letRing, reduce: Property
+			nil,        // assign
+			nil,        // tempo
+			nil,        // timesig
+			nil,        // channel
+			nil,        // velocity
+			nil,        // program
+			nil,        // control
+			nil,        // play
+			nil,        // start
+			nil,        // stop
+		},
+	},
+	actionRow{ // S40
+		canRecover: false,
+		actions: [numSymbols]action{
+			nil,        // INVALID
+			reduce(26), // $, reduce: Property
+			reduce(26), // terminator, reduce: Property
+			nil,        // empty
+			nil,        // lineComment
+			nil,        // blockComment
+			nil,        // bar
+			nil,        // stringLit
+			nil,        // {
+			nil,        // }
+			reduce(26), // [, reduce: Property
+			nil,        // ]
+			reduce(26), // char, reduce: Property
+			reduce(26), // rest, reduce: Property
+			reduce(26), // sharp, reduce: Property
+			reduce(26), // flat, reduce: Property
+			reduce(26), // accent, reduce: Property
+			reduce(26), // ghost, reduce: Property
+			reduce(26), // uint, reduce: Property
+			reduce(26), // dot, reduce: Property
+			reduce(26), // tuplet, reduce: Property
+			reduce(26), // letRing, reduce: Property
+			nil,        // assign
+			nil,        // tempo
+			nil,        // timesig
+			nil,        // channel
+			nil,        // velocity
+			nil,        // program
+			nil,        // control
+			nil,        // play
+			nil,        // start
+			nil,        // stop
+		},
+	},
+	actionRow{ // S41
+		canRecover: false,
+		actions: [numSymbols]action{
+			nil,        // INVALID
+			reduce(27), // $, reduce: Property
+			reduce(27), // terminator, reduce: Property
+			nil,        // empty
+			nil,        // lineComment
+			nil,        // blockComment
+			nil,        // bar
+			nil,        // stringLit
+			nil,        // {
+			nil,        // }
+			reduce(27), // [, reduce: Property
+			nil,        // ]
+			reduce(27), // char, reduce: Property
+			reduce(27), // rest, reduce: Property
+			reduce(27), // sharp, reduce: Property
+			reduce(27), // flat, reduce: Property
+			reduce(27), // accent, reduce: Property
+			reduce(27), // ghost, reduce: Property
+			reduce(27), // uint, reduce: Property
+			reduce(27), // dot, reduce: Property
+			reduce(27), // tuplet, reduce: Property
+			reduce(27), // letRing, reduce: Property
+			nil,        // assign
+			nil,        // tempo
+			nil,        // timesig
+			nil,        // channel
+			nil,        // velocity
+			nil,        // program
+			nil,        // control
+			nil,        // play
+			nil,        // start
+			nil,        // stop
+		},
+	},
+	actionRow{ // S42
+		canRecover: false,
+		actions: [numSymbols]action{
+			nil,        // INVALID
+			reduce(28), // $, reduce: Property
+			reduce(28), // terminator, reduce: Property
+			nil,        // empty
+			nil,        // lineComment
+			nil,        // blockComment
+			nil,        // bar
+			nil,        // stringLit
+			nil,        // {
+			nil,        // }
+			reduce(28), // [, reduce: Property
+			nil,        // ]
+			reduce(28), // char, reduce: Property
+			reduce(28), // rest, reduce: Property
+			reduce(28), // sharp, reduce: Property
+			reduce(28), // flat, reduce: Property
+			reduce(28), // accent, reduce: Property
+			reduce(28), // ghost, reduce: Property
+			reduce(28), // uint, reduce: Property
+			reduce(28), // dot, reduce: Property
+			reduce(28), // tuplet, reduce: Property
+			reduce(28), // letRing, reduce: Property
+			nil,        // assign
+			nil,        // tempo
+			nil,        // timesig
+			nil,        // channel
+			nil,        // velocity
+			nil,        // program
+			nil,        // control
+			nil,        // play
+			nil,        // start
+			nil,        // stop
+		},
+	},
+	actionRow{ // S43
 		canRecover: false,
 		actions: [numSymbols]action{
 			nil,       // INVALID
 			nil,       // $
-			nil,       // empty
 			nil,       // terminator
+			nil,       // empty
+			nil,       // lineComment
+			nil,       // blockComment
 			nil,       // bar
 			nil,       // stringLit
 			nil,       // {
 			nil,       // }
 			nil,       // [
-			nil,       // ]
+			shift(61), // ]
 			nil,       // char
 			nil,       // rest
 			nil,       // sharp
 			nil,       // flat
 			nil,       // accent
 			nil,       // ghost
-			shift(73), // uint
+			nil,       // uint
 			nil,       // dot
 			nil,       // tuplet
 			nil,       // letRing
@@ -1697,27 +1634,28 @@ var actionTab = actionTable{
 			nil,       // velocity
 			nil,       // program
 			nil,       // control
-			nil,       // end
 			nil,       // play
 			nil,       // start
 			nil,       // stop
 		},
 	},
-	actionRow{ // S47
+	actionRow{ // S44
 		canRecover: false,
 		actions: [numSymbols]action{
 			nil,        // INVALID
 			nil,        // $
+			nil,        // terminator
 			nil,        // empty
-			reduce(24), // terminator, reduce: Command
+			nil,        // lineComment
+			nil,        // blockComment
 			nil,        // bar
 			nil,        // stringLit
 			nil,        // {
 			nil,        // }
-			nil,        // [
-			nil,        // ]
-			nil,        // char
-			nil,        // rest
+			shift(46),  // [
+			reduce(13), // ], reduce: NoteList
+			shift(47),  // char
+			shift(48),  // rest
 			nil,        // sharp
 			nil,        // flat
 			nil,        // accent
@@ -1733,7 +1671,117 @@ var actionTab = actionTable{
 			nil,        // velocity
 			nil,        // program
 			nil,        // control
-			nil,        // end
+			nil,        // play
+			nil,        // start
+			nil,        // stop
+		},
+	},
+	actionRow{ // S45
+		canRecover: false,
+		actions: [numSymbols]action{
+			nil,        // INVALID
+			nil,        // $
+			nil,        // terminator
+			nil,        // empty
+			nil,        // lineComment
+			nil,        // blockComment
+			nil,        // bar
+			nil,        // stringLit
+			nil,        // {
+			nil,        // }
+			reduce(19), // [, reduce: PropertyList
+			reduce(19), // ], reduce: PropertyList
+			reduce(19), // char, reduce: PropertyList
+			reduce(19), // rest, reduce: PropertyList
+			shift(65),  // sharp
+			shift(66),  // flat
+			shift(67),  // accent
+			shift(68),  // ghost
+			shift(69),  // uint
+			shift(70),  // dot
+			shift(71),  // tuplet
+			shift(72),  // letRing
+			nil,        // assign
+			nil,        // tempo
+			nil,        // timesig
+			nil,        // channel
+			nil,        // velocity
+			nil,        // program
+			nil,        // control
+			nil,        // play
+			nil,        // start
+			nil,        // stop
+		},
+	},
+	actionRow{ // S46
+		canRecover: false,
+		actions: [numSymbols]action{
+			nil,       // INVALID
+			nil,       // $
+			nil,       // terminator
+			nil,       // empty
+			nil,       // lineComment
+			nil,       // blockComment
+			nil,       // bar
+			nil,       // stringLit
+			nil,       // {
+			nil,       // }
+			shift(46), // [
+			nil,       // ]
+			shift(47), // char
+			shift(48), // rest
+			nil,       // sharp
+			nil,       // flat
+			nil,       // accent
+			nil,       // ghost
+			nil,       // uint
+			nil,       // dot
+			nil,       // tuplet
+			nil,       // letRing
+			nil,       // assign
+			nil,       // tempo
+			nil,       // timesig
+			nil,       // channel
+			nil,       // velocity
+			nil,       // program
+			nil,       // control
+			nil,       // play
+			nil,       // start
+			nil,       // stop
+		},
+	},
+	actionRow{ // S47
+		canRecover: false,
+		actions: [numSymbols]action{
+			nil,        // INVALID
+			nil,        // $
+			nil,        // terminator
+			nil,        // empty
+			nil,        // lineComment
+			nil,        // blockComment
+			nil,        // bar
+			nil,        // stringLit
+			nil,        // {
+			nil,        // }
+			reduce(17), // [, reduce: NoteSymbol
+			reduce(17), // ], reduce: NoteSymbol
+			reduce(17), // char, reduce: NoteSymbol
+			reduce(17), // rest, reduce: NoteSymbol
+			reduce(17), // sharp, reduce: NoteSymbol
+			reduce(17), // flat, reduce: NoteSymbol
+			reduce(17), // accent, reduce: NoteSymbol
+			reduce(17), // ghost, reduce: NoteSymbol
+			reduce(17), // uint, reduce: NoteSymbol
+			reduce(17), // dot, reduce: NoteSymbol
+			reduce(17), // tuplet, reduce: NoteSymbol
+			reduce(17), // letRing, reduce: NoteSymbol
+			nil,        // assign
+			nil,        // tempo
+			nil,        // timesig
+			nil,        // channel
+			nil,        // velocity
+			nil,        // program
+			nil,        // control
 			nil,        // play
 			nil,        // start
 			nil,        // stop
@@ -1742,10 +1790,49 @@ var actionTab = actionTable{
 	actionRow{ // S48
 		canRecover: false,
 		actions: [numSymbols]action{
+			nil,        // INVALID
+			nil,        // $
+			nil,        // terminator
+			nil,        // empty
+			nil,        // lineComment
+			nil,        // blockComment
+			nil,        // bar
+			nil,        // stringLit
+			nil,        // {
+			nil,        // }
+			reduce(18), // [, reduce: NoteSymbol
+			reduce(18), // ], reduce: NoteSymbol
+			reduce(18), // char, reduce: NoteSymbol
+			reduce(18), // rest, reduce: NoteSymbol
+			reduce(18), // sharp, reduce: NoteSymbol
+			reduce(18), // flat, reduce: NoteSymbol
+			reduce(18), // accent, reduce: NoteSymbol
+			reduce(18), // ghost, reduce: NoteSymbol
+			reduce(18), // uint, reduce: NoteSymbol
+			reduce(18), // dot, reduce: NoteSymbol
+			reduce(18), // tuplet, reduce: NoteSymbol
+			reduce(18), // letRing, reduce: NoteSymbol
+			nil,        // assign
+			nil,        // tempo
+			nil,        // timesig
+			nil,        // channel
+			nil,        // velocity
+			nil,        // program
+			nil,        // control
+			nil,        // play
+			nil,        // start
+			nil,        // stop
+		},
+	},
+	actionRow{ // S49
+		canRecover: false,
+		actions: [numSymbols]action{
 			nil,       // INVALID
 			nil,       // $
-			nil,       // empty
 			nil,       // terminator
+			nil,       // empty
+			nil,       // lineComment
+			nil,       // blockComment
 			nil,       // bar
 			nil,       // stringLit
 			nil,       // {
@@ -1769,55 +1856,20 @@ var actionTab = actionTable{
 			nil,       // velocity
 			nil,       // program
 			nil,       // control
-			nil,       // end
 			nil,       // play
 			nil,       // start
 			nil,       // stop
-		},
-	},
-	actionRow{ // S49
-		canRecover: false,
-		actions: [numSymbols]action{
-			nil,        // INVALID
-			nil,        // $
-			nil,        // empty
-			reduce(26), // terminator, reduce: Command
-			nil,        // bar
-			nil,        // stringLit
-			nil,        // {
-			nil,        // }
-			nil,        // [
-			nil,        // ]
-			nil,        // char
-			nil,        // rest
-			nil,        // sharp
-			nil,        // flat
-			nil,        // accent
-			nil,        // ghost
-			nil,        // uint
-			nil,        // dot
-			nil,        // tuplet
-			nil,        // letRing
-			nil,        // assign
-			nil,        // tempo
-			nil,        // timesig
-			nil,        // channel
-			nil,        // velocity
-			nil,        // program
-			nil,        // control
-			nil,        // end
-			nil,        // play
-			nil,        // start
-			nil,        // stop
 		},
 	},
 	actionRow{ // S50
 		canRecover: false,
 		actions: [numSymbols]action{
 			nil,        // INVALID
-			nil,        // $
+			reduce(30), // $, reduce: Command
+			reduce(30), // terminator, reduce: Command
 			nil,        // empty
-			reduce(27), // terminator, reduce: Command
+			nil,        // lineComment
+			nil,        // blockComment
 			nil,        // bar
 			nil,        // stringLit
 			nil,        // {
@@ -1841,7 +1893,6 @@ var actionTab = actionTable{
 			nil,        // velocity
 			nil,        // program
 			nil,        // control
-			nil,        // end
 			nil,        // play
 			nil,        // start
 			nil,        // stop
@@ -1850,46 +1901,12 @@ var actionTab = actionTable{
 	actionRow{ // S51
 		canRecover: false,
 		actions: [numSymbols]action{
-			nil,        // INVALID
-			nil,        // $
-			nil,        // empty
-			reduce(28), // terminator, reduce: Command
-			nil,        // bar
-			nil,        // stringLit
-			nil,        // {
-			nil,        // }
-			nil,        // [
-			nil,        // ]
-			nil,        // char
-			nil,        // rest
-			nil,        // sharp
-			nil,        // flat
-			nil,        // accent
-			nil,        // ghost
-			nil,        // uint
-			nil,        // dot
-			nil,        // tuplet
-			nil,        // letRing
-			nil,        // assign
-			nil,        // tempo
-			nil,        // timesig
-			nil,        // channel
-			nil,        // velocity
-			nil,        // program
-			nil,        // control
-			nil,        // end
-			nil,        // play
-			nil,        // start
-			nil,        // stop
-		},
-	},
-	actionRow{ // S52
-		canRecover: false,
-		actions: [numSymbols]action{
 			nil,       // INVALID
 			nil,       // $
-			nil,       // empty
 			nil,       // terminator
+			nil,       // empty
+			nil,       // lineComment
+			nil,       // blockComment
 			nil,       // bar
 			nil,       // stringLit
 			nil,       // {
@@ -1913,19 +1930,20 @@ var actionTab = actionTable{
 			nil,       // velocity
 			nil,       // program
 			nil,       // control
-			nil,       // end
 			nil,       // play
 			nil,       // start
 			nil,       // stop
 		},
 	},
-	actionRow{ // S53
+	actionRow{ // S52
 		canRecover: false,
 		actions: [numSymbols]action{
 			nil,        // INVALID
-			nil,        // $
+			reduce(32), // $, reduce: Command
+			reduce(32), // terminator, reduce: Command
 			nil,        // empty
-			reduce(31), // terminator, reduce: Command
+			nil,        // lineComment
+			nil,        // blockComment
 			nil,        // bar
 			nil,        // stringLit
 			nil,        // {
@@ -1949,315 +1967,28 @@ var actionTab = actionTable{
 			nil,        // velocity
 			nil,        // program
 			nil,        // control
-			nil,        // end
 			nil,        // play
 			nil,        // start
 			nil,        // stop
 		},
 	},
-	actionRow{ // S54
-		canRecover: false,
-		actions: [numSymbols]action{
-			nil,       // INVALID
-			reduce(2), // $, reduce: Song
-			nil,       // empty
-			nil,       // terminator
-			nil,       // bar
-			nil,       // stringLit
-			nil,       // {
-			nil,       // }
-			nil,       // [
-			nil,       // ]
-			nil,       // char
-			nil,       // rest
-			nil,       // sharp
-			nil,       // flat
-			nil,       // accent
-			nil,       // ghost
-			nil,       // uint
-			nil,       // dot
-			nil,       // tuplet
-			nil,       // letRing
-			nil,       // assign
-			nil,       // tempo
-			nil,       // timesig
-			nil,       // channel
-			nil,       // velocity
-			nil,       // program
-			nil,       // control
-			nil,       // end
-			nil,       // play
-			nil,       // start
-			nil,       // stop
-		},
-	},
-	actionRow{ // S55
-		canRecover: false,
-		actions: [numSymbols]action{
-			nil,       // INVALID
-			reduce(3), // $, reduce: Song
-			nil,       // empty
-			nil,       // terminator
-			nil,       // bar
-			nil,       // stringLit
-			nil,       // {
-			nil,       // }
-			nil,       // [
-			nil,       // ]
-			nil,       // char
-			nil,       // rest
-			nil,       // sharp
-			nil,       // flat
-			nil,       // accent
-			nil,       // ghost
-			nil,       // uint
-			nil,       // dot
-			nil,       // tuplet
-			nil,       // letRing
-			nil,       // assign
-			nil,       // tempo
-			nil,       // timesig
-			nil,       // channel
-			nil,       // velocity
-			nil,       // program
-			nil,       // control
-			nil,       // end
-			nil,       // play
-			nil,       // start
-			nil,       // stop
-		},
-	},
-	actionRow{ // S56
-		canRecover: false,
-		actions: [numSymbols]action{
-			nil,       // INVALID
-			reduce(4), // $, reduce: Song
-			nil,       // empty
-			nil,       // terminator
-			nil,       // bar
-			nil,       // stringLit
-			nil,       // {
-			nil,       // }
-			nil,       // [
-			nil,       // ]
-			nil,       // char
-			nil,       // rest
-			nil,       // sharp
-			nil,       // flat
-			nil,       // accent
-			nil,       // ghost
-			nil,       // uint
-			nil,       // dot
-			nil,       // tuplet
-			nil,       // letRing
-			nil,       // assign
-			nil,       // tempo
-			nil,       // timesig
-			nil,       // channel
-			nil,       // velocity
-			nil,       // program
-			nil,       // control
-			nil,       // end
-			nil,       // play
-			nil,       // start
-			nil,       // stop
-		},
-	},
-	actionRow{ // S57
-		canRecover: false,
-		actions: [numSymbols]action{
-			nil,       // INVALID
-			nil,       // $
-			nil,       // empty
-			reduce(6), // terminator, reduce: NoteList
-			shift(5),  // bar
-			nil,       // stringLit
-			nil,       // {
-			reduce(1), // }, reduce: Song
-			shift(8),  // [
-			nil,       // ]
-			shift(10), // char
-			shift(11), // rest
-			nil,       // sharp
-			nil,       // flat
-			nil,       // accent
-			nil,       // ghost
-			nil,       // uint
-			nil,       // dot
-			nil,       // tuplet
-			nil,       // letRing
-			shift(12), // assign
-			shift(13), // tempo
-			shift(14), // timesig
-			shift(15), // channel
-			shift(16), // velocity
-			shift(17), // program
-			shift(18), // control
-			shift(19), // end
-			shift(20), // play
-			shift(21), // start
-			shift(22), // stop
-		},
-	},
-	actionRow{ // S58
+	actionRow{ // S53
 		canRecover: false,
 		actions: [numSymbols]action{
 			nil,        // INVALID
-			nil,        // $
+			reduce(33), // $, reduce: Command
+			reduce(33), // terminator, reduce: Command
 			nil,        // empty
-			reduce(13), // terminator, reduce: PropertyList
+			nil,        // lineComment
+			nil,        // blockComment
 			nil,        // bar
 			nil,        // stringLit
 			nil,        // {
 			nil,        // }
-			reduce(13), // [, reduce: PropertyList
+			nil,        // [
 			nil,        // ]
-			reduce(13), // char, reduce: PropertyList
-			reduce(13), // rest, reduce: PropertyList
-			shift(38),  // sharp
-			shift(39),  // flat
-			shift(40),  // accent
-			shift(41),  // ghost
-			shift(42),  // uint
-			shift(43),  // dot
-			shift(44),  // tuplet
-			shift(45),  // letRing
-			nil,        // assign
-			nil,        // tempo
-			nil,        // timesig
-			nil,        // channel
-			nil,        // velocity
-			nil,        // program
-			nil,        // control
-			nil,        // end
-			nil,        // play
-			nil,        // start
-			nil,        // stop
-		},
-	},
-	actionRow{ // S59
-		canRecover: false,
-		actions: [numSymbols]action{
-			nil,       // INVALID
-			nil,       // $
-			nil,       // empty
-			nil,       // terminator
-			nil,       // bar
-			nil,       // stringLit
-			nil,       // {
-			nil,       // }
-			nil,       // [
-			reduce(7), // ], reduce: NoteList
-			nil,       // char
-			nil,       // rest
-			nil,       // sharp
-			nil,       // flat
-			nil,       // accent
-			nil,       // ghost
-			nil,       // uint
-			nil,       // dot
-			nil,       // tuplet
-			nil,       // letRing
-			nil,       // assign
-			nil,       // tempo
-			nil,       // timesig
-			nil,       // channel
-			nil,       // velocity
-			nil,       // program
-			nil,       // control
-			nil,       // end
-			nil,       // play
-			nil,       // start
-			nil,       // stop
-		},
-	},
-	actionRow{ // S60
-		canRecover: false,
-		actions: [numSymbols]action{
-			nil,       // INVALID
-			nil,       // $
-			nil,       // empty
-			nil,       // terminator
-			nil,       // bar
-			nil,       // stringLit
-			nil,       // {
-			nil,       // }
-			nil,       // [
-			reduce(8), // ], reduce: NoteList
-			nil,       // char
-			nil,       // rest
-			nil,       // sharp
-			nil,       // flat
-			nil,       // accent
-			nil,       // ghost
-			nil,       // uint
-			nil,       // dot
-			nil,       // tuplet
-			nil,       // letRing
-			nil,       // assign
-			nil,       // tempo
-			nil,       // timesig
-			nil,       // channel
-			nil,       // velocity
-			nil,       // program
-			nil,       // control
-			nil,       // end
-			nil,       // play
-			nil,       // start
-			nil,       // stop
-		},
-	},
-	actionRow{ // S61
-		canRecover: false,
-		actions: [numSymbols]action{
-			nil,       // INVALID
-			nil,       // $
-			nil,       // empty
-			nil,       // terminator
-			nil,       // bar
-			nil,       // stringLit
-			nil,       // {
-			nil,       // }
-			nil,       // [
-			shift(81), // ]
-			nil,       // char
-			nil,       // rest
-			nil,       // sharp
-			nil,       // flat
-			nil,       // accent
-			nil,       // ghost
-			nil,       // uint
-			nil,       // dot
-			nil,       // tuplet
-			nil,       // letRing
-			nil,       // assign
-			nil,       // tempo
-			nil,       // timesig
-			nil,       // channel
-			nil,       // velocity
-			nil,       // program
-			nil,       // control
-			nil,       // end
-			nil,       // play
-			nil,       // start
-			nil,       // stop
-		},
-	},
-	actionRow{ // S62
-		canRecover: false,
-		actions: [numSymbols]action{
-			nil,        // INVALID
-			nil,        // $
-			nil,        // empty
-			nil,        // terminator
-			nil,        // bar
-			nil,        // stringLit
-			nil,        // {
-			nil,        // }
-			reduce(10), // [, reduce: Note
-			reduce(10), // ], reduce: Note
-			reduce(10), // char, reduce: Note
-			reduce(10), // rest, reduce: Note
+			nil,        // char
+			nil,        // rest
 			nil,        // sharp
 			nil,        // flat
 			nil,        // accent
@@ -2273,7 +2004,339 @@ var actionTab = actionTable{
 			nil,        // velocity
 			nil,        // program
 			nil,        // control
-			nil,        // end
+			nil,        // play
+			nil,        // start
+			nil,        // stop
+		},
+	},
+	actionRow{ // S54
+		canRecover: false,
+		actions: [numSymbols]action{
+			nil,        // INVALID
+			reduce(34), // $, reduce: Command
+			reduce(34), // terminator, reduce: Command
+			nil,        // empty
+			nil,        // lineComment
+			nil,        // blockComment
+			nil,        // bar
+			nil,        // stringLit
+			nil,        // {
+			nil,        // }
+			nil,        // [
+			nil,        // ]
+			nil,        // char
+			nil,        // rest
+			nil,        // sharp
+			nil,        // flat
+			nil,        // accent
+			nil,        // ghost
+			nil,        // uint
+			nil,        // dot
+			nil,        // tuplet
+			nil,        // letRing
+			nil,        // assign
+			nil,        // tempo
+			nil,        // timesig
+			nil,        // channel
+			nil,        // velocity
+			nil,        // program
+			nil,        // control
+			nil,        // play
+			nil,        // start
+			nil,        // stop
+		},
+	},
+	actionRow{ // S55
+		canRecover: false,
+		actions: [numSymbols]action{
+			nil,       // INVALID
+			nil,       // $
+			nil,       // terminator
+			nil,       // empty
+			nil,       // lineComment
+			nil,       // blockComment
+			nil,       // bar
+			nil,       // stringLit
+			nil,       // {
+			nil,       // }
+			nil,       // [
+			nil,       // ]
+			nil,       // char
+			nil,       // rest
+			nil,       // sharp
+			nil,       // flat
+			nil,       // accent
+			nil,       // ghost
+			shift(76), // uint
+			nil,       // dot
+			nil,       // tuplet
+			nil,       // letRing
+			nil,       // assign
+			nil,       // tempo
+			nil,       // timesig
+			nil,       // channel
+			nil,       // velocity
+			nil,       // program
+			nil,       // control
+			nil,       // play
+			nil,       // start
+			nil,       // stop
+		},
+	},
+	actionRow{ // S56
+		canRecover: false,
+		actions: [numSymbols]action{
+			nil,        // INVALID
+			reduce(36), // $, reduce: Command
+			reduce(36), // terminator, reduce: Command
+			nil,        // empty
+			nil,        // lineComment
+			nil,        // blockComment
+			nil,        // bar
+			nil,        // stringLit
+			nil,        // {
+			nil,        // }
+			nil,        // [
+			nil,        // ]
+			nil,        // char
+			nil,        // rest
+			nil,        // sharp
+			nil,        // flat
+			nil,        // accent
+			nil,        // ghost
+			nil,        // uint
+			nil,        // dot
+			nil,        // tuplet
+			nil,        // letRing
+			nil,        // assign
+			nil,        // tempo
+			nil,        // timesig
+			nil,        // channel
+			nil,        // velocity
+			nil,        // program
+			nil,        // control
+			nil,        // play
+			nil,        // start
+			nil,        // stop
+		},
+	},
+	actionRow{ // S57
+		canRecover: false,
+		actions: [numSymbols]action{
+			nil,       // INVALID
+			reduce(5), // $, reduce: RepeatTerminator
+			nil,       // terminator
+			nil,       // empty
+			shift(10), // lineComment
+			shift(11), // blockComment
+			shift(12), // bar
+			nil,       // stringLit
+			nil,       // {
+			nil,       // }
+			shift(15), // [
+			nil,       // ]
+			shift(16), // char
+			shift(17), // rest
+			nil,       // sharp
+			nil,       // flat
+			nil,       // accent
+			nil,       // ghost
+			nil,       // uint
+			nil,       // dot
+			nil,       // tuplet
+			nil,       // letRing
+			shift(18), // assign
+			shift(19), // tempo
+			shift(20), // timesig
+			shift(21), // channel
+			shift(22), // velocity
+			shift(23), // program
+			shift(24), // control
+			shift(25), // play
+			shift(26), // start
+			shift(27), // stop
+		},
+	},
+	actionRow{ // S58
+		canRecover: false,
+		actions: [numSymbols]action{
+			nil,       // INVALID
+			reduce(4), // $, reduce: RepeatTerminator
+			shift(58), // terminator
+			nil,       // empty
+			reduce(4), // lineComment, reduce: RepeatTerminator
+			reduce(4), // blockComment, reduce: RepeatTerminator
+			reduce(4), // bar, reduce: RepeatTerminator
+			nil,       // stringLit
+			nil,       // {
+			nil,       // }
+			reduce(4), // [, reduce: RepeatTerminator
+			nil,       // ]
+			reduce(4), // char, reduce: RepeatTerminator
+			reduce(4), // rest, reduce: RepeatTerminator
+			nil,       // sharp
+			nil,       // flat
+			nil,       // accent
+			nil,       // ghost
+			nil,       // uint
+			nil,       // dot
+			nil,       // tuplet
+			nil,       // letRing
+			reduce(4), // assign, reduce: RepeatTerminator
+			reduce(4), // tempo, reduce: RepeatTerminator
+			reduce(4), // timesig, reduce: RepeatTerminator
+			reduce(4), // channel, reduce: RepeatTerminator
+			reduce(4), // velocity, reduce: RepeatTerminator
+			reduce(4), // program, reduce: RepeatTerminator
+			reduce(4), // control, reduce: RepeatTerminator
+			reduce(4), // play, reduce: RepeatTerminator
+			reduce(4), // start, reduce: RepeatTerminator
+			reduce(4), // stop, reduce: RepeatTerminator
+		},
+	},
+	actionRow{ // S59
+		canRecover: false,
+		actions: [numSymbols]action{
+			nil,       // INVALID
+			nil,       // $
+			shift(3),  // terminator
+			nil,       // empty
+			reduce(4), // lineComment, reduce: RepeatTerminator
+			reduce(4), // blockComment, reduce: RepeatTerminator
+			reduce(4), // bar, reduce: RepeatTerminator
+			nil,       // stringLit
+			nil,       // {
+			nil,       // }
+			reduce(4), // [, reduce: RepeatTerminator
+			nil,       // ]
+			reduce(4), // char, reduce: RepeatTerminator
+			reduce(4), // rest, reduce: RepeatTerminator
+			nil,       // sharp
+			nil,       // flat
+			nil,       // accent
+			nil,       // ghost
+			nil,       // uint
+			nil,       // dot
+			nil,       // tuplet
+			nil,       // letRing
+			reduce(4), // assign, reduce: RepeatTerminator
+			reduce(4), // tempo, reduce: RepeatTerminator
+			reduce(4), // timesig, reduce: RepeatTerminator
+			reduce(4), // channel, reduce: RepeatTerminator
+			reduce(4), // velocity, reduce: RepeatTerminator
+			reduce(4), // program, reduce: RepeatTerminator
+			reduce(4), // control, reduce: RepeatTerminator
+			reduce(4), // play, reduce: RepeatTerminator
+			reduce(4), // start, reduce: RepeatTerminator
+			reduce(4), // stop, reduce: RepeatTerminator
+		},
+	},
+	actionRow{ // S60
+		canRecover: false,
+		actions: [numSymbols]action{
+			nil,        // INVALID
+			reduce(20), // $, reduce: PropertyList
+			reduce(20), // terminator, reduce: PropertyList
+			nil,        // empty
+			nil,        // lineComment
+			nil,        // blockComment
+			nil,        // bar
+			nil,        // stringLit
+			nil,        // {
+			nil,        // }
+			reduce(20), // [, reduce: PropertyList
+			nil,        // ]
+			reduce(20), // char, reduce: PropertyList
+			reduce(20), // rest, reduce: PropertyList
+			nil,        // sharp
+			nil,        // flat
+			nil,        // accent
+			nil,        // ghost
+			nil,        // uint
+			nil,        // dot
+			nil,        // tuplet
+			nil,        // letRing
+			nil,        // assign
+			nil,        // tempo
+			nil,        // timesig
+			nil,        // channel
+			nil,        // velocity
+			nil,        // program
+			nil,        // control
+			nil,        // play
+			nil,        // start
+			nil,        // stop
+		},
+	},
+	actionRow{ // S61
+		canRecover: false,
+		actions: [numSymbols]action{
+			nil,        // INVALID
+			reduce(19), // $, reduce: PropertyList
+			reduce(19), // terminator, reduce: PropertyList
+			nil,        // empty
+			nil,        // lineComment
+			nil,        // blockComment
+			nil,        // bar
+			nil,        // stringLit
+			nil,        // {
+			nil,        // }
+			reduce(19), // [, reduce: PropertyList
+			nil,        // ]
+			reduce(19), // char, reduce: PropertyList
+			reduce(19), // rest, reduce: PropertyList
+			shift(35),  // sharp
+			shift(36),  // flat
+			shift(37),  // accent
+			shift(38),  // ghost
+			shift(39),  // uint
+			shift(40),  // dot
+			shift(41),  // tuplet
+			shift(42),  // letRing
+			nil,        // assign
+			nil,        // tempo
+			nil,        // timesig
+			nil,        // channel
+			nil,        // velocity
+			nil,        // program
+			nil,        // control
+			nil,        // play
+			nil,        // start
+			nil,        // stop
+		},
+	},
+	actionRow{ // S62
+		canRecover: false,
+		actions: [numSymbols]action{
+			nil,        // INVALID
+			nil,        // $
+			nil,        // terminator
+			nil,        // empty
+			nil,        // lineComment
+			nil,        // blockComment
+			nil,        // bar
+			nil,        // stringLit
+			nil,        // {
+			nil,        // }
+			nil,        // [
+			reduce(14), // ], reduce: NoteList
+			nil,        // char
+			nil,        // rest
+			nil,        // sharp
+			nil,        // flat
+			nil,        // accent
+			nil,        // ghost
+			nil,        // uint
+			nil,        // dot
+			nil,        // tuplet
+			nil,        // letRing
+			nil,        // assign
+			nil,        // tempo
+			nil,        // timesig
+			nil,        // channel
+			nil,        // velocity
+			nil,        // program
+			nil,        // control
 			nil,        // play
 			nil,        // start
 			nil,        // stop
@@ -2284,24 +2347,26 @@ var actionTab = actionTable{
 		actions: [numSymbols]action{
 			nil,        // INVALID
 			nil,        // $
-			nil,        // empty
 			nil,        // terminator
+			nil,        // empty
+			nil,        // lineComment
+			nil,        // blockComment
 			nil,        // bar
 			nil,        // stringLit
 			nil,        // {
 			nil,        // }
-			reduce(13), // [, reduce: PropertyList
-			reduce(13), // ], reduce: PropertyList
-			reduce(13), // char, reduce: PropertyList
-			reduce(13), // rest, reduce: PropertyList
-			shift(64),  // sharp
-			shift(65),  // flat
-			shift(66),  // accent
-			shift(67),  // ghost
-			shift(68),  // uint
-			shift(69),  // dot
-			shift(70),  // tuplet
-			shift(71),  // letRing
+			reduce(15), // [, reduce: NoteObject
+			reduce(15), // ], reduce: NoteObject
+			reduce(15), // char, reduce: NoteObject
+			reduce(15), // rest, reduce: NoteObject
+			nil,        // sharp
+			nil,        // flat
+			nil,        // accent
+			nil,        // ghost
+			nil,        // uint
+			nil,        // dot
+			nil,        // tuplet
+			nil,        // letRing
 			nil,        // assign
 			nil,        // tempo
 			nil,        // timesig
@@ -2309,7 +2374,6 @@ var actionTab = actionTable{
 			nil,        // velocity
 			nil,        // program
 			nil,        // control
-			nil,        // end
 			nil,        // play
 			nil,        // start
 			nil,        // stop
@@ -2320,24 +2384,26 @@ var actionTab = actionTable{
 		actions: [numSymbols]action{
 			nil,        // INVALID
 			nil,        // $
-			nil,        // empty
 			nil,        // terminator
+			nil,        // empty
+			nil,        // lineComment
+			nil,        // blockComment
 			nil,        // bar
 			nil,        // stringLit
 			nil,        // {
 			nil,        // }
-			reduce(15), // [, reduce: Property
-			reduce(15), // ], reduce: Property
-			reduce(15), // char, reduce: Property
-			reduce(15), // rest, reduce: Property
-			reduce(15), // sharp, reduce: Property
-			reduce(15), // flat, reduce: Property
-			reduce(15), // accent, reduce: Property
-			reduce(15), // ghost, reduce: Property
-			reduce(15), // uint, reduce: Property
-			reduce(15), // dot, reduce: Property
-			reduce(15), // tuplet, reduce: Property
-			reduce(15), // letRing, reduce: Property
+			reduce(19), // [, reduce: PropertyList
+			reduce(19), // ], reduce: PropertyList
+			reduce(19), // char, reduce: PropertyList
+			reduce(19), // rest, reduce: PropertyList
+			shift(65),  // sharp
+			shift(66),  // flat
+			shift(67),  // accent
+			shift(68),  // ghost
+			shift(69),  // uint
+			shift(70),  // dot
+			shift(71),  // tuplet
+			shift(72),  // letRing
 			nil,        // assign
 			nil,        // tempo
 			nil,        // timesig
@@ -2345,7 +2411,6 @@ var actionTab = actionTable{
 			nil,        // velocity
 			nil,        // program
 			nil,        // control
-			nil,        // end
 			nil,        // play
 			nil,        // start
 			nil,        // stop
@@ -2356,188 +2421,10 @@ var actionTab = actionTable{
 		actions: [numSymbols]action{
 			nil,        // INVALID
 			nil,        // $
-			nil,        // empty
 			nil,        // terminator
-			nil,        // bar
-			nil,        // stringLit
-			nil,        // {
-			nil,        // }
-			reduce(16), // [, reduce: Property
-			reduce(16), // ], reduce: Property
-			reduce(16), // char, reduce: Property
-			reduce(16), // rest, reduce: Property
-			reduce(16), // sharp, reduce: Property
-			reduce(16), // flat, reduce: Property
-			reduce(16), // accent, reduce: Property
-			reduce(16), // ghost, reduce: Property
-			reduce(16), // uint, reduce: Property
-			reduce(16), // dot, reduce: Property
-			reduce(16), // tuplet, reduce: Property
-			reduce(16), // letRing, reduce: Property
-			nil,        // assign
-			nil,        // tempo
-			nil,        // timesig
-			nil,        // channel
-			nil,        // velocity
-			nil,        // program
-			nil,        // control
-			nil,        // end
-			nil,        // play
-			nil,        // start
-			nil,        // stop
-		},
-	},
-	actionRow{ // S66
-		canRecover: false,
-		actions: [numSymbols]action{
-			nil,        // INVALID
-			nil,        // $
 			nil,        // empty
-			nil,        // terminator
-			nil,        // bar
-			nil,        // stringLit
-			nil,        // {
-			nil,        // }
-			reduce(17), // [, reduce: Property
-			reduce(17), // ], reduce: Property
-			reduce(17), // char, reduce: Property
-			reduce(17), // rest, reduce: Property
-			reduce(17), // sharp, reduce: Property
-			reduce(17), // flat, reduce: Property
-			reduce(17), // accent, reduce: Property
-			reduce(17), // ghost, reduce: Property
-			reduce(17), // uint, reduce: Property
-			reduce(17), // dot, reduce: Property
-			reduce(17), // tuplet, reduce: Property
-			reduce(17), // letRing, reduce: Property
-			nil,        // assign
-			nil,        // tempo
-			nil,        // timesig
-			nil,        // channel
-			nil,        // velocity
-			nil,        // program
-			nil,        // control
-			nil,        // end
-			nil,        // play
-			nil,        // start
-			nil,        // stop
-		},
-	},
-	actionRow{ // S67
-		canRecover: false,
-		actions: [numSymbols]action{
-			nil,        // INVALID
-			nil,        // $
-			nil,        // empty
-			nil,        // terminator
-			nil,        // bar
-			nil,        // stringLit
-			nil,        // {
-			nil,        // }
-			reduce(18), // [, reduce: Property
-			reduce(18), // ], reduce: Property
-			reduce(18), // char, reduce: Property
-			reduce(18), // rest, reduce: Property
-			reduce(18), // sharp, reduce: Property
-			reduce(18), // flat, reduce: Property
-			reduce(18), // accent, reduce: Property
-			reduce(18), // ghost, reduce: Property
-			reduce(18), // uint, reduce: Property
-			reduce(18), // dot, reduce: Property
-			reduce(18), // tuplet, reduce: Property
-			reduce(18), // letRing, reduce: Property
-			nil,        // assign
-			nil,        // tempo
-			nil,        // timesig
-			nil,        // channel
-			nil,        // velocity
-			nil,        // program
-			nil,        // control
-			nil,        // end
-			nil,        // play
-			nil,        // start
-			nil,        // stop
-		},
-	},
-	actionRow{ // S68
-		canRecover: false,
-		actions: [numSymbols]action{
-			nil,        // INVALID
-			nil,        // $
-			nil,        // empty
-			nil,        // terminator
-			nil,        // bar
-			nil,        // stringLit
-			nil,        // {
-			nil,        // }
-			reduce(19), // [, reduce: Property
-			reduce(19), // ], reduce: Property
-			reduce(19), // char, reduce: Property
-			reduce(19), // rest, reduce: Property
-			reduce(19), // sharp, reduce: Property
-			reduce(19), // flat, reduce: Property
-			reduce(19), // accent, reduce: Property
-			reduce(19), // ghost, reduce: Property
-			reduce(19), // uint, reduce: Property
-			reduce(19), // dot, reduce: Property
-			reduce(19), // tuplet, reduce: Property
-			reduce(19), // letRing, reduce: Property
-			nil,        // assign
-			nil,        // tempo
-			nil,        // timesig
-			nil,        // channel
-			nil,        // velocity
-			nil,        // program
-			nil,        // control
-			nil,        // end
-			nil,        // play
-			nil,        // start
-			nil,        // stop
-		},
-	},
-	actionRow{ // S69
-		canRecover: false,
-		actions: [numSymbols]action{
-			nil,        // INVALID
-			nil,        // $
-			nil,        // empty
-			nil,        // terminator
-			nil,        // bar
-			nil,        // stringLit
-			nil,        // {
-			nil,        // }
-			reduce(20), // [, reduce: Property
-			reduce(20), // ], reduce: Property
-			reduce(20), // char, reduce: Property
-			reduce(20), // rest, reduce: Property
-			reduce(20), // sharp, reduce: Property
-			reduce(20), // flat, reduce: Property
-			reduce(20), // accent, reduce: Property
-			reduce(20), // ghost, reduce: Property
-			reduce(20), // uint, reduce: Property
-			reduce(20), // dot, reduce: Property
-			reduce(20), // tuplet, reduce: Property
-			reduce(20), // letRing, reduce: Property
-			nil,        // assign
-			nil,        // tempo
-			nil,        // timesig
-			nil,        // channel
-			nil,        // velocity
-			nil,        // program
-			nil,        // control
-			nil,        // end
-			nil,        // play
-			nil,        // start
-			nil,        // stop
-		},
-	},
-	actionRow{ // S70
-		canRecover: false,
-		actions: [numSymbols]action{
-			nil,        // INVALID
-			nil,        // $
-			nil,        // empty
-			nil,        // terminator
+			nil,        // lineComment
+			nil,        // blockComment
 			nil,        // bar
 			nil,        // stringLit
 			nil,        // {
@@ -2561,19 +2448,20 @@ var actionTab = actionTable{
 			nil,        // velocity
 			nil,        // program
 			nil,        // control
-			nil,        // end
 			nil,        // play
 			nil,        // start
 			nil,        // stop
 		},
 	},
-	actionRow{ // S71
+	actionRow{ // S66
 		canRecover: false,
 		actions: [numSymbols]action{
 			nil,        // INVALID
 			nil,        // $
-			nil,        // empty
 			nil,        // terminator
+			nil,        // empty
+			nil,        // lineComment
+			nil,        // blockComment
 			nil,        // bar
 			nil,        // stringLit
 			nil,        // {
@@ -2597,7 +2485,191 @@ var actionTab = actionTable{
 			nil,        // velocity
 			nil,        // program
 			nil,        // control
-			nil,        // end
+			nil,        // play
+			nil,        // start
+			nil,        // stop
+		},
+	},
+	actionRow{ // S67
+		canRecover: false,
+		actions: [numSymbols]action{
+			nil,        // INVALID
+			nil,        // $
+			nil,        // terminator
+			nil,        // empty
+			nil,        // lineComment
+			nil,        // blockComment
+			nil,        // bar
+			nil,        // stringLit
+			nil,        // {
+			nil,        // }
+			reduce(23), // [, reduce: Property
+			reduce(23), // ], reduce: Property
+			reduce(23), // char, reduce: Property
+			reduce(23), // rest, reduce: Property
+			reduce(23), // sharp, reduce: Property
+			reduce(23), // flat, reduce: Property
+			reduce(23), // accent, reduce: Property
+			reduce(23), // ghost, reduce: Property
+			reduce(23), // uint, reduce: Property
+			reduce(23), // dot, reduce: Property
+			reduce(23), // tuplet, reduce: Property
+			reduce(23), // letRing, reduce: Property
+			nil,        // assign
+			nil,        // tempo
+			nil,        // timesig
+			nil,        // channel
+			nil,        // velocity
+			nil,        // program
+			nil,        // control
+			nil,        // play
+			nil,        // start
+			nil,        // stop
+		},
+	},
+	actionRow{ // S68
+		canRecover: false,
+		actions: [numSymbols]action{
+			nil,        // INVALID
+			nil,        // $
+			nil,        // terminator
+			nil,        // empty
+			nil,        // lineComment
+			nil,        // blockComment
+			nil,        // bar
+			nil,        // stringLit
+			nil,        // {
+			nil,        // }
+			reduce(24), // [, reduce: Property
+			reduce(24), // ], reduce: Property
+			reduce(24), // char, reduce: Property
+			reduce(24), // rest, reduce: Property
+			reduce(24), // sharp, reduce: Property
+			reduce(24), // flat, reduce: Property
+			reduce(24), // accent, reduce: Property
+			reduce(24), // ghost, reduce: Property
+			reduce(24), // uint, reduce: Property
+			reduce(24), // dot, reduce: Property
+			reduce(24), // tuplet, reduce: Property
+			reduce(24), // letRing, reduce: Property
+			nil,        // assign
+			nil,        // tempo
+			nil,        // timesig
+			nil,        // channel
+			nil,        // velocity
+			nil,        // program
+			nil,        // control
+			nil,        // play
+			nil,        // start
+			nil,        // stop
+		},
+	},
+	actionRow{ // S69
+		canRecover: false,
+		actions: [numSymbols]action{
+			nil,        // INVALID
+			nil,        // $
+			nil,        // terminator
+			nil,        // empty
+			nil,        // lineComment
+			nil,        // blockComment
+			nil,        // bar
+			nil,        // stringLit
+			nil,        // {
+			nil,        // }
+			reduce(25), // [, reduce: Property
+			reduce(25), // ], reduce: Property
+			reduce(25), // char, reduce: Property
+			reduce(25), // rest, reduce: Property
+			reduce(25), // sharp, reduce: Property
+			reduce(25), // flat, reduce: Property
+			reduce(25), // accent, reduce: Property
+			reduce(25), // ghost, reduce: Property
+			reduce(25), // uint, reduce: Property
+			reduce(25), // dot, reduce: Property
+			reduce(25), // tuplet, reduce: Property
+			reduce(25), // letRing, reduce: Property
+			nil,        // assign
+			nil,        // tempo
+			nil,        // timesig
+			nil,        // channel
+			nil,        // velocity
+			nil,        // program
+			nil,        // control
+			nil,        // play
+			nil,        // start
+			nil,        // stop
+		},
+	},
+	actionRow{ // S70
+		canRecover: false,
+		actions: [numSymbols]action{
+			nil,        // INVALID
+			nil,        // $
+			nil,        // terminator
+			nil,        // empty
+			nil,        // lineComment
+			nil,        // blockComment
+			nil,        // bar
+			nil,        // stringLit
+			nil,        // {
+			nil,        // }
+			reduce(26), // [, reduce: Property
+			reduce(26), // ], reduce: Property
+			reduce(26), // char, reduce: Property
+			reduce(26), // rest, reduce: Property
+			reduce(26), // sharp, reduce: Property
+			reduce(26), // flat, reduce: Property
+			reduce(26), // accent, reduce: Property
+			reduce(26), // ghost, reduce: Property
+			reduce(26), // uint, reduce: Property
+			reduce(26), // dot, reduce: Property
+			reduce(26), // tuplet, reduce: Property
+			reduce(26), // letRing, reduce: Property
+			nil,        // assign
+			nil,        // tempo
+			nil,        // timesig
+			nil,        // channel
+			nil,        // velocity
+			nil,        // program
+			nil,        // control
+			nil,        // play
+			nil,        // start
+			nil,        // stop
+		},
+	},
+	actionRow{ // S71
+		canRecover: false,
+		actions: [numSymbols]action{
+			nil,        // INVALID
+			nil,        // $
+			nil,        // terminator
+			nil,        // empty
+			nil,        // lineComment
+			nil,        // blockComment
+			nil,        // bar
+			nil,        // stringLit
+			nil,        // {
+			nil,        // }
+			reduce(27), // [, reduce: Property
+			reduce(27), // ], reduce: Property
+			reduce(27), // char, reduce: Property
+			reduce(27), // rest, reduce: Property
+			reduce(27), // sharp, reduce: Property
+			reduce(27), // flat, reduce: Property
+			reduce(27), // accent, reduce: Property
+			reduce(27), // ghost, reduce: Property
+			reduce(27), // uint, reduce: Property
+			reduce(27), // dot, reduce: Property
+			reduce(27), // tuplet, reduce: Property
+			reduce(27), // letRing, reduce: Property
+			nil,        // assign
+			nil,        // tempo
+			nil,        // timesig
+			nil,        // channel
+			nil,        // velocity
+			nil,        // program
+			nil,        // control
 			nil,        // play
 			nil,        // start
 			nil,        // stop
@@ -2608,24 +2680,26 @@ var actionTab = actionTable{
 		actions: [numSymbols]action{
 			nil,        // INVALID
 			nil,        // $
+			nil,        // terminator
 			nil,        // empty
-			reduce(14), // terminator, reduce: PropertyList
+			nil,        // lineComment
+			nil,        // blockComment
 			nil,        // bar
 			nil,        // stringLit
 			nil,        // {
 			nil,        // }
-			reduce(14), // [, reduce: PropertyList
-			nil,        // ]
-			reduce(14), // char, reduce: PropertyList
-			reduce(14), // rest, reduce: PropertyList
-			nil,        // sharp
-			nil,        // flat
-			nil,        // accent
-			nil,        // ghost
-			nil,        // uint
-			nil,        // dot
-			nil,        // tuplet
-			nil,        // letRing
+			reduce(28), // [, reduce: Property
+			reduce(28), // ], reduce: Property
+			reduce(28), // char, reduce: Property
+			reduce(28), // rest, reduce: Property
+			reduce(28), // sharp, reduce: Property
+			reduce(28), // flat, reduce: Property
+			reduce(28), // accent, reduce: Property
+			reduce(28), // ghost, reduce: Property
+			reduce(28), // uint, reduce: Property
+			reduce(28), // dot, reduce: Property
+			reduce(28), // tuplet, reduce: Property
+			reduce(28), // letRing, reduce: Property
 			nil,        // assign
 			nil,        // tempo
 			nil,        // timesig
@@ -2633,7 +2707,6 @@ var actionTab = actionTable{
 			nil,        // velocity
 			nil,        // program
 			nil,        // control
-			nil,        // end
 			nil,        // play
 			nil,        // start
 			nil,        // stop
@@ -2642,46 +2715,49 @@ var actionTab = actionTable{
 	actionRow{ // S73
 		canRecover: false,
 		actions: [numSymbols]action{
-			nil,        // INVALID
-			nil,        // $
-			nil,        // empty
-			reduce(23), // terminator, reduce: Command
-			nil,        // bar
-			nil,        // stringLit
-			nil,        // {
-			nil,        // }
-			nil,        // [
-			nil,        // ]
-			nil,        // char
-			nil,        // rest
-			nil,        // sharp
-			nil,        // flat
-			nil,        // accent
-			nil,        // ghost
-			nil,        // uint
-			nil,        // dot
-			nil,        // tuplet
-			nil,        // letRing
-			nil,        // assign
-			nil,        // tempo
-			nil,        // timesig
-			nil,        // channel
-			nil,        // velocity
-			nil,        // program
-			nil,        // control
-			nil,        // end
-			nil,        // play
-			nil,        // start
-			nil,        // stop
+			nil,       // INVALID
+			nil,       // $
+			nil,       // terminator
+			nil,       // empty
+			nil,       // lineComment
+			nil,       // blockComment
+			nil,       // bar
+			nil,       // stringLit
+			nil,       // {
+			nil,       // }
+			nil,       // [
+			shift(82), // ]
+			nil,       // char
+			nil,       // rest
+			nil,       // sharp
+			nil,       // flat
+			nil,       // accent
+			nil,       // ghost
+			nil,       // uint
+			nil,       // dot
+			nil,       // tuplet
+			nil,       // letRing
+			nil,       // assign
+			nil,       // tempo
+			nil,       // timesig
+			nil,       // channel
+			nil,       // velocity
+			nil,       // program
+			nil,       // control
+			nil,       // play
+			nil,       // start
+			nil,       // stop
 		},
 	},
 	actionRow{ // S74
 		canRecover: false,
 		actions: [numSymbols]action{
 			nil,        // INVALID
-			nil,        // $
+			reduce(29), // $, reduce: Command
+			reduce(29), // terminator, reduce: Command
 			nil,        // empty
-			reduce(25), // terminator, reduce: Command
+			nil,        // lineComment
+			nil,        // blockComment
 			nil,        // bar
 			nil,        // stringLit
 			nil,        // {
@@ -2705,7 +2781,6 @@ var actionTab = actionTable{
 			nil,        // velocity
 			nil,        // program
 			nil,        // control
-			nil,        // end
 			nil,        // play
 			nil,        // start
 			nil,        // stop
@@ -2715,9 +2790,11 @@ var actionTab = actionTable{
 		canRecover: false,
 		actions: [numSymbols]action{
 			nil,        // INVALID
-			nil,        // $
+			reduce(31), // $, reduce: Command
+			reduce(31), // terminator, reduce: Command
 			nil,        // empty
-			reduce(29), // terminator, reduce: Command
+			nil,        // lineComment
+			nil,        // blockComment
 			nil,        // bar
 			nil,        // stringLit
 			nil,        // {
@@ -2741,7 +2818,6 @@ var actionTab = actionTable{
 			nil,        // velocity
 			nil,        // program
 			nil,        // control
-			nil,        // end
 			nil,        // play
 			nil,        // start
 			nil,        // stop
@@ -2750,46 +2826,49 @@ var actionTab = actionTable{
 	actionRow{ // S76
 		canRecover: false,
 		actions: [numSymbols]action{
-			nil,       // INVALID
-			nil,       // $
-			nil,       // empty
-			nil,       // terminator
-			nil,       // bar
-			nil,       // stringLit
-			nil,       // {
-			shift(83), // }
-			nil,       // [
-			nil,       // ]
-			nil,       // char
-			nil,       // rest
-			nil,       // sharp
-			nil,       // flat
-			nil,       // accent
-			nil,       // ghost
-			nil,       // uint
-			nil,       // dot
-			nil,       // tuplet
-			nil,       // letRing
-			nil,       // assign
-			nil,       // tempo
-			nil,       // timesig
-			nil,       // channel
-			nil,       // velocity
-			nil,       // program
-			nil,       // control
-			nil,       // end
-			nil,       // play
-			nil,       // start
-			nil,       // stop
+			nil,        // INVALID
+			reduce(35), // $, reduce: Command
+			reduce(35), // terminator, reduce: Command
+			nil,        // empty
+			nil,        // lineComment
+			nil,        // blockComment
+			nil,        // bar
+			nil,        // stringLit
+			nil,        // {
+			nil,        // }
+			nil,        // [
+			nil,        // ]
+			nil,        // char
+			nil,        // rest
+			nil,        // sharp
+			nil,        // flat
+			nil,        // accent
+			nil,        // ghost
+			nil,        // uint
+			nil,        // dot
+			nil,        // tuplet
+			nil,        // letRing
+			nil,        // assign
+			nil,        // tempo
+			nil,        // timesig
+			nil,        // channel
+			nil,        // velocity
+			nil,        // program
+			nil,        // control
+			nil,        // play
+			nil,        // start
+			nil,        // stop
 		},
 	},
 	actionRow{ // S77
 		canRecover: false,
 		actions: [numSymbols]action{
 			nil,       // INVALID
-			nil,       // $
+			reduce(2), // $, reduce: StatementList
+			nil,       // terminator
 			nil,       // empty
-			shift(84), // terminator
+			nil,       // lineComment
+			nil,       // blockComment
 			nil,       // bar
 			nil,       // stringLit
 			nil,       // {
@@ -2813,7 +2892,6 @@ var actionTab = actionTable{
 			nil,       // velocity
 			nil,       // program
 			nil,       // control
-			nil,       // end
 			nil,       // play
 			nil,       // start
 			nil,       // stop
@@ -2823,17 +2901,19 @@ var actionTab = actionTable{
 		canRecover: false,
 		actions: [numSymbols]action{
 			nil,       // INVALID
-			nil,       // $
+			reduce(5), // $, reduce: RepeatTerminator
+			nil,       // terminator
 			nil,       // empty
-			shift(85), // terminator
-			nil,       // bar
+			reduce(5), // lineComment, reduce: RepeatTerminator
+			reduce(5), // blockComment, reduce: RepeatTerminator
+			reduce(5), // bar, reduce: RepeatTerminator
 			nil,       // stringLit
 			nil,       // {
 			nil,       // }
-			nil,       // [
+			reduce(5), // [, reduce: RepeatTerminator
 			nil,       // ]
-			nil,       // char
-			nil,       // rest
+			reduce(5), // char, reduce: RepeatTerminator
+			reduce(5), // rest, reduce: RepeatTerminator
 			nil,       // sharp
 			nil,       // flat
 			nil,       // accent
@@ -2842,114 +2922,80 @@ var actionTab = actionTable{
 			nil,       // dot
 			nil,       // tuplet
 			nil,       // letRing
-			nil,       // assign
-			nil,       // tempo
-			nil,       // timesig
-			nil,       // channel
-			nil,       // velocity
-			nil,       // program
-			nil,       // control
-			nil,       // end
-			nil,       // play
-			nil,       // start
-			nil,       // stop
+			reduce(5), // assign, reduce: RepeatTerminator
+			reduce(5), // tempo, reduce: RepeatTerminator
+			reduce(5), // timesig, reduce: RepeatTerminator
+			reduce(5), // channel, reduce: RepeatTerminator
+			reduce(5), // velocity, reduce: RepeatTerminator
+			reduce(5), // program, reduce: RepeatTerminator
+			reduce(5), // control, reduce: RepeatTerminator
+			reduce(5), // play, reduce: RepeatTerminator
+			reduce(5), // start, reduce: RepeatTerminator
+			reduce(5), // stop, reduce: RepeatTerminator
 		},
 	},
 	actionRow{ // S79
 		canRecover: false,
 		actions: [numSymbols]action{
-			nil,       // INVALID
-			nil,       // $
-			nil,       // empty
-			shift(86), // terminator
-			nil,       // bar
-			nil,       // stringLit
-			nil,       // {
-			nil,       // }
-			nil,       // [
-			nil,       // ]
-			nil,       // char
-			nil,       // rest
-			nil,       // sharp
-			nil,       // flat
-			nil,       // accent
-			nil,       // ghost
-			nil,       // uint
-			nil,       // dot
-			nil,       // tuplet
-			nil,       // letRing
-			nil,       // assign
-			nil,       // tempo
-			nil,       // timesig
-			nil,       // channel
-			nil,       // velocity
-			nil,       // program
-			nil,       // control
-			nil,       // end
-			nil,       // play
-			nil,       // start
-			nil,       // stop
+			nil,        // INVALID
+			nil,        // $
+			nil,        // terminator
+			nil,        // empty
+			shift(89),  // lineComment
+			shift(90),  // blockComment
+			shift(91),  // bar
+			nil,        // stringLit
+			nil,        // {
+			nil,        // }
+			shift(94),  // [
+			nil,        // ]
+			shift(95),  // char
+			shift(96),  // rest
+			nil,        // sharp
+			nil,        // flat
+			nil,        // accent
+			nil,        // ghost
+			nil,        // uint
+			nil,        // dot
+			nil,        // tuplet
+			nil,        // letRing
+			shift(97),  // assign
+			shift(98),  // tempo
+			shift(99),  // timesig
+			shift(100), // channel
+			shift(101), // velocity
+			shift(102), // program
+			shift(103), // control
+			shift(104), // play
+			shift(105), // start
+			shift(106), // stop
 		},
 	},
 	actionRow{ // S80
 		canRecover: false,
 		actions: [numSymbols]action{
-			nil,       // INVALID
-			nil,       // $
-			nil,       // empty
-			reduce(9), // terminator, reduce: NoteGroup
-			nil,       // bar
-			nil,       // stringLit
-			nil,       // {
-			nil,       // }
-			reduce(9), // [, reduce: NoteGroup
-			nil,       // ]
-			reduce(9), // char, reduce: NoteGroup
-			reduce(9), // rest, reduce: NoteGroup
-			nil,       // sharp
-			nil,       // flat
-			nil,       // accent
-			nil,       // ghost
-			nil,       // uint
-			nil,       // dot
-			nil,       // tuplet
-			nil,       // letRing
-			nil,       // assign
-			nil,       // tempo
-			nil,       // timesig
-			nil,       // channel
-			nil,       // velocity
-			nil,       // program
-			nil,       // control
-			nil,       // end
-			nil,       // play
-			nil,       // start
-			nil,       // stop
-		},
-	},
-	actionRow{ // S81
-		canRecover: false,
-		actions: [numSymbols]action{
 			nil,        // INVALID
-			nil,        // $
+			reduce(16), // $, reduce: NoteObject
+			reduce(16), // terminator, reduce: NoteObject
 			nil,        // empty
-			nil,        // terminator
+			nil,        // lineComment
+			nil,        // blockComment
 			nil,        // bar
 			nil,        // stringLit
 			nil,        // {
 			nil,        // }
-			reduce(13), // [, reduce: PropertyList
-			reduce(13), // ], reduce: PropertyList
-			reduce(13), // char, reduce: PropertyList
-			reduce(13), // rest, reduce: PropertyList
-			shift(64),  // sharp
-			shift(65),  // flat
-			shift(66),  // accent
-			shift(67),  // ghost
-			shift(68),  // uint
-			shift(69),  // dot
-			shift(70),  // tuplet
-			shift(71),  // letRing
+			reduce(16), // [, reduce: NoteObject
+			nil,        // ]
+			reduce(16), // char, reduce: NoteObject
+			reduce(16), // rest, reduce: NoteObject
+			nil,        // sharp
+			nil,        // flat
+			nil,        // accent
+			nil,        // ghost
+			nil,        // uint
+			nil,        // dot
+			nil,        // tuplet
+			nil,        // letRing
 			nil,        // assign
 			nil,        // tempo
 			nil,        // timesig
@@ -2957,7 +3003,43 @@ var actionTab = actionTable{
 			nil,        // velocity
 			nil,        // program
 			nil,        // control
-			nil,        // end
+			nil,        // play
+			nil,        // start
+			nil,        // stop
+		},
+	},
+	actionRow{ // S81
+		canRecover: false,
+		actions: [numSymbols]action{
+			nil,        // INVALID
+			nil,        // $
+			nil,        // terminator
+			nil,        // empty
+			nil,        // lineComment
+			nil,        // blockComment
+			nil,        // bar
+			nil,        // stringLit
+			nil,        // {
+			nil,        // }
+			reduce(20), // [, reduce: PropertyList
+			reduce(20), // ], reduce: PropertyList
+			reduce(20), // char, reduce: PropertyList
+			reduce(20), // rest, reduce: PropertyList
+			nil,        // sharp
+			nil,        // flat
+			nil,        // accent
+			nil,        // ghost
+			nil,        // uint
+			nil,        // dot
+			nil,        // tuplet
+			nil,        // letRing
+			nil,        // assign
+			nil,        // tempo
+			nil,        // timesig
+			nil,        // channel
+			nil,        // velocity
+			nil,        // program
+			nil,        // control
 			nil,        // play
 			nil,        // start
 			nil,        // stop
@@ -2968,16 +3050,55 @@ var actionTab = actionTable{
 		actions: [numSymbols]action{
 			nil,        // INVALID
 			nil,        // $
-			nil,        // empty
 			nil,        // terminator
+			nil,        // empty
+			nil,        // lineComment
+			nil,        // blockComment
 			nil,        // bar
 			nil,        // stringLit
 			nil,        // {
 			nil,        // }
-			reduce(14), // [, reduce: PropertyList
-			reduce(14), // ], reduce: PropertyList
-			reduce(14), // char, reduce: PropertyList
-			reduce(14), // rest, reduce: PropertyList
+			reduce(19), // [, reduce: PropertyList
+			reduce(19), // ], reduce: PropertyList
+			reduce(19), // char, reduce: PropertyList
+			reduce(19), // rest, reduce: PropertyList
+			shift(65),  // sharp
+			shift(66),  // flat
+			shift(67),  // accent
+			shift(68),  // ghost
+			shift(69),  // uint
+			shift(70),  // dot
+			shift(71),  // tuplet
+			shift(72),  // letRing
+			nil,        // assign
+			nil,        // tempo
+			nil,        // timesig
+			nil,        // channel
+			nil,        // velocity
+			nil,        // program
+			nil,        // control
+			nil,        // play
+			nil,        // start
+			nil,        // stop
+		},
+	},
+	actionRow{ // S83
+		canRecover: false,
+		actions: [numSymbols]action{
+			nil,        // INVALID
+			nil,        // $
+			nil,        // terminator
+			nil,        // empty
+			nil,        // lineComment
+			nil,        // blockComment
+			nil,        // bar
+			nil,        // stringLit
+			nil,        // {
+			shift(108), // }
+			nil,        // [
+			nil,        // ]
+			nil,        // char
+			nil,        // rest
 			nil,        // sharp
 			nil,        // flat
 			nil,        // accent
@@ -2993,23 +3114,61 @@ var actionTab = actionTable{
 			nil,        // velocity
 			nil,        // program
 			nil,        // control
-			nil,        // end
 			nil,        // play
 			nil,        // start
 			nil,        // stop
 		},
 	},
-	actionRow{ // S83
+	actionRow{ // S84
+		canRecover: false,
+		actions: [numSymbols]action{
+			nil,        // INVALID
+			nil,        // $
+			shift(110), // terminator
+			nil,        // empty
+			nil,        // lineComment
+			nil,        // blockComment
+			nil,        // bar
+			nil,        // stringLit
+			nil,        // {
+			reduce(4),  // }, reduce: RepeatTerminator
+			nil,        // [
+			nil,        // ]
+			nil,        // char
+			nil,        // rest
+			nil,        // sharp
+			nil,        // flat
+			nil,        // accent
+			nil,        // ghost
+			nil,        // uint
+			nil,        // dot
+			nil,        // tuplet
+			nil,        // letRing
+			nil,        // assign
+			nil,        // tempo
+			nil,        // timesig
+			nil,        // channel
+			nil,        // velocity
+			nil,        // program
+			nil,        // control
+			nil,        // play
+			nil,        // start
+			nil,        // stop
+		},
+	},
+	actionRow{ // S85
 		canRecover: false,
 		actions: [numSymbols]action{
 			nil,       // INVALID
 			nil,       // $
+			reduce(6), // terminator, reduce: Statement
 			nil,       // empty
-			reduce(5), // terminator, reduce: Bar
+			nil,       // lineComment
+			nil,       // blockComment
 			nil,       // bar
 			nil,       // stringLit
 			nil,       // {
-			nil,       // }
+			reduce(6), // }, reduce: Statement
 			nil,       // [
 			nil,       // ]
 			nil,       // char
@@ -3029,82 +3188,9 @@ var actionTab = actionTable{
 			nil,       // velocity
 			nil,       // program
 			nil,       // control
-			nil,       // end
 			nil,       // play
 			nil,       // start
 			nil,       // stop
-		},
-	},
-	actionRow{ // S84
-		canRecover: false,
-		actions: [numSymbols]action{
-			nil,       // INVALID
-			nil,       // $
-			nil,       // empty
-			reduce(6), // terminator, reduce: NoteList
-			shift(5),  // bar
-			nil,       // stringLit
-			nil,       // {
-			reduce(1), // }, reduce: Song
-			shift(8),  // [
-			nil,       // ]
-			shift(10), // char
-			shift(11), // rest
-			nil,       // sharp
-			nil,       // flat
-			nil,       // accent
-			nil,       // ghost
-			nil,       // uint
-			nil,       // dot
-			nil,       // tuplet
-			nil,       // letRing
-			shift(12), // assign
-			shift(13), // tempo
-			shift(14), // timesig
-			shift(15), // channel
-			shift(16), // velocity
-			shift(17), // program
-			shift(18), // control
-			shift(19), // end
-			shift(20), // play
-			shift(21), // start
-			shift(22), // stop
-		},
-	},
-	actionRow{ // S85
-		canRecover: false,
-		actions: [numSymbols]action{
-			nil,       // INVALID
-			nil,       // $
-			nil,       // empty
-			reduce(6), // terminator, reduce: NoteList
-			shift(5),  // bar
-			nil,       // stringLit
-			nil,       // {
-			reduce(1), // }, reduce: Song
-			shift(8),  // [
-			nil,       // ]
-			shift(10), // char
-			shift(11), // rest
-			nil,       // sharp
-			nil,       // flat
-			nil,       // accent
-			nil,       // ghost
-			nil,       // uint
-			nil,       // dot
-			nil,       // tuplet
-			nil,       // letRing
-			shift(12), // assign
-			shift(13), // tempo
-			shift(14), // timesig
-			shift(15), // channel
-			shift(16), // velocity
-			shift(17), // program
-			shift(18), // control
-			shift(19), // end
-			shift(20), // play
-			shift(21), // start
-			shift(22), // stop
 		},
 	},
 	actionRow{ // S86
@@ -3112,52 +3198,18 @@ var actionTab = actionTable{
 		actions: [numSymbols]action{
 			nil,       // INVALID
 			nil,       // $
+			reduce(7), // terminator, reduce: Statement
 			nil,       // empty
-			reduce(6), // terminator, reduce: NoteList
-			shift(5),  // bar
-			nil,       // stringLit
-			nil,       // {
-			reduce(1), // }, reduce: Song
-			shift(8),  // [
-			nil,       // ]
-			shift(10), // char
-			shift(11), // rest
-			nil,       // sharp
-			nil,       // flat
-			nil,       // accent
-			nil,       // ghost
-			nil,       // uint
-			nil,       // dot
-			nil,       // tuplet
-			nil,       // letRing
-			shift(12), // assign
-			shift(13), // tempo
-			shift(14), // timesig
-			shift(15), // channel
-			shift(16), // velocity
-			shift(17), // program
-			shift(18), // control
-			shift(19), // end
-			shift(20), // play
-			shift(21), // start
-			shift(22), // stop
-		},
-	},
-	actionRow{ // S87
-		canRecover: false,
-		actions: [numSymbols]action{
-			nil,       // INVALID
-			nil,       // $
-			nil,       // empty
-			nil,       // terminator
+			nil,       // lineComment
+			nil,       // blockComment
 			nil,       // bar
 			nil,       // stringLit
 			nil,       // {
-			nil,       // }
-			reduce(9), // [, reduce: NoteGroup
-			reduce(9), // ], reduce: NoteGroup
-			reduce(9), // char, reduce: NoteGroup
-			reduce(9), // rest, reduce: NoteGroup
+			reduce(7), // }, reduce: Statement
+			nil,       // [
+			nil,       // ]
+			nil,       // char
+			nil,       // rest
 			nil,       // sharp
 			nil,       // flat
 			nil,       // accent
@@ -3173,7 +3225,43 @@ var actionTab = actionTable{
 			nil,       // velocity
 			nil,       // program
 			nil,       // control
-			nil,       // end
+			nil,       // play
+			nil,       // start
+			nil,       // stop
+		},
+	},
+	actionRow{ // S87
+		canRecover: false,
+		actions: [numSymbols]action{
+			nil,       // INVALID
+			nil,       // $
+			reduce(8), // terminator, reduce: Statement
+			nil,       // empty
+			nil,       // lineComment
+			nil,       // blockComment
+			nil,       // bar
+			nil,       // stringLit
+			nil,       // {
+			reduce(8), // }, reduce: Statement
+			nil,       // [
+			nil,       // ]
+			nil,       // char
+			nil,       // rest
+			nil,       // sharp
+			nil,       // flat
+			nil,       // accent
+			nil,       // ghost
+			nil,       // uint
+			nil,       // dot
+			nil,       // tuplet
+			nil,       // letRing
+			nil,       // assign
+			nil,       // tempo
+			nil,       // timesig
+			nil,       // channel
+			nil,       // velocity
+			nil,       // program
+			nil,       // control
 			nil,       // play
 			nil,       // start
 			nil,       // stop
@@ -3184,12 +3272,14 @@ var actionTab = actionTable{
 		actions: [numSymbols]action{
 			nil,       // INVALID
 			nil,       // $
+			reduce(9), // terminator, reduce: Statement
 			nil,       // empty
-			nil,       // terminator
+			nil,       // lineComment
+			nil,       // blockComment
 			nil,       // bar
 			nil,       // stringLit
 			nil,       // {
-			reduce(2), // }, reduce: Song
+			reduce(9), // }, reduce: Statement
 			nil,       // [
 			nil,       // ]
 			nil,       // char
@@ -3209,7 +3299,6 @@ var actionTab = actionTable{
 			nil,       // velocity
 			nil,       // program
 			nil,       // control
-			nil,       // end
 			nil,       // play
 			nil,       // start
 			nil,       // stop
@@ -3218,50 +3307,756 @@ var actionTab = actionTable{
 	actionRow{ // S89
 		canRecover: false,
 		actions: [numSymbols]action{
-			nil,       // INVALID
-			nil,       // $
-			nil,       // empty
-			nil,       // terminator
-			nil,       // bar
-			nil,       // stringLit
-			nil,       // {
-			reduce(3), // }, reduce: Song
-			nil,       // [
-			nil,       // ]
-			nil,       // char
-			nil,       // rest
-			nil,       // sharp
-			nil,       // flat
-			nil,       // accent
-			nil,       // ghost
-			nil,       // uint
-			nil,       // dot
-			nil,       // tuplet
-			nil,       // letRing
-			nil,       // assign
-			nil,       // tempo
-			nil,       // timesig
-			nil,       // channel
-			nil,       // velocity
-			nil,       // program
-			nil,       // control
-			nil,       // end
-			nil,       // play
-			nil,       // start
-			nil,       // stop
+			nil,        // INVALID
+			nil,        // $
+			reduce(10), // terminator, reduce: Comment
+			nil,        // empty
+			nil,        // lineComment
+			nil,        // blockComment
+			nil,        // bar
+			nil,        // stringLit
+			nil,        // {
+			reduce(10), // }, reduce: Comment
+			nil,        // [
+			nil,        // ]
+			nil,        // char
+			nil,        // rest
+			nil,        // sharp
+			nil,        // flat
+			nil,        // accent
+			nil,        // ghost
+			nil,        // uint
+			nil,        // dot
+			nil,        // tuplet
+			nil,        // letRing
+			nil,        // assign
+			nil,        // tempo
+			nil,        // timesig
+			nil,        // channel
+			nil,        // velocity
+			nil,        // program
+			nil,        // control
+			nil,        // play
+			nil,        // start
+			nil,        // stop
 		},
 	},
 	actionRow{ // S90
 		canRecover: false,
 		actions: [numSymbols]action{
+			nil,        // INVALID
+			nil,        // $
+			reduce(11), // terminator, reduce: Comment
+			nil,        // empty
+			nil,        // lineComment
+			nil,        // blockComment
+			nil,        // bar
+			nil,        // stringLit
+			nil,        // {
+			reduce(11), // }, reduce: Comment
+			nil,        // [
+			nil,        // ]
+			nil,        // char
+			nil,        // rest
+			nil,        // sharp
+			nil,        // flat
+			nil,        // accent
+			nil,        // ghost
+			nil,        // uint
+			nil,        // dot
+			nil,        // tuplet
+			nil,        // letRing
+			nil,        // assign
+			nil,        // tempo
+			nil,        // timesig
+			nil,        // channel
+			nil,        // velocity
+			nil,        // program
+			nil,        // control
+			nil,        // play
+			nil,        // start
+			nil,        // stop
+		},
+	},
+	actionRow{ // S91
+		canRecover: false,
+		actions: [numSymbols]action{
+			nil,        // INVALID
+			nil,        // $
+			nil,        // terminator
+			nil,        // empty
+			nil,        // lineComment
+			nil,        // blockComment
+			nil,        // bar
+			shift(111), // stringLit
+			nil,        // {
+			nil,        // }
+			nil,        // [
+			nil,        // ]
+			nil,        // char
+			nil,        // rest
+			nil,        // sharp
+			nil,        // flat
+			nil,        // accent
+			nil,        // ghost
+			nil,        // uint
+			nil,        // dot
+			nil,        // tuplet
+			nil,        // letRing
+			nil,        // assign
+			nil,        // tempo
+			nil,        // timesig
+			nil,        // channel
+			nil,        // velocity
+			nil,        // program
+			nil,        // control
+			nil,        // play
+			nil,        // start
+			nil,        // stop
+		},
+	},
+	actionRow{ // S92
+		canRecover: false,
+		actions: [numSymbols]action{
+			nil,        // INVALID
+			nil,        // $
+			reduce(13), // terminator, reduce: NoteList
+			nil,        // empty
+			nil,        // lineComment
+			nil,        // blockComment
+			nil,        // bar
+			nil,        // stringLit
+			nil,        // {
+			reduce(13), // }, reduce: NoteList
+			shift(94),  // [
+			nil,        // ]
+			shift(95),  // char
+			shift(96),  // rest
+			nil,        // sharp
+			nil,        // flat
+			nil,        // accent
+			nil,        // ghost
+			nil,        // uint
+			nil,        // dot
+			nil,        // tuplet
+			nil,        // letRing
+			nil,        // assign
+			nil,        // tempo
+			nil,        // timesig
+			nil,        // channel
+			nil,        // velocity
+			nil,        // program
+			nil,        // control
+			nil,        // play
+			nil,        // start
+			nil,        // stop
+		},
+	},
+	actionRow{ // S93
+		canRecover: false,
+		actions: [numSymbols]action{
+			nil,        // INVALID
+			nil,        // $
+			reduce(19), // terminator, reduce: PropertyList
+			nil,        // empty
+			nil,        // lineComment
+			nil,        // blockComment
+			nil,        // bar
+			nil,        // stringLit
+			nil,        // {
+			reduce(19), // }, reduce: PropertyList
+			reduce(19), // [, reduce: PropertyList
+			nil,        // ]
+			reduce(19), // char, reduce: PropertyList
+			reduce(19), // rest, reduce: PropertyList
+			shift(115), // sharp
+			shift(116), // flat
+			shift(117), // accent
+			shift(118), // ghost
+			shift(119), // uint
+			shift(120), // dot
+			shift(121), // tuplet
+			shift(122), // letRing
+			nil,        // assign
+			nil,        // tempo
+			nil,        // timesig
+			nil,        // channel
+			nil,        // velocity
+			nil,        // program
+			nil,        // control
+			nil,        // play
+			nil,        // start
+			nil,        // stop
+		},
+	},
+	actionRow{ // S94
+		canRecover: false,
+		actions: [numSymbols]action{
 			nil,       // INVALID
 			nil,       // $
-			nil,       // empty
 			nil,       // terminator
+			nil,       // empty
+			nil,       // lineComment
+			nil,       // blockComment
 			nil,       // bar
 			nil,       // stringLit
 			nil,       // {
-			reduce(4), // }, reduce: Song
+			nil,       // }
+			shift(46), // [
+			nil,       // ]
+			shift(47), // char
+			shift(48), // rest
+			nil,       // sharp
+			nil,       // flat
+			nil,       // accent
+			nil,       // ghost
+			nil,       // uint
+			nil,       // dot
+			nil,       // tuplet
+			nil,       // letRing
+			nil,       // assign
+			nil,       // tempo
+			nil,       // timesig
+			nil,       // channel
+			nil,       // velocity
+			nil,       // program
+			nil,       // control
+			nil,       // play
+			nil,       // start
+			nil,       // stop
+		},
+	},
+	actionRow{ // S95
+		canRecover: false,
+		actions: [numSymbols]action{
+			nil,        // INVALID
+			nil,        // $
+			reduce(17), // terminator, reduce: NoteSymbol
+			nil,        // empty
+			nil,        // lineComment
+			nil,        // blockComment
+			nil,        // bar
+			nil,        // stringLit
+			nil,        // {
+			reduce(17), // }, reduce: NoteSymbol
+			reduce(17), // [, reduce: NoteSymbol
+			nil,        // ]
+			reduce(17), // char, reduce: NoteSymbol
+			reduce(17), // rest, reduce: NoteSymbol
+			reduce(17), // sharp, reduce: NoteSymbol
+			reduce(17), // flat, reduce: NoteSymbol
+			reduce(17), // accent, reduce: NoteSymbol
+			reduce(17), // ghost, reduce: NoteSymbol
+			reduce(17), // uint, reduce: NoteSymbol
+			reduce(17), // dot, reduce: NoteSymbol
+			reduce(17), // tuplet, reduce: NoteSymbol
+			reduce(17), // letRing, reduce: NoteSymbol
+			nil,        // assign
+			nil,        // tempo
+			nil,        // timesig
+			nil,        // channel
+			nil,        // velocity
+			nil,        // program
+			nil,        // control
+			nil,        // play
+			nil,        // start
+			nil,        // stop
+		},
+	},
+	actionRow{ // S96
+		canRecover: false,
+		actions: [numSymbols]action{
+			nil,        // INVALID
+			nil,        // $
+			reduce(18), // terminator, reduce: NoteSymbol
+			nil,        // empty
+			nil,        // lineComment
+			nil,        // blockComment
+			nil,        // bar
+			nil,        // stringLit
+			nil,        // {
+			reduce(18), // }, reduce: NoteSymbol
+			reduce(18), // [, reduce: NoteSymbol
+			nil,        // ]
+			reduce(18), // char, reduce: NoteSymbol
+			reduce(18), // rest, reduce: NoteSymbol
+			reduce(18), // sharp, reduce: NoteSymbol
+			reduce(18), // flat, reduce: NoteSymbol
+			reduce(18), // accent, reduce: NoteSymbol
+			reduce(18), // ghost, reduce: NoteSymbol
+			reduce(18), // uint, reduce: NoteSymbol
+			reduce(18), // dot, reduce: NoteSymbol
+			reduce(18), // tuplet, reduce: NoteSymbol
+			reduce(18), // letRing, reduce: NoteSymbol
+			nil,        // assign
+			nil,        // tempo
+			nil,        // timesig
+			nil,        // channel
+			nil,        // velocity
+			nil,        // program
+			nil,        // control
+			nil,        // play
+			nil,        // start
+			nil,        // stop
+		},
+	},
+	actionRow{ // S97
+		canRecover: false,
+		actions: [numSymbols]action{
+			nil,        // INVALID
+			nil,        // $
+			nil,        // terminator
+			nil,        // empty
+			nil,        // lineComment
+			nil,        // blockComment
+			nil,        // bar
+			nil,        // stringLit
+			nil,        // {
+			nil,        // }
+			nil,        // [
+			nil,        // ]
+			shift(124), // char
+			nil,        // rest
+			nil,        // sharp
+			nil,        // flat
+			nil,        // accent
+			nil,        // ghost
+			nil,        // uint
+			nil,        // dot
+			nil,        // tuplet
+			nil,        // letRing
+			nil,        // assign
+			nil,        // tempo
+			nil,        // timesig
+			nil,        // channel
+			nil,        // velocity
+			nil,        // program
+			nil,        // control
+			nil,        // play
+			nil,        // start
+			nil,        // stop
+		},
+	},
+	actionRow{ // S98
+		canRecover: false,
+		actions: [numSymbols]action{
+			nil,        // INVALID
+			nil,        // $
+			nil,        // terminator
+			nil,        // empty
+			nil,        // lineComment
+			nil,        // blockComment
+			nil,        // bar
+			nil,        // stringLit
+			nil,        // {
+			nil,        // }
+			nil,        // [
+			nil,        // ]
+			nil,        // char
+			nil,        // rest
+			nil,        // sharp
+			nil,        // flat
+			nil,        // accent
+			nil,        // ghost
+			shift(125), // uint
+			nil,        // dot
+			nil,        // tuplet
+			nil,        // letRing
+			nil,        // assign
+			nil,        // tempo
+			nil,        // timesig
+			nil,        // channel
+			nil,        // velocity
+			nil,        // program
+			nil,        // control
+			nil,        // play
+			nil,        // start
+			nil,        // stop
+		},
+	},
+	actionRow{ // S99
+		canRecover: false,
+		actions: [numSymbols]action{
+			nil,        // INVALID
+			nil,        // $
+			nil,        // terminator
+			nil,        // empty
+			nil,        // lineComment
+			nil,        // blockComment
+			nil,        // bar
+			nil,        // stringLit
+			nil,        // {
+			nil,        // }
+			nil,        // [
+			nil,        // ]
+			nil,        // char
+			nil,        // rest
+			nil,        // sharp
+			nil,        // flat
+			nil,        // accent
+			nil,        // ghost
+			shift(126), // uint
+			nil,        // dot
+			nil,        // tuplet
+			nil,        // letRing
+			nil,        // assign
+			nil,        // tempo
+			nil,        // timesig
+			nil,        // channel
+			nil,        // velocity
+			nil,        // program
+			nil,        // control
+			nil,        // play
+			nil,        // start
+			nil,        // stop
+		},
+	},
+	actionRow{ // S100
+		canRecover: false,
+		actions: [numSymbols]action{
+			nil,        // INVALID
+			nil,        // $
+			nil,        // terminator
+			nil,        // empty
+			nil,        // lineComment
+			nil,        // blockComment
+			nil,        // bar
+			nil,        // stringLit
+			nil,        // {
+			nil,        // }
+			nil,        // [
+			nil,        // ]
+			nil,        // char
+			nil,        // rest
+			nil,        // sharp
+			nil,        // flat
+			nil,        // accent
+			nil,        // ghost
+			shift(127), // uint
+			nil,        // dot
+			nil,        // tuplet
+			nil,        // letRing
+			nil,        // assign
+			nil,        // tempo
+			nil,        // timesig
+			nil,        // channel
+			nil,        // velocity
+			nil,        // program
+			nil,        // control
+			nil,        // play
+			nil,        // start
+			nil,        // stop
+		},
+	},
+	actionRow{ // S101
+		canRecover: false,
+		actions: [numSymbols]action{
+			nil,        // INVALID
+			nil,        // $
+			nil,        // terminator
+			nil,        // empty
+			nil,        // lineComment
+			nil,        // blockComment
+			nil,        // bar
+			nil,        // stringLit
+			nil,        // {
+			nil,        // }
+			nil,        // [
+			nil,        // ]
+			nil,        // char
+			nil,        // rest
+			nil,        // sharp
+			nil,        // flat
+			nil,        // accent
+			nil,        // ghost
+			shift(128), // uint
+			nil,        // dot
+			nil,        // tuplet
+			nil,        // letRing
+			nil,        // assign
+			nil,        // tempo
+			nil,        // timesig
+			nil,        // channel
+			nil,        // velocity
+			nil,        // program
+			nil,        // control
+			nil,        // play
+			nil,        // start
+			nil,        // stop
+		},
+	},
+	actionRow{ // S102
+		canRecover: false,
+		actions: [numSymbols]action{
+			nil,        // INVALID
+			nil,        // $
+			nil,        // terminator
+			nil,        // empty
+			nil,        // lineComment
+			nil,        // blockComment
+			nil,        // bar
+			nil,        // stringLit
+			nil,        // {
+			nil,        // }
+			nil,        // [
+			nil,        // ]
+			nil,        // char
+			nil,        // rest
+			nil,        // sharp
+			nil,        // flat
+			nil,        // accent
+			nil,        // ghost
+			shift(129), // uint
+			nil,        // dot
+			nil,        // tuplet
+			nil,        // letRing
+			nil,        // assign
+			nil,        // tempo
+			nil,        // timesig
+			nil,        // channel
+			nil,        // velocity
+			nil,        // program
+			nil,        // control
+			nil,        // play
+			nil,        // start
+			nil,        // stop
+		},
+	},
+	actionRow{ // S103
+		canRecover: false,
+		actions: [numSymbols]action{
+			nil,        // INVALID
+			nil,        // $
+			nil,        // terminator
+			nil,        // empty
+			nil,        // lineComment
+			nil,        // blockComment
+			nil,        // bar
+			nil,        // stringLit
+			nil,        // {
+			nil,        // }
+			nil,        // [
+			nil,        // ]
+			nil,        // char
+			nil,        // rest
+			nil,        // sharp
+			nil,        // flat
+			nil,        // accent
+			nil,        // ghost
+			shift(130), // uint
+			nil,        // dot
+			nil,        // tuplet
+			nil,        // letRing
+			nil,        // assign
+			nil,        // tempo
+			nil,        // timesig
+			nil,        // channel
+			nil,        // velocity
+			nil,        // program
+			nil,        // control
+			nil,        // play
+			nil,        // start
+			nil,        // stop
+		},
+	},
+	actionRow{ // S104
+		canRecover: false,
+		actions: [numSymbols]action{
+			nil,        // INVALID
+			nil,        // $
+			nil,        // terminator
+			nil,        // empty
+			nil,        // lineComment
+			nil,        // blockComment
+			nil,        // bar
+			shift(131), // stringLit
+			nil,        // {
+			nil,        // }
+			nil,        // [
+			nil,        // ]
+			nil,        // char
+			nil,        // rest
+			nil,        // sharp
+			nil,        // flat
+			nil,        // accent
+			nil,        // ghost
+			nil,        // uint
+			nil,        // dot
+			nil,        // tuplet
+			nil,        // letRing
+			nil,        // assign
+			nil,        // tempo
+			nil,        // timesig
+			nil,        // channel
+			nil,        // velocity
+			nil,        // program
+			nil,        // control
+			nil,        // play
+			nil,        // start
+			nil,        // stop
+		},
+	},
+	actionRow{ // S105
+		canRecover: false,
+		actions: [numSymbols]action{
+			nil,        // INVALID
+			nil,        // $
+			reduce(37), // terminator, reduce: Command
+			nil,        // empty
+			nil,        // lineComment
+			nil,        // blockComment
+			nil,        // bar
+			nil,        // stringLit
+			nil,        // {
+			reduce(37), // }, reduce: Command
+			nil,        // [
+			nil,        // ]
+			nil,        // char
+			nil,        // rest
+			nil,        // sharp
+			nil,        // flat
+			nil,        // accent
+			nil,        // ghost
+			nil,        // uint
+			nil,        // dot
+			nil,        // tuplet
+			nil,        // letRing
+			nil,        // assign
+			nil,        // tempo
+			nil,        // timesig
+			nil,        // channel
+			nil,        // velocity
+			nil,        // program
+			nil,        // control
+			nil,        // play
+			nil,        // start
+			nil,        // stop
+		},
+	},
+	actionRow{ // S106
+		canRecover: false,
+		actions: [numSymbols]action{
+			nil,        // INVALID
+			nil,        // $
+			reduce(38), // terminator, reduce: Command
+			nil,        // empty
+			nil,        // lineComment
+			nil,        // blockComment
+			nil,        // bar
+			nil,        // stringLit
+			nil,        // {
+			reduce(38), // }, reduce: Command
+			nil,        // [
+			nil,        // ]
+			nil,        // char
+			nil,        // rest
+			nil,        // sharp
+			nil,        // flat
+			nil,        // accent
+			nil,        // ghost
+			nil,        // uint
+			nil,        // dot
+			nil,        // tuplet
+			nil,        // letRing
+			nil,        // assign
+			nil,        // tempo
+			nil,        // timesig
+			nil,        // channel
+			nil,        // velocity
+			nil,        // program
+			nil,        // control
+			nil,        // play
+			nil,        // start
+			nil,        // stop
+		},
+	},
+	actionRow{ // S107
+		canRecover: false,
+		actions: [numSymbols]action{
+			nil,        // INVALID
+			nil,        // $
+			nil,        // terminator
+			nil,        // empty
+			nil,        // lineComment
+			nil,        // blockComment
+			nil,        // bar
+			nil,        // stringLit
+			nil,        // {
+			nil,        // }
+			reduce(16), // [, reduce: NoteObject
+			reduce(16), // ], reduce: NoteObject
+			reduce(16), // char, reduce: NoteObject
+			reduce(16), // rest, reduce: NoteObject
+			nil,        // sharp
+			nil,        // flat
+			nil,        // accent
+			nil,        // ghost
+			nil,        // uint
+			nil,        // dot
+			nil,        // tuplet
+			nil,        // letRing
+			nil,        // assign
+			nil,        // tempo
+			nil,        // timesig
+			nil,        // channel
+			nil,        // velocity
+			nil,        // program
+			nil,        // control
+			nil,        // play
+			nil,        // start
+			nil,        // stop
+		},
+	},
+	actionRow{ // S108
+		canRecover: false,
+		actions: [numSymbols]action{
+			nil,        // INVALID
+			reduce(12), // $, reduce: Bar
+			reduce(12), // terminator, reduce: Bar
+			nil,        // empty
+			nil,        // lineComment
+			nil,        // blockComment
+			nil,        // bar
+			nil,        // stringLit
+			nil,        // {
+			nil,        // }
+			nil,        // [
+			nil,        // ]
+			nil,        // char
+			nil,        // rest
+			nil,        // sharp
+			nil,        // flat
+			nil,        // accent
+			nil,        // ghost
+			nil,        // uint
+			nil,        // dot
+			nil,        // tuplet
+			nil,        // letRing
+			nil,        // assign
+			nil,        // tempo
+			nil,        // timesig
+			nil,        // channel
+			nil,        // velocity
+			nil,        // program
+			nil,        // control
+			nil,        // play
+			nil,        // start
+			nil,        // stop
+		},
+	},
+	actionRow{ // S109
+		canRecover: false,
+		actions: [numSymbols]action{
+			nil,       // INVALID
+			nil,       // $
+			nil,       // terminator
+			nil,       // empty
+			nil,       // lineComment
+			nil,       // blockComment
+			nil,       // bar
+			nil,       // stringLit
+			nil,       // {
+			reduce(3), // }, reduce: StatementList
 			nil,       // [
 			nil,       // ]
 			nil,       // char
@@ -3281,10 +4076,1341 @@ var actionTab = actionTable{
 			nil,       // velocity
 			nil,       // program
 			nil,       // control
-			nil,       // end
 			nil,       // play
 			nil,       // start
 			nil,       // stop
+		},
+	},
+	actionRow{ // S110
+		canRecover: false,
+		actions: [numSymbols]action{
+			nil,        // INVALID
+			nil,        // $
+			shift(133), // terminator
+			nil,        // empty
+			reduce(4),  // lineComment, reduce: RepeatTerminator
+			reduce(4),  // blockComment, reduce: RepeatTerminator
+			reduce(4),  // bar, reduce: RepeatTerminator
+			nil,        // stringLit
+			nil,        // {
+			reduce(4),  // }, reduce: RepeatTerminator
+			reduce(4),  // [, reduce: RepeatTerminator
+			nil,        // ]
+			reduce(4),  // char, reduce: RepeatTerminator
+			reduce(4),  // rest, reduce: RepeatTerminator
+			nil,        // sharp
+			nil,        // flat
+			nil,        // accent
+			nil,        // ghost
+			nil,        // uint
+			nil,        // dot
+			nil,        // tuplet
+			nil,        // letRing
+			reduce(4),  // assign, reduce: RepeatTerminator
+			reduce(4),  // tempo, reduce: RepeatTerminator
+			reduce(4),  // timesig, reduce: RepeatTerminator
+			reduce(4),  // channel, reduce: RepeatTerminator
+			reduce(4),  // velocity, reduce: RepeatTerminator
+			reduce(4),  // program, reduce: RepeatTerminator
+			reduce(4),  // control, reduce: RepeatTerminator
+			reduce(4),  // play, reduce: RepeatTerminator
+			reduce(4),  // start, reduce: RepeatTerminator
+			reduce(4),  // stop, reduce: RepeatTerminator
+		},
+	},
+	actionRow{ // S111
+		canRecover: false,
+		actions: [numSymbols]action{
+			nil,        // INVALID
+			nil,        // $
+			nil,        // terminator
+			nil,        // empty
+			nil,        // lineComment
+			nil,        // blockComment
+			nil,        // bar
+			nil,        // stringLit
+			shift(134), // {
+			nil,        // }
+			nil,        // [
+			nil,        // ]
+			nil,        // char
+			nil,        // rest
+			nil,        // sharp
+			nil,        // flat
+			nil,        // accent
+			nil,        // ghost
+			nil,        // uint
+			nil,        // dot
+			nil,        // tuplet
+			nil,        // letRing
+			nil,        // assign
+			nil,        // tempo
+			nil,        // timesig
+			nil,        // channel
+			nil,        // velocity
+			nil,        // program
+			nil,        // control
+			nil,        // play
+			nil,        // start
+			nil,        // stop
+		},
+	},
+	actionRow{ // S112
+		canRecover: false,
+		actions: [numSymbols]action{
+			nil,        // INVALID
+			nil,        // $
+			reduce(14), // terminator, reduce: NoteList
+			nil,        // empty
+			nil,        // lineComment
+			nil,        // blockComment
+			nil,        // bar
+			nil,        // stringLit
+			nil,        // {
+			reduce(14), // }, reduce: NoteList
+			nil,        // [
+			nil,        // ]
+			nil,        // char
+			nil,        // rest
+			nil,        // sharp
+			nil,        // flat
+			nil,        // accent
+			nil,        // ghost
+			nil,        // uint
+			nil,        // dot
+			nil,        // tuplet
+			nil,        // letRing
+			nil,        // assign
+			nil,        // tempo
+			nil,        // timesig
+			nil,        // channel
+			nil,        // velocity
+			nil,        // program
+			nil,        // control
+			nil,        // play
+			nil,        // start
+			nil,        // stop
+		},
+	},
+	actionRow{ // S113
+		canRecover: false,
+		actions: [numSymbols]action{
+			nil,        // INVALID
+			nil,        // $
+			reduce(15), // terminator, reduce: NoteObject
+			nil,        // empty
+			nil,        // lineComment
+			nil,        // blockComment
+			nil,        // bar
+			nil,        // stringLit
+			nil,        // {
+			reduce(15), // }, reduce: NoteObject
+			reduce(15), // [, reduce: NoteObject
+			nil,        // ]
+			reduce(15), // char, reduce: NoteObject
+			reduce(15), // rest, reduce: NoteObject
+			nil,        // sharp
+			nil,        // flat
+			nil,        // accent
+			nil,        // ghost
+			nil,        // uint
+			nil,        // dot
+			nil,        // tuplet
+			nil,        // letRing
+			nil,        // assign
+			nil,        // tempo
+			nil,        // timesig
+			nil,        // channel
+			nil,        // velocity
+			nil,        // program
+			nil,        // control
+			nil,        // play
+			nil,        // start
+			nil,        // stop
+		},
+	},
+	actionRow{ // S114
+		canRecover: false,
+		actions: [numSymbols]action{
+			nil,        // INVALID
+			nil,        // $
+			reduce(19), // terminator, reduce: PropertyList
+			nil,        // empty
+			nil,        // lineComment
+			nil,        // blockComment
+			nil,        // bar
+			nil,        // stringLit
+			nil,        // {
+			reduce(19), // }, reduce: PropertyList
+			reduce(19), // [, reduce: PropertyList
+			nil,        // ]
+			reduce(19), // char, reduce: PropertyList
+			reduce(19), // rest, reduce: PropertyList
+			shift(115), // sharp
+			shift(116), // flat
+			shift(117), // accent
+			shift(118), // ghost
+			shift(119), // uint
+			shift(120), // dot
+			shift(121), // tuplet
+			shift(122), // letRing
+			nil,        // assign
+			nil,        // tempo
+			nil,        // timesig
+			nil,        // channel
+			nil,        // velocity
+			nil,        // program
+			nil,        // control
+			nil,        // play
+			nil,        // start
+			nil,        // stop
+		},
+	},
+	actionRow{ // S115
+		canRecover: false,
+		actions: [numSymbols]action{
+			nil,        // INVALID
+			nil,        // $
+			reduce(21), // terminator, reduce: Property
+			nil,        // empty
+			nil,        // lineComment
+			nil,        // blockComment
+			nil,        // bar
+			nil,        // stringLit
+			nil,        // {
+			reduce(21), // }, reduce: Property
+			reduce(21), // [, reduce: Property
+			nil,        // ]
+			reduce(21), // char, reduce: Property
+			reduce(21), // rest, reduce: Property
+			reduce(21), // sharp, reduce: Property
+			reduce(21), // flat, reduce: Property
+			reduce(21), // accent, reduce: Property
+			reduce(21), // ghost, reduce: Property
+			reduce(21), // uint, reduce: Property
+			reduce(21), // dot, reduce: Property
+			reduce(21), // tuplet, reduce: Property
+			reduce(21), // letRing, reduce: Property
+			nil,        // assign
+			nil,        // tempo
+			nil,        // timesig
+			nil,        // channel
+			nil,        // velocity
+			nil,        // program
+			nil,        // control
+			nil,        // play
+			nil,        // start
+			nil,        // stop
+		},
+	},
+	actionRow{ // S116
+		canRecover: false,
+		actions: [numSymbols]action{
+			nil,        // INVALID
+			nil,        // $
+			reduce(22), // terminator, reduce: Property
+			nil,        // empty
+			nil,        // lineComment
+			nil,        // blockComment
+			nil,        // bar
+			nil,        // stringLit
+			nil,        // {
+			reduce(22), // }, reduce: Property
+			reduce(22), // [, reduce: Property
+			nil,        // ]
+			reduce(22), // char, reduce: Property
+			reduce(22), // rest, reduce: Property
+			reduce(22), // sharp, reduce: Property
+			reduce(22), // flat, reduce: Property
+			reduce(22), // accent, reduce: Property
+			reduce(22), // ghost, reduce: Property
+			reduce(22), // uint, reduce: Property
+			reduce(22), // dot, reduce: Property
+			reduce(22), // tuplet, reduce: Property
+			reduce(22), // letRing, reduce: Property
+			nil,        // assign
+			nil,        // tempo
+			nil,        // timesig
+			nil,        // channel
+			nil,        // velocity
+			nil,        // program
+			nil,        // control
+			nil,        // play
+			nil,        // start
+			nil,        // stop
+		},
+	},
+	actionRow{ // S117
+		canRecover: false,
+		actions: [numSymbols]action{
+			nil,        // INVALID
+			nil,        // $
+			reduce(23), // terminator, reduce: Property
+			nil,        // empty
+			nil,        // lineComment
+			nil,        // blockComment
+			nil,        // bar
+			nil,        // stringLit
+			nil,        // {
+			reduce(23), // }, reduce: Property
+			reduce(23), // [, reduce: Property
+			nil,        // ]
+			reduce(23), // char, reduce: Property
+			reduce(23), // rest, reduce: Property
+			reduce(23), // sharp, reduce: Property
+			reduce(23), // flat, reduce: Property
+			reduce(23), // accent, reduce: Property
+			reduce(23), // ghost, reduce: Property
+			reduce(23), // uint, reduce: Property
+			reduce(23), // dot, reduce: Property
+			reduce(23), // tuplet, reduce: Property
+			reduce(23), // letRing, reduce: Property
+			nil,        // assign
+			nil,        // tempo
+			nil,        // timesig
+			nil,        // channel
+			nil,        // velocity
+			nil,        // program
+			nil,        // control
+			nil,        // play
+			nil,        // start
+			nil,        // stop
+		},
+	},
+	actionRow{ // S118
+		canRecover: false,
+		actions: [numSymbols]action{
+			nil,        // INVALID
+			nil,        // $
+			reduce(24), // terminator, reduce: Property
+			nil,        // empty
+			nil,        // lineComment
+			nil,        // blockComment
+			nil,        // bar
+			nil,        // stringLit
+			nil,        // {
+			reduce(24), // }, reduce: Property
+			reduce(24), // [, reduce: Property
+			nil,        // ]
+			reduce(24), // char, reduce: Property
+			reduce(24), // rest, reduce: Property
+			reduce(24), // sharp, reduce: Property
+			reduce(24), // flat, reduce: Property
+			reduce(24), // accent, reduce: Property
+			reduce(24), // ghost, reduce: Property
+			reduce(24), // uint, reduce: Property
+			reduce(24), // dot, reduce: Property
+			reduce(24), // tuplet, reduce: Property
+			reduce(24), // letRing, reduce: Property
+			nil,        // assign
+			nil,        // tempo
+			nil,        // timesig
+			nil,        // channel
+			nil,        // velocity
+			nil,        // program
+			nil,        // control
+			nil,        // play
+			nil,        // start
+			nil,        // stop
+		},
+	},
+	actionRow{ // S119
+		canRecover: false,
+		actions: [numSymbols]action{
+			nil,        // INVALID
+			nil,        // $
+			reduce(25), // terminator, reduce: Property
+			nil,        // empty
+			nil,        // lineComment
+			nil,        // blockComment
+			nil,        // bar
+			nil,        // stringLit
+			nil,        // {
+			reduce(25), // }, reduce: Property
+			reduce(25), // [, reduce: Property
+			nil,        // ]
+			reduce(25), // char, reduce: Property
+			reduce(25), // rest, reduce: Property
+			reduce(25), // sharp, reduce: Property
+			reduce(25), // flat, reduce: Property
+			reduce(25), // accent, reduce: Property
+			reduce(25), // ghost, reduce: Property
+			reduce(25), // uint, reduce: Property
+			reduce(25), // dot, reduce: Property
+			reduce(25), // tuplet, reduce: Property
+			reduce(25), // letRing, reduce: Property
+			nil,        // assign
+			nil,        // tempo
+			nil,        // timesig
+			nil,        // channel
+			nil,        // velocity
+			nil,        // program
+			nil,        // control
+			nil,        // play
+			nil,        // start
+			nil,        // stop
+		},
+	},
+	actionRow{ // S120
+		canRecover: false,
+		actions: [numSymbols]action{
+			nil,        // INVALID
+			nil,        // $
+			reduce(26), // terminator, reduce: Property
+			nil,        // empty
+			nil,        // lineComment
+			nil,        // blockComment
+			nil,        // bar
+			nil,        // stringLit
+			nil,        // {
+			reduce(26), // }, reduce: Property
+			reduce(26), // [, reduce: Property
+			nil,        // ]
+			reduce(26), // char, reduce: Property
+			reduce(26), // rest, reduce: Property
+			reduce(26), // sharp, reduce: Property
+			reduce(26), // flat, reduce: Property
+			reduce(26), // accent, reduce: Property
+			reduce(26), // ghost, reduce: Property
+			reduce(26), // uint, reduce: Property
+			reduce(26), // dot, reduce: Property
+			reduce(26), // tuplet, reduce: Property
+			reduce(26), // letRing, reduce: Property
+			nil,        // assign
+			nil,        // tempo
+			nil,        // timesig
+			nil,        // channel
+			nil,        // velocity
+			nil,        // program
+			nil,        // control
+			nil,        // play
+			nil,        // start
+			nil,        // stop
+		},
+	},
+	actionRow{ // S121
+		canRecover: false,
+		actions: [numSymbols]action{
+			nil,        // INVALID
+			nil,        // $
+			reduce(27), // terminator, reduce: Property
+			nil,        // empty
+			nil,        // lineComment
+			nil,        // blockComment
+			nil,        // bar
+			nil,        // stringLit
+			nil,        // {
+			reduce(27), // }, reduce: Property
+			reduce(27), // [, reduce: Property
+			nil,        // ]
+			reduce(27), // char, reduce: Property
+			reduce(27), // rest, reduce: Property
+			reduce(27), // sharp, reduce: Property
+			reduce(27), // flat, reduce: Property
+			reduce(27), // accent, reduce: Property
+			reduce(27), // ghost, reduce: Property
+			reduce(27), // uint, reduce: Property
+			reduce(27), // dot, reduce: Property
+			reduce(27), // tuplet, reduce: Property
+			reduce(27), // letRing, reduce: Property
+			nil,        // assign
+			nil,        // tempo
+			nil,        // timesig
+			nil,        // channel
+			nil,        // velocity
+			nil,        // program
+			nil,        // control
+			nil,        // play
+			nil,        // start
+			nil,        // stop
+		},
+	},
+	actionRow{ // S122
+		canRecover: false,
+		actions: [numSymbols]action{
+			nil,        // INVALID
+			nil,        // $
+			reduce(28), // terminator, reduce: Property
+			nil,        // empty
+			nil,        // lineComment
+			nil,        // blockComment
+			nil,        // bar
+			nil,        // stringLit
+			nil,        // {
+			reduce(28), // }, reduce: Property
+			reduce(28), // [, reduce: Property
+			nil,        // ]
+			reduce(28), // char, reduce: Property
+			reduce(28), // rest, reduce: Property
+			reduce(28), // sharp, reduce: Property
+			reduce(28), // flat, reduce: Property
+			reduce(28), // accent, reduce: Property
+			reduce(28), // ghost, reduce: Property
+			reduce(28), // uint, reduce: Property
+			reduce(28), // dot, reduce: Property
+			reduce(28), // tuplet, reduce: Property
+			reduce(28), // letRing, reduce: Property
+			nil,        // assign
+			nil,        // tempo
+			nil,        // timesig
+			nil,        // channel
+			nil,        // velocity
+			nil,        // program
+			nil,        // control
+			nil,        // play
+			nil,        // start
+			nil,        // stop
+		},
+	},
+	actionRow{ // S123
+		canRecover: false,
+		actions: [numSymbols]action{
+			nil,        // INVALID
+			nil,        // $
+			nil,        // terminator
+			nil,        // empty
+			nil,        // lineComment
+			nil,        // blockComment
+			nil,        // bar
+			nil,        // stringLit
+			nil,        // {
+			nil,        // }
+			nil,        // [
+			shift(136), // ]
+			nil,        // char
+			nil,        // rest
+			nil,        // sharp
+			nil,        // flat
+			nil,        // accent
+			nil,        // ghost
+			nil,        // uint
+			nil,        // dot
+			nil,        // tuplet
+			nil,        // letRing
+			nil,        // assign
+			nil,        // tempo
+			nil,        // timesig
+			nil,        // channel
+			nil,        // velocity
+			nil,        // program
+			nil,        // control
+			nil,        // play
+			nil,        // start
+			nil,        // stop
+		},
+	},
+	actionRow{ // S124
+		canRecover: false,
+		actions: [numSymbols]action{
+			nil,        // INVALID
+			nil,        // $
+			nil,        // terminator
+			nil,        // empty
+			nil,        // lineComment
+			nil,        // blockComment
+			nil,        // bar
+			nil,        // stringLit
+			nil,        // {
+			nil,        // }
+			nil,        // [
+			nil,        // ]
+			nil,        // char
+			nil,        // rest
+			nil,        // sharp
+			nil,        // flat
+			nil,        // accent
+			nil,        // ghost
+			shift(137), // uint
+			nil,        // dot
+			nil,        // tuplet
+			nil,        // letRing
+			nil,        // assign
+			nil,        // tempo
+			nil,        // timesig
+			nil,        // channel
+			nil,        // velocity
+			nil,        // program
+			nil,        // control
+			nil,        // play
+			nil,        // start
+			nil,        // stop
+		},
+	},
+	actionRow{ // S125
+		canRecover: false,
+		actions: [numSymbols]action{
+			nil,        // INVALID
+			nil,        // $
+			reduce(30), // terminator, reduce: Command
+			nil,        // empty
+			nil,        // lineComment
+			nil,        // blockComment
+			nil,        // bar
+			nil,        // stringLit
+			nil,        // {
+			reduce(30), // }, reduce: Command
+			nil,        // [
+			nil,        // ]
+			nil,        // char
+			nil,        // rest
+			nil,        // sharp
+			nil,        // flat
+			nil,        // accent
+			nil,        // ghost
+			nil,        // uint
+			nil,        // dot
+			nil,        // tuplet
+			nil,        // letRing
+			nil,        // assign
+			nil,        // tempo
+			nil,        // timesig
+			nil,        // channel
+			nil,        // velocity
+			nil,        // program
+			nil,        // control
+			nil,        // play
+			nil,        // start
+			nil,        // stop
+		},
+	},
+	actionRow{ // S126
+		canRecover: false,
+		actions: [numSymbols]action{
+			nil,        // INVALID
+			nil,        // $
+			nil,        // terminator
+			nil,        // empty
+			nil,        // lineComment
+			nil,        // blockComment
+			nil,        // bar
+			nil,        // stringLit
+			nil,        // {
+			nil,        // }
+			nil,        // [
+			nil,        // ]
+			nil,        // char
+			nil,        // rest
+			nil,        // sharp
+			nil,        // flat
+			nil,        // accent
+			nil,        // ghost
+			shift(138), // uint
+			nil,        // dot
+			nil,        // tuplet
+			nil,        // letRing
+			nil,        // assign
+			nil,        // tempo
+			nil,        // timesig
+			nil,        // channel
+			nil,        // velocity
+			nil,        // program
+			nil,        // control
+			nil,        // play
+			nil,        // start
+			nil,        // stop
+		},
+	},
+	actionRow{ // S127
+		canRecover: false,
+		actions: [numSymbols]action{
+			nil,        // INVALID
+			nil,        // $
+			reduce(32), // terminator, reduce: Command
+			nil,        // empty
+			nil,        // lineComment
+			nil,        // blockComment
+			nil,        // bar
+			nil,        // stringLit
+			nil,        // {
+			reduce(32), // }, reduce: Command
+			nil,        // [
+			nil,        // ]
+			nil,        // char
+			nil,        // rest
+			nil,        // sharp
+			nil,        // flat
+			nil,        // accent
+			nil,        // ghost
+			nil,        // uint
+			nil,        // dot
+			nil,        // tuplet
+			nil,        // letRing
+			nil,        // assign
+			nil,        // tempo
+			nil,        // timesig
+			nil,        // channel
+			nil,        // velocity
+			nil,        // program
+			nil,        // control
+			nil,        // play
+			nil,        // start
+			nil,        // stop
+		},
+	},
+	actionRow{ // S128
+		canRecover: false,
+		actions: [numSymbols]action{
+			nil,        // INVALID
+			nil,        // $
+			reduce(33), // terminator, reduce: Command
+			nil,        // empty
+			nil,        // lineComment
+			nil,        // blockComment
+			nil,        // bar
+			nil,        // stringLit
+			nil,        // {
+			reduce(33), // }, reduce: Command
+			nil,        // [
+			nil,        // ]
+			nil,        // char
+			nil,        // rest
+			nil,        // sharp
+			nil,        // flat
+			nil,        // accent
+			nil,        // ghost
+			nil,        // uint
+			nil,        // dot
+			nil,        // tuplet
+			nil,        // letRing
+			nil,        // assign
+			nil,        // tempo
+			nil,        // timesig
+			nil,        // channel
+			nil,        // velocity
+			nil,        // program
+			nil,        // control
+			nil,        // play
+			nil,        // start
+			nil,        // stop
+		},
+	},
+	actionRow{ // S129
+		canRecover: false,
+		actions: [numSymbols]action{
+			nil,        // INVALID
+			nil,        // $
+			reduce(34), // terminator, reduce: Command
+			nil,        // empty
+			nil,        // lineComment
+			nil,        // blockComment
+			nil,        // bar
+			nil,        // stringLit
+			nil,        // {
+			reduce(34), // }, reduce: Command
+			nil,        // [
+			nil,        // ]
+			nil,        // char
+			nil,        // rest
+			nil,        // sharp
+			nil,        // flat
+			nil,        // accent
+			nil,        // ghost
+			nil,        // uint
+			nil,        // dot
+			nil,        // tuplet
+			nil,        // letRing
+			nil,        // assign
+			nil,        // tempo
+			nil,        // timesig
+			nil,        // channel
+			nil,        // velocity
+			nil,        // program
+			nil,        // control
+			nil,        // play
+			nil,        // start
+			nil,        // stop
+		},
+	},
+	actionRow{ // S130
+		canRecover: false,
+		actions: [numSymbols]action{
+			nil,        // INVALID
+			nil,        // $
+			nil,        // terminator
+			nil,        // empty
+			nil,        // lineComment
+			nil,        // blockComment
+			nil,        // bar
+			nil,        // stringLit
+			nil,        // {
+			nil,        // }
+			nil,        // [
+			nil,        // ]
+			nil,        // char
+			nil,        // rest
+			nil,        // sharp
+			nil,        // flat
+			nil,        // accent
+			nil,        // ghost
+			shift(139), // uint
+			nil,        // dot
+			nil,        // tuplet
+			nil,        // letRing
+			nil,        // assign
+			nil,        // tempo
+			nil,        // timesig
+			nil,        // channel
+			nil,        // velocity
+			nil,        // program
+			nil,        // control
+			nil,        // play
+			nil,        // start
+			nil,        // stop
+		},
+	},
+	actionRow{ // S131
+		canRecover: false,
+		actions: [numSymbols]action{
+			nil,        // INVALID
+			nil,        // $
+			reduce(36), // terminator, reduce: Command
+			nil,        // empty
+			nil,        // lineComment
+			nil,        // blockComment
+			nil,        // bar
+			nil,        // stringLit
+			nil,        // {
+			reduce(36), // }, reduce: Command
+			nil,        // [
+			nil,        // ]
+			nil,        // char
+			nil,        // rest
+			nil,        // sharp
+			nil,        // flat
+			nil,        // accent
+			nil,        // ghost
+			nil,        // uint
+			nil,        // dot
+			nil,        // tuplet
+			nil,        // letRing
+			nil,        // assign
+			nil,        // tempo
+			nil,        // timesig
+			nil,        // channel
+			nil,        // velocity
+			nil,        // program
+			nil,        // control
+			nil,        // play
+			nil,        // start
+			nil,        // stop
+		},
+	},
+	actionRow{ // S132
+		canRecover: false,
+		actions: [numSymbols]action{
+			nil,        // INVALID
+			nil,        // $
+			nil,        // terminator
+			nil,        // empty
+			shift(89),  // lineComment
+			shift(90),  // blockComment
+			shift(91),  // bar
+			nil,        // stringLit
+			nil,        // {
+			reduce(5),  // }, reduce: RepeatTerminator
+			shift(94),  // [
+			nil,        // ]
+			shift(95),  // char
+			shift(96),  // rest
+			nil,        // sharp
+			nil,        // flat
+			nil,        // accent
+			nil,        // ghost
+			nil,        // uint
+			nil,        // dot
+			nil,        // tuplet
+			nil,        // letRing
+			shift(97),  // assign
+			shift(98),  // tempo
+			shift(99),  // timesig
+			shift(100), // channel
+			shift(101), // velocity
+			shift(102), // program
+			shift(103), // control
+			shift(104), // play
+			shift(105), // start
+			shift(106), // stop
+		},
+	},
+	actionRow{ // S133
+		canRecover: false,
+		actions: [numSymbols]action{
+			nil,        // INVALID
+			nil,        // $
+			shift(133), // terminator
+			nil,        // empty
+			reduce(4),  // lineComment, reduce: RepeatTerminator
+			reduce(4),  // blockComment, reduce: RepeatTerminator
+			reduce(4),  // bar, reduce: RepeatTerminator
+			nil,        // stringLit
+			nil,        // {
+			reduce(4),  // }, reduce: RepeatTerminator
+			reduce(4),  // [, reduce: RepeatTerminator
+			nil,        // ]
+			reduce(4),  // char, reduce: RepeatTerminator
+			reduce(4),  // rest, reduce: RepeatTerminator
+			nil,        // sharp
+			nil,        // flat
+			nil,        // accent
+			nil,        // ghost
+			nil,        // uint
+			nil,        // dot
+			nil,        // tuplet
+			nil,        // letRing
+			reduce(4),  // assign, reduce: RepeatTerminator
+			reduce(4),  // tempo, reduce: RepeatTerminator
+			reduce(4),  // timesig, reduce: RepeatTerminator
+			reduce(4),  // channel, reduce: RepeatTerminator
+			reduce(4),  // velocity, reduce: RepeatTerminator
+			reduce(4),  // program, reduce: RepeatTerminator
+			reduce(4),  // control, reduce: RepeatTerminator
+			reduce(4),  // play, reduce: RepeatTerminator
+			reduce(4),  // start, reduce: RepeatTerminator
+			reduce(4),  // stop, reduce: RepeatTerminator
+		},
+	},
+	actionRow{ // S134
+		canRecover: false,
+		actions: [numSymbols]action{
+			nil,       // INVALID
+			nil,       // $
+			shift(3),  // terminator
+			nil,       // empty
+			reduce(4), // lineComment, reduce: RepeatTerminator
+			reduce(4), // blockComment, reduce: RepeatTerminator
+			reduce(4), // bar, reduce: RepeatTerminator
+			nil,       // stringLit
+			nil,       // {
+			nil,       // }
+			reduce(4), // [, reduce: RepeatTerminator
+			nil,       // ]
+			reduce(4), // char, reduce: RepeatTerminator
+			reduce(4), // rest, reduce: RepeatTerminator
+			nil,       // sharp
+			nil,       // flat
+			nil,       // accent
+			nil,       // ghost
+			nil,       // uint
+			nil,       // dot
+			nil,       // tuplet
+			nil,       // letRing
+			reduce(4), // assign, reduce: RepeatTerminator
+			reduce(4), // tempo, reduce: RepeatTerminator
+			reduce(4), // timesig, reduce: RepeatTerminator
+			reduce(4), // channel, reduce: RepeatTerminator
+			reduce(4), // velocity, reduce: RepeatTerminator
+			reduce(4), // program, reduce: RepeatTerminator
+			reduce(4), // control, reduce: RepeatTerminator
+			reduce(4), // play, reduce: RepeatTerminator
+			reduce(4), // start, reduce: RepeatTerminator
+			reduce(4), // stop, reduce: RepeatTerminator
+		},
+	},
+	actionRow{ // S135
+		canRecover: false,
+		actions: [numSymbols]action{
+			nil,        // INVALID
+			nil,        // $
+			reduce(20), // terminator, reduce: PropertyList
+			nil,        // empty
+			nil,        // lineComment
+			nil,        // blockComment
+			nil,        // bar
+			nil,        // stringLit
+			nil,        // {
+			reduce(20), // }, reduce: PropertyList
+			reduce(20), // [, reduce: PropertyList
+			nil,        // ]
+			reduce(20), // char, reduce: PropertyList
+			reduce(20), // rest, reduce: PropertyList
+			nil,        // sharp
+			nil,        // flat
+			nil,        // accent
+			nil,        // ghost
+			nil,        // uint
+			nil,        // dot
+			nil,        // tuplet
+			nil,        // letRing
+			nil,        // assign
+			nil,        // tempo
+			nil,        // timesig
+			nil,        // channel
+			nil,        // velocity
+			nil,        // program
+			nil,        // control
+			nil,        // play
+			nil,        // start
+			nil,        // stop
+		},
+	},
+	actionRow{ // S136
+		canRecover: false,
+		actions: [numSymbols]action{
+			nil,        // INVALID
+			nil,        // $
+			reduce(19), // terminator, reduce: PropertyList
+			nil,        // empty
+			nil,        // lineComment
+			nil,        // blockComment
+			nil,        // bar
+			nil,        // stringLit
+			nil,        // {
+			reduce(19), // }, reduce: PropertyList
+			reduce(19), // [, reduce: PropertyList
+			nil,        // ]
+			reduce(19), // char, reduce: PropertyList
+			reduce(19), // rest, reduce: PropertyList
+			shift(115), // sharp
+			shift(116), // flat
+			shift(117), // accent
+			shift(118), // ghost
+			shift(119), // uint
+			shift(120), // dot
+			shift(121), // tuplet
+			shift(122), // letRing
+			nil,        // assign
+			nil,        // tempo
+			nil,        // timesig
+			nil,        // channel
+			nil,        // velocity
+			nil,        // program
+			nil,        // control
+			nil,        // play
+			nil,        // start
+			nil,        // stop
+		},
+	},
+	actionRow{ // S137
+		canRecover: false,
+		actions: [numSymbols]action{
+			nil,        // INVALID
+			nil,        // $
+			reduce(29), // terminator, reduce: Command
+			nil,        // empty
+			nil,        // lineComment
+			nil,        // blockComment
+			nil,        // bar
+			nil,        // stringLit
+			nil,        // {
+			reduce(29), // }, reduce: Command
+			nil,        // [
+			nil,        // ]
+			nil,        // char
+			nil,        // rest
+			nil,        // sharp
+			nil,        // flat
+			nil,        // accent
+			nil,        // ghost
+			nil,        // uint
+			nil,        // dot
+			nil,        // tuplet
+			nil,        // letRing
+			nil,        // assign
+			nil,        // tempo
+			nil,        // timesig
+			nil,        // channel
+			nil,        // velocity
+			nil,        // program
+			nil,        // control
+			nil,        // play
+			nil,        // start
+			nil,        // stop
+		},
+	},
+	actionRow{ // S138
+		canRecover: false,
+		actions: [numSymbols]action{
+			nil,        // INVALID
+			nil,        // $
+			reduce(31), // terminator, reduce: Command
+			nil,        // empty
+			nil,        // lineComment
+			nil,        // blockComment
+			nil,        // bar
+			nil,        // stringLit
+			nil,        // {
+			reduce(31), // }, reduce: Command
+			nil,        // [
+			nil,        // ]
+			nil,        // char
+			nil,        // rest
+			nil,        // sharp
+			nil,        // flat
+			nil,        // accent
+			nil,        // ghost
+			nil,        // uint
+			nil,        // dot
+			nil,        // tuplet
+			nil,        // letRing
+			nil,        // assign
+			nil,        // tempo
+			nil,        // timesig
+			nil,        // channel
+			nil,        // velocity
+			nil,        // program
+			nil,        // control
+			nil,        // play
+			nil,        // start
+			nil,        // stop
+		},
+	},
+	actionRow{ // S139
+		canRecover: false,
+		actions: [numSymbols]action{
+			nil,        // INVALID
+			nil,        // $
+			reduce(35), // terminator, reduce: Command
+			nil,        // empty
+			nil,        // lineComment
+			nil,        // blockComment
+			nil,        // bar
+			nil,        // stringLit
+			nil,        // {
+			reduce(35), // }, reduce: Command
+			nil,        // [
+			nil,        // ]
+			nil,        // char
+			nil,        // rest
+			nil,        // sharp
+			nil,        // flat
+			nil,        // accent
+			nil,        // ghost
+			nil,        // uint
+			nil,        // dot
+			nil,        // tuplet
+			nil,        // letRing
+			nil,        // assign
+			nil,        // tempo
+			nil,        // timesig
+			nil,        // channel
+			nil,        // velocity
+			nil,        // program
+			nil,        // control
+			nil,        // play
+			nil,        // start
+			nil,        // stop
+		},
+	},
+	actionRow{ // S140
+		canRecover: false,
+		actions: [numSymbols]action{
+			nil,       // INVALID
+			nil,       // $
+			nil,       // terminator
+			nil,       // empty
+			nil,       // lineComment
+			nil,       // blockComment
+			nil,       // bar
+			nil,       // stringLit
+			nil,       // {
+			reduce(2), // }, reduce: StatementList
+			nil,       // [
+			nil,       // ]
+			nil,       // char
+			nil,       // rest
+			nil,       // sharp
+			nil,       // flat
+			nil,       // accent
+			nil,       // ghost
+			nil,       // uint
+			nil,       // dot
+			nil,       // tuplet
+			nil,       // letRing
+			nil,       // assign
+			nil,       // tempo
+			nil,       // timesig
+			nil,       // channel
+			nil,       // velocity
+			nil,       // program
+			nil,       // control
+			nil,       // play
+			nil,       // start
+			nil,       // stop
+		},
+	},
+	actionRow{ // S141
+		canRecover: false,
+		actions: [numSymbols]action{
+			nil,       // INVALID
+			nil,       // $
+			nil,       // terminator
+			nil,       // empty
+			reduce(5), // lineComment, reduce: RepeatTerminator
+			reduce(5), // blockComment, reduce: RepeatTerminator
+			reduce(5), // bar, reduce: RepeatTerminator
+			nil,       // stringLit
+			nil,       // {
+			reduce(5), // }, reduce: RepeatTerminator
+			reduce(5), // [, reduce: RepeatTerminator
+			nil,       // ]
+			reduce(5), // char, reduce: RepeatTerminator
+			reduce(5), // rest, reduce: RepeatTerminator
+			nil,       // sharp
+			nil,       // flat
+			nil,       // accent
+			nil,       // ghost
+			nil,       // uint
+			nil,       // dot
+			nil,       // tuplet
+			nil,       // letRing
+			reduce(5), // assign, reduce: RepeatTerminator
+			reduce(5), // tempo, reduce: RepeatTerminator
+			reduce(5), // timesig, reduce: RepeatTerminator
+			reduce(5), // channel, reduce: RepeatTerminator
+			reduce(5), // velocity, reduce: RepeatTerminator
+			reduce(5), // program, reduce: RepeatTerminator
+			reduce(5), // control, reduce: RepeatTerminator
+			reduce(5), // play, reduce: RepeatTerminator
+			reduce(5), // start, reduce: RepeatTerminator
+			reduce(5), // stop, reduce: RepeatTerminator
+		},
+	},
+	actionRow{ // S142
+		canRecover: false,
+		actions: [numSymbols]action{
+			nil,        // INVALID
+			nil,        // $
+			nil,        // terminator
+			nil,        // empty
+			shift(89),  // lineComment
+			shift(90),  // blockComment
+			shift(91),  // bar
+			nil,        // stringLit
+			nil,        // {
+			nil,        // }
+			shift(94),  // [
+			nil,        // ]
+			shift(95),  // char
+			shift(96),  // rest
+			nil,        // sharp
+			nil,        // flat
+			nil,        // accent
+			nil,        // ghost
+			nil,        // uint
+			nil,        // dot
+			nil,        // tuplet
+			nil,        // letRing
+			shift(97),  // assign
+			shift(98),  // tempo
+			shift(99),  // timesig
+			shift(100), // channel
+			shift(101), // velocity
+			shift(102), // program
+			shift(103), // control
+			shift(104), // play
+			shift(105), // start
+			shift(106), // stop
+		},
+	},
+	actionRow{ // S143
+		canRecover: false,
+		actions: [numSymbols]action{
+			nil,        // INVALID
+			nil,        // $
+			reduce(16), // terminator, reduce: NoteObject
+			nil,        // empty
+			nil,        // lineComment
+			nil,        // blockComment
+			nil,        // bar
+			nil,        // stringLit
+			nil,        // {
+			reduce(16), // }, reduce: NoteObject
+			reduce(16), // [, reduce: NoteObject
+			nil,        // ]
+			reduce(16), // char, reduce: NoteObject
+			reduce(16), // rest, reduce: NoteObject
+			nil,        // sharp
+			nil,        // flat
+			nil,        // accent
+			nil,        // ghost
+			nil,        // uint
+			nil,        // dot
+			nil,        // tuplet
+			nil,        // letRing
+			nil,        // assign
+			nil,        // tempo
+			nil,        // timesig
+			nil,        // channel
+			nil,        // velocity
+			nil,        // program
+			nil,        // control
+			nil,        // play
+			nil,        // start
+			nil,        // stop
+		},
+	},
+	actionRow{ // S144
+		canRecover: false,
+		actions: [numSymbols]action{
+			nil,        // INVALID
+			nil,        // $
+			nil,        // terminator
+			nil,        // empty
+			nil,        // lineComment
+			nil,        // blockComment
+			nil,        // bar
+			nil,        // stringLit
+			nil,        // {
+			shift(145), // }
+			nil,        // [
+			nil,        // ]
+			nil,        // char
+			nil,        // rest
+			nil,        // sharp
+			nil,        // flat
+			nil,        // accent
+			nil,        // ghost
+			nil,        // uint
+			nil,        // dot
+			nil,        // tuplet
+			nil,        // letRing
+			nil,        // assign
+			nil,        // tempo
+			nil,        // timesig
+			nil,        // channel
+			nil,        // velocity
+			nil,        // program
+			nil,        // control
+			nil,        // play
+			nil,        // start
+			nil,        // stop
+		},
+	},
+	actionRow{ // S145
+		canRecover: false,
+		actions: [numSymbols]action{
+			nil,        // INVALID
+			nil,        // $
+			reduce(12), // terminator, reduce: Bar
+			nil,        // empty
+			nil,        // lineComment
+			nil,        // blockComment
+			nil,        // bar
+			nil,        // stringLit
+			nil,        // {
+			reduce(12), // }, reduce: Bar
+			nil,        // [
+			nil,        // ]
+			nil,        // char
+			nil,        // rest
+			nil,        // sharp
+			nil,        // flat
+			nil,        // accent
+			nil,        // ghost
+			nil,        // uint
+			nil,        // dot
+			nil,        // tuplet
+			nil,        // letRing
+			nil,        // assign
+			nil,        // tempo
+			nil,        // timesig
+			nil,        // channel
+			nil,        // velocity
+			nil,        // program
+			nil,        // control
+			nil,        // play
+			nil,        // start
+			nil,        // stop
 		},
 	},
 }

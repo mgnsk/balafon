@@ -1,6 +1,7 @@
 package ast_test
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/davecgh/go-spew/spew"
@@ -10,17 +11,35 @@ import (
 func TestBar(t *testing.T) {
 	g := NewGomegaWithT(t)
 
-	input := `assign c 60
-    bar "Bar 1" {
-        start
-        c
+	input1 := `assign c 60
+assign d 62
+bar "Bar 1" {
+    start
+    c
+    bar "Nested" {
+        stop
+        d
     }
-    `
+    play "Nested"
+}`
 
-	res, err := parse(input)
+	input2 := `assign c 60; assign d 62
+bar "Bar 1" { start; c; bar "Nested" { stop; d; }
+play "Nested"
+}`
+
+	res1, err := parse(input1)
+	g.Expect(err).NotTo(HaveOccurred())
+	// g.Expect(fmt.Sprint(res1)).To(Equal(input1))
+
+	spew.Dump(res1)
+
+	res2, err := parse(input2)
 	g.Expect(err).NotTo(HaveOccurred())
 
-	// TODO
+	fmt.Println("")
+	fmt.Println("")
+	spew.Dump(res2)
 
-	spew.Dump(res)
+	g.Expect(res1).To(Equal(res2))
 }

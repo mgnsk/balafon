@@ -1,7 +1,6 @@
 package ast
 
 import (
-	"errors"
 	"fmt"
 	"sort"
 	"strconv"
@@ -26,48 +25,30 @@ func (l NoteList) String() string {
 }
 
 // NewNoteList creates a list of notes.
-func NewNoteList(note, inner interface{}) (list NoteList) {
+func NewNoteList(note fmt.Stringer, inner NoteList) (list NoteList) {
 	switch n := note.(type) {
 	case *Note:
-		if innerList, ok := inner.(NoteList); ok {
-			list = make(NoteList, len(innerList)+1)
-			list[0] = n
-			copy(list[1:], innerList)
-		} else {
-			list = NoteList{n}
-		}
+		return append(NoteList{n}, inner...)
 	case NoteList:
 		// The first argument is NoteGroup.
-		list = n
-		if innerList, ok := inner.(NoteList); ok {
-			list = make(NoteList, len(innerList)+len(n))
-			copy(list, n)
-			copy(list[len(n):], innerList)
-		}
+		return append(n, inner...)
 	default:
 		panic("NewNoteList: invalid argument type")
 	}
-	return list
 }
 
 // NewNoteListFromGroup creates a note list from a group of notes with shared properties.
-func NewNoteListFromGroup(notes, props interface{}) (NoteList, error) {
-	noteList, ok := notes.(NoteList)
-	if !ok {
-		return nil, errors.New("note group must contain notes")
-	}
-
-	propList, ok := props.(PropertyList)
-	if !ok {
+func NewNoteListFromGroup(notes NoteList, props PropertyList) NoteList {
+	if len(props) == 0 {
 		// Just a grouping of notes without properties, e.g. [cde].
-		return noteList, nil
+		return notes
 	}
 
 	// Apply the properties to all notes, replacing duplicate
 	// property types if needed.
-	for _, note := range noteList {
+	for _, note := range notes {
 		needSort := false
-		for _, p := range propList {
+		for _, p := range props {
 			if idx, ok := note.Props.Find(p.Type); ok {
 				note.Props[idx] = p
 			} else {
@@ -80,7 +61,7 @@ func NewNoteListFromGroup(notes, props interface{}) (NoteList, error) {
 		}
 	}
 
-	return noteList, nil
+	return notes
 }
 
 // Note is a single note with sorted properties.
@@ -184,12 +165,7 @@ func (n *Note) String() string {
 }
 
 // NewNote creates a note with properties.
-func NewNote(note string, props interface{}) *Note {
-	var propList PropertyList
-	if list, ok := props.(PropertyList); ok {
-		propList = list
-	}
-
+func NewNote(symbol string, propList PropertyList) *Note {
 	if _, ok := propList.Find(uintType); !ok {
 		// Implicit quarter note.
 		propList = append(propList, quarterNoteToken)
@@ -197,7 +173,7 @@ func NewNote(note string, props interface{}) *Note {
 	}
 
 	return &Note{
-		Name:  []rune(note)[0],
+		Name:  []rune(symbol)[0],
 		Props: propList,
 	}
 }
