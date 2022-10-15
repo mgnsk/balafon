@@ -35,12 +35,12 @@ import (
 
 
 SourceFile
-        : RepeatTerminator StatementList << $1, nil >>
+        : RepeatTerminator DeclList << $1, nil >>
         ;
 
-StatementList
-    : Statement terminator RepeatTerminator StatementList << ast.NewStmtList($0.(fmt.Stringer), $3.(ast.StmtList)), nil >>
-    | Statement RepeatTerminator  << ast.NewStmtList($0.(fmt.Stringer), nil), nil >>
+DeclList
+    : Decl terminator RepeatTerminator DeclList << ast.NewDeclList($0.(fmt.Stringer), $3.(ast.DeclList)), nil >>
+    | Decl RepeatTerminator  << ast.NewDeclList($0.(fmt.Stringer), nil), nil >>
     ;
 
 RepeatTerminator
@@ -48,7 +48,7 @@ RepeatTerminator
     | terminator RepeatTerminator
     ;
 
-Statement
+Decl
     : Bar
     | Command
     | NoteList
@@ -61,7 +61,7 @@ Comment
     ;
 
 Bar
-    : "bar" stringLit "{" RepeatTerminator StatementList "}" << ast.NewBar($T1.StringValue(), $4.(ast.StmtList)), nil >>
+    : "bar" stringLit "{" RepeatTerminator DeclList "}" << ast.NewBar($T1.StringValue(), $4.(ast.DeclList)), nil >>
     ;
 
 NoteList

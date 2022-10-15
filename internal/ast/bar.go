@@ -6,8 +6,8 @@ import (
 
 // Bar is a bar.
 type Bar struct {
-	Name       string
-	Statements StmtList
+	Name     string
+	DeclList DeclList
 }
 
 func (b Bar) String() string {
@@ -17,7 +17,7 @@ func (b Bar) String() string {
 	format.WriteString(b.Name)
 	format.WriteString("\" {\n")
 
-	for _, stmt := range b.Statements {
+	for _, stmt := range b.DeclList {
 		format.WriteString("\t")
 		format.WriteString(stmt.String())
 		format.WriteString("\n")
@@ -29,6 +29,6 @@ func (b Bar) String() string {
 }
 
 // NewBar creates a new bar.
-func NewBar(name string, stmtList StmtList) Bar {
-	return Bar{Name: name, Statements: stmtList}
+func NewBar(name string, declList DeclList) Bar {
+	return Bar{Name: name, DeclList: declList}
 }

@@ -34,7 +34,7 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `SourceFile : RepeatTerminator StatementList	<< X[1], nil >>`,
+		String: `SourceFile : RepeatTerminator DeclList	<< X[1], nil >>`,
 		Id:         "SourceFile",
 		NTType:     1,
 		Index:      1,
@@ -44,23 +44,23 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `StatementList : Statement terminator RepeatTerminator StatementList	<< ast.NewStmtList(X[0].(fmt.Stringer), X[3].(ast.StmtList)), nil >>`,
-		Id:         "StatementList",
+		String: `DeclList : Decl terminator RepeatTerminator DeclList	<< ast.NewDeclList(X[0].(fmt.Stringer), X[3].(ast.DeclList)), nil >>`,
+		Id:         "DeclList",
 		NTType:     2,
 		Index:      2,
 		NumSymbols: 4,
 		ReduceFunc: func(X []Attrib, C interface{}) (Attrib, error) {
-			return ast.NewStmtList(X[0].(fmt.Stringer), X[3].(ast.StmtList)), nil
+			return ast.NewDeclList(X[0].(fmt.Stringer), X[3].(ast.DeclList)), nil
 		},
 	},
 	ProdTabEntry{
-		String: `StatementList : Statement RepeatTerminator	<< ast.NewStmtList(X[0].(fmt.Stringer), nil), nil >>`,
-		Id:         "StatementList",
+		String: `DeclList : Decl RepeatTerminator	<< ast.NewDeclList(X[0].(fmt.Stringer), nil), nil >>`,
+		Id:         "DeclList",
 		NTType:     2,
 		Index:      3,
 		NumSymbols: 2,
 		ReduceFunc: func(X []Attrib, C interface{}) (Attrib, error) {
-			return ast.NewStmtList(X[0].(fmt.Stringer), nil), nil
+			return ast.NewDeclList(X[0].(fmt.Stringer), nil), nil
 		},
 	},
 	ProdTabEntry{
@@ -84,8 +84,8 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `Statement : Bar	<<  >>`,
-		Id:         "Statement",
+		String: `Decl : Bar	<<  >>`,
+		Id:         "Decl",
 		NTType:     4,
 		Index:      6,
 		NumSymbols: 1,
@@ -94,8 +94,8 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `Statement : Command	<<  >>`,
-		Id:         "Statement",
+		String: `Decl : Command	<<  >>`,
+		Id:         "Decl",
 		NTType:     4,
 		Index:      7,
 		NumSymbols: 1,
@@ -104,8 +104,8 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `Statement : NoteList	<<  >>`,
-		Id:         "Statement",
+		String: `Decl : NoteList	<<  >>`,
+		Id:         "Decl",
 		NTType:     4,
 		Index:      8,
 		NumSymbols: 1,
@@ -114,8 +114,8 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `Statement : Comment	<<  >>`,
-		Id:         "Statement",
+		String: `Decl : Comment	<<  >>`,
+		Id:         "Decl",
 		NTType:     4,
 		Index:      9,
 		NumSymbols: 1,
@@ -144,13 +144,13 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `Bar : "bar" stringLit "{" RepeatTerminator StatementList "}"	<< ast.NewBar(X[1].(*token.Token).StringValue(), X[4].(ast.StmtList)), nil >>`,
+		String: `Bar : "bar" stringLit "{" RepeatTerminator DeclList "}"	<< ast.NewBar(X[1].(*token.Token).StringValue(), X[4].(ast.DeclList)), nil >>`,
 		Id:         "Bar",
 		NTType:     6,
 		Index:      12,
 		NumSymbols: 6,
 		ReduceFunc: func(X []Attrib, C interface{}) (Attrib, error) {
-			return ast.NewBar(X[1].(*token.Token).StringValue(), X[4].(ast.StmtList)), nil
+			return ast.NewBar(X[1].(*token.Token).StringValue(), X[4].(ast.DeclList)), nil
 		},
 	},
 	ProdTabEntry{

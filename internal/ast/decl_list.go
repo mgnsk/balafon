@@ -5,9 +5,9 @@ import (
 	"strings"
 )
 
-type StmtList []fmt.Stringer
+type DeclList []fmt.Stringer
 
-func (s StmtList) IndentString(n int) string {
+func (s DeclList) IndentString(n int) string {
 	var format strings.Builder
 	for _, stmt := range s {
 		for i := 0; i < n; i++ {
@@ -19,10 +19,10 @@ func (s StmtList) IndentString(n int) string {
 	return format.String()
 }
 
-func (s StmtList) String() string {
+func (s DeclList) String() string {
 	return s.IndentString(0)
 }
 
-func NewStmtList(stmt fmt.Stringer, inner StmtList) (song StmtList) {
-	return append(StmtList{stmt}, inner...)
+func NewDeclList(stmt fmt.Stringer, inner DeclList) (song DeclList) {
+	return append(DeclList{stmt}, inner...)
 }

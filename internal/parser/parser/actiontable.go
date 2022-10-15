@@ -237,8 +237,8 @@ var actionTab = actionTable{
 		canRecover: false,
 		actions: [numSymbols]action{
 			nil,       // INVALID
-			reduce(6), // $, reduce: Statement
-			reduce(6), // terminator, reduce: Statement
+			reduce(6), // $, reduce: Decl
+			reduce(6), // terminator, reduce: Decl
 			nil,       // empty
 			nil,       // lineComment
 			nil,       // blockComment
@@ -274,8 +274,8 @@ var actionTab = actionTable{
 		canRecover: false,
 		actions: [numSymbols]action{
 			nil,       // INVALID
-			reduce(7), // $, reduce: Statement
-			reduce(7), // terminator, reduce: Statement
+			reduce(7), // $, reduce: Decl
+			reduce(7), // terminator, reduce: Decl
 			nil,       // empty
 			nil,       // lineComment
 			nil,       // blockComment
@@ -311,8 +311,8 @@ var actionTab = actionTable{
 		canRecover: false,
 		actions: [numSymbols]action{
 			nil,       // INVALID
-			reduce(8), // $, reduce: Statement
-			reduce(8), // terminator, reduce: Statement
+			reduce(8), // $, reduce: Decl
+			reduce(8), // terminator, reduce: Decl
 			nil,       // empty
 			nil,       // lineComment
 			nil,       // blockComment
@@ -348,8 +348,8 @@ var actionTab = actionTable{
 		canRecover: false,
 		actions: [numSymbols]action{
 			nil,       // INVALID
-			reduce(9), // $, reduce: Statement
-			reduce(9), // terminator, reduce: Statement
+			reduce(9), // $, reduce: Decl
+			reduce(9), // terminator, reduce: Decl
 			nil,       // empty
 			nil,       // lineComment
 			nil,       // blockComment
@@ -1088,7 +1088,7 @@ var actionTab = actionTable{
 		canRecover: false,
 		actions: [numSymbols]action{
 			nil,       // INVALID
-			reduce(3), // $, reduce: StatementList
+			reduce(3), // $, reduce: DeclList
 			nil,       // terminator
 			nil,       // empty
 			nil,       // lineComment
@@ -2864,7 +2864,7 @@ var actionTab = actionTable{
 		canRecover: false,
 		actions: [numSymbols]action{
 			nil,       // INVALID
-			reduce(2), // $, reduce: StatementList
+			reduce(2), // $, reduce: DeclList
 			nil,       // terminator
 			nil,       // empty
 			nil,       // lineComment
@@ -3161,14 +3161,14 @@ var actionTab = actionTable{
 		actions: [numSymbols]action{
 			nil,       // INVALID
 			nil,       // $
-			reduce(6), // terminator, reduce: Statement
+			reduce(6), // terminator, reduce: Decl
 			nil,       // empty
 			nil,       // lineComment
 			nil,       // blockComment
 			nil,       // bar
 			nil,       // stringLit
 			nil,       // {
-			reduce(6), // }, reduce: Statement
+			reduce(6), // }, reduce: Decl
 			nil,       // [
 			nil,       // ]
 			nil,       // char
@@ -3198,14 +3198,14 @@ var actionTab = actionTable{
 		actions: [numSymbols]action{
 			nil,       // INVALID
 			nil,       // $
-			reduce(7), // terminator, reduce: Statement
+			reduce(7), // terminator, reduce: Decl
 			nil,       // empty
 			nil,       // lineComment
 			nil,       // blockComment
 			nil,       // bar
 			nil,       // stringLit
 			nil,       // {
-			reduce(7), // }, reduce: Statement
+			reduce(7), // }, reduce: Decl
 			nil,       // [
 			nil,       // ]
 			nil,       // char
@@ -3235,14 +3235,14 @@ var actionTab = actionTable{
 		actions: [numSymbols]action{
 			nil,       // INVALID
 			nil,       // $
-			reduce(8), // terminator, reduce: Statement
+			reduce(8), // terminator, reduce: Decl
 			nil,       // empty
 			nil,       // lineComment
 			nil,       // blockComment
 			nil,       // bar
 			nil,       // stringLit
 			nil,       // {
-			reduce(8), // }, reduce: Statement
+			reduce(8), // }, reduce: Decl
 			nil,       // [
 			nil,       // ]
 			nil,       // char
@@ -3272,14 +3272,14 @@ var actionTab = actionTable{
 		actions: [numSymbols]action{
 			nil,       // INVALID
 			nil,       // $
-			reduce(9), // terminator, reduce: Statement
+			reduce(9), // terminator, reduce: Decl
 			nil,       // empty
 			nil,       // lineComment
 			nil,       // blockComment
 			nil,       // bar
 			nil,       // stringLit
 			nil,       // {
-			reduce(9), // }, reduce: Statement
+			reduce(9), // }, reduce: Decl
 			nil,       // [
 			nil,       // ]
 			nil,       // char
@@ -4056,7 +4056,7 @@ var actionTab = actionTable{
 			nil,       // bar
 			nil,       // stringLit
 			nil,       // {
-			reduce(3), // }, reduce: StatementList
+			reduce(3), // }, reduce: DeclList
 			nil,       // [
 			nil,       // ]
 			nil,       // char
@@ -5203,7 +5203,7 @@ var actionTab = actionTable{
 			nil,       // bar
 			nil,       // stringLit
 			nil,       // {
-			reduce(2), // }, reduce: StatementList
+			reduce(2), // }, reduce: DeclList
 			nil,       // [
 			nil,       // ]
 			nil,       // char
