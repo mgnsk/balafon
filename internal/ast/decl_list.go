@@ -7,20 +7,17 @@ import (
 
 type DeclList []fmt.Stringer
 
-func (s DeclList) IndentString(n int) string {
+func (declList DeclList) String() string {
 	var format strings.Builder
-	for _, stmt := range s {
-		for i := 0; i < n; i++ {
-			format.WriteString("\t")
-		}
-		format.WriteString(stmt.String())
-		format.WriteString("\n")
-	}
-	return format.String()
-}
 
-func (s DeclList) String() string {
-	return s.IndentString(0)
+	for i, decl := range declList {
+		format.WriteString(decl.String())
+		if i < len(declList)-1 {
+			format.WriteString("\n")
+		}
+	}
+
+	return format.String()
 }
 
 func NewDeclList(stmt fmt.Stringer, inner DeclList) (song DeclList) {

@@ -7,7 +7,6 @@ import (
 	"strings"
 
 	"github.com/mgnsk/gong/internal/constants"
-	"github.com/mgnsk/gong/internal/parser/token"
 	"gitlab.com/gomidi/midi/v2/smf"
 )
 
@@ -168,7 +167,7 @@ func (n *Note) String() string {
 func NewNote(symbol string, propList PropertyList) *Note {
 	if _, ok := propList.Find(uintType); !ok {
 		// Implicit quarter note.
-		propList = append(propList, quarterNoteToken)
+		propList = append(propList, quarterNoteProp)
 		sort.Sort(propList)
 	}
 
@@ -178,7 +177,7 @@ func NewNote(symbol string, propList PropertyList) *Note {
 	}
 }
 
-var quarterNoteToken = &token.Token{
+var quarterNoteProp = Property{
 	Type: uintType,
 	Lit:  []byte("4"),
 }
