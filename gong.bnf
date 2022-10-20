@@ -33,24 +33,33 @@ import (
 >>
 
 SourceFile
-        : RepeatTerminator DeclList << $1, nil >>
+        : RepeatTerminator TopLevelDeclList << $1, nil >>
         ;
-
-DeclList
-    : Decl terminator RepeatTerminator DeclList << ast.NewDeclList($0.(fmt.Stringer), $3.(ast.DeclList)), nil >>
-    | Decl RepeatTerminator  << ast.NewDeclList($0.(fmt.Stringer), nil), nil >>
-    ;
 
 RepeatTerminator
     : empty
     | terminator RepeatTerminator
     ;
 
-Decl
+TopLevelDeclList
+    : TopLevelDecl terminator RepeatTerminator TopLevelDeclList << ast.NewDeclList($0.(fmt.Stringer), $3.(ast.DeclList)), nil >>
+    | TopLevelDecl RepeatTerminator  << ast.NewDeclList($0.(fmt.Stringer), nil), nil >>
+    ;
+
+BarBodyDeclList
+    : BarBodyDecl terminator RepeatTerminator BarBodyDeclList << ast.NewDeclList($0.(fmt.Stringer), $3.(ast.DeclList)), nil >>
+    | BarBodyDecl RepeatTerminator  << ast.NewDeclList($0.(fmt.Stringer), nil), nil >>
+    ;
+
+TopLevelDecl
     : Bar
+    | BarBodyDecl
+    ;
+
+BarBodyDecl
+    : Comment
     | Command
     | NoteList
-    | Comment
     ;
 
 Comment
@@ -59,7 +68,7 @@ Comment
     ;
 
 Bar
-    : "bar" stringLit "{" RepeatTerminator DeclList "}" << ast.NewBar($T1.StringValue(), $4.(ast.DeclList)), nil >>
+    : "bar" stringLit "{" RepeatTerminator BarBodyDeclList "}" << ast.NewBar($T1.StringValue(), $4.(ast.DeclList)), nil >>
     ;
 
 NoteList

@@ -29,7 +29,7 @@ var ActTab = ActionTable{
 		Ignore: "!whitespace",
 	},
 	ActionRow{ // S2
-		Accept: 2,
+		Accept: 3,
 		Ignore: "",
 	},
 	ActionRow{ // S3
@@ -73,7 +73,7 @@ var ActTab = ActionTable{
 		Ignore: "",
 	},
 	ActionRow{ // S13
-		Accept: 2,
+		Accept: 3,
 		Ignore: "",
 	},
 	ActionRow{ // S14

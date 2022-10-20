@@ -34,7 +34,7 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `SourceFile : RepeatTerminator DeclList	<< X[1], nil >>`,
+		String: `SourceFile : RepeatTerminator TopLevelDeclList	<< X[1], nil >>`,
 		Id:         "SourceFile",
 		NTType:     1,
 		Index:      1,
@@ -44,30 +44,10 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `DeclList : Decl terminator RepeatTerminator DeclList	<< ast.NewDeclList(X[0].(fmt.Stringer), X[3].(ast.DeclList)), nil >>`,
-		Id:         "DeclList",
-		NTType:     2,
-		Index:      2,
-		NumSymbols: 4,
-		ReduceFunc: func(X []Attrib, C interface{}) (Attrib, error) {
-			return ast.NewDeclList(X[0].(fmt.Stringer), X[3].(ast.DeclList)), nil
-		},
-	},
-	ProdTabEntry{
-		String: `DeclList : Decl RepeatTerminator	<< ast.NewDeclList(X[0].(fmt.Stringer), nil), nil >>`,
-		Id:         "DeclList",
-		NTType:     2,
-		Index:      3,
-		NumSymbols: 2,
-		ReduceFunc: func(X []Attrib, C interface{}) (Attrib, error) {
-			return ast.NewDeclList(X[0].(fmt.Stringer), nil), nil
-		},
-	},
-	ProdTabEntry{
 		String: `RepeatTerminator : empty	<<  >>`,
 		Id:         "RepeatTerminator",
-		NTType:     3,
-		Index:      4,
+		NTType:     2,
+		Index:      2,
 		NumSymbols: 0,
 		ReduceFunc: func(X []Attrib, C interface{}) (Attrib, error) {
 			return nil, nil
@@ -76,37 +56,57 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `RepeatTerminator : terminator RepeatTerminator	<<  >>`,
 		Id:         "RepeatTerminator",
-		NTType:     3,
-		Index:      5,
+		NTType:     2,
+		Index:      3,
 		NumSymbols: 2,
 		ReduceFunc: func(X []Attrib, C interface{}) (Attrib, error) {
 			return X[0], nil
 		},
 	},
 	ProdTabEntry{
-		String: `Decl : Bar	<<  >>`,
-		Id:         "Decl",
+		String: `TopLevelDeclList : TopLevelDecl terminator RepeatTerminator TopLevelDeclList	<< ast.NewDeclList(X[0].(fmt.Stringer), X[3].(ast.DeclList)), nil >>`,
+		Id:         "TopLevelDeclList",
+		NTType:     3,
+		Index:      4,
+		NumSymbols: 4,
+		ReduceFunc: func(X []Attrib, C interface{}) (Attrib, error) {
+			return ast.NewDeclList(X[0].(fmt.Stringer), X[3].(ast.DeclList)), nil
+		},
+	},
+	ProdTabEntry{
+		String: `TopLevelDeclList : TopLevelDecl RepeatTerminator	<< ast.NewDeclList(X[0].(fmt.Stringer), nil), nil >>`,
+		Id:         "TopLevelDeclList",
+		NTType:     3,
+		Index:      5,
+		NumSymbols: 2,
+		ReduceFunc: func(X []Attrib, C interface{}) (Attrib, error) {
+			return ast.NewDeclList(X[0].(fmt.Stringer), nil), nil
+		},
+	},
+	ProdTabEntry{
+		String: `BarBodyDeclList : BarBodyDecl terminator RepeatTerminator BarBodyDeclList	<< ast.NewDeclList(X[0].(fmt.Stringer), X[3].(ast.DeclList)), nil >>`,
+		Id:         "BarBodyDeclList",
 		NTType:     4,
 		Index:      6,
-		NumSymbols: 1,
+		NumSymbols: 4,
 		ReduceFunc: func(X []Attrib, C interface{}) (Attrib, error) {
-			return X[0], nil
+			return ast.NewDeclList(X[0].(fmt.Stringer), X[3].(ast.DeclList)), nil
 		},
 	},
 	ProdTabEntry{
-		String: `Decl : Command	<<  >>`,
-		Id:         "Decl",
+		String: `BarBodyDeclList : BarBodyDecl RepeatTerminator	<< ast.NewDeclList(X[0].(fmt.Stringer), nil), nil >>`,
+		Id:         "BarBodyDeclList",
 		NTType:     4,
 		Index:      7,
-		NumSymbols: 1,
+		NumSymbols: 2,
 		ReduceFunc: func(X []Attrib, C interface{}) (Attrib, error) {
-			return X[0], nil
+			return ast.NewDeclList(X[0].(fmt.Stringer), nil), nil
 		},
 	},
 	ProdTabEntry{
-		String: `Decl : NoteList	<<  >>`,
-		Id:         "Decl",
-		NTType:     4,
+		String: `TopLevelDecl : Bar	<<  >>`,
+		Id:         "TopLevelDecl",
+		NTType:     5,
 		Index:      8,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib, C interface{}) (Attrib, error) {
@@ -114,10 +114,40 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `Decl : Comment	<<  >>`,
-		Id:         "Decl",
-		NTType:     4,
+		String: `TopLevelDecl : BarBodyDecl	<<  >>`,
+		Id:         "TopLevelDecl",
+		NTType:     5,
 		Index:      9,
+		NumSymbols: 1,
+		ReduceFunc: func(X []Attrib, C interface{}) (Attrib, error) {
+			return X[0], nil
+		},
+	},
+	ProdTabEntry{
+		String: `BarBodyDecl : Comment	<<  >>`,
+		Id:         "BarBodyDecl",
+		NTType:     6,
+		Index:      10,
+		NumSymbols: 1,
+		ReduceFunc: func(X []Attrib, C interface{}) (Attrib, error) {
+			return X[0], nil
+		},
+	},
+	ProdTabEntry{
+		String: `BarBodyDecl : Command	<<  >>`,
+		Id:         "BarBodyDecl",
+		NTType:     6,
+		Index:      11,
+		NumSymbols: 1,
+		ReduceFunc: func(X []Attrib, C interface{}) (Attrib, error) {
+			return X[0], nil
+		},
+	},
+	ProdTabEntry{
+		String: `BarBodyDecl : NoteList	<<  >>`,
+		Id:         "BarBodyDecl",
+		NTType:     6,
+		Index:      12,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib, C interface{}) (Attrib, error) {
 			return X[0], nil
@@ -126,8 +156,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `Comment : lineComment	<< ast.NewLineComment(X[0].(*token.Token)), nil >>`,
 		Id:         "Comment",
-		NTType:     5,
-		Index:      10,
+		NTType:     7,
+		Index:      13,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib, C interface{}) (Attrib, error) {
 			return ast.NewLineComment(X[0].(*token.Token)), nil
@@ -136,18 +166,18 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `Comment : blockComment	<< ast.NewBlockComment(X[0].(*token.Token)), nil >>`,
 		Id:         "Comment",
-		NTType:     5,
-		Index:      11,
+		NTType:     7,
+		Index:      14,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib, C interface{}) (Attrib, error) {
 			return ast.NewBlockComment(X[0].(*token.Token)), nil
 		},
 	},
 	ProdTabEntry{
-		String: `Bar : "bar" stringLit "{" RepeatTerminator DeclList "}"	<< ast.NewBar(X[1].(*token.Token).StringValue(), X[4].(ast.DeclList)), nil >>`,
+		String: `Bar : "bar" stringLit "{" RepeatTerminator BarBodyDeclList "}"	<< ast.NewBar(X[1].(*token.Token).StringValue(), X[4].(ast.DeclList)), nil >>`,
 		Id:         "Bar",
-		NTType:     6,
-		Index:      12,
+		NTType:     8,
+		Index:      15,
 		NumSymbols: 6,
 		ReduceFunc: func(X []Attrib, C interface{}) (Attrib, error) {
 			return ast.NewBar(X[1].(*token.Token).StringValue(), X[4].(ast.DeclList)), nil
@@ -156,8 +186,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `NoteList : NoteObject	<< ast.NewNoteList(X[0].(fmt.Stringer), nil), nil >>`,
 		Id:         "NoteList",
-		NTType:     7,
-		Index:      13,
+		NTType:     9,
+		Index:      16,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib, C interface{}) (Attrib, error) {
 			return ast.NewNoteList(X[0].(fmt.Stringer), nil), nil
@@ -166,8 +196,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `NoteList : NoteObject NoteList	<< ast.NewNoteList(X[0].(fmt.Stringer), X[1].(ast.NoteList)), nil >>`,
 		Id:         "NoteList",
-		NTType:     7,
-		Index:      14,
+		NTType:     9,
+		Index:      17,
 		NumSymbols: 2,
 		ReduceFunc: func(X []Attrib, C interface{}) (Attrib, error) {
 			return ast.NewNoteList(X[0].(fmt.Stringer), X[1].(ast.NoteList)), nil
@@ -176,8 +206,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `NoteObject : NoteSymbol PropertyList	<< ast.NewNote(X[0].(*token.Token).IDValue(), X[1].(ast.PropertyList)), nil >>`,
 		Id:         "NoteObject",
-		NTType:     8,
-		Index:      15,
+		NTType:     10,
+		Index:      18,
 		NumSymbols: 2,
 		ReduceFunc: func(X []Attrib, C interface{}) (Attrib, error) {
 			return ast.NewNote(X[0].(*token.Token).IDValue(), X[1].(ast.PropertyList)), nil
@@ -186,8 +216,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `NoteObject : "[" NoteList "]" PropertyList	<< ast.NewNoteListFromGroup(X[1].(ast.NoteList), X[3].(ast.PropertyList)), nil >>`,
 		Id:         "NoteObject",
-		NTType:     8,
-		Index:      16,
+		NTType:     10,
+		Index:      19,
 		NumSymbols: 4,
 		ReduceFunc: func(X []Attrib, C interface{}) (Attrib, error) {
 			return ast.NewNoteListFromGroup(X[1].(ast.NoteList), X[3].(ast.PropertyList)), nil
@@ -196,8 +226,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `NoteSymbol : char	<<  >>`,
 		Id:         "NoteSymbol",
-		NTType:     9,
-		Index:      17,
+		NTType:     11,
+		Index:      20,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib, C interface{}) (Attrib, error) {
 			return X[0], nil
@@ -206,36 +236,6 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `NoteSymbol : rest	<<  >>`,
 		Id:         "NoteSymbol",
-		NTType:     9,
-		Index:      18,
-		NumSymbols: 1,
-		ReduceFunc: func(X []Attrib, C interface{}) (Attrib, error) {
-			return X[0], nil
-		},
-	},
-	ProdTabEntry{
-		String: `PropertyList : empty	<< ast.PropertyList(nil), nil >>`,
-		Id:         "PropertyList",
-		NTType:     10,
-		Index:      19,
-		NumSymbols: 0,
-		ReduceFunc: func(X []Attrib, C interface{}) (Attrib, error) {
-			return ast.PropertyList(nil), nil
-		},
-	},
-	ProdTabEntry{
-		String: `PropertyList : Property PropertyList	<< ast.NewPropertyList(X[0].(*token.Token), X[1]) >>`,
-		Id:         "PropertyList",
-		NTType:     10,
-		Index:      20,
-		NumSymbols: 2,
-		ReduceFunc: func(X []Attrib, C interface{}) (Attrib, error) {
-			return ast.NewPropertyList(X[0].(*token.Token), X[1])
-		},
-	},
-	ProdTabEntry{
-		String: `Property : sharp	<<  >>`,
-		Id:         "Property",
 		NTType:     11,
 		Index:      21,
 		NumSymbols: 1,
@@ -244,10 +244,40 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
+		String: `PropertyList : empty	<< ast.PropertyList(nil), nil >>`,
+		Id:         "PropertyList",
+		NTType:     12,
+		Index:      22,
+		NumSymbols: 0,
+		ReduceFunc: func(X []Attrib, C interface{}) (Attrib, error) {
+			return ast.PropertyList(nil), nil
+		},
+	},
+	ProdTabEntry{
+		String: `PropertyList : Property PropertyList	<< ast.NewPropertyList(X[0].(*token.Token), X[1]) >>`,
+		Id:         "PropertyList",
+		NTType:     12,
+		Index:      23,
+		NumSymbols: 2,
+		ReduceFunc: func(X []Attrib, C interface{}) (Attrib, error) {
+			return ast.NewPropertyList(X[0].(*token.Token), X[1])
+		},
+	},
+	ProdTabEntry{
+		String: `Property : sharp	<<  >>`,
+		Id:         "Property",
+		NTType:     13,
+		Index:      24,
+		NumSymbols: 1,
+		ReduceFunc: func(X []Attrib, C interface{}) (Attrib, error) {
+			return X[0], nil
+		},
+	},
+	ProdTabEntry{
 		String: `Property : flat	<<  >>`,
 		Id:         "Property",
-		NTType:     11,
-		Index:      22,
+		NTType:     13,
+		Index:      25,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib, C interface{}) (Attrib, error) {
 			return X[0], nil
@@ -256,8 +286,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `Property : accent	<<  >>`,
 		Id:         "Property",
-		NTType:     11,
-		Index:      23,
+		NTType:     13,
+		Index:      26,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib, C interface{}) (Attrib, error) {
 			return X[0], nil
@@ -266,8 +296,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `Property : ghost	<<  >>`,
 		Id:         "Property",
-		NTType:     11,
-		Index:      24,
+		NTType:     13,
+		Index:      27,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib, C interface{}) (Attrib, error) {
 			return X[0], nil
@@ -276,8 +306,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `Property : uint	<<  >>`,
 		Id:         "Property",
-		NTType:     11,
-		Index:      25,
+		NTType:     13,
+		Index:      28,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib, C interface{}) (Attrib, error) {
 			return X[0], nil
@@ -286,8 +316,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `Property : dot	<<  >>`,
 		Id:         "Property",
-		NTType:     11,
-		Index:      26,
+		NTType:     13,
+		Index:      29,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib, C interface{}) (Attrib, error) {
 			return X[0], nil
@@ -296,8 +326,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `Property : tuplet	<<  >>`,
 		Id:         "Property",
-		NTType:     11,
-		Index:      27,
+		NTType:     13,
+		Index:      30,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib, C interface{}) (Attrib, error) {
 			return X[0], nil
@@ -306,8 +336,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `Property : letRing	<<  >>`,
 		Id:         "Property",
-		NTType:     11,
-		Index:      28,
+		NTType:     13,
+		Index:      31,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib, C interface{}) (Attrib, error) {
 			return X[0], nil
@@ -316,8 +346,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `Command : "assign" char uint	<< ast.NewCmdAssign(X[1].(*token.Token), X[2].(*token.Token)) >>`,
 		Id:         "Command",
-		NTType:     12,
-		Index:      29,
+		NTType:     14,
+		Index:      32,
 		NumSymbols: 3,
 		ReduceFunc: func(X []Attrib, C interface{}) (Attrib, error) {
 			return ast.NewCmdAssign(X[1].(*token.Token), X[2].(*token.Token))
@@ -326,8 +356,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `Command : "tempo" uint	<< ast.NewCmdTempo(X[1].(*token.Token)) >>`,
 		Id:         "Command",
-		NTType:     12,
-		Index:      30,
+		NTType:     14,
+		Index:      33,
 		NumSymbols: 2,
 		ReduceFunc: func(X []Attrib, C interface{}) (Attrib, error) {
 			return ast.NewCmdTempo(X[1].(*token.Token))
@@ -336,8 +366,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `Command : "timesig" uint uint	<< ast.NewCmdTimeSig(X[1].(*token.Token), X[2].(*token.Token)) >>`,
 		Id:         "Command",
-		NTType:     12,
-		Index:      31,
+		NTType:     14,
+		Index:      34,
 		NumSymbols: 3,
 		ReduceFunc: func(X []Attrib, C interface{}) (Attrib, error) {
 			return ast.NewCmdTimeSig(X[1].(*token.Token), X[2].(*token.Token))
@@ -346,8 +376,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `Command : "channel" uint	<< ast.NewCmdChannel(X[1].(*token.Token)) >>`,
 		Id:         "Command",
-		NTType:     12,
-		Index:      32,
+		NTType:     14,
+		Index:      35,
 		NumSymbols: 2,
 		ReduceFunc: func(X []Attrib, C interface{}) (Attrib, error) {
 			return ast.NewCmdChannel(X[1].(*token.Token))
@@ -356,8 +386,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `Command : "velocity" uint	<< ast.NewCmdVelocity(X[1].(*token.Token)) >>`,
 		Id:         "Command",
-		NTType:     12,
-		Index:      33,
+		NTType:     14,
+		Index:      36,
 		NumSymbols: 2,
 		ReduceFunc: func(X []Attrib, C interface{}) (Attrib, error) {
 			return ast.NewCmdVelocity(X[1].(*token.Token))
@@ -366,8 +396,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `Command : "program" uint	<< ast.NewCmdProgram(X[1].(*token.Token)) >>`,
 		Id:         "Command",
-		NTType:     12,
-		Index:      34,
+		NTType:     14,
+		Index:      37,
 		NumSymbols: 2,
 		ReduceFunc: func(X []Attrib, C interface{}) (Attrib, error) {
 			return ast.NewCmdProgram(X[1].(*token.Token))
@@ -376,8 +406,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `Command : "control" uint uint	<< ast.NewCmdControl(X[1].(*token.Token), X[2].(*token.Token)) >>`,
 		Id:         "Command",
-		NTType:     12,
-		Index:      35,
+		NTType:     14,
+		Index:      38,
 		NumSymbols: 3,
 		ReduceFunc: func(X []Attrib, C interface{}) (Attrib, error) {
 			return ast.NewCmdControl(X[1].(*token.Token), X[2].(*token.Token))
@@ -386,8 +416,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `Command : "play" stringLit	<< ast.CmdPlay(X[1].(*token.Token).StringValue()), nil >>`,
 		Id:         "Command",
-		NTType:     12,
-		Index:      36,
+		NTType:     14,
+		Index:      39,
 		NumSymbols: 2,
 		ReduceFunc: func(X []Attrib, C interface{}) (Attrib, error) {
 			return ast.CmdPlay(X[1].(*token.Token).StringValue()), nil
@@ -396,8 +426,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `Command : "start"	<< ast.CmdStart{}, nil >>`,
 		Id:         "Command",
-		NTType:     12,
-		Index:      37,
+		NTType:     14,
+		Index:      40,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib, C interface{}) (Attrib, error) {
 			return ast.CmdStart{}, nil
@@ -406,8 +436,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `Command : "stop"	<< ast.CmdStop{}, nil >>`,
 		Id:         "Command",
-		NTType:     12,
-		Index:      38,
+		NTType:     14,
+		Index:      41,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib, C interface{}) (Attrib, error) {
 			return ast.CmdStop{}, nil

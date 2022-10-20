@@ -43,3 +43,19 @@ play "Bar 1"
 
 	g.Expect(fmt.Sprint(res2)).To(Equal(strings.Trim(input1, " \n")))
 }
+
+func TestNestedBarForbidden(t *testing.T) {
+	g := NewGomegaWithT(t)
+
+	input := `
+bar "Bar 1" {
+    bar "Bar 2" {
+        start
+    }
+}
+    `
+
+	_, err := parse(input)
+	g.Expect(err).To(HaveOccurred())
+	g.Expect(err.Error()).To(HaveSuffix(`got: "bar"`))
+}

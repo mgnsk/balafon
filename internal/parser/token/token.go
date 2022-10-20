@@ -138,8 +138,8 @@ var TokMap = TokenMap{
 	typeMap: []string{
 		"INVALID",
 		"$",
-		"terminator",
 		"empty",
+		"terminator",
 		"lineComment",
 		"blockComment",
 		"bar",
@@ -173,8 +173,8 @@ var TokMap = TokenMap{
 	idMap: map[string]Type{
 		"INVALID":      0,
 		"$":            1,
-		"terminator":   2,
-		"empty":        3,
+		"empty":        2,
+		"terminator":   3,
 		"lineComment":  4,
 		"blockComment": 5,
 		"bar":          6,
