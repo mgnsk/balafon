@@ -7,6 +7,7 @@ const (
 	TicksPerQuarter smf.MetricTicks = 960
 	TicksPerWhole   smf.MetricTicks = 4 * TicksPerQuarter
 	DefaultTempo                    = 120
+	DefaultVelocity                 = 100
 	MinValue                        = 0
 	MaxValue                        = 127
 	MaxBeatsPerBar                  = 128

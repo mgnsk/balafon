@@ -215,33 +215,28 @@ The language consists of commands and note lists. It is possible to group comman
   // Expands to
   f8 c8 g8 f#8 c#8 g#8
   ```
+
 - #### Bars
 
-  Bars are used to specify multiple tracks playing at once.
-  Commands used inside bars are not scoped and have global state.
-  For example setting a channel, it becomes the default for all following messages.
-  In multi-channel files, each bar must specify the its channel.
-  See a multi-channel example at the end of this document.
+Bars are used to specify multiple tracks playing at once.
+All commands are scoped to the bar.
+See a multi-channel example at the end of this document.
 
-  ```
-  // Define a bar.
-  bar "Rock beat"
-  // Setting timesig makes the interpreter validate the bar length.
+```
+// Define a bar.
+bar "Rock beat" {
   timesig 4 4
   [xx xx xx xx]8
   // Using braces for nice alignment.
   [k  s  k  s]
-  end
+}
 
-  // You can also write the same bar as:
-  bar "The same beat"
-  [xxxxxxxx]8
-  ksks
-  end
+// Play the bar.
+play "Rock beat"
 
-  // Play the bar.
-  play "Rock beat"
-  ```
+// You can also write shorter syntax.
+bar "The same beat" { [xxxxxxxx]8; ksks }; play "The same beat"
+```
 
 ## Examples
 
