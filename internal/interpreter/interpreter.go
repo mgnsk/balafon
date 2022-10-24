@@ -13,13 +13,6 @@ import (
 	"gitlab.com/gomidi/midi/v2/smf"
 )
 
-// Message is a MIDI message.
-// type Message struct {
-// 	midi.Message
-// 	Tick       uint32
-// 	NoteLength uint32
-// }
-
 type midiKey struct {
 	channel uint8
 	note    rune
@@ -27,14 +20,14 @@ type midiKey struct {
 
 // Interpreter evaluates messages from raw line input.
 type Interpreter struct {
-	parser       *parser.Parser
-	keymap       map[midiKey]uint8
-	ringing      map[midiKey]struct{}
-	bars         map[string]sequencer.Events
-	curChannel   uint8
-	curVelocity  uint8
-	curBarLength smf.MetricTicks
-	curTick      uint32
+	parser      *parser.Parser
+	keymap      map[midiKey]uint8
+	ringing     map[midiKey]struct{}
+	bars        map[string]sequencer.Events
+	curChannel  uint8
+	curVelocity uint8
+	// curBarLength smf.MetricTicks
+	// curTick      uint32
 	// curTempo     uint16
 }
 
@@ -55,8 +48,6 @@ func (it *Interpreter) Clone() *Interpreter {
 	}
 	newIt.curChannel = it.curChannel
 	newIt.curVelocity = it.curVelocity
-	newIt.curBarLength = it.curBarLength
-	newIt.curTick = it.curTick
 
 	return newIt
 }
@@ -376,7 +367,6 @@ func (it *Interpreter) parseNoteList(noteList ast.NoteList) (sequencer.Events, e
 	}
 
 	sort.Sort(events)
-	// sort.Sort(byMessageTypeOrKey(events))
 
 	return events, nil
 }
@@ -407,43 +397,6 @@ func (it *Interpreter) setRingingOff(note rune) {
 	delete(it.ringing, midiKey{it.curChannel, note})
 }
 
-// func (it *Interpreter) addNotes(list ast.NoteList) (sequencer.Events, error) {
-// 	if it.curBar != "" {
-// 		if it.curBarLength > 0 {
-// 			var barLength smf.MetricTicks
-// 			for _, note := range list {
-// 				barLength += note.Ticks()
-// 			}
-// 			if barLength != it.curBarLength {
-// 				return nil, fmt.Errorf("invalid bar length")
-// 			}
-// 		}
-// 		events, err := it.parseNoteList(list)
-// 		if err != nil {
-// 			return nil, err
-// 		}
-// 		it.barBuffer = append(it.barBuffer, events...)
-// 		return nil, nil
-// 	}
-
-// 	events, err := it.parseNoteList(list)
-// 	if err != nil {
-// 		return nil, err
-// 	}
-
-// 	return events, nil
-// }
-
-// case ast.CmdControl:
-// 	event := &sequencer.Event{
-// 		// Tick:    it.curTick,
-// 		Message: smf.Message(midi.ControlChange(it.curChannel, r.Control, r.Parameter)),
-// 	}
-// 	if it.barName != "" {
-// 		it.barBuffer = append(it.barBuffer, event)
-// 		return nil, nil
-// 	}
-// 	return sequencer.Events{event}, nil
 // New creates an interpreter.
 func New() *Interpreter {
 	return &Interpreter{
@@ -452,31 +405,5 @@ func New() *Interpreter {
 		ringing:     map[midiKey]struct{}{},
 		bars:        map[string]sequencer.Events{},
 		curVelocity: constants.DefaultVelocity,
-		// curTempo:    constants.DefaultTempo,
 	}
 }
-
-// type byMessageTypeOrKey []Message
-
-// func (s byMessageTypeOrKey) Len() int      { return len(s) }
-// func (s byMessageTypeOrKey) Swap(i, j int) { s[i], s[j] = s[j], s[i] }
-// func (s byMessageTypeOrKey) Less(i, j int) bool {
-// 	if s[i].Tick == s[j].Tick {
-// 		a := s[i].Message
-// 		b := s[j].Message
-
-// 		if a.Is(midi.NoteOffMsg) && !b.Is(midi.NoteOffMsg) {
-// 			return true
-// 		}
-
-// 		return false
-// 	}
-
-// 	return s[i].Tick < s[j].Tick
-// }
-
-// func find(events sequencer.Events, t midi.Type) int {
-// 	return slices.IndexFunc(events, func(e *sequencer.Event) bool {
-// 		return e.Message.Is(t)
-// 	})
-// }
