@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"io"
 
 	"github.com/mgnsk/gong/internal/interpreter"
 	"github.com/mgnsk/gong/internal/util"
@@ -20,8 +21,12 @@ func main() {
 			}
 			defer f.Close()
 
-			it := interpreter.New()
-			if _, err := it.EvalAll(f); err != nil {
+			input, err := io.ReadAll(f)
+			if err != nil {
+				return err
+			}
+
+			if _, err := interpreter.New().Eval(string(input)); err != nil {
 				fmt.Println(err)
 				return nil
 			}

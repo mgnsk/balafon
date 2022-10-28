@@ -1,6 +1,8 @@
 package main
 
 import (
+	"io"
+
 	"github.com/mgnsk/gong/internal/interpreter"
 	"github.com/mgnsk/gong/internal/util"
 	"github.com/spf13/cobra"
@@ -18,7 +20,12 @@ func main() {
 			}
 			defer f.Close()
 
-			song, err := interpreter.New().EvalAll(f)
+			input, err := io.ReadAll(f)
+			if err != nil {
+				return err
+			}
+
+			song, err := interpreter.New().Eval(string(input))
 			if err != nil {
 				return err
 			}

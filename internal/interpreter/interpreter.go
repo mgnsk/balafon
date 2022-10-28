@@ -18,17 +18,14 @@ type midiKey struct {
 	note    rune
 }
 
-// Interpreter evaluates messages from raw line input.
+// Interpreter evaluates MIDI messages from text input.
 type Interpreter struct {
-	parser      *parser.Parser
-	keymap      map[midiKey]uint8
-	ringing     map[midiKey]struct{}
+	parser *parser.Parser
+	keymap map[midiKey]uint8
+	// ringing     map[midiKey]struct{}
 	bars        map[string]sequencer.Events
 	curChannel  uint8
 	curVelocity uint8
-	// curBarLength smf.MetricTicks
-	// curTick      uint32
-	// curTempo     uint16
 }
 
 // Clone returns a copy of the interpreter.
@@ -39,9 +36,9 @@ func (it *Interpreter) Clone() *Interpreter {
 		newIt.keymap[k] = v
 	}
 
-	for k, v := range it.ringing {
-		newIt.ringing[k] = v
-	}
+	// for k, v := range it.ringing {
+	// 	newIt.ringing[k] = v
+	// }
 
 	for k, v := range it.bars {
 		newIt.bars[k] = v
@@ -76,11 +73,14 @@ var sugOutsideBar = []string{
 	"stop",
 }
 
+// TODO:
+
 // TODO: parseOption: fillBarSilence - fills bars with
 
 func (it *Interpreter) Eval(input string) (*sequencer.Song, error) {
 	res, err := it.parser.Parse(lexer.NewLexer([]byte(input)))
 	if err != nil {
+
 		return nil, err
 	}
 
@@ -89,14 +89,14 @@ func (it *Interpreter) Eval(input string) (*sequencer.Song, error) {
 		return nil, fmt.Errorf("invalid input, expected ast.DeclList")
 	}
 
-	return it.parseSong(declList)
+	return it.EvalAST(declList)
 }
 
-func (it *Interpreter) parseSong(declList ast.DeclList) (*sequencer.Song, error) {
-	song := sequencer.New()
-	// TODO: Expand all bars, warn of unused bars
-
-	var buffer sequencer.Events
+func (it *Interpreter) EvalAST(declList ast.DeclList) (*sequencer.Song, error) {
+	var (
+		song   = sequencer.New()
+		buffer sequencer.Events
+	)
 
 	for _, decl := range declList {
 		switch decl := decl.(type) {
@@ -105,7 +105,7 @@ func (it *Interpreter) parseSong(declList ast.DeclList) (*sequencer.Song, error)
 				return nil, fmt.Errorf("bar '%s' already defined", decl.Name)
 			}
 
-			events, err := it.Clone().parseBar(decl.DeclList)
+			events, err := it.Clone().parse(decl.DeclList)
 			if err != nil {
 				return nil, err
 			}
@@ -121,7 +121,7 @@ func (it *Interpreter) parseSong(declList ast.DeclList) (*sequencer.Song, error)
 			buffer = append(buffer, events...)
 
 		default:
-			events, err := it.parseBar(ast.DeclList{decl})
+			events, err := it.parse(ast.DeclList{decl})
 			if err != nil {
 				return nil, err
 			}
@@ -142,7 +142,23 @@ func (it *Interpreter) parseSong(declList ast.DeclList) (*sequencer.Song, error)
 	return song, nil
 }
 
-func (it *Interpreter) parseBar(declList ast.DeclList) (sequencer.Events, error) {
+func createBar(events sequencer.Events) sequencer.Bar {
+	bar := sequencer.Bar{
+		Events: make(sequencer.Events, 0, len(events)),
+	}
+
+	for _, ev := range events {
+		if num, denom, ok := getMeter(ev); ok {
+			bar.TimeSig = [2]uint8{num, denom}
+		} else {
+			bar.Events = append(bar.Events, ev)
+		}
+	}
+
+	return bar
+}
+
+func (it *Interpreter) parse(declList ast.DeclList) (sequencer.Events, error) {
 	var events sequencer.Events
 
 	for _, decl := range declList {
@@ -153,13 +169,11 @@ func (it *Interpreter) parseBar(declList ast.DeclList) (sequencer.Events, error)
 			}
 
 		case ast.CmdTempo:
-			// it.curTempo = uint16(decl)
 			events = append(events, &sequencer.Event{
 				Message: smf.MetaTempo(float64(decl)),
 			})
 
 		case ast.CmdTimeSig:
-			// TODO curBarLength?
 			events = append(events, &sequencer.Event{
 				Message: smf.MetaMeter(decl.Num, decl.Denom),
 			})
@@ -198,6 +212,8 @@ func (it *Interpreter) parseBar(declList ast.DeclList) (sequencer.Events, error)
 
 			events = append(events, noteEvents...)
 
+		case ast.LineComment:
+		case ast.BlockComment:
 		default:
 			panic(fmt.Sprintf("parseBar: invalid token %T", decl))
 		}
@@ -212,20 +228,6 @@ func getDuration(events sequencer.Events) uint32 {
 		d += uint32(ev.Duration)
 	}
 	return d
-}
-
-func createBar(events sequencer.Events) sequencer.Bar {
-	bar := sequencer.Bar{
-		Events: events,
-	}
-
-	for _, ev := range events {
-		if num, denom, ok := getMeter(ev); ok {
-			bar.TimeSig = [2]uint8{num, denom}
-		}
-	}
-
-	return bar
 }
 
 // Suggest returns suggestions for the next input.
@@ -292,12 +294,9 @@ func (it *Interpreter) Suggest() []string {
 // 	return ms, nil
 // }
 
-func getMeter(event *sequencer.Event) (uint8, uint8, bool) {
-	var num, denom uint8
-	if event.Message.GetMetaMeter(&num, &denom) {
-		return num, denom, true
-	}
-	return 0, 0, false
+func getMeter(event *sequencer.Event) (num uint8, denom uint8, ok bool) {
+	ok = event.Message.GetMetaMeter(&num, &denom)
+	return
 }
 
 // parseNoteList parses a note list into messages with relative ticks.
@@ -377,32 +376,32 @@ func (it *Interpreter) getKey(channel uint8, note rune) (uint8, bool) {
 }
 
 func (it *Interpreter) assign(channel uint8, note rune, key uint8) error {
-	if key, ok := it.getKey(channel, note); ok {
-		return fmt.Errorf("note '%c' already assigned to key '%d' on channel '%d'", note, key, it.curChannel)
+	if existingKey, ok := it.getKey(channel, note); ok {
+		return fmt.Errorf("note '%c' already assigned to key '%d' on channel '%d'", note, existingKey, channel)
 	}
 	it.keymap[midiKey{channel, note}] = key
 	return nil
 }
 
-func (it *Interpreter) isRinging(note rune) bool {
-	_, ok := it.ringing[midiKey{it.curChannel, note}]
-	return ok
-}
+// func (it *Interpreter) isRinging(note rune) bool {
+// 	_, ok := it.ringing[midiKey{it.curChannel, note}]
+// 	return ok
+// }
 
-func (it *Interpreter) setRingingOn(note rune) {
-	it.ringing[midiKey{it.curChannel, note}] = struct{}{}
-}
+// func (it *Interpreter) setRingingOn(note rune) {
+// 	it.ringing[midiKey{it.curChannel, note}] = struct{}{}
+// }
 
-func (it *Interpreter) setRingingOff(note rune) {
-	delete(it.ringing, midiKey{it.curChannel, note})
-}
+// func (it *Interpreter) setRingingOff(note rune) {
+// 	delete(it.ringing, midiKey{it.curChannel, note})
+// }
 
 // New creates an interpreter.
 func New() *Interpreter {
 	return &Interpreter{
-		parser:      parser.NewParser(),
-		keymap:      map[midiKey]uint8{},
-		ringing:     map[midiKey]struct{}{},
+		parser: parser.NewParser(),
+		keymap: map[midiKey]uint8{},
+		// ringing:     map[midiKey]struct{}{},
 		bars:        map[string]sequencer.Events{},
 		curVelocity: constants.DefaultVelocity,
 	}

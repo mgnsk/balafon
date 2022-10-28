@@ -18,68 +18,68 @@ func init() {
 func TestCommands(t *testing.T) {
 	for _, tc := range []struct {
 		input   string
-		msg     []byte
 		timesig [2]uint8
+		msg     []byte
 		dur     uint32
 	}{
 		{
 			"assign c 60; c",
-			midi.NoteOn(0, 60, constants.DefaultVelocity),
 			[2]uint8{4, 4},
+			midi.NoteOn(0, 60, constants.DefaultVelocity),
 			constants.TicksPerQuarter.Ticks32th(),
 		},
 		{
 			"tempo 200",
-			smf.MetaTempo(200),
 			[2]uint8{4, 4},
+			smf.MetaTempo(200),
 			0,
 		},
 		{
 			"timesig 1 4",
-			smf.MetaMeter(1, 4),
 			[2]uint8{1, 4},
+			nil,
 			0,
 		},
 		{
 			"channel 10; assign c 60; c",
-			midi.NoteOn(10, 60, constants.DefaultVelocity),
 			[2]uint8{4, 4},
+			midi.NoteOn(10, 60, constants.DefaultVelocity),
 			constants.TicksPerQuarter.Ticks32th(),
 		},
 		{
 			"velocity 30; assign c 60; c",
-			midi.NoteOn(0, 60, 30),
 			[2]uint8{4, 4},
+			midi.NoteOn(0, 60, 30),
 			constants.TicksPerQuarter.Ticks32th(),
 		},
 		{
 			"program 0",
-			midi.ProgramChange(0, 0),
 			[2]uint8{4, 4},
+			midi.ProgramChange(0, 0),
 			0,
 		},
 		{
 			"control 1 2",
-			midi.ControlChange(0, 1, 2),
 			[2]uint8{4, 4},
+			midi.ControlChange(0, 1, 2),
 			0,
 		},
 		{
 			`bar "bar" { assign c 60; c }; play "bar"`,
-			midi.NoteOn(0, 60, constants.DefaultVelocity),
 			[2]uint8{4, 4},
+			midi.NoteOn(0, 60, constants.DefaultVelocity),
 			constants.TicksPerQuarter.Ticks32th(),
 		},
 		{
 			"start",
-			midi.Start(),
 			[2]uint8{4, 4},
+			midi.Start(),
 			0,
 		},
 		{
 			"stop",
-			midi.Stop(),
 			[2]uint8{4, 4},
+			midi.Stop(),
 			0,
 		},
 	} {
@@ -88,21 +88,20 @@ func TestCommands(t *testing.T) {
 
 			it := interpreter.New()
 
-			s, err := it.Eval(tc.input)
+			song, err := it.Eval(tc.input)
 			g.Expect(err).NotTo(HaveOccurred())
 
-			g.Expect(s.Bars()).To(HaveLen(1))
-			bar := s.Bars()[0]
-			g.Expect(bar.Events).To(HaveLen(1))
-			g.Expect(bar.Events[0].Message).To(BeEquivalentTo(tc.msg))
-			g.Expect(bar.TimeSig).To(Equal(tc.timesig))
+			bars := song.Bars()
+			g.Expect(bars).To(HaveLen(1))
+			g.Expect(bars[0].TimeSig).To(Equal(tc.timesig))
 
-			var d uint32
-			for _, ev := range bar.Events {
-				d += uint32(ev.Duration)
+			if tc.msg == nil {
+				g.Expect(bars[0].Events).To(BeEmpty())
+			} else {
+				g.Expect(bars[0].Events).To(HaveLen(1))
+				g.Expect(bars[0].Events[0].Duration).To(BeEquivalentTo(tc.dur))
+				g.Expect(bars[0].Events[0].Message).To(BeEquivalentTo(tc.msg))
 			}
-
-			g.Expect(d).To(Equal(tc.dur))
 		})
 	}
 }
@@ -141,13 +140,13 @@ func TestSharpFlatNote(t *testing.T) {
 
 			it := interpreter.New()
 
-			s, err := it.Eval(tc.input)
+			song, err := it.Eval(tc.input)
 			g.Expect(err).NotTo(HaveOccurred())
 
-			g.Expect(s.Bars()).To(HaveLen(1))
-			bar := s.Bars()[0]
-			g.Expect(bar.Events).To(HaveLen(1))
-			g.Expect(bar.Events[0].Message).To(BeEquivalentTo(midi.NoteOn(0, tc.key, constants.DefaultVelocity)))
+			bars := song.Bars()
+			g.Expect(bars).To(HaveLen(1))
+			g.Expect(bars[0].Events).To(HaveLen(1))
+			g.Expect(bars[0].Events[0].Message).To(BeEquivalentTo(midi.NoteOn(0, tc.key, constants.DefaultVelocity)))
 		})
 	}
 }
@@ -181,13 +180,13 @@ func TestAccentuatedAndGhostNote(t *testing.T) {
 
 			it := interpreter.New()
 
-			s, err := it.Eval(tc.input)
+			song, err := it.Eval(tc.input)
 			g.Expect(err).NotTo(HaveOccurred())
 
-			g.Expect(s.Bars()).To(HaveLen(1))
-			bar := s.Bars()[0]
-			g.Expect(bar.Events).To(HaveLen(1))
-			g.Expect(bar.Events[0].Message).To(BeEquivalentTo(midi.NoteOn(0, 60, tc.velocity)))
+			bars := song.Bars()
+			g.Expect(bars).To(HaveLen(1))
+			g.Expect(bars[0].Events).To(HaveLen(1))
+			g.Expect(bars[0].Events[0].Message).To(BeEquivalentTo(midi.NoteOn(0, 60, tc.velocity)))
 		})
 	}
 }
@@ -230,17 +229,53 @@ func TestNoteLengths(t *testing.T) {
 			_, err := it.Eval("assign k 36")
 			g.Expect(err).NotTo(HaveOccurred())
 
-			s, err := it.Eval(tc.input)
+			song, err := it.Eval(tc.input)
 			g.Expect(err).NotTo(HaveOccurred())
 
-			g.Expect(s.Bars()).To(HaveLen(1))
-			bar := s.Bars()[0]
-			g.Expect(bar.Events).To(HaveLen(1))
-			g.Expect(bar.Events[0].Message).To(BeEquivalentTo(midi.NoteOn(0, 36, constants.DefaultVelocity)))
-
-			g.Expect(uint32(bar.Events[0].Duration) * 8).To(BeEquivalentTo(tc.ticks))
+			bars := song.Bars()
+			g.Expect(bars).To(HaveLen(1))
+			g.Expect(bars[0].Events).To(HaveLen(1))
+			g.Expect(bars[0].Events[0].Message).To(BeEquivalentTo(midi.NoteOn(0, 36, constants.DefaultVelocity)))
+			g.Expect(uint32(bars[0].Events[0].Duration) * 8).To(BeEquivalentTo(tc.ticks))
 		})
 	}
+}
+
+func TestBarScope(t *testing.T) {
+	g := NewWithT(t)
+
+	it := interpreter.New()
+
+	song, err := it.Eval(`
+velocity 10
+
+channel 1
+assign c 60
+
+channel 2
+assign c 120
+
+channel 1
+
+bar "bar" {
+    velocity 20
+
+    channel 2
+    c
+}
+
+play "bar"
+c
+`)
+	g.Expect(err).NotTo(HaveOccurred())
+
+	bars := song.Bars()
+	g.Expect(bars).To(HaveLen(2))
+	g.Expect(bars[0].Events).To(HaveLen(1))
+	g.Expect(bars[0].Events[0].Message).To(BeEquivalentTo(midi.NoteOn(2, 120, 20)))
+
+	g.Expect(bars[1].Events).To(HaveLen(1))
+	g.Expect(bars[1].Events[0].Message).To(BeEquivalentTo(midi.NoteOn(1, 60, 10)))
 }
 
 // // TODO: test bar length validation
@@ -272,35 +307,6 @@ func TestNoteLengths(t *testing.T) {
 // 	// g.Expect(ms[2].Pos).To(Equal(uint32(constants.TicksPerQuarter * 2)))
 // 	// g.Expect(ms[2].Message).To(Equal(smf.Message(midi.NoteOff(0, 36))))
 // }
-
-// // func TestEvalAll(t *testing.T) {
-// // 	g := NewWithT(t)
-
-// // 	it := interpreter.New()
-
-// // 	input := `
-// // 		velocity 100
-// // 		channel 1
-// // 		assign x 36
-// // 		channel 2
-// // 		assign x 38
-
-// // 		bar "verse"
-// // 		channel 1
-// // 		x
-// // 		channel 2
-// // 		x
-// // 		end
-// //         play "verse"
-// //     `
-// // 	// TODO bar not filled error
-
-// // 	song, err := it.EvalAll(strings.NewReader(input))
-// // 	g.Expect(err).NotTo(HaveOccurred())
-
-// // 	spew.Dump(song)
-
-// // }
 
 // var (
 // 	testFile  []byte
