@@ -3,8 +3,6 @@
 gong is a small multitrack MIDI control language. It consists of a shell with live mode,
 an SMF compiler, and a playback engine.
 
-There exists a strict YAML specification that compiles down to gong script.
-
 ## Install
 
 To install the `gong` command from source, `go` and `rtmidi` are required.
@@ -14,7 +12,6 @@ Not tested on platforms other than Linux.
 go install github.com/mgnsk/gong/cmd/gong@latest # Requires rtmidi development package.
 go install github.com/mgnsk/gong/cmd/gong2smf@latest
 go install github.com/mgnsk/gong/cmd/gonglint@latest
-go install github.com/mgnsk/gong/cmd/yaml2gong@latest
 ```
 
 ## Running
@@ -76,14 +73,6 @@ go install github.com/mgnsk/gong/cmd/yaml2gong@latest
   Piping is also supported:
   ```sh
   $ cat examples/bach | gong2smf -o examples/bach.mid -
-  ```
-- Compile a YAML file to gong script and play it:
-  ```sh
-  $ yaml2gong examples/example.yml | gong play -
-  ```
-- Compile a YAML file to SMF:
-  ```sh
-  $ yaml2gong examples/example.yml | gong2smf -o example.mid -
   ```
 
 - Help.
@@ -272,16 +261,6 @@ The file is included in the `examples` directory.
 
 ```
 {{.MultiExample | trim_trailing_newlines}}
-```
-
-### YAML example
-
-The gong language has a strict YAML wrapper that compiles to valid gong script.
-
-The file is included in the `examples` directory.
-
-```yaml
-{{.YAMLExample | trim_trailing_newlines}}
 ```
 
 ## Possible features in the future
