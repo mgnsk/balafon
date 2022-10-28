@@ -53,12 +53,14 @@ BarBodyDeclList
 
 TopLevelDecl
     : Bar
-    | BarBodyDecl
+    | Comment
+    | TopLevelCommand
+    | NoteList
     ;
 
 BarBodyDecl
     : Comment
-    | Command
+    | BarBodyCommand
     | NoteList
     ;
 
@@ -102,9 +104,13 @@ Property
     | letRing
     ;
 
-Command
+TopLevelCommand
     : "assign" char uint            << ast.NewCmdAssign($T1, $T2) >>
-    | "tempo" uint                  << ast.NewCmdTempo($T1) >>
+    | BarBodyCommand
+    ;
+
+BarBodyCommand
+    : "tempo" uint                  << ast.NewCmdTempo($T1) >>
     | "timesig" uint uint           << ast.NewCmdTimeSig($T1, $T2) >>
     | "channel" uint                << ast.NewCmdChannel($T1) >>
     | "velocity" uint               << ast.NewCmdVelocity($T1) >>

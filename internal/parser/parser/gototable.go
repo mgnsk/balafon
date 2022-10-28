@@ -2,7 +2,7 @@
 
 package parser
 
-const numNTSymbols = 15
+const numNTSymbols = 16
 
 type (
 	gotoTable [numStates]gotoRow
@@ -25,7 +25,8 @@ var gotoTab = gotoTable{
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S1
 		-1, // S'
@@ -42,7 +43,8 @@ var gotoTab = gotoTable{
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S2
 		-1, // S'
@@ -51,15 +53,16 @@ var gotoTab = gotoTable{
 		4,  // TopLevelDeclList
 		-1, // BarBodyDeclList
 		5,  // TopLevelDecl
-		6,  // BarBodyDecl
-		8,  // Comment
-		7,  // Bar
-		10, // NoteList
+		-1, // BarBodyDecl
+		7,  // Comment
+		6,  // Bar
+		9,  // NoteList
 		14, // NoteObject
 		15, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		9,  // Command
+		8,  // TopLevelCommand
+		10, // BarBodyCommand
 	},
 	gotoRow{ // S3
 		-1, // S'
@@ -76,7 +79,8 @@ var gotoTab = gotoTable{
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S4
 		-1, // S'
@@ -93,7 +97,8 @@ var gotoTab = gotoTable{
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S5
 		-1, // S'
@@ -110,7 +115,8 @@ var gotoTab = gotoTable{
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S6
 		-1, // S'
@@ -127,7 +133,8 @@ var gotoTab = gotoTable{
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S7
 		-1, // S'
@@ -144,7 +151,8 @@ var gotoTab = gotoTable{
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S8
 		-1, // S'
@@ -161,7 +169,8 @@ var gotoTab = gotoTable{
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S9
 		-1, // S'
@@ -178,7 +187,8 @@ var gotoTab = gotoTable{
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S10
 		-1, // S'
@@ -195,7 +205,8 @@ var gotoTab = gotoTable{
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S11
 		-1, // S'
@@ -212,7 +223,8 @@ var gotoTab = gotoTable{
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S12
 		-1, // S'
@@ -229,7 +241,8 @@ var gotoTab = gotoTable{
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S13
 		-1, // S'
@@ -246,7 +259,8 @@ var gotoTab = gotoTable{
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S14
 		-1, // S'
@@ -263,7 +277,8 @@ var gotoTab = gotoTable{
 		15, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S15
 		-1, // S'
@@ -280,7 +295,8 @@ var gotoTab = gotoTable{
 		-1, // NoteSymbol
 		34, // PropertyList
 		35, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S16
 		-1, // S'
@@ -297,7 +313,8 @@ var gotoTab = gotoTable{
 		46, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S17
 		-1, // S'
@@ -314,7 +331,8 @@ var gotoTab = gotoTable{
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S18
 		-1, // S'
@@ -331,7 +349,8 @@ var gotoTab = gotoTable{
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S19
 		-1, // S'
@@ -348,7 +367,8 @@ var gotoTab = gotoTable{
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S20
 		-1, // S'
@@ -365,7 +385,8 @@ var gotoTab = gotoTable{
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S21
 		-1, // S'
@@ -382,7 +403,8 @@ var gotoTab = gotoTable{
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S22
 		-1, // S'
@@ -399,7 +421,8 @@ var gotoTab = gotoTable{
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S23
 		-1, // S'
@@ -416,7 +439,8 @@ var gotoTab = gotoTable{
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S24
 		-1, // S'
@@ -433,7 +457,8 @@ var gotoTab = gotoTable{
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S25
 		-1, // S'
@@ -450,7 +475,8 @@ var gotoTab = gotoTable{
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S26
 		-1, // S'
@@ -467,7 +493,8 @@ var gotoTab = gotoTable{
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S27
 		-1, // S'
@@ -484,7 +511,8 @@ var gotoTab = gotoTable{
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S28
 		-1, // S'
@@ -501,7 +529,8 @@ var gotoTab = gotoTable{
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S29
 		-1, // S'
@@ -518,7 +547,8 @@ var gotoTab = gotoTable{
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S30
 		-1, // S'
@@ -535,7 +565,8 @@ var gotoTab = gotoTable{
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S31
 		-1, // S'
@@ -552,7 +583,8 @@ var gotoTab = gotoTable{
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S32
 		-1, // S'
@@ -569,7 +601,8 @@ var gotoTab = gotoTable{
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S33
 		-1, // S'
@@ -586,7 +619,8 @@ var gotoTab = gotoTable{
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S34
 		-1, // S'
@@ -603,7 +637,8 @@ var gotoTab = gotoTable{
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S35
 		-1, // S'
@@ -620,7 +655,8 @@ var gotoTab = gotoTable{
 		-1, // NoteSymbol
 		61, // PropertyList
 		35, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S36
 		-1, // S'
@@ -637,7 +673,8 @@ var gotoTab = gotoTable{
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S37
 		-1, // S'
@@ -654,7 +691,8 @@ var gotoTab = gotoTable{
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S38
 		-1, // S'
@@ -671,7 +709,8 @@ var gotoTab = gotoTable{
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S39
 		-1, // S'
@@ -688,7 +727,8 @@ var gotoTab = gotoTable{
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S40
 		-1, // S'
@@ -705,7 +745,8 @@ var gotoTab = gotoTable{
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S41
 		-1, // S'
@@ -722,7 +763,8 @@ var gotoTab = gotoTable{
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S42
 		-1, // S'
@@ -739,7 +781,8 @@ var gotoTab = gotoTable{
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S43
 		-1, // S'
@@ -756,7 +799,8 @@ var gotoTab = gotoTable{
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S44
 		-1, // S'
@@ -773,7 +817,8 @@ var gotoTab = gotoTable{
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S45
 		-1, // S'
@@ -790,7 +835,8 @@ var gotoTab = gotoTable{
 		46, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S46
 		-1, // S'
@@ -807,7 +853,8 @@ var gotoTab = gotoTable{
 		-1, // NoteSymbol
 		64, // PropertyList
 		65, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S47
 		-1, // S'
@@ -824,7 +871,8 @@ var gotoTab = gotoTable{
 		46, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S48
 		-1, // S'
@@ -841,7 +889,8 @@ var gotoTab = gotoTable{
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S49
 		-1, // S'
@@ -858,7 +907,8 @@ var gotoTab = gotoTable{
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S50
 		-1, // S'
@@ -875,7 +925,8 @@ var gotoTab = gotoTable{
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S51
 		-1, // S'
@@ -892,7 +943,8 @@ var gotoTab = gotoTable{
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S52
 		-1, // S'
@@ -909,7 +961,8 @@ var gotoTab = gotoTable{
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S53
 		-1, // S'
@@ -926,7 +979,8 @@ var gotoTab = gotoTable{
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S54
 		-1, // S'
@@ -943,7 +997,8 @@ var gotoTab = gotoTable{
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S55
 		-1, // S'
@@ -960,7 +1015,8 @@ var gotoTab = gotoTable{
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S56
 		-1, // S'
@@ -977,7 +1033,8 @@ var gotoTab = gotoTable{
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S57
 		-1, // S'
@@ -994,7 +1051,8 @@ var gotoTab = gotoTable{
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S58
 		-1, // S'
@@ -1003,15 +1061,16 @@ var gotoTab = gotoTable{
 		78, // TopLevelDeclList
 		-1, // BarBodyDeclList
 		5,  // TopLevelDecl
-		6,  // BarBodyDecl
-		8,  // Comment
-		7,  // Bar
-		10, // NoteList
+		-1, // BarBodyDecl
+		7,  // Comment
+		6,  // Bar
+		9,  // NoteList
 		14, // NoteObject
 		15, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		9,  // Command
+		8,  // TopLevelCommand
+		10, // BarBodyCommand
 	},
 	gotoRow{ // S59
 		-1, // S'
@@ -1028,7 +1087,8 @@ var gotoTab = gotoTable{
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S60
 		-1, // S'
@@ -1045,7 +1105,8 @@ var gotoTab = gotoTable{
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S61
 		-1, // S'
@@ -1062,7 +1123,8 @@ var gotoTab = gotoTable{
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S62
 		-1, // S'
@@ -1079,7 +1141,8 @@ var gotoTab = gotoTable{
 		-1, // NoteSymbol
 		82, // PropertyList
 		35, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S63
 		-1, // S'
@@ -1096,7 +1159,8 @@ var gotoTab = gotoTable{
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S64
 		-1, // S'
@@ -1113,7 +1177,8 @@ var gotoTab = gotoTable{
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S65
 		-1, // S'
@@ -1130,7 +1195,8 @@ var gotoTab = gotoTable{
 		-1, // NoteSymbol
 		83, // PropertyList
 		65, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S66
 		-1, // S'
@@ -1147,7 +1213,8 @@ var gotoTab = gotoTable{
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S67
 		-1, // S'
@@ -1164,7 +1231,8 @@ var gotoTab = gotoTable{
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S68
 		-1, // S'
@@ -1181,7 +1249,8 @@ var gotoTab = gotoTable{
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S69
 		-1, // S'
@@ -1198,7 +1267,8 @@ var gotoTab = gotoTable{
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S70
 		-1, // S'
@@ -1215,7 +1285,8 @@ var gotoTab = gotoTable{
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S71
 		-1, // S'
@@ -1232,7 +1303,8 @@ var gotoTab = gotoTable{
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S72
 		-1, // S'
@@ -1249,7 +1321,8 @@ var gotoTab = gotoTable{
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S73
 		-1, // S'
@@ -1266,7 +1339,8 @@ var gotoTab = gotoTable{
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S74
 		-1, // S'
@@ -1283,7 +1357,8 @@ var gotoTab = gotoTable{
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S75
 		-1, // S'
@@ -1300,7 +1375,8 @@ var gotoTab = gotoTable{
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S76
 		-1, // S'
@@ -1317,7 +1393,8 @@ var gotoTab = gotoTable{
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S77
 		-1, // S'
@@ -1334,7 +1411,8 @@ var gotoTab = gotoTable{
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S78
 		-1, // S'
@@ -1351,7 +1429,8 @@ var gotoTab = gotoTable{
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S79
 		-1, // S'
@@ -1368,7 +1447,8 @@ var gotoTab = gotoTable{
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S80
 		-1, // S'
@@ -1380,17 +1460,18 @@ var gotoTab = gotoTable{
 		86, // BarBodyDecl
 		87, // Comment
 		-1, // Bar
-		89, // NoteList
+		88, // NoteList
 		92, // NoteObject
 		93, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		88, // Command
+		-1, // TopLevelCommand
+		89, // BarBodyCommand
 	},
 	gotoRow{ // S81
 		-1,  // S'
 		-1,  // SourceFile
-		107, // RepeatTerminator
+		106, // RepeatTerminator
 		-1,  // TopLevelDeclList
 		-1,  // BarBodyDeclList
 		-1,  // TopLevelDecl
@@ -1402,7 +1483,8 @@ var gotoTab = gotoTable{
 		-1,  // NoteSymbol
 		-1,  // PropertyList
 		-1,  // Property
-		-1,  // Command
+		-1,  // TopLevelCommand
+		-1,  // BarBodyCommand
 	},
 	gotoRow{ // S82
 		-1, // S'
@@ -1419,7 +1501,8 @@ var gotoTab = gotoTable{
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S83
 		-1, // S'
@@ -1436,7 +1519,8 @@ var gotoTab = gotoTable{
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S84
 		-1,  // S'
@@ -1451,9 +1535,10 @@ var gotoTab = gotoTable{
 		-1,  // NoteList
 		-1,  // NoteObject
 		-1,  // NoteSymbol
-		108, // PropertyList
+		107, // PropertyList
 		65,  // Property
-		-1,  // Command
+		-1,  // TopLevelCommand
+		-1,  // BarBodyCommand
 	},
 	gotoRow{ // S85
 		-1, // S'
@@ -1470,12 +1555,13 @@ var gotoTab = gotoTable{
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S86
 		-1,  // S'
 		-1,  // SourceFile
-		110, // RepeatTerminator
+		109, // RepeatTerminator
 		-1,  // TopLevelDeclList
 		-1,  // BarBodyDeclList
 		-1,  // TopLevelDecl
@@ -1487,7 +1573,8 @@ var gotoTab = gotoTable{
 		-1,  // NoteSymbol
 		-1,  // PropertyList
 		-1,  // Property
-		-1,  // Command
+		-1,  // TopLevelCommand
+		-1,  // BarBodyCommand
 	},
 	gotoRow{ // S87
 		-1, // S'
@@ -1504,7 +1591,8 @@ var gotoTab = gotoTable{
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S88
 		-1, // S'
@@ -1521,7 +1609,8 @@ var gotoTab = gotoTable{
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S89
 		-1, // S'
@@ -1538,7 +1627,8 @@ var gotoTab = gotoTable{
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S90
 		-1, // S'
@@ -1555,7 +1645,8 @@ var gotoTab = gotoTable{
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S91
 		-1, // S'
@@ -1572,7 +1663,8 @@ var gotoTab = gotoTable{
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S92
 		-1,  // S'
@@ -1584,12 +1676,13 @@ var gotoTab = gotoTable{
 		-1,  // BarBodyDecl
 		-1,  // Comment
 		-1,  // Bar
-		112, // NoteList
+		111, // NoteList
 		92,  // NoteObject
 		93,  // NoteSymbol
 		-1,  // PropertyList
 		-1,  // Property
-		-1,  // Command
+		-1,  // TopLevelCommand
+		-1,  // BarBodyCommand
 	},
 	gotoRow{ // S93
 		-1,  // S'
@@ -1604,9 +1697,10 @@ var gotoTab = gotoTable{
 		-1,  // NoteList
 		-1,  // NoteObject
 		-1,  // NoteSymbol
-		113, // PropertyList
-		114, // Property
-		-1,  // Command
+		112, // PropertyList
+		113, // Property
+		-1,  // TopLevelCommand
+		-1,  // BarBodyCommand
 	},
 	gotoRow{ // S94
 		-1,  // S'
@@ -1618,12 +1712,13 @@ var gotoTab = gotoTable{
 		-1,  // BarBodyDecl
 		-1,  // Comment
 		-1,  // Bar
-		123, // NoteList
+		122, // NoteList
 		45,  // NoteObject
 		46,  // NoteSymbol
 		-1,  // PropertyList
 		-1,  // Property
-		-1,  // Command
+		-1,  // TopLevelCommand
+		-1,  // BarBodyCommand
 	},
 	gotoRow{ // S95
 		-1, // S'
@@ -1640,7 +1735,8 @@ var gotoTab = gotoTable{
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S96
 		-1, // S'
@@ -1657,7 +1753,8 @@ var gotoTab = gotoTable{
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S97
 		-1, // S'
@@ -1674,7 +1771,8 @@ var gotoTab = gotoTable{
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S98
 		-1, // S'
@@ -1691,7 +1789,8 @@ var gotoTab = gotoTable{
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S99
 		-1, // S'
@@ -1708,7 +1807,8 @@ var gotoTab = gotoTable{
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S100
 		-1, // S'
@@ -1725,7 +1825,8 @@ var gotoTab = gotoTable{
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S101
 		-1, // S'
@@ -1742,7 +1843,8 @@ var gotoTab = gotoTable{
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S102
 		-1, // S'
@@ -1759,7 +1861,8 @@ var gotoTab = gotoTable{
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S103
 		-1, // S'
@@ -1776,7 +1879,8 @@ var gotoTab = gotoTable{
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S104
 		-1, // S'
@@ -1793,7 +1897,8 @@ var gotoTab = gotoTable{
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S105
 		-1, // S'
@@ -1810,7 +1915,8 @@ var gotoTab = gotoTable{
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S106
 		-1, // S'
@@ -1827,7 +1933,8 @@ var gotoTab = gotoTable{
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S107
 		-1, // S'
@@ -1844,7 +1951,8 @@ var gotoTab = gotoTable{
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S108
 		-1, // S'
@@ -1861,7 +1969,8 @@ var gotoTab = gotoTable{
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S109
 		-1, // S'
@@ -1878,9 +1987,28 @@ var gotoTab = gotoTable{
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S110
+		-1,  // S'
+		-1,  // SourceFile
+		130, // RepeatTerminator
+		-1,  // TopLevelDeclList
+		-1,  // BarBodyDeclList
+		-1,  // TopLevelDecl
+		-1,  // BarBodyDecl
+		-1,  // Comment
+		-1,  // Bar
+		-1,  // NoteList
+		-1,  // NoteObject
+		-1,  // NoteSymbol
+		-1,  // PropertyList
+		-1,  // Property
+		-1,  // TopLevelCommand
+		-1,  // BarBodyCommand
+	},
+	gotoRow{ // S111
 		-1, // S'
 		-1, // SourceFile
 		-1, // RepeatTerminator
@@ -1895,24 +2023,8 @@ var gotoTab = gotoTable{
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
-	},
-	gotoRow{ // S111
-		-1,  // S'
-		-1,  // SourceFile
-		132, // RepeatTerminator
-		-1,  // TopLevelDeclList
-		-1,  // BarBodyDeclList
-		-1,  // TopLevelDecl
-		-1,  // BarBodyDecl
-		-1,  // Comment
-		-1,  // Bar
-		-1,  // NoteList
-		-1,  // NoteObject
-		-1,  // NoteSymbol
-		-1,  // PropertyList
-		-1,  // Property
-		-1,  // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S112
 		-1, // S'
@@ -1929,9 +2041,28 @@ var gotoTab = gotoTable{
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S113
+		-1,  // S'
+		-1,  // SourceFile
+		-1,  // RepeatTerminator
+		-1,  // TopLevelDeclList
+		-1,  // BarBodyDeclList
+		-1,  // TopLevelDecl
+		-1,  // BarBodyDecl
+		-1,  // Comment
+		-1,  // Bar
+		-1,  // NoteList
+		-1,  // NoteObject
+		-1,  // NoteSymbol
+		132, // PropertyList
+		113, // Property
+		-1,  // TopLevelCommand
+		-1,  // BarBodyCommand
+	},
+	gotoRow{ // S114
 		-1, // S'
 		-1, // SourceFile
 		-1, // RepeatTerminator
@@ -1946,24 +2077,8 @@ var gotoTab = gotoTable{
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
-	},
-	gotoRow{ // S114
-		-1,  // S'
-		-1,  // SourceFile
-		-1,  // RepeatTerminator
-		-1,  // TopLevelDeclList
-		-1,  // BarBodyDeclList
-		-1,  // TopLevelDecl
-		-1,  // BarBodyDecl
-		-1,  // Comment
-		-1,  // Bar
-		-1,  // NoteList
-		-1,  // NoteObject
-		-1,  // NoteSymbol
-		134, // PropertyList
-		114, // Property
-		-1,  // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S115
 		-1, // S'
@@ -1980,7 +2095,8 @@ var gotoTab = gotoTable{
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S116
 		-1, // S'
@@ -1997,7 +2113,8 @@ var gotoTab = gotoTable{
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S117
 		-1, // S'
@@ -2014,7 +2131,8 @@ var gotoTab = gotoTable{
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S118
 		-1, // S'
@@ -2031,7 +2149,8 @@ var gotoTab = gotoTable{
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S119
 		-1, // S'
@@ -2048,7 +2167,8 @@ var gotoTab = gotoTable{
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S120
 		-1, // S'
@@ -2065,7 +2185,8 @@ var gotoTab = gotoTable{
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S121
 		-1, // S'
@@ -2082,7 +2203,8 @@ var gotoTab = gotoTable{
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S122
 		-1, // S'
@@ -2099,7 +2221,8 @@ var gotoTab = gotoTable{
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S123
 		-1, // S'
@@ -2116,7 +2239,8 @@ var gotoTab = gotoTable{
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S124
 		-1, // S'
@@ -2133,7 +2257,8 @@ var gotoTab = gotoTable{
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S125
 		-1, // S'
@@ -2150,7 +2275,8 @@ var gotoTab = gotoTable{
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S126
 		-1, // S'
@@ -2167,7 +2293,8 @@ var gotoTab = gotoTable{
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S127
 		-1, // S'
@@ -2184,7 +2311,8 @@ var gotoTab = gotoTable{
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S128
 		-1, // S'
@@ -2201,7 +2329,8 @@ var gotoTab = gotoTable{
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S129
 		-1, // S'
@@ -2218,63 +2347,31 @@ var gotoTab = gotoTable{
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S130
-		-1, // S'
-		-1, // SourceFile
-		-1, // RepeatTerminator
-		-1, // TopLevelDeclList
-		-1, // BarBodyDeclList
-		-1, // TopLevelDecl
-		-1, // BarBodyDecl
-		-1, // Comment
-		-1, // Bar
-		-1, // NoteList
-		-1, // NoteObject
-		-1, // NoteSymbol
-		-1, // PropertyList
-		-1, // Property
-		-1, // Command
-	},
-	gotoRow{ // S131
-		-1, // S'
-		-1, // SourceFile
-		-1, // RepeatTerminator
-		-1, // TopLevelDeclList
-		-1, // BarBodyDeclList
-		-1, // TopLevelDecl
-		-1, // BarBodyDecl
-		-1, // Comment
-		-1, // Bar
-		-1, // NoteList
-		-1, // NoteObject
-		-1, // NoteSymbol
-		-1, // PropertyList
-		-1, // Property
-		-1, // Command
-	},
-	gotoRow{ // S132
 		-1,  // S'
 		-1,  // SourceFile
 		-1,  // RepeatTerminator
 		-1,  // TopLevelDeclList
-		139, // BarBodyDeclList
+		136, // BarBodyDeclList
 		-1,  // TopLevelDecl
 		86,  // BarBodyDecl
 		87,  // Comment
 		-1,  // Bar
-		89,  // NoteList
+		88,  // NoteList
 		92,  // NoteObject
 		93,  // NoteSymbol
 		-1,  // PropertyList
 		-1,  // Property
-		88,  // Command
+		-1,  // TopLevelCommand
+		89,  // BarBodyCommand
 	},
-	gotoRow{ // S133
+	gotoRow{ // S131
 		-1,  // S'
 		-1,  // SourceFile
-		140, // RepeatTerminator
+		137, // RepeatTerminator
 		-1,  // TopLevelDeclList
 		-1,  // BarBodyDeclList
 		-1,  // TopLevelDecl
@@ -2286,7 +2383,44 @@ var gotoTab = gotoTable{
 		-1,  // NoteSymbol
 		-1,  // PropertyList
 		-1,  // Property
-		-1,  // Command
+		-1,  // TopLevelCommand
+		-1,  // BarBodyCommand
+	},
+	gotoRow{ // S132
+		-1, // S'
+		-1, // SourceFile
+		-1, // RepeatTerminator
+		-1, // TopLevelDeclList
+		-1, // BarBodyDeclList
+		-1, // TopLevelDecl
+		-1, // BarBodyDecl
+		-1, // Comment
+		-1, // Bar
+		-1, // NoteList
+		-1, // NoteObject
+		-1, // NoteSymbol
+		-1, // PropertyList
+		-1, // Property
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
+	},
+	gotoRow{ // S133
+		-1,  // S'
+		-1,  // SourceFile
+		-1,  // RepeatTerminator
+		-1,  // TopLevelDeclList
+		-1,  // BarBodyDeclList
+		-1,  // TopLevelDecl
+		-1,  // BarBodyDecl
+		-1,  // Comment
+		-1,  // Bar
+		-1,  // NoteList
+		-1,  // NoteObject
+		-1,  // NoteSymbol
+		138, // PropertyList
+		113, // Property
+		-1,  // TopLevelCommand
+		-1,  // BarBodyCommand
 	},
 	gotoRow{ // S134
 		-1, // S'
@@ -2303,24 +2437,26 @@ var gotoTab = gotoTable{
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S135
-		-1,  // S'
-		-1,  // SourceFile
-		-1,  // RepeatTerminator
-		-1,  // TopLevelDeclList
-		-1,  // BarBodyDeclList
-		-1,  // TopLevelDecl
-		-1,  // BarBodyDecl
-		-1,  // Comment
-		-1,  // Bar
-		-1,  // NoteList
-		-1,  // NoteObject
-		-1,  // NoteSymbol
-		141, // PropertyList
-		114, // Property
-		-1,  // Command
+		-1, // S'
+		-1, // SourceFile
+		-1, // RepeatTerminator
+		-1, // TopLevelDeclList
+		-1, // BarBodyDeclList
+		-1, // TopLevelDecl
+		-1, // BarBodyDecl
+		-1, // Comment
+		-1, // Bar
+		-1, // NoteList
+		-1, // NoteObject
+		-1, // NoteSymbol
+		-1, // PropertyList
+		-1, // Property
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S136
 		-1, // S'
@@ -2337,7 +2473,8 @@ var gotoTab = gotoTable{
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S137
 		-1, // S'
@@ -2354,7 +2491,8 @@ var gotoTab = gotoTable{
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S138
 		-1, // S'
@@ -2371,57 +2509,7 @@ var gotoTab = gotoTable{
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
-	},
-	gotoRow{ // S139
-		-1, // S'
-		-1, // SourceFile
-		-1, // RepeatTerminator
-		-1, // TopLevelDeclList
-		-1, // BarBodyDeclList
-		-1, // TopLevelDecl
-		-1, // BarBodyDecl
-		-1, // Comment
-		-1, // Bar
-		-1, // NoteList
-		-1, // NoteObject
-		-1, // NoteSymbol
-		-1, // PropertyList
-		-1, // Property
-		-1, // Command
-	},
-	gotoRow{ // S140
-		-1, // S'
-		-1, // SourceFile
-		-1, // RepeatTerminator
-		-1, // TopLevelDeclList
-		-1, // BarBodyDeclList
-		-1, // TopLevelDecl
-		-1, // BarBodyDecl
-		-1, // Comment
-		-1, // Bar
-		-1, // NoteList
-		-1, // NoteObject
-		-1, // NoteSymbol
-		-1, // PropertyList
-		-1, // Property
-		-1, // Command
-	},
-	gotoRow{ // S141
-		-1, // S'
-		-1, // SourceFile
-		-1, // RepeatTerminator
-		-1, // TopLevelDeclList
-		-1, // BarBodyDeclList
-		-1, // TopLevelDecl
-		-1, // BarBodyDecl
-		-1, // Comment
-		-1, // Bar
-		-1, // NoteList
-		-1, // NoteObject
-		-1, // NoteSymbol
-		-1, // PropertyList
-		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 }

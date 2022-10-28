@@ -6,14 +6,9 @@ import (
 	"github.com/mgnsk/gong/internal/constants"
 	"github.com/mgnsk/gong/internal/interpreter"
 	. "github.com/onsi/gomega"
-	"github.com/onsi/gomega/format"
 	"gitlab.com/gomidi/midi/v2"
 	"gitlab.com/gomidi/midi/v2/smf"
 )
-
-func init() {
-	format.UseStringerRepresentation = true
-}
 
 func TestCommands(t *testing.T) {
 	for _, tc := range []struct {
@@ -65,8 +60,8 @@ func TestCommands(t *testing.T) {
 			0,
 		},
 		{
-			`bar "bar" { assign c 60; c }; play "bar"`,
-			[2]uint8{4, 4},
+			`assign c 60; bar "bar" { timesig 1 4; c }; play "bar"`,
+			[2]uint8{1, 4},
 			midi.NoteOn(0, 60, constants.DefaultVelocity),
 			constants.TicksPerQuarter.Ticks32th(),
 		},

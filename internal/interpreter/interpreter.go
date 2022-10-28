@@ -32,17 +32,9 @@ type Interpreter struct {
 func (it *Interpreter) Clone() *Interpreter {
 	newIt := New()
 
-	for k, v := range it.keymap {
-		newIt.keymap[k] = v
-	}
-
-	// for k, v := range it.ringing {
-	// 	newIt.ringing[k] = v
-	// }
-
-	for k, v := range it.bars {
-		newIt.bars[k] = v
-	}
+	// Use the same maps, assign and bar are not allowed in bars.
+	newIt.keymap = it.keymap
+	newIt.bars = it.bars
 	newIt.curChannel = it.curChannel
 	newIt.curVelocity = it.curVelocity
 
