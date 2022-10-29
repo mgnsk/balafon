@@ -90,12 +90,12 @@ func TestValidInputs(t *testing.T) {
 			ContainSubstring("k#8./3"),
 		},
 		{
-			"[[[[[k]/3].]#]8]^", // Testing the ordering of properties.
-			ContainSubstring("k#^8./3"),
+			"[[[[[k]/3].]#]8]^^", // Testing the ordering of properties.
+			ContainSubstring("k#^^8./3"),
 		},
 		{
-			"[[[[[k*]/3].]$]8])", // Testing the ordering of properties.
-			ContainSubstring("k$)8./3*"),
+			"[[[[[k*]/3].]$]8]))", // Testing the ordering of properties.
+			ContainSubstring("k$))8./3*"),
 		},
 	} {
 		t.Run(tc.input, func(t *testing.T) {
@@ -142,12 +142,28 @@ func TestInvalidNoteValue(t *testing.T) {
 
 func TestForbiddenDuplicateProperty(t *testing.T) {
 	for _, input := range []string{
+		// TODO: allow double sharp and flat?
 		"k##",
 		"k$$",
-		"k^^",
-		"k))",
 		"k/3/3",
 		"k**",
+	} {
+		t.Run(input, func(t *testing.T) {
+			g := NewGomegaWithT(t)
+
+			_, err := parse(input)
+			g.Expect(err).To(HaveOccurred())
+		})
+	}
+}
+
+func TestInvalidTuplet(t *testing.T) {
+	for _, input := range []string{
+		"k/1",
+		"k/2",
+		"k/4",
+		"k/6",
+		"k/8",
 	} {
 		t.Run(input, func(t *testing.T) {
 			g := NewGomegaWithT(t)

@@ -2,14 +2,9 @@ package main
 
 import (
 	"bytes"
-	"context"
 	"fmt"
-	"time"
-	"unicode/utf8"
 
 	"github.com/c-bata/go-prompt"
-	"github.com/mgnsk/gong/internal/ast"
-	"github.com/mgnsk/gong/internal/constants"
 	"github.com/mgnsk/gong/internal/interpreter"
 )
 
@@ -36,32 +31,46 @@ func printGrid(buf *bytes.Buffer, reso, current uint) {
 	}
 }
 
-func newShell(results chan<- result, it *interpreter.Interpreter, parser prompt.ConsoleParser) *shell {
+func newShell(it *interpreter.Interpreter, parser prompt.ConsoleParser) *shell {
 	return &shell{
-		parser:  parser,
-		it:      it,
-		results: results,
+		parser: parser,
+		it:     it,
 	}
 }
 
 type shell struct {
-	parser  prompt.ConsoleParser
-	it      *interpreter.Interpreter
-	results chan<- result
+	parser prompt.ConsoleParser
+	it     *interpreter.Interpreter
 }
 
 func (s *shell) Run() {
 	prompt.New(
 		func(input string) {
-			if err := s.handleInputLine(input); err != nil {
+			fmt.Println(input)
+			// TODO: enter live mode
+			song, err := s.it.Eval(input)
+			if err != nil {
 				fmt.Println(err)
 			}
+			fmt.Println(song)
+			// TODO handle bar entry
+			// buffer the current line
+			// when asked to suggest,
+			// fork the parser and eval
+			// parse error of expected which token
+			// if no error, then add invalid input, parse the error
+			// suggest the correct tokens from error
+			// if err := s.handleInputLine(input); err != nil {
+			// 	fmt.Println(err)
+			// }
 		},
 		func(in prompt.Document) []prompt.Suggest {
 			var sug []prompt.Suggest
-			for _, text := range s.it.Suggest() {
+
+			for _, text := range s.it.Suggest(in.Text) {
 				sug = append(sug, prompt.Suggest{Text: text})
 			}
+
 			return prompt.FilterHasPrefix(sug, in.GetWordBeforeCursor(), true)
 		},
 		prompt.OptionPrefixTextColor(prompt.Yellow),
@@ -71,77 +80,77 @@ func (s *shell) Run() {
 	).Run()
 }
 
-func (s *shell) runMetronomePrinter(ctx context.Context, reso uint) {
-	tickDuration := time.Duration(float64(time.Minute) / float64(s.it.Tempo()) / float64(constants.TicksPerQuarter))
-	resoDuration := time.Duration(must(s.it.Parse(fmt.Sprintf("x%d", reso))).(ast.NoteList)[0].Length() * uint32(tickDuration))
+// func (s *shell) runMetronomePrinter(ctx context.Context, reso uint) {
+// 	tickDuration := time.Duration(float64(time.Minute) / float64(s.it.Tempo()) / float64(constants.TicksPerQuarter))
+// 	resoDuration := time.Duration(must(s.it.Parse(fmt.Sprintf("x%d", reso))).(ast.NoteList)[0].Length() * uint32(tickDuration))
 
-	ticker := time.NewTicker(resoDuration)
-	defer ticker.Stop()
+// 	ticker := time.NewTicker(resoDuration)
+// 	defer ticker.Stop()
 
-	var buf bytes.Buffer
+// 	var buf bytes.Buffer
 
-	i := uint(0)
-	for {
-		select {
-		case <-ctx.Done():
-			return
-		case <-ticker.C:
-			printGrid(&buf, reso, i%reso)
+// 	i := uint(0)
+// 	for {
+// 		select {
+// 		case <-ctx.Done():
+// 			return
+// 		case <-ticker.C:
+// 			printGrid(&buf, reso, i%reso)
 
-			fmt.Print("\r" + buf.String())
-			buf.Reset()
+// 			fmt.Print("\r" + buf.String())
+// 			buf.Reset()
 
-			i++
-		}
-	}
-}
+// 			i++
+// 		}
+// 	}
+// }
 
-func (s *shell) runLive(reso uint) error {
-	ctx, cancel := context.WithCancel(context.Background())
-	defer cancel()
+// func (s *shell) runLive(reso uint) error {
+// 	ctx, cancel := context.WithCancel(context.Background())
+// 	defer cancel()
 
-	go s.runMetronomePrinter(ctx, reso)
+// 	go s.runMetronomePrinter(ctx, reso)
 
-	for {
-		b, err := s.parser.Read()
-		if err != nil {
-			return err
-		}
+// 	for {
+// 		b, err := s.parser.Read()
+// 		if err != nil {
+// 			return err
+// 		}
 
-		r, _ := utf8.DecodeRune(b)
-		if r == eot {
-			return nil
-		}
+// 		r, _ := utf8.DecodeRune(b)
+// 		if r == eot {
+// 			return nil
+// 		}
 
-		messages, err := s.it.NoteOn(r)
-		if err != nil {
-			// Ignore errors.
-			continue
-		}
+// 		messages, err := s.it.NoteOn(r)
+// 		if err != nil {
+// 			// Ignore errors.
+// 			continue
+// 		}
 
-		s.results <- result{"", messages}
-	}
-}
+// 		s.results <- result{"", messages}
+// 	}
+// }
 
-func (s *shell) handleInputLine(input string) error {
-	if input == "live" {
-		fmt.Print("Entered live mode. Press Ctrl+D to exit.\n")
+// func (s *shell) handleInputLine(input string) error {
+// 	if input == "live" {
+// 		fmt.Print("Entered live mode. Press Ctrl+D to exit.\n")
 
-		if err := s.runLive(defaultReso); err != nil {
-			return err
-		}
-		return nil
-	}
+// 		if err := s.runLive(defaultReso); err != nil {
+// 			return err
+// 		}
+// 		return nil
+// 	}
 
-	messages, err := s.it.Eval(input)
-	if err != nil {
-		return err
-	}
+// 	messages, err := s.it.Eval(input)
+// 	if err != nil {
+// 		return err
+// 	}
 
-	s.results <- result{"", messages}
+// 	s.results <- result{"", messages}
 
-	return nil
-}
+// 	return nil
+// }
 
 func must(res interface{}, err error) interface{} {
 	if err != nil {

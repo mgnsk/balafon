@@ -167,8 +167,11 @@ func TestAccentuatedAndGhostNote(t *testing.T) {
 		input    string
 		velocity uint8
 	}{
-		{"velocity 100; assign c 60; c^", 127},
-		{"velocity 100; assign c 60; c)", 50},
+		{"velocity 100; assign c 60; c^", 110},
+		{"velocity 100; assign c 60; c^^", 120},
+		{"velocity 100; assign c 60; c^^^", 127},
+		{"velocity 20; assign c 60; c)", 10},
+		{"velocity 20; assign c 60; c))", 1},
 	} {
 		t.Run(tc.input, func(t *testing.T) {
 			g := NewWithT(t)
@@ -204,8 +207,12 @@ func TestNoteLengths(t *testing.T) {
 			ticks: constants.TicksPerQuarter * 7 / 4,
 		},
 		{
-			input: "k...", // Triplet dotted quarter note, x1.875.
+			input: "k...", // Triple dotted quarter note, x1.875.
 			ticks: constants.TicksPerQuarter * 15 / 8,
+		},
+		{
+			input: "k/3", // Triplet quarter note.
+			ticks: constants.TicksPerQuarter * 2 / 3,
 		},
 		{
 			input: "k/5", // Quintuplet quarter note.

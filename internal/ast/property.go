@@ -44,7 +44,8 @@ func (p PropertyList) String() string {
 
 // NewPropertyList creates a note property list.
 func NewPropertyList(t *token.Token, inner interface{}) (PropertyList, error) {
-	if t.Type == uintType {
+	switch t.Type {
+	case typeUint:
 		v, err := strconv.Atoi(string(t.Lit))
 		if err != nil {
 			return nil, err
@@ -52,20 +53,28 @@ func NewPropertyList(t *token.Token, inner interface{}) (PropertyList, error) {
 		if err := validateNoteValue(v); err != nil {
 			return nil, err
 		}
+	case typeTuplet:
+		v, err := strconv.Atoi(string(t.Lit[1:]))
+		if err != nil {
+			return nil, err
+		}
+		if err := validateTuplet(v); err != nil {
+			return nil, err
+		}
 	}
 
 	if props, ok := inner.(PropertyList); ok {
 		for _, p := range props {
 			switch {
-			case p.Type == t.Type && p.Type != dotType:
+			case p.Type == t.Type && p.Type != typeDot && p.Type != typeAccent && p.Type != typeGhost:
 				return nil, fmt.Errorf("duplicate note property '%s': '%c'", token.TokMap.Id(p.Type), p.Lit)
-			case t.Type == accentType && p.Type == ghostType:
+			case t.Type == typeAccent && p.Type == typeGhost:
 				return nil, fmt.Errorf("cannot add ghost property, note already has accentuated property")
-			case t.Type == ghostType && p.Type == accentType:
+			case t.Type == typeGhost && p.Type == typeAccent:
 				return nil, fmt.Errorf("cannot add accentuated property, note already has ghost property")
-			case t.Type == sharpType && p.Type == flatType:
+			case t.Type == typeSharp && p.Type == typeFlat:
 				return nil, fmt.Errorf("cannot add flat property, note already has sharp property")
-			case t.Type == flatType && p.Type == sharpType:
+			case t.Type == typeFlat && p.Type == typeSharp:
 				return nil, fmt.Errorf("cannot add sharp property, note already has flat property")
 			}
 		}

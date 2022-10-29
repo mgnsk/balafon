@@ -7,16 +7,16 @@ import (
 )
 
 var (
-	charType      = mustGetType("char")
-	stringLitType = mustGetType("stringLit")
-	sharpType     = mustGetType("sharp")
-	flatType      = mustGetType("flat")
-	accentType    = mustGetType("accent")
-	ghostType     = mustGetType("ghost")
-	uintType      = mustGetType("uint")
-	dotType       = mustGetType("dot")
-	tupletType    = mustGetType("tuplet")
-	letRingType   = mustGetType("letRing")
+	typeChar      = mustGetType("char")
+	typeStringLit = mustGetType("stringLit")
+	typeSharp     = mustGetType("sharp")
+	typeFlat      = mustGetType("flat")
+	typeAccent    = mustGetType("accent")
+	typeGhost     = mustGetType("ghost")
+	typeUint      = mustGetType("uint")
+	typeDot       = mustGetType("dot")
+	typeTuplet    = mustGetType("tuplet")
+	typeLetRing   = mustGetType("letRing")
 )
 
 func mustGetType(tok string) token.Type {

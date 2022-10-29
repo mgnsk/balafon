@@ -7,6 +7,7 @@ import (
 	"strings"
 
 	"github.com/mgnsk/gong/internal/constants"
+	"github.com/mgnsk/gong/internal/parser/token"
 	"gitlab.com/gomidi/midi/v2/smf"
 )
 
@@ -74,7 +75,7 @@ func (n *Note) Ticks() smf.MetricTicks {
 	value := n.Value()
 	length := constants.TicksPerWhole / smf.MetricTicks(value)
 	newLength := length
-	dots := n.Dots()
+	dots := n.NumDots()
 	for i := uint(0); i < dots; i++ {
 		length /= 2
 		newLength += length
@@ -92,31 +93,29 @@ func (n *Note) IsPause() bool {
 
 // IsSharp reports whether the note is sharp.
 func (n *Note) IsSharp() bool {
-	_, ok := n.Props.Find(sharpType)
+	_, ok := n.Props.Find(typeSharp)
 	return ok
 }
 
 // IsFlat reports whether the note is flat.
 func (n *Note) IsFlat() bool {
-	_, ok := n.Props.Find(flatType)
+	_, ok := n.Props.Find(typeFlat)
 	return ok
 }
 
-// IsAccent reports whether the note is accentuated.
-func (n *Note) IsAccent() bool {
-	_, ok := n.Props.Find(accentType)
-	return ok
+// NumAccents reports the number of accent properties in the note.
+func (n *Note) NumAccents() uint {
+	return n.countProps(typeAccent)
 }
 
-// IsGhost reports whether the note is a ghost note.
-func (n *Note) IsGhost() bool {
-	_, ok := n.Props.Find(ghostType)
-	return ok
+// NumGhosts reports the number of ghost properties in the note.
+func (n *Note) NumGhosts() uint {
+	return n.countProps(typeGhost)
 }
 
 // Value returns the note value (1th, 2th, 4th, 8th, 16th, 32th and so on).
 func (n *Note) Value() uint8 {
-	i, ok := n.Props.Find(uintType)
+	i, ok := n.Props.Find(typeUint)
 	if !ok {
 		panic("ast.Note: missing note value")
 	}
@@ -128,20 +127,14 @@ func (n *Note) Value() uint8 {
 	return uint8(v)
 }
 
-// Dots reports the number of dot properties in the note.
-func (n *Note) Dots() uint {
-	dots := uint(0)
-	for _, t := range n.Props {
-		if t.Type == dotType {
-			dots++
-		}
-	}
-	return dots
+// NumDots reports the number of dot properties in the note.
+func (n *Note) NumDots() uint {
+	return n.countProps(typeDot)
 }
 
 // Tuplet returns the irregular division value if the note is a tuplet.
 func (n *Note) Tuplet() uint8 {
-	if i, ok := n.Props.Find(tupletType); ok {
+	if i, ok := n.Props.Find(typeTuplet); ok {
 		// Extract the division number.
 		// For example "3" for a triplet denoted by "/3".
 		v, err := strconv.Atoi(string(n.Props[i].Lit[1:]))
@@ -155,7 +148,7 @@ func (n *Note) Tuplet() uint8 {
 
 // IsLetRing reports whether the note must ring.
 func (n *Note) IsLetRing() bool {
-	_, ok := n.Props.Find(letRingType)
+	_, ok := n.Props.Find(typeLetRing)
 	return ok
 }
 
@@ -163,9 +156,19 @@ func (n *Note) String() string {
 	return fmt.Sprintf("%c%s", n.Name, n.Props)
 }
 
+func (n *Note) countProps(targetType token.Type) uint {
+	num := uint(0)
+	for _, t := range n.Props {
+		if t.Type == targetType {
+			num++
+		}
+	}
+	return num
+}
+
 // NewNote creates a note with properties.
 func NewNote(symbol string, propList PropertyList) *Note {
-	if _, ok := propList.Find(uintType); !ok {
+	if _, ok := propList.Find(typeUint); !ok {
 		// Implicit quarter note.
 		propList = append(propList, quarterNoteProp)
 		sort.Sort(propList)
@@ -178,6 +181,6 @@ func NewNote(symbol string, propList PropertyList) *Note {
 }
 
 var quarterNoteProp = Property{
-	Type: uintType,
+	Type: typeUint,
 	Lit:  []byte("4"),
 }

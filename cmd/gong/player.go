@@ -1,54 +1,48 @@
 package main
 
 import (
-	"bytes"
 	"context"
-	"fmt"
-	"io"
 	"runtime"
 
-	"github.com/mgnsk/gong/internal/interpreter"
-	"github.com/mgnsk/gong/internal/player"
-	"github.com/mgnsk/gong/internal/util"
 	"github.com/spf13/cobra"
 	"gitlab.com/gomidi/midi/v2/drivers"
 	"gitlab.com/gomidi/midi/v2/sequencer"
-	"gitlab.com/gomidi/midi/v2/smf"
 )
 
 func playFile(c *cobra.Command, args []string) error {
-	f, err := util.Open(args[0])
-	if err != nil {
-		return err
-	}
-	defer f.Close()
+	panic("TODO: implement")
+	// f, err := util.Open(args[0])
+	// if err != nil {
+	// 	return err
+	// }
+	// defer f.Close()
 
-	it := interpreter.New()
+	// it := interpreter.New()
 
-	song, err := it.EvalAll(f)
-	if err != nil {
-		return err
-	}
+	// song, err := it.EvalAll(f)
+	// if err != nil {
+	// 	return err
+	// }
 
-	out, err := getPort(c.Flag("port").Value.String())
-	if err != nil {
-		return err
-	}
+	// out, err := getPort(c.Flag("port").Value.String())
+	// if err != nil {
+	// 	return err
+	// }
 
-	if err := out.Open(); err != nil {
-		return err
-	}
+	// if err := out.Open(); err != nil {
+	// 	return err
+	// }
 
-	buf := &bytes.Buffer{}
+	// buf := &bytes.Buffer{}
 
-	s := song.ToSMF1()
-	if _, err := s.WriteTo(buf); err != nil {
-		return err
-	}
+	// s := song.ToSMF1()
+	// if _, err := s.WriteTo(buf); err != nil {
+	// 	return err
+	// }
 
-	r := smf.ReadTracksFrom(buf)
+	// r := smf.ReadTracksFrom(buf)
 
-	return r.Play(out)
+	// return r.Play(out)
 }
 
 func playAll(ctx context.Context, out drivers.Out, events sequencer.Events) error {
@@ -66,32 +60,32 @@ func playAll(ctx context.Context, out drivers.Out, events sequencer.Events) erro
 	return nil
 }
 
-func runPlayer(ctx context.Context, out drivers.Out, resultC <-chan result, tempo uint16) error {
-	runtime.LockOSThread()
-	defer runtime.UnlockOSThread()
+// func runPlayer(ctx context.Context, out drivers.Out, resultC <-chan result, tempo uint16) error {
+// 	runtime.LockOSThread()
+// 	defer runtime.UnlockOSThread()
 
-	p := player.New(out)
+// 	p := player.New(out)
 
-	if tempo > 0 {
-		p.SetTempo(tempo)
-	}
+// 	if tempo > 0 {
+// 		p.SetTempo(tempo)
+// 	}
 
-	for {
-		select {
-		case <-ctx.Done():
-			return ctx.Err()
-		case res, ok := <-resultC:
-			if !ok {
-				return io.ErrClosedPipe
-			}
-			if res.input != "" {
-				fmt.Println(res.input)
-			}
-			for _, msg := range res.messages {
-				if err := p.Play(ctx, msg); err != nil {
-					return err
-				}
-			}
-		}
-	}
-}
+// 	for {
+// 		select {
+// 		case <-ctx.Done():
+// 			return ctx.Err()
+// 		case res, ok := <-resultC:
+// 			if !ok {
+// 				return io.ErrClosedPipe
+// 			}
+// 			if res.input != "" {
+// 				fmt.Println(res.input)
+// 			}
+// 			for _, msg := range res.messages {
+// 				if err := p.Play(ctx, msg); err != nil {
+// 					return err
+// 				}
+// 			}
+// 		}
+// 	}
+// }

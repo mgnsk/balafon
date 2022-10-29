@@ -59,6 +59,6 @@ func New(out drivers.Out) *Player {
 		out:   out,
 		timer: timer,
 	}
-	p.SetTempo(constants.DefaultTempo)
+	// p.SetTempo(constants.DefaultTempo)
 	return p
 }

@@ -15,3 +15,10 @@ func validateNoteValue(v int) error {
 	}
 	return nil
 }
+
+func validateTuplet(v int) error {
+	if v == 1 || v%2 == 0 {
+		return fmt.Errorf("invalid tuplet value, got: %d", v)
+	}
+	return nil
+}

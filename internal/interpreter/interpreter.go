@@ -1,13 +1,18 @@
 package interpreter
 
 import (
+	"errors"
 	"fmt"
 	"sort"
+	"strconv"
+	"sync"
 
 	"github.com/mgnsk/gong/internal/ast"
 	"github.com/mgnsk/gong/internal/constants"
+	parseError "github.com/mgnsk/gong/internal/parser/errors"
 	"github.com/mgnsk/gong/internal/parser/lexer"
 	"github.com/mgnsk/gong/internal/parser/parser"
+	"github.com/mgnsk/gong/internal/parser/token"
 	"gitlab.com/gomidi/midi/v2"
 	"gitlab.com/gomidi/midi/v2/sequencer"
 	"gitlab.com/gomidi/midi/v2/smf"
@@ -28,8 +33,7 @@ type Interpreter struct {
 	curVelocity uint8
 }
 
-// Clone returns a copy of the interpreter.
-func (it *Interpreter) Clone() *Interpreter {
+func (it *Interpreter) clone() *Interpreter {
 	newIt := New()
 
 	// Use the same maps, assign and bar are not allowed in bars.
@@ -69,16 +73,24 @@ var sugOutsideBar = []string{
 
 // TODO: parseOption: fillBarSilence - fills bars with
 
-func (it *Interpreter) Eval(input string) (*sequencer.Song, error) {
+func (it *Interpreter) Parse(input string) (ast.DeclList, error) {
 	res, err := it.parser.Parse(lexer.NewLexer([]byte(input)))
 	if err != nil {
-
 		return nil, err
 	}
 
 	declList, ok := res.(ast.DeclList)
 	if !ok {
 		return nil, fmt.Errorf("invalid input, expected ast.DeclList")
+	}
+
+	return declList, nil
+}
+
+func (it *Interpreter) Eval(input string) (*sequencer.Song, error) {
+	declList, err := it.Parse(input)
+	if err != nil {
+		return nil, err
 	}
 
 	return it.EvalAST(declList)
@@ -97,7 +109,7 @@ func (it *Interpreter) EvalAST(declList ast.DeclList) (*sequencer.Song, error) {
 				return nil, fmt.Errorf("bar '%s' already defined", decl.Name)
 			}
 
-			events, err := it.Clone().parse(decl.DeclList)
+			events, err := it.clone().parse(decl.DeclList)
 			if err != nil {
 				return nil, err
 			}
@@ -222,11 +234,187 @@ func getDuration(events sequencer.Events) uint32 {
 	return d
 }
 
+func negIndex(tokens []*token.Token, i int) *token.Token {
+	if len(tokens) > 0 {
+		return tokens[len(tokens)-1]
+	}
+	return nil
+}
+
 // Suggest returns suggestions for the next input.
 // It is not safe to call Suggest concurrently
 // with Eval.
-func (it *Interpreter) Suggest() []string {
+func (it *Interpreter) Suggest(buffer string) []string {
+	var (
+		once          sync.Once
+		currentTokens []token.Type
+	)
+
+	getLastNTokens := func(n int) []token.Type {
+		once.Do(func() {
+			lex := lexer.NewLexer([]byte(buffer))
+			for {
+				tok := lex.Scan()
+				if tok.Type == token.EOF {
+					break
+				}
+				currentTokens = append(currentTokens, tok.Type)
+			}
+		})
+		if from := len(currentTokens) - n; from >= 0 {
+			return currentTokens[from:]
+		}
+		return nil
+	}
+
 	var sug []string
+
+	if _, err := it.Parse(buffer); err != nil {
+		var perr *parseError.Error
+		if errors.As(err, &perr) {
+			// TODO: why
+			for _, text := range perr.ExpectedTokens {
+				switch text {
+				// "INVALID":      0,
+				// "$":            1,
+				// "empty":        2,
+				case "terminator":
+
+				case "lineComment":
+					sug = append(sug, "//")
+
+				case "blockComment":
+					sug = append(sug, "/*")
+
+				case "bar":
+					sug = append(sug, text)
+
+				case "stringLit":
+					sug = append(sug, `"`)
+
+				case "{":
+					sug = append(sug, text)
+
+				case "}":
+					sug = append(sug, text)
+
+				case "[":
+					sug = append(sug, text)
+
+				case "]":
+					sug = append(sug, text)
+
+				case "char":
+					if tokens := getLastNTokens(1); len(tokens) == 1 && tokens[0] == token.TokMap.Type("assign") {
+						// Suggest unassigned keys on the current channel.
+						for note := 'a'; note < 'z'; note++ {
+							if _, ok := it.keymap[midiKey{it.curChannel, note}]; !ok {
+								sug = append(sug, string(note))
+							}
+						}
+						for note := 'A'; note < 'Z'; note++ {
+							if _, ok := it.keymap[midiKey{it.curChannel, note}]; !ok {
+								sug = append(sug, string(note))
+							}
+						}
+					} else {
+						// Suggest assigned keys on the current channel.
+						for note := range it.keymap {
+							if note.channel == it.curChannel {
+								sug = append(sug, string(note.note))
+							}
+						}
+					}
+
+				case "rest":
+					sug = append(sug, "-")
+
+				case "sharp":
+					sug = append(sug, "#")
+
+				case "flat":
+					sug = append(sug, "$")
+
+				case "accent":
+					sug = append(sug, "^")
+
+				case "ghost":
+					sug = append(sug, ")")
+
+				case "uint":
+					if tokens := getLastNTokens(2); len(tokens) == 2 {
+						switch tokens[0] {
+						case
+							token.TokMap.Type("assign"),
+							token.TokMap.Type("timesig"),
+							token.TokMap.Type("control"):
+							for i := 0; i <= 127; i++ {
+								sug = append(sug, strconv.Itoa(i))
+							}
+						}
+					}
+
+					if tokens := getLastNTokens(1); len(tokens) == 1 {
+						switch tokens[0] {
+						case
+							token.TokMap.Type("char"),
+							token.TokMap.Type("tempo"),
+							token.TokMap.Type("timesig"),
+							token.TokMap.Type("channel"),
+							token.TokMap.Type("velocity"),
+							token.TokMap.Type("program"),
+							token.TokMap.Type("control"):
+							for i := 0; i <= 127; i++ {
+								sug = append(sug, strconv.Itoa(i))
+							}
+						}
+					}
+
+				case "dot":
+					sug = append(sug, ".")
+
+				case "tuplet":
+					// TODO: from 7th the midi precision gets lost
+					sug = append(sug, "/3", "/5")
+
+				case "letRing":
+					sug = append(sug, "*")
+
+				case "assign":
+					sug = append(sug, text)
+
+				case "tempo":
+					sug = append(sug, text)
+
+				case "timesig":
+					sug = append(sug, text)
+
+				case "channel":
+					sug = append(sug, text)
+
+				case "velocity":
+					sug = append(sug, text)
+
+				case "program":
+					sug = append(sug, text)
+
+				case "control":
+					sug = append(sug, text)
+
+				case "play":
+					for name := range it.bars {
+						sug = append(sug, fmt.Sprintf(`play "%s"`, name))
+					}
+
+				case "start":
+					sug = append(sug, text)
+
+				case "stop":
+					sug = append(sug, text)
+				}
+			}
+		}
+	}
 
 	// TODO
 	// // Suggest assigned notes at any time.
@@ -324,13 +512,22 @@ func (it *Interpreter) parseNoteList(noteList ast.NoteList) (sequencer.Events, e
 		}
 
 		velocity := it.curVelocity
-		if note.IsAccent() {
-			velocity *= 2
+		for i := uint(0); i < note.NumAccents(); i++ {
 			if velocity > constants.MaxValue {
 				velocity = constants.MaxValue
+				break
 			}
-		} else if note.IsGhost() {
-			velocity /= 2
+			// TODO: find the optimal value
+			velocity += 10
+		}
+
+		for i := uint(0); i < note.NumGhosts(); i++ {
+			// TODO: find the optimal value
+			if velocity <= 10 {
+				velocity = 1
+				break
+			}
+			velocity -= 10
 		}
 
 		// TODO
