@@ -15,7 +15,7 @@ func parse(input string) (interface{}, error) {
 
 func BenchmarkParser(b *testing.B) {
 	lex := lexer.NewLexer([]byte(
-		"[[[[[k*]/3].]$]8])",
+		"[[[[[k*]/3].]$].8]))",
 	))
 	p := parser.NewParser()
 

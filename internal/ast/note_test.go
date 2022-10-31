@@ -19,43 +19,39 @@ func TestValidInputs(t *testing.T) {
 	for _, tc := range []testcase{
 		{
 			"k",
-			ContainSubstring("k4"),
+			ContainSubstring("k"),
 		},
 		{
 			"kk",
-			ContainSubstring("k4 k4"),
-		},
-		{
-			"k k",
-			ContainSubstring("k4 k4"),
+			ContainSubstring("k k"),
 		},
 		{
 			"k k8",
-			ContainSubstring("k4 k8"),
+			ContainSubstring("k k8"),
 		},
 		{
 			"kk8.", // Properties apply only to the previous note symbol.
-			ContainSubstring("k4 k8."),
+			ContainSubstring("k k8."),
 		},
 		{
 			"[kk.]8", // Group properties apply to all notes in the group.
 			ContainSubstring("k8 k8."),
 		},
 		{
-			"[k.].", // Group properties override any duplicate properties the inner notes have.
-			ContainSubstring("k4."),
+			"[k.].", // Group properties are appended.
+			ContainSubstring("k.."),
 		},
 		{
 			"[k]",
-			ContainSubstring("k4"),
+			ContainSubstring("k"),
 		},
 		{
 			"[k][k].",
-			ContainSubstring("k4 k4."),
+			ContainSubstring("k k."),
 		},
 		{
 			"kk[kk]kk[kk]kk",
-			ContainSubstring("k4 k4 k4 k4 k4 k4 k4 k4 k4 k4"),
+			ContainSubstring("k k k k k k k k k k"),
 		},
 		{
 			"[[k]]8",
@@ -63,27 +59,19 @@ func TestValidInputs(t *testing.T) {
 		},
 		{
 			"k8kk16kkkk16",
-			ContainSubstring("k8 k4 k16 k4 k4 k4 k16"),
+			ContainSubstring("k8 k k16 k k k k16"),
 		},
 		{
 			"k8 [kk]16 [kkkk]32",
 			ContainSubstring("k8 k16 k16 k32 k32 k32 k32"),
 		},
 		{
-			"k..", // Double dotted note.
-			ContainSubstring("k4.."),
-		},
-		{
-			"k...", // Triple dotted note.
-			ContainSubstring("k4..."),
-		},
-		{
-			"k4/3", // Triplet.
-			ContainSubstring("k4/3"),
-		},
-		{
 			"-", // Pause.
-			ContainSubstring("-4"),
+			ContainSubstring("-"),
+		},
+		{
+			"-8", // 8th pause.
+			ContainSubstring("-8"),
 		},
 		{
 			"k/3.#8",
@@ -94,8 +82,8 @@ func TestValidInputs(t *testing.T) {
 			ContainSubstring("k#^^8./3"),
 		},
 		{
-			"[[[[[k*]/3].]$]8]))", // Testing the ordering of properties.
-			ContainSubstring("k$))8./3*"),
+			"[[[[[k*]/3].]$].8]))", // Testing the ordering of properties.
+			ContainSubstring("k$))8../3*"),
 		},
 	} {
 		t.Run(tc.input, func(t *testing.T) {
@@ -143,6 +131,7 @@ func TestInvalidNoteValue(t *testing.T) {
 func TestForbiddenDuplicateProperty(t *testing.T) {
 	for _, input := range []string{
 		// TODO: allow double sharp and flat?
+		"k44", // TODO: redefine bnf 1 | 2 | 4 | 8 etc
 		"k##",
 		"k$$",
 		"k/3/3",

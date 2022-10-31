@@ -18,7 +18,7 @@ assign c 60
 assign d 62
 bar "Bar 1" {
 	start
-	c4
+	c
 	stop
 }
 play "Bar 1"

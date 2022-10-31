@@ -7,6 +7,7 @@ import (
 	"strconv"
 	"sync"
 
+	"github.com/davecgh/go-spew/spew"
 	"github.com/mgnsk/gong/internal/ast"
 	"github.com/mgnsk/gong/internal/constants"
 	parseError "github.com/mgnsk/gong/internal/parser/errors"
@@ -267,170 +268,169 @@ func (it *Interpreter) Suggest(buffer string) []string {
 		return nil
 	}
 
-	var sug []string
+	var (
+		sug            []string
+		expectedTokens []string
+	)
 
 	if _, err := it.Parse(buffer); err != nil {
 		var perr *parseError.Error
 		if errors.As(err, &perr) {
-			// TODO: why
-			for _, text := range perr.ExpectedTokens {
-				switch text {
-				// "INVALID":      0,
-				// "$":            1,
-				// "empty":        2,
-				case "terminator":
-
-				case "lineComment":
-					sug = append(sug, "//")
-
-				case "blockComment":
-					sug = append(sug, "/*")
-
-				case "bar":
-					sug = append(sug, text)
-
-				case "stringLit":
-					sug = append(sug, `"`)
-
-				case "{":
-					sug = append(sug, text)
-
-				case "}":
-					sug = append(sug, text)
-
-				case "[":
-					sug = append(sug, text)
-
-				case "]":
-					sug = append(sug, text)
-
-				case "char":
-					if tokens := getLastNTokens(1); len(tokens) == 1 && tokens[0] == token.TokMap.Type("assign") {
-						// Suggest unassigned keys on the current channel.
-						for note := 'a'; note < 'z'; note++ {
-							if _, ok := it.keymap[midiKey{it.curChannel, note}]; !ok {
-								sug = append(sug, string(note))
-							}
-						}
-						for note := 'A'; note < 'Z'; note++ {
-							if _, ok := it.keymap[midiKey{it.curChannel, note}]; !ok {
-								sug = append(sug, string(note))
-							}
-						}
-					} else {
-						// Suggest assigned keys on the current channel.
-						for note := range it.keymap {
-							if note.channel == it.curChannel {
-								sug = append(sug, string(note.note))
-							}
-						}
-					}
-
-				case "rest":
-					sug = append(sug, "-")
-
-				case "sharp":
-					sug = append(sug, "#")
-
-				case "flat":
-					sug = append(sug, "$")
-
-				case "accent":
-					sug = append(sug, "^")
-
-				case "ghost":
-					sug = append(sug, ")")
-
-				case "uint":
-					if tokens := getLastNTokens(2); len(tokens) == 2 {
-						switch tokens[0] {
-						case
-							token.TokMap.Type("assign"),
-							token.TokMap.Type("timesig"),
-							token.TokMap.Type("control"):
-							for i := 0; i <= 127; i++ {
-								sug = append(sug, strconv.Itoa(i))
-							}
-						}
-					}
-
-					if tokens := getLastNTokens(1); len(tokens) == 1 {
-						switch tokens[0] {
-						case
-							token.TokMap.Type("char"),
-							token.TokMap.Type("tempo"),
-							token.TokMap.Type("timesig"),
-							token.TokMap.Type("channel"),
-							token.TokMap.Type("velocity"),
-							token.TokMap.Type("program"),
-							token.TokMap.Type("control"):
-							for i := 0; i <= 127; i++ {
-								sug = append(sug, strconv.Itoa(i))
-							}
-						}
-					}
-
-				case "dot":
-					sug = append(sug, ".")
-
-				case "tuplet":
-					// TODO: from 7th the midi precision gets lost
-					sug = append(sug, "/3", "/5")
-
-				case "letRing":
-					sug = append(sug, "*")
-
-				case "assign":
-					sug = append(sug, text)
-
-				case "tempo":
-					sug = append(sug, text)
-
-				case "timesig":
-					sug = append(sug, text)
-
-				case "channel":
-					sug = append(sug, text)
-
-				case "velocity":
-					sug = append(sug, text)
-
-				case "program":
-					sug = append(sug, text)
-
-				case "control":
-					sug = append(sug, text)
-
-				case "play":
-					for name := range it.bars {
-						sug = append(sug, fmt.Sprintf(`play "%s"`, name))
-					}
-
-				case "start":
-					sug = append(sug, text)
-
-				case "stop":
-					sug = append(sug, text)
-				}
-			}
+			expectedTokens = perr.ExpectedTokens
+		}
+	} else {
+		// Pass an 'at' symbol, not used in syntax and guaranteed to produce an error.
+		_, err := it.Parse(fmt.Sprintf("%s @", buffer))
+		if err == nil {
+			panic("expected a parse error")
+		}
+		spew.Dump(err)
+		var perr *parseError.Error
+		if errors.As(err, &perr) {
+			expectedTokens = perr.ExpectedTokens
 		}
 	}
 
-	// TODO
-	// // Suggest assigned notes at any time.
-	// for note := range it.keymap {
-	// 	sug = append(sug, string(note.note))
-	// }
+	for _, text := range expectedTokens {
+		switch text {
+		// "INVALID":      0,
+		// "$":            1,
+		// "empty":        2,
+		case "terminator":
 
-	// if it.curBar != "" {
-	// 	sug = append(sug, sugInsideBar...)
-	// } else {
-	// 	sug = append(sug, sugOutsideBar...)
-	// 	// Suggest playing a bar.
-	// 	for name := range it.bars {
-	// 		sug = append(sug, fmt.Sprintf(`play "%s"`, name))
-	// 	}
-	// }
+		case "lineComment":
+			sug = append(sug, "//")
+
+		case "blockComment":
+			sug = append(sug, "/*")
+
+		case "bar":
+			sug = append(sug, text)
+
+		case "stringLit":
+			sug = append(sug, `"`)
+
+		case "{":
+			sug = append(sug, text)
+
+		case "}":
+			sug = append(sug, text)
+
+		case "[":
+			sug = append(sug, text)
+
+		case "]":
+			sug = append(sug, text)
+
+		case "char":
+			if tokens := getLastNTokens(1); len(tokens) == 1 && tokens[0] == token.TokMap.Type("assign") {
+				// Suggest unassigned keys on the current channel.
+				for note := 'a'; note < 'z'; note++ {
+					if _, ok := it.keymap[midiKey{it.curChannel, note}]; !ok {
+						sug = append(sug, string(note))
+					}
+				}
+				for note := 'A'; note < 'Z'; note++ {
+					if _, ok := it.keymap[midiKey{it.curChannel, note}]; !ok {
+						sug = append(sug, string(note))
+					}
+				}
+			} else {
+				// Suggest assigned keys on the current channel.
+				for note := range it.keymap {
+					if note.channel == it.curChannel {
+						sug = append(sug, string(note.note))
+					}
+				}
+			}
+
+		case "rest":
+			sug = append(sug, "-")
+
+		case "sharp":
+			sug = append(sug, "#")
+
+		case "flat":
+			sug = append(sug, "$")
+
+		case "accent":
+			sug = append(sug, "^")
+
+		case "ghost":
+			sug = append(sug, ")")
+
+		case "uint":
+			if tokens := getLastNTokens(2); len(tokens) == 2 {
+				switch tokens[0] {
+				case
+					token.TokMap.Type("assign"),
+					token.TokMap.Type("timesig"),
+					token.TokMap.Type("control"):
+					for i := 0; i <= 127; i++ {
+						sug = append(sug, strconv.Itoa(i))
+					}
+				}
+			}
+
+			if tokens := getLastNTokens(1); len(tokens) == 1 {
+				switch tokens[0] {
+				case
+					token.TokMap.Type("char"),
+					token.TokMap.Type("tempo"),
+					token.TokMap.Type("timesig"),
+					token.TokMap.Type("channel"),
+					token.TokMap.Type("velocity"),
+					token.TokMap.Type("program"),
+					token.TokMap.Type("control"):
+					for i := 0; i <= 127; i++ {
+						sug = append(sug, strconv.Itoa(i))
+					}
+				}
+			}
+
+		case "dot":
+			sug = append(sug, ".")
+
+		case "tuplet":
+			// TODO: from 7th the midi precision gets lost
+			sug = append(sug, "/3", "/5")
+
+		case "letRing":
+			sug = append(sug, "*")
+
+		case "assign":
+			sug = append(sug, text)
+
+		case "tempo":
+			sug = append(sug, text)
+
+		case "timesig":
+			sug = append(sug, text)
+
+		case "channel":
+			sug = append(sug, text)
+
+		case "velocity":
+			sug = append(sug, text)
+
+		case "program":
+			sug = append(sug, text)
+
+		case "control":
+			sug = append(sug, text)
+
+		case "play":
+			for name := range it.bars {
+				sug = append(sug, fmt.Sprintf(`play "%s"`, name))
+			}
+
+		case "start":
+			sug = append(sug, text)
+
+		case "stop":
+			sug = append(sug, text)
+		}
+	}
 
 	return sug
 }

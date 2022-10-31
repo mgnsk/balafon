@@ -38,30 +38,36 @@ func NewNoteList(note fmt.Stringer, inner NoteList) (list NoteList) {
 }
 
 // NewNoteListFromGroup creates a note list from a group of notes with shared properties.
-func NewNoteListFromGroup(notes NoteList, props PropertyList) NoteList {
+func NewNoteListFromGroup(notes NoteList, props PropertyList) (NoteList, error) {
 	if len(props) == 0 {
 		// Just a grouping of notes without properties, e.g. [cde].
-		return notes
+		return notes, nil
 	}
 
 	// Apply the properties to all notes, replacing duplicate
 	// property types if needed.
 	for _, note := range notes {
-		needSort := false
 		for _, p := range props {
-			if idx, ok := note.Props.Find(p.Type); ok {
-				note.Props[idx] = p
-			} else {
-				note.Props = append(note.Props, p)
-				needSort = true
+			switch p.Type {
+			case typeAccent, typeGhost, typeDot:
+			default:
+				// must be overwritten
+				// error if exists??
+				if _, ok := note.Props.Find(p.Type); ok {
+					// TODO: similar error in property.go
+					return nil, fmt.Errorf("duplicate note property '%s': '%c'", token.TokMap.Id(p.Type), p.Lit)
+				}
+				// if idx, ok := note.Props.Find(p.Type); ok {
+				// 	note.Props[idx] = p
+				// }
 			}
+			note.Props = append(note.Props, p)
 		}
-		if needSort {
-			sort.Sort(note.Props)
-		}
+		// TODO
+		sort.Sort(note.Props)
 	}
 
-	return notes
+	return notes, nil
 }
 
 // Note is a single note with sorted properties.
@@ -117,7 +123,8 @@ func (n *Note) NumGhosts() uint {
 func (n *Note) Value() uint8 {
 	i, ok := n.Props.Find(typeUint)
 	if !ok {
-		panic("ast.Note: missing note value")
+		// Implicit quarter note.
+		return 4
 	}
 	v, err := strconv.Atoi(string(n.Props[i].Lit))
 	if err != nil {
@@ -168,19 +175,8 @@ func (n *Note) countProps(targetType token.Type) uint {
 
 // NewNote creates a note with properties.
 func NewNote(symbol string, propList PropertyList) *Note {
-	if _, ok := propList.Find(typeUint); !ok {
-		// Implicit quarter note.
-		propList = append(propList, quarterNoteProp)
-		sort.Sort(propList)
-	}
-
 	return &Note{
 		Name:  []rune(symbol)[0],
 		Props: propList,
 	}
-}
-
-var quarterNoteProp = Property{
-	Type: typeUint,
-	Lit:  []byte("4"),
 }
