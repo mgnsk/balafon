@@ -14,7 +14,7 @@ flat    : '$' ;
 accent  : '^' ;
 ghost   : ')' ;
 dot     : '.' ;
-tuplet  : '/' _uint ;
+tuplet  : '/' '3' | '/' '5' ;
 letRing : '*' ;
 
 lineComment  : '/' '/' { . } '\n' ;

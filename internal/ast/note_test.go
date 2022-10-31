@@ -145,20 +145,3 @@ func TestForbiddenDuplicateProperty(t *testing.T) {
 		})
 	}
 }
-
-func TestInvalidTuplet(t *testing.T) {
-	for _, input := range []string{
-		"k/1",
-		"k/2",
-		"k/4",
-		"k/6",
-		"k/8",
-	} {
-		t.Run(input, func(t *testing.T) {
-			g := NewGomegaWithT(t)
-
-			_, err := parse(input)
-			g.Expect(err).To(HaveOccurred())
-		})
-	}
-}
