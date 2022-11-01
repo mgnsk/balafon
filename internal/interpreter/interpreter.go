@@ -297,6 +297,11 @@ func (it *Interpreter) Suggest(buffer string) []string {
 		// "$":            1,
 		// "empty":        2,
 		case "terminator":
+			if tokens := getLastNTokens(1); len(tokens) == 1 && tokens[0] == token.TokMap.Type("uint") {
+				for i := 0; i <= constants.MaxValue; i++ {
+					sug = append(sug, strconv.Itoa(i))
+				}
+			}
 
 		case "lineComment":
 			sug = append(sug, "//")
@@ -366,7 +371,7 @@ func (it *Interpreter) Suggest(buffer string) []string {
 					token.TokMap.Type("assign"),
 					token.TokMap.Type("timesig"),
 					token.TokMap.Type("control"):
-					for i := 0; i <= 127; i++ {
+					for i := 0; i <= constants.MaxValue; i++ {
 						sug = append(sug, strconv.Itoa(i))
 					}
 				}
@@ -382,7 +387,7 @@ func (it *Interpreter) Suggest(buffer string) []string {
 					token.TokMap.Type("velocity"),
 					token.TokMap.Type("program"),
 					token.TokMap.Type("control"):
-					for i := 0; i <= 127; i++ {
+					for i := 0; i <= constants.MaxValue; i++ {
 						sug = append(sug, strconv.Itoa(i))
 					}
 				}

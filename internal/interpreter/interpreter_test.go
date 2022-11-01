@@ -169,7 +169,7 @@ func TestAccentuatedAndGhostNote(t *testing.T) {
 	}{
 		{"velocity 100; assign c 60; c^", 110},
 		{"velocity 100; assign c 60; c^^", 120},
-		{"velocity 100; assign c 60; c^^^", 127},
+		{"velocity 100; assign c 60; c^^^", constants.MaxValue},
 		{"velocity 20; assign c 60; c)", 10},
 		{"velocity 20; assign c 60; c))", 1},
 	} {
