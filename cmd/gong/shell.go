@@ -64,15 +64,34 @@ func (s *shell) Run() {
 			// 	fmt.Println(err)
 			// }
 		},
-		func(in prompt.Document) []prompt.Suggest {
-			var sug []prompt.Suggest
-
-			for _, text := range s.it.Suggest(in.Text) {
-				sug = append(sug, prompt.Suggest{Text: text})
+		s.it.Suggest,
+		prompt.OptionCompletionWordSeparator(func() string {
+			// TODO: build a list of separators
+			s := []rune{' '}
+			// Notes.
+			for note := 'a'; note < 'z'; note++ {
+				s = append(s, note)
 			}
+			for note := 'A'; note < 'Z'; note++ {
+				s = append(s, note)
+			}
+			// Rest.
+			s = append(s, '-')
+			// Note group parenthesis.
+			s = append(s, '[', ']')
+			// Note properties.
+			// TODO: tuplet and uint?
+			s = append(s, []rune{'#', '$', '^', ')', '.', '*'}...)
+			// TODO: dont eval when selecting suggestion
+			// need to treat the currently selected as part of buffer
+			// buf not evaluate yet
+			// TODO how to know when user wants to evaluate?
+			// terminator?
+			// what is live prefix option?
+			// https://github.com/c-bata/go-prompt/issues/25
 
-			return prompt.FilterHasPrefix(sug, in.GetWordBeforeCursor(), true)
-		},
+			return string(s)
+		}()),
 		prompt.OptionPrefixTextColor(prompt.Yellow),
 		prompt.OptionPreviewSuggestionTextColor(prompt.Blue),
 		prompt.OptionSelectedSuggestionBGColor(prompt.LightGray),

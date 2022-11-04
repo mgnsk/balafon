@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"sort"
 	"strconv"
-	"sync"
 
+	"github.com/c-bata/go-prompt"
 	"github.com/davecgh/go-spew/spew"
 	"github.com/mgnsk/gong/internal/ast"
 	"github.com/mgnsk/gong/internal/constants"
@@ -45,32 +45,6 @@ func (it *Interpreter) clone() *Interpreter {
 
 	return newIt
 }
-
-var sugInsideBar = []string{
-	"tempo",
-	"timesig",
-	"channel",
-	"velocity",
-	"program",
-	"control",
-	"end",
-}
-
-// TODO: generate those in init()
-// by parsing a parse error?
-var sugOutsideBar = []string{
-	"assign",
-	"tempo",
-	"channel",
-	"velocity",
-	"program",
-	"control",
-	"bar",
-	"start",
-	"stop",
-}
-
-// TODO:
 
 // TODO: parseOption: fillBarSilence - fills bars with
 
@@ -242,54 +216,102 @@ func negIndex(tokens []*token.Token, i int) *token.Token {
 	return nil
 }
 
+// TokenList is a list of tokens that implements parser.Scanner.
+type TokenList struct {
+	tokens []*token.Token
+	cur    int
+}
+
+// Scan tokens from input.
+func Scan(input string) *TokenList {
+	lex := lexer.NewLexer([]byte(input))
+	var tokens []*token.Token
+	for {
+		tok := lex.Scan()
+		if tok.Type == token.EOF {
+			break
+		}
+		tokens = append(tokens, tok)
+	}
+	return &TokenList{
+		tokens: tokens,
+	}
+}
+
+// Append a token to the list and return a new list.
+func (l *TokenList) Append(tok *token.Token) *TokenList {
+	return &TokenList{
+		tokens: append(l.tokens, tok),
+		cur:    l.cur,
+	}
+}
+
+// Get the i-th element if i > 0, otherwise the i-th last element.
+// For example -1 is the last element.
+func (l *TokenList) Get(i int) *token.Token {
+	if i >= 0 && i < len(l.tokens) {
+		return l.tokens[i]
+	} else if i < 0 && len(l.tokens)+i >= 0 {
+		return l.tokens[len(l.tokens)+i]
+	}
+	return nil
+}
+
+// Reset the scanner.
+func (l *TokenList) Reset() {
+	l.cur = 0
+}
+
+// Scan the next token.
+func (l *TokenList) Scan() *token.Token {
+	if l.cur >= len(l.tokens) {
+		return tokEOF
+	}
+	tok := l.tokens[l.cur]
+	l.cur++
+	return tok
+}
+
+var tokEOF = &token.Token{Type: token.EOF}
+
+// type Scanner interface {
+// 	Scan() (tok *token.Token)
+// }
+
 // Suggest returns suggestions for the next input.
 // It is not safe to call Suggest concurrently
 // with Eval.
-func (it *Interpreter) Suggest(buffer string) []string {
-	var (
-		once          sync.Once
-		currentTokens []token.Type
-	)
-
-	getLastNTokens := func(n int) []token.Type {
-		once.Do(func() {
-			lex := lexer.NewLexer([]byte(buffer))
-			for {
-				tok := lex.Scan()
-				if tok.Type == token.EOF {
-					break
-				}
-				currentTokens = append(currentTokens, tok.Type)
-			}
-		})
-		if from := len(currentTokens) - n; from >= 0 {
-			return currentTokens[from:]
-		}
-		return nil
-	}
+func (it *Interpreter) Suggest(in prompt.Document) []prompt.Suggest {
+	tokens := Scan(in.Text)
 
 	var (
-		sug            []string
+		sug            []prompt.Suggest
 		expectedTokens []string
 	)
 
-	if _, err := it.Parse(buffer); err != nil {
+	if _, err := it.parser.Parse(tokens); err != nil {
 		var perr *parseError.Error
 		if errors.As(err, &perr) {
 			expectedTokens = perr.ExpectedTokens
 		}
 	} else {
-		// Pass an 'at' symbol, not used in syntax and guaranteed to produce an error.
-		_, err := it.Parse(fmt.Sprintf("%s @", buffer))
+		tokens.Reset()
+
+		// Pass an INVALID token to produce an error.
+		_, err := it.parser.Parse(tokens.Append(&token.Token{Type: token.INVALID}))
 		if err == nil {
 			panic("expected a parse error")
 		}
-		spew.Dump(err)
+
 		var perr *parseError.Error
 		if errors.As(err, &perr) {
 			expectedTokens = perr.ExpectedTokens
 		}
 	}
+
+	spew.Dump(expectedTokens)
+
+	tokens.Reset()
 
 	for _, text := range expectedTokens {
 		switch text {
@@ -297,90 +319,137 @@ func (it *Interpreter) Suggest(buffer string) []string {
 		// "$":            1,
 		// "empty":        2,
 		case "terminator":
-			if tokens := getLastNTokens(1); len(tokens) == 1 && tokens[0] == token.TokMap.Type("uint") {
-				for i := 0; i <= constants.MaxValue; i++ {
-					sug = append(sug, strconv.Itoa(i))
+			if lastTok := tokens.Get(-1); lastTok != nil {
+				switch lastTok.Type {
+				case token.TokMap.Type("uint"):
+					for i := 0; i <= constants.MaxValue; i++ {
+						sug = append(sug, prompt.Suggest{
+							Text:        strconv.Itoa(i),
+							Description: "value",
+						})
+					}
 				}
 			}
 
 		case "lineComment":
-			sug = append(sug, "//")
+			sug = append(sug, prompt.Suggest{
+				Text:        "//",
+				Description: "line comment",
+			})
 
 		case "blockComment":
-			sug = append(sug, "/*")
+			sug = append(sug, prompt.Suggest{
+				Text:        "/*",
+				Description: "block comment",
+			})
 
 		case "bar":
-			sug = append(sug, text)
+			sug = append(sug, prompt.Suggest{
+				Text:        text,
+				Description: "command", // TODO: rename bar to func?
+			})
 
 		case "stringLit":
-			sug = append(sug, `"`)
+			sug = append(sug, prompt.Suggest{
+				Text:        `"`,
+				Description: "string",
+			})
 
-		case "{":
-			sug = append(sug, text)
-
-		case "}":
-			sug = append(sug, text)
+		case "{", "}":
+			sug = append(sug, prompt.Suggest{
+				Text: text,
+			})
 
 		case "[":
-			sug = append(sug, text)
+			sug = append(sug, prompt.Suggest{
+				Text: text,
+			})
 
 		case "]":
-			sug = append(sug, text)
+			sug = append(sug, prompt.Suggest{
+				Text: text,
+			})
 
 		case "char":
-			if tokens := getLastNTokens(1); len(tokens) == 1 && tokens[0] == token.TokMap.Type("assign") {
+			if lastTok := tokens.Get(-1); lastTok != nil && lastTok.Type == token.TokMap.Type("assign") {
 				// Suggest unassigned keys on the current channel.
 				for note := 'a'; note < 'z'; note++ {
 					if _, ok := it.keymap[midiKey{it.curChannel, note}]; !ok {
-						sug = append(sug, string(note))
+						sug = append(sug, prompt.Suggest{
+							Text:        string(note),
+							Description: "note",
+						})
 					}
 				}
 				for note := 'A'; note < 'Z'; note++ {
 					if _, ok := it.keymap[midiKey{it.curChannel, note}]; !ok {
-						sug = append(sug, string(note))
+						sug = append(sug, prompt.Suggest{
+							Text:        string(note),
+							Description: "note",
+						})
 					}
 				}
 			} else {
 				// Suggest assigned keys on the current channel.
 				for note := range it.keymap {
 					if note.channel == it.curChannel {
-						sug = append(sug, string(note.note))
+						sug = append(sug, prompt.Suggest{
+							Text:        string(note.note),
+							Description: "note",
+						})
 					}
 				}
 			}
 
 		case "rest":
-			sug = append(sug, "-")
+			sug = append(sug, prompt.Suggest{
+				Text:        "-",
+				Description: text,
+			})
 
 		case "sharp":
-			sug = append(sug, "#")
+			sug = append(sug, prompt.Suggest{
+				Text:        "#",
+				Description: text,
+			})
 
 		case "flat":
-			sug = append(sug, "$")
+			sug = append(sug, prompt.Suggest{
+				Text:        "$",
+				Description: text,
+			})
 
 		case "accent":
-			sug = append(sug, "^")
+			sug = append(sug, prompt.Suggest{
+				Text:        "^",
+				Description: text,
+			})
 
 		case "ghost":
-			sug = append(sug, ")")
+			sug = append(sug, prompt.Suggest{
+				Text:        ")",
+				Description: text,
+			})
 
 		case "uint":
-			if tokens := getLastNTokens(2); len(tokens) == 2 {
-				switch tokens[0] {
+			if last2Tok := tokens.Get(-2); last2Tok != nil {
+				switch last2Tok.Type {
 				case
 					token.TokMap.Type("assign"),
 					token.TokMap.Type("timesig"),
 					token.TokMap.Type("control"):
 					for i := 0; i <= constants.MaxValue; i++ {
-						sug = append(sug, strconv.Itoa(i))
+						sug = append(sug, prompt.Suggest{
+							Text:        strconv.Itoa(i),
+							Description: "value",
+						})
 					}
 				}
 			}
 
-			if tokens := getLastNTokens(1); len(tokens) == 1 {
-				switch tokens[0] {
+			if lastTok := tokens.Get(-1); lastTok != nil {
+				switch lastTok.Type {
 				case
-					token.TokMap.Type("char"),
 					token.TokMap.Type("tempo"),
 					token.TokMap.Type("timesig"),
 					token.TokMap.Type("channel"),
@@ -388,56 +457,84 @@ func (it *Interpreter) Suggest(buffer string) []string {
 					token.TokMap.Type("program"),
 					token.TokMap.Type("control"):
 					for i := 0; i <= constants.MaxValue; i++ {
-						sug = append(sug, strconv.Itoa(i))
+						sug = append(sug, prompt.Suggest{
+							Text:        strconv.Itoa(i),
+							Description: "value",
+						})
+					}
+				case token.TokMap.Type("char"):
+					// Suggest note value properties.
+					for _, value := range []string{"1", "2", "4", "8", "16", "32", "64"} {
+						sug = append(sug, prompt.Suggest{
+							Text:        value,
+							Description: "note value",
+						})
 					}
 				}
 			}
 
 		case "dot":
-			sug = append(sug, ".")
+			sug = append(sug, prompt.Suggest{
+				Text:        ".",
+				Description: text,
+			})
 
 		case "tuplet":
 			// TODO: from 7th the midi precision gets lost
-			sug = append(sug, "/3", "/5")
+			sug = append(sug,
+				prompt.Suggest{
+					Text:        "/3",
+					Description: text,
+				},
+				prompt.Suggest{
+					Text:        "/5",
+					Description: text,
+				},
+			)
 
 		case "letRing":
-			sug = append(sug, "*")
+			sug = append(sug, prompt.Suggest{
+				Text:        "*",
+				Description: "let ring",
+			})
 
-		case "assign":
-			sug = append(sug, text)
-
-		case "tempo":
-			sug = append(sug, text)
-
-		case "timesig":
-			sug = append(sug, text)
-
-		case "channel":
-			sug = append(sug, text)
-
-		case "velocity":
-			sug = append(sug, text)
-
-		case "program":
-			sug = append(sug, text)
-
-		case "control":
-			sug = append(sug, text)
+		case "assign", "tempo", "timesig", "channel", "velocity", "program", "control", "start", "stop":
+			sug = append(sug, prompt.Suggest{
+				Text:        text,
+				Description: "command",
+			})
 
 		case "play":
 			for name := range it.bars {
-				sug = append(sug, fmt.Sprintf(`play "%s"`, name))
+				sug = append(sug, prompt.Suggest{
+					Text:        fmt.Sprintf(`play "%s"`, name),
+					Description: "command",
+				})
 			}
-
-		case "start":
-			sug = append(sug, text)
-
-		case "stop":
-			sug = append(sug, text)
 		}
 	}
 
-	return sug
+	// Don't filter by prefix when suggesting in note lists.
+	if lastTok := tokens.Get(-1); lastTok != nil {
+		switch lastTok.Type {
+		case
+			token.TokMap.Type("["),
+			token.TokMap.Type("]"),
+			token.TokMap.Type("char"),
+			token.TokMap.Type("rest"),
+			token.TokMap.Type("sharp"),
+			token.TokMap.Type("flat"),
+			token.TokMap.Type("accent"),
+			token.TokMap.Type("ghost"),
+			// token.TokMap.Type("uint"),
+			token.TokMap.Type("dot"),
+			token.TokMap.Type("tuplet"),
+			token.TokMap.Type("letRing"):
+			return sug
+		}
+	}
+
+	return prompt.FilterHasPrefix(sug, in.GetWordBeforeCursor(), true)
 }
 
 // Tempo returns the current tempo.

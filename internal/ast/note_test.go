@@ -131,7 +131,7 @@ func TestInvalidNoteValue(t *testing.T) {
 func TestForbiddenDuplicateProperty(t *testing.T) {
 	for _, input := range []string{
 		// TODO: allow double sharp and flat?
-		"k44", // TODO: redefine bnf 1 | 2 | 4 | 8 etc
+		"k44",
 		"k##",
 		"k$$",
 		"k/3/3",
