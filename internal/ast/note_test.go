@@ -1,89 +1,91 @@
 package ast_test
 
 import (
+	"bytes"
+	"io"
 	"testing"
 
 	. "github.com/onsi/gomega"
 	"github.com/onsi/gomega/types"
 )
 
-func TestValidInputs(t *testing.T) {
+func TestNoteList(t *testing.T) {
 	type (
 		match    types.GomegaMatcher
 		testcase struct {
-			input string
-			match match
+			input    string
+			expected string
 		}
 	)
 
 	for _, tc := range []testcase{
 		{
 			"k",
-			ContainSubstring("k"),
+			"k",
 		},
 		{
 			"kk",
-			ContainSubstring("k k"),
+			"k k",
 		},
 		{
 			"k k8",
-			ContainSubstring("k k8"),
+			"k k8",
 		},
 		{
 			"kk8.", // Properties apply only to the previous note symbol.
-			ContainSubstring("k k8."),
+			"k k8.",
 		},
 		{
 			"[kk.]8", // Group properties apply to all notes in the group.
-			ContainSubstring("k8 k8."),
+			"k8 k8.",
 		},
 		{
 			"[k.].", // Group properties are appended.
-			ContainSubstring("k.."),
+			"k..",
 		},
 		{
 			"[k]",
-			ContainSubstring("k"),
+			"k",
 		},
 		{
 			"[k][k].",
-			ContainSubstring("k k."),
+			"k k.",
 		},
 		{
 			"kk[kk]kk[kk]kk",
-			ContainSubstring("k k k k k k k k k k"),
+			"k k k k k k k k k k",
 		},
 		{
 			"[[k]]8",
-			ContainSubstring("k8"),
+			"k8",
 		},
 		{
 			"k8kk16kkkk16",
-			ContainSubstring("k8 k k16 k k k k16"),
+			"k8 k k16 k k k k16",
 		},
 		{
 			"k8 [kk]16 [kkkk]32",
-			ContainSubstring("k8 k16 k16 k32 k32 k32 k32"),
+			"k8 k16 k16 k32 k32 k32 k32",
 		},
 		{
 			"-", // Pause.
-			ContainSubstring("-"),
+			"-",
 		},
 		{
 			"-8", // 8th pause.
-			ContainSubstring("-8"),
+			"-8",
 		},
 		{
 			"k/3.#8",
-			ContainSubstring("k#8./3"),
+			"k#8./3",
 		},
 		{
 			"[[[[[k]/3].]#]8]^^", // Testing the ordering of properties.
-			ContainSubstring("k#^^8./3"),
+			"k#^^8./3",
 		},
 		{
 			"[[[[[k*]/3].]$].8]))", // Testing the ordering of properties.
-			ContainSubstring("k$))8../3*"),
+			"k$))8../3*",
 		},
 	} {
 		t.Run(tc.input, func(t *testing.T) {
@@ -91,7 +93,16 @@ func TestValidInputs(t *testing.T) {
 
 			res, err := parse(tc.input)
 			g.Expect(err).NotTo(HaveOccurred())
-			g.Expect(res).To(tc.match)
+
+			wt, ok := res.(io.WriterTo)
+			g.Expect(ok).To(BeTrue())
+			_ = wt
+
+			var buf bytes.Buffer
+			_, err = wt.WriteTo(&buf)
+			g.Expect(err).NotTo(HaveOccurred())
+
+			g.Expect(buf.String()).To(Equal(tc.expected))
 		})
 	}
 }

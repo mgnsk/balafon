@@ -3,7 +3,6 @@
 package parser
 
 import (
-    "fmt"
     "github.com/mgnsk/gong/internal/ast"
     "github.com/mgnsk/gong/internal/parser/token"
 )
@@ -64,43 +63,43 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `TopLevelDeclList : TopLevelDecl terminator RepeatTerminator TopLevelDeclList	<< ast.NewDeclList(X[0].(fmt.Stringer), X[3].(ast.DeclList)), nil >>`,
+		String: `TopLevelDeclList : TopLevelDecl terminator RepeatTerminator TopLevelDeclList	<< ast.NewNodeList(X[0].(ast.Node), X[3].(ast.NodeList)), nil >>`,
 		Id:         "TopLevelDeclList",
 		NTType:     3,
 		Index:      4,
 		NumSymbols: 4,
 		ReduceFunc: func(X []Attrib, C interface{}) (Attrib, error) {
-			return ast.NewDeclList(X[0].(fmt.Stringer), X[3].(ast.DeclList)), nil
+			return ast.NewNodeList(X[0].(ast.Node), X[3].(ast.NodeList)), nil
 		},
 	},
 	ProdTabEntry{
-		String: `TopLevelDeclList : TopLevelDecl RepeatTerminator	<< ast.NewDeclList(X[0].(fmt.Stringer), nil), nil >>`,
+		String: `TopLevelDeclList : TopLevelDecl RepeatTerminator	<< ast.NewNodeList(X[0].(ast.Node), nil), nil >>`,
 		Id:         "TopLevelDeclList",
 		NTType:     3,
 		Index:      5,
 		NumSymbols: 2,
 		ReduceFunc: func(X []Attrib, C interface{}) (Attrib, error) {
-			return ast.NewDeclList(X[0].(fmt.Stringer), nil), nil
+			return ast.NewNodeList(X[0].(ast.Node), nil), nil
 		},
 	},
 	ProdTabEntry{
-		String: `BarBodyDeclList : BarBodyDecl terminator RepeatTerminator BarBodyDeclList	<< ast.NewDeclList(X[0].(fmt.Stringer), X[3].(ast.DeclList)), nil >>`,
+		String: `BarBodyDeclList : BarBodyDecl terminator RepeatTerminator BarBodyDeclList	<< ast.NewNodeList(X[0].(ast.Node), X[3].(ast.NodeList)), nil >>`,
 		Id:         "BarBodyDeclList",
 		NTType:     4,
 		Index:      6,
 		NumSymbols: 4,
 		ReduceFunc: func(X []Attrib, C interface{}) (Attrib, error) {
-			return ast.NewDeclList(X[0].(fmt.Stringer), X[3].(ast.DeclList)), nil
+			return ast.NewNodeList(X[0].(ast.Node), X[3].(ast.NodeList)), nil
 		},
 	},
 	ProdTabEntry{
-		String: `BarBodyDeclList : BarBodyDecl RepeatTerminator	<< ast.NewDeclList(X[0].(fmt.Stringer), nil), nil >>`,
+		String: `BarBodyDeclList : BarBodyDecl RepeatTerminator	<< ast.NewNodeList(X[0].(ast.Node), nil), nil >>`,
 		Id:         "BarBodyDeclList",
 		NTType:     4,
 		Index:      7,
 		NumSymbols: 2,
 		ReduceFunc: func(X []Attrib, C interface{}) (Attrib, error) {
-			return ast.NewDeclList(X[0].(fmt.Stringer), nil), nil
+			return ast.NewNodeList(X[0].(ast.Node), nil), nil
 		},
 	},
 	ProdTabEntry{
@@ -194,33 +193,33 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `Bar : "bar" stringLit "{" RepeatTerminator BarBodyDeclList "}"	<< ast.NewBar(X[1].(*token.Token).StringValue(), X[4].(ast.DeclList)), nil >>`,
+		String: `Bar : "bar" stringLit "{" RepeatTerminator BarBodyDeclList "}"	<< ast.NewBar(X[1].(*token.Token).StringValue(), X[4].(ast.NodeList)), nil >>`,
 		Id:         "Bar",
 		NTType:     8,
 		Index:      17,
 		NumSymbols: 6,
 		ReduceFunc: func(X []Attrib, C interface{}) (Attrib, error) {
-			return ast.NewBar(X[1].(*token.Token).StringValue(), X[4].(ast.DeclList)), nil
+			return ast.NewBar(X[1].(*token.Token).StringValue(), X[4].(ast.NodeList)), nil
 		},
 	},
 	ProdTabEntry{
-		String: `NoteList : NoteObject	<< ast.NewNoteList(X[0].(fmt.Stringer), nil), nil >>`,
+		String: `NoteList : NoteObject	<< ast.NewNoteList(X[0].(ast.Node), nil), nil >>`,
 		Id:         "NoteList",
 		NTType:     9,
 		Index:      18,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib, C interface{}) (Attrib, error) {
-			return ast.NewNoteList(X[0].(fmt.Stringer), nil), nil
+			return ast.NewNoteList(X[0].(ast.Node), nil), nil
 		},
 	},
 	ProdTabEntry{
-		String: `NoteList : NoteObject NoteList	<< ast.NewNoteList(X[0].(fmt.Stringer), X[1].(ast.NoteList)), nil >>`,
+		String: `NoteList : NoteObject NoteList	<< ast.NewNoteList(X[0].(ast.Node), X[1].(ast.NoteList)), nil >>`,
 		Id:         "NoteList",
 		NTType:     9,
 		Index:      19,
 		NumSymbols: 2,
 		ReduceFunc: func(X []Attrib, C interface{}) (Attrib, error) {
-			return ast.NewNoteList(X[0].(fmt.Stringer), X[1].(ast.NoteList)), nil
+			return ast.NewNoteList(X[0].(ast.Node), X[1].(ast.NoteList)), nil
 		},
 	},
 	ProdTabEntry{

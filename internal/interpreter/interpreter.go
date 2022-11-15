@@ -48,13 +48,13 @@ func (it *Interpreter) clone() *Interpreter {
 
 // TODO: parseOption: fillBarSilence - fills bars with
 
-func (it *Interpreter) Parse(input string) (ast.DeclList, error) {
+func (it *Interpreter) Parse(input string) (ast.NodeList, error) {
 	res, err := it.parser.Parse(lexer.NewLexer([]byte(input)))
 	if err != nil {
 		return nil, err
 	}
 
-	declList, ok := res.(ast.DeclList)
+	declList, ok := res.(ast.NodeList)
 	if !ok {
 		return nil, fmt.Errorf("invalid input, expected ast.DeclList")
 	}
@@ -71,7 +71,7 @@ func (it *Interpreter) Eval(input string) (*sequencer.Song, error) {
 	return it.EvalAST(declList)
 }
 
-func (it *Interpreter) EvalAST(declList ast.DeclList) (*sequencer.Song, error) {
+func (it *Interpreter) EvalAST(declList ast.NodeList) (*sequencer.Song, error) {
 	var (
 		song   = sequencer.New()
 		buffer sequencer.Events
@@ -100,7 +100,7 @@ func (it *Interpreter) EvalAST(declList ast.DeclList) (*sequencer.Song, error) {
 			buffer = append(buffer, events...)
 
 		default:
-			events, err := it.parse(ast.DeclList{decl})
+			events, err := it.parse(ast.NodeList{decl})
 			if err != nil {
 				return nil, err
 			}
@@ -137,7 +137,7 @@ func createBar(events sequencer.Events) sequencer.Bar {
 	return bar
 }
 
-func (it *Interpreter) parse(declList ast.DeclList) (sequencer.Events, error) {
+func (it *Interpreter) parse(declList ast.NodeList) (sequencer.Events, error) {
 	var events sequencer.Events
 
 	for _, decl := range declList {

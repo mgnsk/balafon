@@ -60,9 +60,9 @@ func TestValidCommands(t *testing.T) {
 			res, err := parse(tc.input)
 			g.Expect(err).NotTo(HaveOccurred())
 
-			var s ast.DeclList
-			g.Expect(res).To(BeAssignableToTypeOf(ast.DeclList{}))
-			s = res.(ast.DeclList)
+			var s ast.NodeList
+			g.Expect(res).To(BeAssignableToTypeOf(ast.NodeList{}))
+			s = res.(ast.NodeList)
 
 			g.Expect(s).To(HaveLen(1))
 			g.Expect(s[0]).To(tc.match)

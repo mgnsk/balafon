@@ -1,34 +1,35 @@
 package ast
 
 import (
-	"strings"
+	"io"
 )
 
 // Bar is a bar.
 type Bar struct {
 	Name     string
-	DeclList DeclList
+	DeclList NodeList
 }
 
-func (b Bar) String() string {
-	var format strings.Builder
+func (b Bar) WriteTo(w io.Writer) (int64, error) {
+	ew := newErrWriter(w)
+	var n int
 
-	format.WriteString(`bar "`)
-	format.WriteString(b.Name)
-	format.WriteString("\" {\n")
+	n += ew.WriteString(`bar "`)
+	n += ew.WriteString(b.Name)
+	n += ew.WriteString("\" {\n")
 
 	for _, stmt := range b.DeclList {
-		format.WriteString("\t")
-		format.WriteString(stmt.String())
-		format.WriteString("\n")
+		n += ew.WriteString("\t")
+		n += ew.CopyFrom(stmt)
+		n += ew.WriteString("\n")
 	}
 
-	format.WriteString("}")
+	n += ew.WriteString("}")
 
-	return format.String()
+	return int64(n), ew.Flush()
 }
 
 // NewBar creates a new bar.
-func NewBar(name string, declList DeclList) Bar {
+func NewBar(name string, declList NodeList) Bar {
 	return Bar{Name: name, DeclList: declList}
 }

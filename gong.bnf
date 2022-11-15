@@ -26,7 +26,6 @@ blockComment : '/' '*' { . | '*' } '*' '/' ;
 
 <<
 import (
-    "fmt"
     "github.com/mgnsk/gong/internal/ast"
     "github.com/mgnsk/gong/internal/parser/token"
 )
@@ -42,13 +41,13 @@ RepeatTerminator
     ;
 
 TopLevelDeclList
-    : TopLevelDecl terminator RepeatTerminator TopLevelDeclList << ast.NewDeclList($0.(fmt.Stringer), $3.(ast.DeclList)), nil >>
-    | TopLevelDecl RepeatTerminator  << ast.NewDeclList($0.(fmt.Stringer), nil), nil >>
+    : TopLevelDecl terminator RepeatTerminator TopLevelDeclList << ast.NewNodeList($0.(ast.Node), $3.(ast.NodeList)), nil >>
+    | TopLevelDecl RepeatTerminator  << ast.NewNodeList($0.(ast.Node), nil), nil >>
     ;
 
 BarBodyDeclList
-    : BarBodyDecl terminator RepeatTerminator BarBodyDeclList << ast.NewDeclList($0.(fmt.Stringer), $3.(ast.DeclList)), nil >>
-    | BarBodyDecl RepeatTerminator  << ast.NewDeclList($0.(fmt.Stringer), nil), nil >>
+    : BarBodyDecl terminator RepeatTerminator BarBodyDeclList << ast.NewNodeList($0.(ast.Node), $3.(ast.NodeList)), nil >>
+    | BarBodyDecl RepeatTerminator  << ast.NewNodeList($0.(ast.Node), nil), nil >>
     ;
 
 TopLevelDecl
@@ -70,12 +69,12 @@ Comment
     ;
 
 Bar
-    : "bar" stringLit "{" RepeatTerminator BarBodyDeclList "}" << ast.NewBar($T1.StringValue(), $4.(ast.DeclList)), nil >>
+    : "bar" stringLit "{" RepeatTerminator BarBodyDeclList "}" << ast.NewBar($T1.StringValue(), $4.(ast.NodeList)), nil >>
     ;
 
 NoteList
-    : NoteObject << ast.NewNoteList($0.(fmt.Stringer), nil), nil >>
-    | NoteObject NoteList << ast.NewNoteList($0.(fmt.Stringer), $1.(ast.NoteList)), nil >>
+    : NoteObject << ast.NewNoteList($0.(ast.Node), nil), nil >>
+    | NoteObject NoteList << ast.NewNoteList($0.(ast.Node), $1.(ast.NoteList)), nil >>
     ;
 
 NoteObject

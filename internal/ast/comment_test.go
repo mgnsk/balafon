@@ -12,7 +12,7 @@ func TestLineComment(t *testing.T) {
 
 	res, err := parse("// this is a line comment\n")
 	g.Expect(err).NotTo(HaveOccurred())
-	g.Expect(res).To(Equal(ast.DeclList{ast.LineComment(" this is a line comment")}))
+	g.Expect(res).To(Equal(ast.NodeList{ast.LineComment(" this is a line comment")}))
 }
 
 func TestBlockComment(t *testing.T) {
@@ -20,9 +20,9 @@ func TestBlockComment(t *testing.T) {
 
 	res, err := parse("/*this is a block comment*/")
 	g.Expect(err).NotTo(HaveOccurred())
-	g.Expect(res).To(Equal(ast.DeclList{ast.BlockComment("this is a block comment")}))
+	g.Expect(res).To(Equal(ast.NodeList{ast.BlockComment("this is a block comment")}))
 
 	res, err = parse("/*\nthis is a\nblock comment\n*/")
 	g.Expect(err).NotTo(HaveOccurred())
-	g.Expect(res).To(Equal(ast.DeclList{ast.BlockComment("\nthis is a\nblock comment\n")}))
+	g.Expect(res).To(Equal(ast.NodeList{ast.BlockComment("\nthis is a\nblock comment\n")}))
 }

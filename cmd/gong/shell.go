@@ -2,7 +2,7 @@ package main
 
 import (
 	"bytes"
-	"fmt"
+	"strings"
 
 	"github.com/c-bata/go-prompt"
 	"github.com/mgnsk/gong/internal/interpreter"
@@ -39,59 +39,85 @@ func newShell(it *interpreter.Interpreter, parser prompt.ConsoleParser) *shell {
 }
 
 type shell struct {
-	parser prompt.ConsoleParser
-	it     *interpreter.Interpreter
+	parser            prompt.ConsoleParser
+	it                *interpreter.Interpreter
+	livePrefix        string
+	livePrefixEnabled bool
+	query             string
+}
+
+func (s *shell) execute(in string) {
+	if strings.HasSuffix(in, ";") {
+		s.query = s.query + in
+		s.livePrefix = in
+		s.livePrefixEnabled = false
+		s.query = ""
+		return
+	}
+	s.query = s.query + in + " "
+	s.livePrefix = "..."
+	s.livePrefixEnabled = true
+
+	// fmt.Println(input)
+	// // TODO: enter live mode
+	// song, err := s.it.Eval(input)
+	// if err != nil {
+	// 	fmt.Println(err)
+	// }
+	// fmt.Println(song)
+	// // TODO handle bar entry
+	// // buffer the current line
+	// // when asked to suggest,
+	// // fork the parser and eval
+	// // parse error of expected which token
+	// // if no error, then add invalid input, parse the error
+	// // suggest the correct tokens from error
+	// // if err := s.handleInputLine(input); err != nil {
+	// // 	fmt.Println(err)
+	// // }
+}
+
+func (s *shell) complete(in prompt.Document) []prompt.Suggest {
+	return s.it.Suggest(in)
+}
+
+func (s *shell) changeLivePrefix() (string, bool) {
+	return s.livePrefix, s.livePrefixEnabled
 }
 
 func (s *shell) Run() {
 	prompt.New(
-		func(input string) {
-			fmt.Println(input)
-			// TODO: enter live mode
-			song, err := s.it.Eval(input)
-			if err != nil {
-				fmt.Println(err)
-			}
-			fmt.Println(song)
-			// TODO handle bar entry
-			// buffer the current line
-			// when asked to suggest,
-			// fork the parser and eval
-			// parse error of expected which token
-			// if no error, then add invalid input, parse the error
-			// suggest the correct tokens from error
-			// if err := s.handleInputLine(input); err != nil {
-			// 	fmt.Println(err)
-			// }
-		},
-		s.it.Suggest,
-		prompt.OptionCompletionWordSeparator(func() string {
-			// TODO: build a list of separators
-			s := []rune{' '}
-			// Notes.
-			for note := 'a'; note < 'z'; note++ {
-				s = append(s, note)
-			}
-			for note := 'A'; note < 'Z'; note++ {
-				s = append(s, note)
-			}
-			// Rest.
-			s = append(s, '-')
-			// Note group parenthesis.
-			s = append(s, '[', ']')
-			// Note properties.
-			// TODO: tuplet and uint?
-			s = append(s, []rune{'#', '$', '^', ')', '.', '*'}...)
-			// TODO: dont eval when selecting suggestion
-			// need to treat the currently selected as part of buffer
-			// buf not evaluate yet
-			// TODO how to know when user wants to evaluate?
-			// terminator?
-			// what is live prefix option?
-			// https://github.com/c-bata/go-prompt/issues/25
+		s.execute,
+		s.complete,
+		// prompt.OptionCompletionWordSeparator(func() string {
+		// 	// TODO: build a list of separators
+		// 	s := []rune{' '}
+		// 	// Notes.
+		// 	for note := 'a'; note < 'z'; note++ {
+		// 		s = append(s, note)
+		// 	}
+		// 	for note := 'A'; note < 'Z'; note++ {
+		// 		s = append(s, note)
+		// 	}
+		// 	// Rest.
+		// 	s = append(s, '-')
+		// 	// Note group parenthesis.
+		// 	s = append(s, '[', ']')
+		// 	// Note properties.
+		// 	// TODO: tuplet and uint?
+		// 	s = append(s, []rune{'#', '$', '^', ')', '.', '*'}...)
+		// 	// TODO: dont eval when selecting suggestion
+		// 	// need to treat the currently selected as part of buffer
+		// 	// buf not evaluate yet
+		// 	// TODO how to know when user wants to evaluate?
+		// 	// terminator?
+		// 	// what is live prefix option?
+		// 	// https://github.com/c-bata/go-prompt/issues/25
 
-			return string(s)
-		}()),
+		// 	return string(s)
+		// }()),
+		prompt.OptionPrefix(">>> "),
+		prompt.OptionLivePrefix(s.changeLivePrefix),
 		prompt.OptionPrefixTextColor(prompt.Yellow),
 		prompt.OptionPreviewSuggestionTextColor(prompt.Blue),
 		prompt.OptionSelectedSuggestionBGColor(prompt.LightGray),

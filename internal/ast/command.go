@@ -1,8 +1,9 @@
 package ast
 
 import (
-	"fmt"
+	"io"
 	"math"
+	"strconv"
 
 	"github.com/mgnsk/gong/internal/constants"
 	"github.com/mgnsk/gong/internal/parser/token"
@@ -14,9 +15,21 @@ type CmdAssign struct {
 	Key  uint8
 }
 
-func (c CmdAssign) String() string {
-	return fmt.Sprintf("assign %c %d", c.Note, c.Key)
+func (c CmdAssign) WriteTo(w io.Writer) (int64, error) {
+	ew := newErrWriter(w)
+	var n int
+
+	n += ew.WriteString("assign ")
+	n += ew.WriteRune(c.Note)
+	n += ew.WriteString(" ")
+	n += ew.WriteByte(c.Key)
+
+	return int64(n), ew.Flush()
 }
+
+// func (c CmdAssign) String() string {
+// 	return fmt.Sprintf("assign %c %d", c.Note, c.Key)
+// }
 
 // NewCmdAssign creates a note assignment command.
 func NewCmdAssign(note, key *token.Token) (CmdAssign, error) {
@@ -36,9 +49,19 @@ func NewCmdAssign(note, key *token.Token) (CmdAssign, error) {
 // CmdTempo is a tempo command.
 type CmdTempo uint16
 
-func (c CmdTempo) String() string {
-	return fmt.Sprintf("tempo %d", c)
+func (c CmdTempo) WriteTo(w io.Writer) (int64, error) {
+	ew := newErrWriter(w)
+	var n int
+
+	n += ew.WriteString("tempo ")
+	n += ew.WriteString(strconv.Itoa(int(c)))
+
+	return int64(n), ew.Flush()
 }
+
+// func (c CmdTempo) String() string {
+// 	return fmt.Sprintf("tempo %d", c)
+// }
 
 // NewCmdTempo creates a tempo command.
 func NewCmdTempo(bpm *token.Token) (CmdTempo, error) {
@@ -58,9 +81,21 @@ type CmdTimeSig struct {
 	Denom uint8
 }
 
-func (c CmdTimeSig) String() string {
-	return fmt.Sprintf("timesig %d %d", c.Num, c.Denom)
+func (c CmdTimeSig) WriteTo(w io.Writer) (int64, error) {
+	ew := newErrWriter(w)
+	var n int
+
+	n += ew.WriteString("timesig ")
+	n += ew.WriteByte(c.Num)
+	n += ew.WriteString(" ")
+	n += ew.WriteByte(c.Denom)
+
+	return int64(n), ew.Flush()
 }
+
+// func (c CmdTimeSig) String() string {
+// 	return fmt.Sprintf("timesig %d %d", c.Num, c.Denom)
+// }
 
 // NewCmdTimeSig creates a time signature change command.
 func NewCmdTimeSig(num, denom *token.Token) (CmdTimeSig, error) {
@@ -87,9 +122,19 @@ func NewCmdTimeSig(num, denom *token.Token) (CmdTimeSig, error) {
 // CmdChannel is a channel change command.
 type CmdChannel uint8
 
-func (c CmdChannel) String() string {
-	return fmt.Sprintf("channel %d", c)
+func (c CmdChannel) WriteTo(w io.Writer) (int64, error) {
+	ew := newErrWriter(w)
+	var n int
+
+	n += ew.WriteString("channel ")
+	n += ew.WriteByte(uint8(c))
+
+	return int64(n), ew.Flush()
 }
+
+// func (c CmdChannel) String() string {
+// 	return fmt.Sprintf("channel %d", c)
+// }
 
 // NewCmdChannel creates a channel change command.
 func NewCmdChannel(value *token.Token) (CmdChannel, error) {
@@ -106,9 +151,19 @@ func NewCmdChannel(value *token.Token) (CmdChannel, error) {
 // CmdVelocity is a velocity change command.
 type CmdVelocity uint8
 
-func (c CmdVelocity) String() string {
-	return fmt.Sprintf("velocity %d", c)
+func (c CmdVelocity) WriteTo(w io.Writer) (int64, error) {
+	ew := newErrWriter(w)
+	var n int
+
+	n += ew.WriteString("velocity ")
+	n += ew.WriteByte(uint8(c))
+
+	return int64(n), ew.Flush()
 }
+
+// func (c CmdVelocity) String() string {
+// 	return fmt.Sprintf("velocity %d", c)
+// }
 
 // NewCmdVelocity creates a velocity change command.
 func NewCmdVelocity(value *token.Token) (CmdVelocity, error) {
@@ -125,9 +180,19 @@ func NewCmdVelocity(value *token.Token) (CmdVelocity, error) {
 // CmdProgram is a program change command.
 type CmdProgram uint8
 
-func (c CmdProgram) String() string {
-	return fmt.Sprintf("program %d", c)
+func (c CmdProgram) WriteTo(w io.Writer) (int64, error) {
+	ew := newErrWriter(w)
+	var n int
+
+	n += ew.WriteString("program ")
+	n += ew.WriteByte(uint8(c))
+
+	return int64(n), ew.Flush()
 }
+
+// func (c CmdProgram) String() string {
+// 	return fmt.Sprintf("program %d", c)
+// }
 
 // NewCmdProgram creates a program change command.
 func NewCmdProgram(value *token.Token) (CmdProgram, error) {
@@ -147,9 +212,21 @@ type CmdControl struct {
 	Parameter uint8
 }
 
-func (c CmdControl) String() string {
-	return fmt.Sprintf("control %d %d", c.Control, c.Parameter)
+func (c CmdControl) WriteTo(w io.Writer) (int64, error) {
+	ew := newErrWriter(w)
+	var n int
+
+	n += ew.WriteString("control ")
+	n += ew.WriteByte(c.Control)
+	n += ew.WriteString(" ")
+	n += ew.WriteByte(c.Parameter)
+
+	return int64(n), ew.Flush()
 }
+
+// func (c CmdControl) String() string {
+// 	return fmt.Sprintf("control %d %d", c.Control, c.Parameter)
+// }
 
 // NewCmdControl creates a control change command.
 func NewCmdControl(control, value *token.Token) (CmdControl, error) {
@@ -176,20 +253,48 @@ func NewCmdControl(control, value *token.Token) (CmdControl, error) {
 // CmdPlay is a bar play command.
 type CmdPlay string
 
-func (c CmdPlay) String() string {
-	return fmt.Sprintf(`play "%s"`, string(c))
+func (c CmdPlay) WriteTo(w io.Writer) (int64, error) {
+	ew := newErrWriter(w)
+	var n int
+
+	n += ew.WriteString("play ")
+	n += ew.WriteString(string(c))
+
+	return int64(n), ew.Flush()
 }
+
+// func (c CmdPlay) String() string {
+// 	return fmt.Sprintf(`play "%s"`, string(c))
+// }
 
 // CmdStart is a start commad.
 type CmdStart struct{}
 
-func (c CmdStart) String() string {
-	return "start"
+func (c CmdStart) WriteTo(w io.Writer) (int64, error) {
+	ew := newErrWriter(w)
+	var n int
+
+	n += ew.WriteString("start")
+
+	return int64(n), ew.Flush()
 }
+
+// func (c CmdStart) String() string {
+// 	return "start"
+// }
 
 // CmdStop is a stop command.
 type CmdStop struct{}
 
-func (c CmdStop) String() string {
-	return "stop"
+func (c CmdStop) WriteTo(w io.Writer) (int64, error) {
+	ew := newErrWriter(w)
+	var n int
+
+	n += ew.WriteString("stop")
+
+	return int64(n), ew.Flush()
 }
+
+// func (c CmdStop) String() string {
+// 	return "stop"
+// }

@@ -2,9 +2,9 @@ package ast
 
 import (
 	"fmt"
+	"io"
 	"sort"
 	"strconv"
-	"strings"
 
 	"github.com/mgnsk/gong/internal/parser/token"
 )
@@ -34,13 +34,24 @@ func (p PropertyList) Find(typ token.Type) (int, bool) {
 	return 0, false
 }
 
-func (p PropertyList) String() string {
-	var format strings.Builder
+func (p PropertyList) WriteTo(w io.Writer) (int64, error) {
+	ew := newErrWriter(w)
+	var n int
+
 	for _, t := range p {
-		format.Write(t.Lit)
+		n += ew.Write(t.Lit)
 	}
-	return format.String()
+
+	return int64(n), ew.Flush()
 }
+
+// func (p PropertyList) String() string {
+// 	var format strings.Builder
+// 	for _, t := range p {
+// 		format.Write(t.Lit)
+// 	}
+// 	return format.String()
+// }
 
 // NewPropertyList creates a note property list.
 func NewPropertyList(t *token.Token, inner interface{}) (PropertyList, error) {

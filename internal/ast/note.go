@@ -2,9 +2,9 @@ package ast
 
 import (
 	"fmt"
+	"io"
 	"sort"
 	"strconv"
-	"strings"
 
 	"github.com/mgnsk/gong/internal/constants"
 	"github.com/mgnsk/gong/internal/parser/token"
@@ -14,18 +14,30 @@ import (
 // Note: some list operations may be implemented with side effects.
 
 // NoteList is a list of notes.
+// TODO why pointer note?
 type NoteList []*Note
 
-func (l NoteList) String() string {
-	notes := make([]string, len(l))
-	for i, note := range l {
-		notes[i] = note.String()
+func (l NoteList) WriteTo(w io.Writer) (int64, error) {
+	ew := newErrWriter(w)
+	var n int
+
+	for _, note := range l {
+		n += ew.CopyFrom(note)
 	}
-	return strings.Join(notes, " ")
+
+	return int64(n), ew.Flush()
 }
 
+// func (l NoteList) String() string {
+// 	notes := make([]string, len(l))
+// 	for i, note := range l {
+// 		notes[i] = note.String()
+// 	}
+// 	return strings.Join(notes, " ")
+// }
+
 // NewNoteList creates a list of notes.
-func NewNoteList(note fmt.Stringer, inner NoteList) (list NoteList) {
+func NewNoteList(note Node, inner NoteList) (list NoteList) {
 	switch n := note.(type) {
 	case *Note:
 		return append(NoteList{n}, inner...)
@@ -77,56 +89,56 @@ type Note struct {
 }
 
 // Ticks returns the note duration in ticks.
-func (n *Note) Ticks() smf.MetricTicks {
-	value := n.Value()
+func (note *Note) Ticks() smf.MetricTicks {
+	value := note.Value()
 	length := constants.TicksPerWhole / smf.MetricTicks(value)
 	newLength := length
-	dots := n.NumDots()
+	dots := note.NumDots()
 	for i := uint(0); i < dots; i++ {
 		length /= 2
 		newLength += length
 	}
-	if division := n.Tuplet(); division > 0 {
+	if division := note.Tuplet(); division > 0 {
 		newLength = newLength * 2 / smf.MetricTicks(division)
 	}
 	return newLength
 }
 
 // IsPause reports whether the note is a pause.
-func (n *Note) IsPause() bool {
-	return n.Name == '-'
+func (note *Note) IsPause() bool {
+	return note.Name == '-'
 }
 
 // IsSharp reports whether the note is sharp.
-func (n *Note) IsSharp() bool {
-	_, ok := n.Props.Find(typeSharp)
+func (note *Note) IsSharp() bool {
+	_, ok := note.Props.Find(typeSharp)
 	return ok
 }
 
 // IsFlat reports whether the note is flat.
-func (n *Note) IsFlat() bool {
-	_, ok := n.Props.Find(typeFlat)
+func (note *Note) IsFlat() bool {
+	_, ok := note.Props.Find(typeFlat)
 	return ok
 }
 
 // NumAccents reports the number of accent properties in the note.
-func (n *Note) NumAccents() uint {
-	return n.countProps(typeAccent)
+func (note *Note) NumAccents() uint {
+	return note.countProps(typeAccent)
 }
 
 // NumGhosts reports the number of ghost properties in the note.
-func (n *Note) NumGhosts() uint {
-	return n.countProps(typeGhost)
+func (note *Note) NumGhosts() uint {
+	return note.countProps(typeGhost)
 }
 
 // Value returns the note value (1th, 2th, 4th, 8th, 16th, 32th and so on).
-func (n *Note) Value() uint8 {
-	i, ok := n.Props.Find(typeUint)
+func (note *Note) Value() uint8 {
+	i, ok := note.Props.Find(typeUint)
 	if !ok {
 		// Implicit quarter note.
 		return 4
 	}
-	v, err := strconv.Atoi(string(n.Props[i].Lit))
+	v, err := strconv.Atoi(string(note.Props[i].Lit))
 	if err != nil {
 		panic(err)
 	}
@@ -135,16 +147,16 @@ func (n *Note) Value() uint8 {
 }
 
 // NumDots reports the number of dot properties in the note.
-func (n *Note) NumDots() uint {
-	return n.countProps(typeDot)
+func (note *Note) NumDots() uint {
+	return note.countProps(typeDot)
 }
 
 // Tuplet returns the irregular division value if the note is a tuplet.
-func (n *Note) Tuplet() uint8 {
-	if i, ok := n.Props.Find(typeTuplet); ok {
+func (note *Note) Tuplet() uint8 {
+	if i, ok := note.Props.Find(typeTuplet); ok {
 		// Extract the division number.
 		// For example "3" for a triplet denoted by "/3".
-		v, err := strconv.Atoi(string(n.Props[i].Lit[1:]))
+		v, err := strconv.Atoi(string(note.Props[i].Lit[1:]))
 		if err != nil {
 			panic(err)
 		}
@@ -154,18 +166,28 @@ func (n *Note) Tuplet() uint8 {
 }
 
 // IsLetRing reports whether the note must ring.
-func (n *Note) IsLetRing() bool {
-	_, ok := n.Props.Find(typeLetRing)
+func (note *Note) IsLetRing() bool {
+	_, ok := note.Props.Find(typeLetRing)
 	return ok
 }
 
-func (n *Note) String() string {
-	return fmt.Sprintf("%c%s", n.Name, n.Props)
+func (note *Note) WriteTo(w io.Writer) (int64, error) {
+	ew := newErrWriter(w)
+	var n int
+
+	n += ew.WriteRune(note.Name)
+	n += ew.CopyFrom(note.Props)
+
+	return int64(n), ew.Flush()
 }
 
-func (n *Note) countProps(targetType token.Type) uint {
+// func (note *Note) String() string {
+// 	return fmt.Sprintf("%c%s", note.Name, note.Props)
+// }
+
+func (note *Note) countProps(targetType token.Type) uint {
 	num := uint(0)
-	for _, t := range n.Props {
+	for _, t := range note.Props {
 		if t.Type == targetType {
 			num++
 		}
