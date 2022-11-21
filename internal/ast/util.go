@@ -3,6 +3,7 @@ package ast
 import (
 	"bufio"
 	"io"
+	"strconv"
 )
 
 type errWriter struct {
@@ -65,6 +66,10 @@ func (w *errWriter) WriteString(s string) int {
 		w.err = err
 	}
 	return n
+}
+
+func (w *errWriter) WriteInt(i int) int {
+	return w.WriteString(strconv.Itoa(i))
 }
 
 func (w *errWriter) CopyFrom(wt io.WriterTo) int {

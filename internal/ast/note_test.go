@@ -25,19 +25,19 @@ func TestNoteList(t *testing.T) {
 		},
 		{
 			"kk",
-			"k k",
+			"kk",
 		},
 		{
-			"k k8",
-			"k k8",
+			"kk8",
+			"kk8",
 		},
 		{
 			"kk8.", // Properties apply only to the previous note symbol.
-			"k k8.",
+			"kk8.",
 		},
 		{
 			"[kk.]8", // Group properties apply to all notes in the group.
-			"k8 k8.",
+			"k8k8.",
 		},
 		{
 			"[k.].", // Group properties are appended.
@@ -49,11 +49,11 @@ func TestNoteList(t *testing.T) {
 		},
 		{
 			"[k][k].",
-			"k k.",
+			"kk.",
 		},
 		{
 			"kk[kk]kk[kk]kk",
-			"k k k k k k k k k k",
+			"kkkkkkkkkk",
 		},
 		{
 			"[[k]]8",
@@ -61,11 +61,11 @@ func TestNoteList(t *testing.T) {
 		},
 		{
 			"k8kk16kkkk16",
-			"k8 k k16 k k k k16",
+			"k8kk16kkkk16",
 		},
 		{
 			"k8 [kk]16 [kkkk]32",
-			"k8 k16 k16 k32 k32 k32 k32",
+			"k8k16k16k32k32k32k32",
 		},
 		{
 			"-", // Pause.

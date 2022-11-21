@@ -48,7 +48,7 @@ func (it *Interpreter) clone() *Interpreter {
 
 // TODO: parseOption: fillBarSilence - fills bars with
 
-func (it *Interpreter) Parse(input string) (ast.NodeList, error) {
+func (it *Interpreter) Eval(input string) (*sequencer.Song, error) {
 	res, err := it.parser.Parse(lexer.NewLexer([]byte(input)))
 	if err != nil {
 		return nil, err
@@ -57,15 +57,6 @@ func (it *Interpreter) Parse(input string) (ast.NodeList, error) {
 	declList, ok := res.(ast.NodeList)
 	if !ok {
 		return nil, fmt.Errorf("invalid input, expected ast.DeclList")
-	}
-
-	return declList, nil
-}
-
-func (it *Interpreter) Eval(input string) (*sequencer.Song, error) {
-	declList, err := it.Parse(input)
-	if err != nil {
-		return nil, err
 	}
 
 	return it.EvalAST(declList)
@@ -94,7 +85,7 @@ func (it *Interpreter) EvalAST(declList ast.NodeList) (*sequencer.Song, error) {
 		case ast.CmdPlay:
 			events, ok := it.bars[string(decl)]
 			if !ok {
-				return nil, fmt.Errorf("unknown bar '%s'", decl.String())
+				return nil, fmt.Errorf("unknown bar '%s'", string(decl))
 			}
 
 			buffer = append(buffer, events...)

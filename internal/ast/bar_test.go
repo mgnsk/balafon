@@ -1,6 +1,7 @@
 package ast_test
 
 import (
+	"bytes"
 	"fmt"
 	"strings"
 	"testing"
@@ -34,14 +35,18 @@ play "Bar 1"
 	g.Expect(err).NotTo(HaveOccurred())
 	g.Expect(res1).To(BeAssignableToTypeOf(ast.NodeList{}))
 
-	g.Expect(fmt.Sprint(res1)).To(Equal(strings.Trim(input1, " \n")))
+	var buf1 bytes.Buffer
+	res1.(ast.NodeList).WriteTo(&buf1)
+	g.Expect(buf1.String()).To(Equal(strings.Trim(input1, " \n")))
 
 	res2, err := parse(input2)
 	g.Expect(err).NotTo(HaveOccurred())
 	g.Expect(res2).To(BeAssignableToTypeOf(ast.NodeList{}))
 	g.Expect(res2).To(Equal(res1))
 
-	g.Expect(fmt.Sprint(res2)).To(Equal(strings.Trim(input1, " \n")))
+	var buf2 bytes.Buffer
+	res2.(ast.NodeList).WriteTo(&buf2)
+	g.Expect(buf2.String()).To(Equal(strings.Trim(input1, " \n")))
 }
 
 func TestCommandsForbiddenInBar(t *testing.T) {

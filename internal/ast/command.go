@@ -3,7 +3,6 @@ package ast
 import (
 	"io"
 	"math"
-	"strconv"
 
 	"github.com/mgnsk/gong/internal/constants"
 	"github.com/mgnsk/gong/internal/parser/token"
@@ -22,7 +21,7 @@ func (c CmdAssign) WriteTo(w io.Writer) (int64, error) {
 	n += ew.WriteString("assign ")
 	n += ew.WriteRune(c.Note)
 	n += ew.WriteString(" ")
-	n += ew.WriteByte(c.Key)
+	n += ew.WriteInt(int(c.Key))
 
 	return int64(n), ew.Flush()
 }
@@ -54,7 +53,7 @@ func (c CmdTempo) WriteTo(w io.Writer) (int64, error) {
 	var n int
 
 	n += ew.WriteString("tempo ")
-	n += ew.WriteString(strconv.Itoa(int(c)))
+	n += ew.WriteInt(int(c))
 
 	return int64(n), ew.Flush()
 }
@@ -86,9 +85,9 @@ func (c CmdTimeSig) WriteTo(w io.Writer) (int64, error) {
 	var n int
 
 	n += ew.WriteString("timesig ")
-	n += ew.WriteByte(c.Num)
+	n += ew.WriteInt(int(c.Num))
 	n += ew.WriteString(" ")
-	n += ew.WriteByte(c.Denom)
+	n += ew.WriteInt(int(c.Denom))
 
 	return int64(n), ew.Flush()
 }
@@ -127,7 +126,7 @@ func (c CmdChannel) WriteTo(w io.Writer) (int64, error) {
 	var n int
 
 	n += ew.WriteString("channel ")
-	n += ew.WriteByte(uint8(c))
+	n += ew.WriteInt(int(c))
 
 	return int64(n), ew.Flush()
 }
@@ -156,7 +155,7 @@ func (c CmdVelocity) WriteTo(w io.Writer) (int64, error) {
 	var n int
 
 	n += ew.WriteString("velocity ")
-	n += ew.WriteByte(uint8(c))
+	n += ew.WriteInt(int(c))
 
 	return int64(n), ew.Flush()
 }
@@ -185,7 +184,7 @@ func (c CmdProgram) WriteTo(w io.Writer) (int64, error) {
 	var n int
 
 	n += ew.WriteString("program ")
-	n += ew.WriteByte(uint8(c))
+	n += ew.WriteInt(int(c))
 
 	return int64(n), ew.Flush()
 }
@@ -217,9 +216,9 @@ func (c CmdControl) WriteTo(w io.Writer) (int64, error) {
 	var n int
 
 	n += ew.WriteString("control ")
-	n += ew.WriteByte(c.Control)
+	n += ew.WriteInt(int(c.Control))
 	n += ew.WriteString(" ")
-	n += ew.WriteByte(c.Parameter)
+	n += ew.WriteInt(int(c.Parameter))
 
 	return int64(n), ew.Flush()
 }
@@ -257,8 +256,9 @@ func (c CmdPlay) WriteTo(w io.Writer) (int64, error) {
 	ew := newErrWriter(w)
 	var n int
 
-	n += ew.WriteString("play ")
+	n += ew.WriteString("play \"")
 	n += ew.WriteString(string(c))
+	n += ew.WriteString("\"")
 
 	return int64(n), ew.Flush()
 }
