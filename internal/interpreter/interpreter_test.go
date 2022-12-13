@@ -60,7 +60,7 @@ func TestCommands(t *testing.T) {
 			0,
 		},
 		{
-			`assign c 60; bar "bar" { timesig 1 4; c }; play "bar"`,
+			`assign c 60; bar "bar" timesig 1 4; c end; play "bar"`,
 			[2]uint8{1, 4},
 			midi.NoteOn(0, 60, constants.DefaultVelocity),
 			constants.TicksPerQuarter.Ticks32th(),
@@ -259,12 +259,12 @@ assign c 120
 
 channel 1
 
-bar "bar" {
+bar "bar"
     velocity 20
 
     channel 2
     c
-}
+end
 
 play "bar"
 c

@@ -16,7 +16,7 @@ func (b Bar) WriteTo(w io.Writer) (int64, error) {
 
 	n += ew.WriteString(`bar "`)
 	n += ew.WriteString(b.Name)
-	n += ew.WriteString("\" {\n")
+	n += ew.WriteString("\"\n")
 
 	for _, stmt := range b.DeclList {
 		n += ew.WriteString("\t")
@@ -24,7 +24,7 @@ func (b Bar) WriteTo(w io.Writer) (int64, error) {
 		n += ew.WriteString("\n")
 	}
 
-	n += ew.WriteString("}")
+	n += ew.WriteString("end")
 
 	return int64(n), ew.Flush()
 }

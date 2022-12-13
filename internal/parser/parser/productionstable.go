@@ -193,13 +193,13 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `Bar : "bar" stringLit "{" RepeatTerminator BarBodyDeclList "}"	<< ast.NewBar(X[1].(*token.Token).StringValue(), X[4].(ast.NodeList)), nil >>`,
+		String: `Bar : "bar" stringLit RepeatTerminator BarBodyDeclList "end"	<< ast.NewBar(X[1].(*token.Token).StringValue(), X[3].(ast.NodeList)), nil >>`,
 		Id:         "Bar",
 		NTType:     8,
 		Index:      17,
-		NumSymbols: 6,
+		NumSymbols: 5,
 		ReduceFunc: func(X []Attrib, C interface{}) (Attrib, error) {
-			return ast.NewBar(X[1].(*token.Token).StringValue(), X[4].(ast.NodeList)), nil
+			return ast.NewBar(X[1].(*token.Token).StringValue(), X[3].(ast.NodeList)), nil
 		},
 	},
 	ProdTabEntry{

@@ -23,11 +23,11 @@ program 1
 control 1 1
 assign c 60
 assign d 62
-bar "Bar 1" {
+bar "Bar 1"
 	start
 	c
 	stop
-}
+end
 play "Bar 1"
 
 `
@@ -36,7 +36,7 @@ play "Bar 1"
 tempo 120; timesig 1 4; channel 1; velocity 20;
 program 1; control 1 1
 assign c 60; assign d 62
-bar "Bar 1" { start; c; stop }
+bar "Bar 1" start; c; stop; end
 play "Bar 1"
 `
 
@@ -46,6 +46,7 @@ play "Bar 1"
 
 	var buf1 bytes.Buffer
 	res1.(ast.NodeList).WriteTo(&buf1)
+
 	g.Expect(buf1.String()).To(Equal(strings.Trim(input1, " \n")))
 
 	res2, err := parse(input2)
@@ -61,12 +62,12 @@ play "Bar 1"
 func TestCommandsForbiddenInBar(t *testing.T) {
 	for _, input := range []string{
 		"assign c 60",
-		`bar "Inner" { start }`,
+		`bar "Inner" start end`,
 	} {
 		t.Run(input, func(t *testing.T) {
 			g := NewGomegaWithT(t)
 
-			_, err := parse(fmt.Sprintf(`bar "Outer" { %s }`, input))
+			_, err := parse(fmt.Sprintf(`bar "Outer" %s; end`, input))
 			g.Expect(err).To(HaveOccurred())
 			g.Expect(err.Error()).To(ContainSubstring(`got:`))
 		})

@@ -24,7 +24,7 @@ type midiKey struct {
 	note    rune
 }
 
-// Interpreter evaluates MIDI messages from text input.
+// Interpreter evaluates text input and emits MIDI events.
 type Interpreter struct {
 	parser *parser.Parser
 	keymap map[midiKey]uint8
@@ -134,6 +134,7 @@ func (it *Interpreter) parse(declList ast.NodeList) (sequencer.Events, error) {
 	for _, decl := range declList {
 		switch decl := decl.(type) {
 		case ast.CmdAssign:
+			// CmdAssign never occurs in a bar.
 			if err := it.assign(it.curChannel, decl.Note, decl.Key); err != nil {
 				return nil, err
 			}
@@ -185,7 +186,7 @@ func (it *Interpreter) parse(declList ast.NodeList) (sequencer.Events, error) {
 		case ast.LineComment:
 		case ast.BlockComment:
 		default:
-			panic(fmt.Sprintf("parseBar: invalid token %T", decl))
+			panic(fmt.Sprintf("parse: invalid token %T", decl))
 		}
 	}
 
@@ -200,12 +201,12 @@ func getDuration(events sequencer.Events) uint32 {
 	return d
 }
 
-func negIndex(tokens []*token.Token, i int) *token.Token {
-	if len(tokens) > 0 {
-		return tokens[len(tokens)-1]
-	}
-	return nil
-}
+// func negIndex(tokens []*token.Token, i int) *token.Token {
+// 	if len(tokens) > 0 {
+// 		return tokens[len(tokens)-1]
+// 	}
+// 	return nil
+// }
 
 // TokenList is a list of tokens that implements parser.Scanner.
 type TokenList struct {
@@ -594,12 +595,12 @@ func (it *Interpreter) parseNoteList(noteList ast.NoteList) (sequencer.Events, e
 
 		if note.IsSharp() {
 			if key == constants.MaxValue {
-				return nil, fmt.Errorf("sharp note '%s' out of MIDI range", note)
+				return nil, fmt.Errorf("sharp note '%c' out of MIDI range", note.Name)
 			}
 			key++
 		} else if note.IsFlat() {
 			if key == constants.MinValue {
-				return nil, fmt.Errorf("flat note '%s' out of MIDI range", note)
+				return nil, fmt.Errorf("flat note '%c' out of MIDI range", note.Name)
 			}
 			key--
 		}
