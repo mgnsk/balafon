@@ -32,8 +32,8 @@ import (
 >>
 
 SourceFile
-        : RepeatTerminator TopLevelDeclList << $1, nil >>
-        ;
+    : RepeatTerminator TopLevelDeclList << $1, nil >>
+    ;
 
 RepeatTerminator
     : empty
