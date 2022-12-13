@@ -15,6 +15,12 @@ func TestBar(t *testing.T) {
 
 	input1 := `
 
+tempo 120
+timesig 1 4
+channel 1
+velocity 20
+program 1
+control 1 1
 assign c 60
 assign d 62
 bar "Bar 1" {
@@ -26,7 +32,10 @@ play "Bar 1"
 
 `
 
-	input2 := `assign c 60; assign d 62
+	input2 := `
+tempo 120; timesig 1 4; channel 1; velocity 20;
+program 1; control 1 1
+assign c 60; assign d 62
 bar "Bar 1" { start; c; stop }
 play "Bar 1"
 `
@@ -52,7 +61,7 @@ play "Bar 1"
 func TestCommandsForbiddenInBar(t *testing.T) {
 	for _, input := range []string{
 		"assign c 60",
-		`bar "Nested" { start }`,
+		`bar "Inner" { start }`,
 	} {
 		t.Run(input, func(t *testing.T) {
 			g := NewGomegaWithT(t)
