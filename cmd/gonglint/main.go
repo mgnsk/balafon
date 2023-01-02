@@ -26,6 +26,7 @@ func main() {
 				return err
 			}
 
+			// TODO: lint format
 			if _, err := interpreter.New().Eval(string(input)); err != nil {
 				fmt.Println(err)
 				return nil

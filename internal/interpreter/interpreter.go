@@ -7,7 +7,6 @@ import (
 	"strconv"
 
 	"github.com/c-bata/go-prompt"
-	"github.com/davecgh/go-spew/spew"
 	"github.com/mgnsk/gong/internal/ast"
 	"github.com/mgnsk/gong/internal/constants"
 	parseError "github.com/mgnsk/gong/internal/parser/errors"
@@ -301,7 +300,7 @@ func (it *Interpreter) Suggest(in prompt.Document) []prompt.Suggest {
 		}
 	}
 
-	spew.Dump(expectedTokens)
+	// spew.Dump(expectedTokens)
 
 	tokens.Reset()
 

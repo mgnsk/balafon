@@ -8,15 +8,41 @@ import (
 	"runtime"
 	"strings"
 
-	"github.com/c-bata/go-prompt"
+	"github.com/mgnsk/gong/internal/constants"
 	"github.com/mgnsk/gong/internal/interpreter"
 	"github.com/spf13/cobra"
 	"gitlab.com/gomidi/midi/v2"
+	"gitlab.com/gomidi/midi/v2/sequencer"
+	"gitlab.com/gomidi/midi/v2/smf"
 	// "gitlab.com/gomidi/midi/v2/drivers"
 	// _ "gitlab.com/gomidi/midi/v2/drivers/rtmididrv"
 )
 
 func main() {
+	song := sequencer.New()
+	song.AddBar(sequencer.Bar)
+
+	bar := sequencer.Bar{
+		Events: sequencer.Events{
+			{
+				TrackNo:  0,
+				Pos:      0,
+				Duration: constants.TicksPerWhole.Ticks32th(),
+				Message:  smf.Message(midi.NoteOn(0, 60, 127)),
+			},
+		},
+	}
+
+	for _, ev := range events {
+		if num, denom, ok := getMeter(ev); ok {
+			bar.TimeSig = [2]uint8{num, denom}
+		} else {
+			bar.Events = append(bar.Events, ev)
+		}
+	}
+
+	os.Exit(0)
+
 	defer midi.CloseDriver()
 
 	root := &cobra.Command{
@@ -92,8 +118,6 @@ func createRunShellCommand(input io.Reader) func(*cobra.Command, []string) error
 		// 	return err
 		// }
 
-		it := interpreter.New()
-
 		if input != nil {
 			panic("TODO: implement stdin")
 			// if _, err := it.EvalAll(input); err != nil {
@@ -116,7 +140,11 @@ func createRunShellCommand(input io.Reader) func(*cobra.Command, []string) error
 
 		// fmt.Printf("Welcome to the gong shell on MIDI port '%d: %s'!\n", out.Number(), out.String())
 
-		newShell(it, prompt.NewStandardInputParser()).Run()
+		sh := interpreter.NewShell()
+
+		// s := newShell(it, prompt.NewStandardInputParser()).Run()
+		pt := newBufferedPrompt(sh.Execute, sh.Complete)
+		pt.Run()
 
 		// cancel()
 		// wg.Wait()

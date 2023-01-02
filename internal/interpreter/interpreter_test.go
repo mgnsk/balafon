@@ -267,6 +267,9 @@ bar "bar"
 end
 
 play "bar"
+
+// back to channel 1.
+
 c
 `)
 	g.Expect(err).NotTo(HaveOccurred())

@@ -5,7 +5,6 @@ import (
 	"strings"
 
 	"github.com/c-bata/go-prompt"
-	"github.com/mgnsk/gong/internal/interpreter"
 )
 
 const (
@@ -31,64 +30,61 @@ func printGrid(buf *bytes.Buffer, reso, current uint) {
 	}
 }
 
-func newShell(it *interpreter.Interpreter, parser prompt.ConsoleParser) *shell {
-	return &shell{
-		parser: parser,
-		it:     it,
-	}
-}
+type bufferedPrompt struct {
+	pt *prompt.Prompt
 
-type shell struct {
-	parser            prompt.ConsoleParser
-	it                *interpreter.Interpreter
 	livePrefix        string
 	livePrefixEnabled bool
-	query             string
+	buffer            bytes.Buffer
 }
 
-func (s *shell) execute(in string) {
-	if strings.HasSuffix(in, ";") {
-		s.query = s.query + in
-		s.livePrefix = in
-		s.livePrefixEnabled = false
-		s.query = ""
-		return
-	}
-	s.query = s.query + in + " "
-	s.livePrefix = "..."
-	s.livePrefixEnabled = true
+func newBufferedPrompt(execute prompt.Executor, complete prompt.Completer) *bufferedPrompt {
+	p := &bufferedPrompt{}
 
-	// fmt.Println(input)
-	// // TODO: enter live mode
-	// song, err := s.it.Eval(input)
-	// if err != nil {
-	// 	fmt.Println(err)
-	// }
-	// fmt.Println(song)
-	// // TODO handle bar entry
-	// // buffer the current line
-	// // when asked to suggest,
-	// // fork the parser and eval
-	// // parse error of expected which token
-	// // if no error, then add invalid input, parse the error
-	// // suggest the correct tokens from error
-	// // if err := s.handleInputLine(input); err != nil {
-	// // 	fmt.Println(err)
-	// // }
-}
+	p.pt = prompt.New(
+		func(in string) {
+			if strings.HasPrefix(in, "bar") {
+				p.buffer.WriteString(in)
+				p.buffer.WriteString(" ")
 
-func (s *shell) complete(in prompt.Document) []prompt.Suggest {
-	return s.it.Suggest(in)
-}
+				p.livePrefix = "...    "
+				p.livePrefixEnabled = true
 
-func (s *shell) changeLivePrefix() (string, bool) {
-	return s.livePrefix, s.livePrefixEnabled
-}
+				return
+			}
 
-func (s *shell) Run() {
-	prompt.New(
-		s.execute,
-		s.complete,
+			if strings.HasSuffix(in, "end") {
+				p.buffer.WriteString(in)
+
+				p.livePrefix = in
+				p.livePrefixEnabled = false
+
+				execute(p.buffer.String())
+				p.buffer.Reset()
+
+				return
+			}
+
+			if p.livePrefixEnabled {
+				p.buffer.WriteString(in)
+				p.buffer.WriteString(" ")
+
+				p.livePrefix = "...    "
+				p.livePrefixEnabled = true
+
+				return
+			}
+
+			p.buffer.WriteString(in)
+			p.livePrefix = in
+			p.livePrefixEnabled = false
+
+			execute(p.buffer.String())
+			p.buffer.Reset()
+
+			return
+		},
+		complete,
 		// prompt.OptionCompletionWordSeparator(func() string {
 		// 	// TODO: build a list of separators
 		// 	s := []rune{' '}
@@ -117,12 +113,20 @@ func (s *shell) Run() {
 		// 	return string(s)
 		// }()),
 		prompt.OptionPrefix(">>> "),
-		prompt.OptionLivePrefix(s.changeLivePrefix),
+		prompt.OptionLivePrefix(func() (string, bool) {
+			return p.livePrefix, p.livePrefixEnabled
+		}),
 		prompt.OptionPrefixTextColor(prompt.Yellow),
 		prompt.OptionPreviewSuggestionTextColor(prompt.Blue),
 		prompt.OptionSelectedSuggestionBGColor(prompt.LightGray),
 		prompt.OptionSuggestionBGColor(prompt.DarkGray),
-	).Run()
+	)
+
+	return p
+}
+
+func (p *bufferedPrompt) Run() {
+	p.pt.Run()
 }
 
 // func (s *shell) runMetronomePrinter(ctx context.Context, reso uint) {
@@ -197,9 +201,9 @@ func (s *shell) Run() {
 // 	return nil
 // }
 
-func must(res interface{}, err error) interface{} {
-	if err != nil {
-		panic(err)
-	}
-	return res
-}
+// func must(res interface{}, err error) interface{} {
+// 	if err != nil {
+// 		panic(err)
+// 	}
+// 	return res
+// }
