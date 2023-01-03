@@ -26,10 +26,11 @@ func main() {
 				return err
 			}
 
-			// TODO: lint format
-			if _, err := interpreter.New().Eval(string(input)); err != nil {
+			it := interpreter.New()
+
+			if err := it.Eval(string(input)); err != nil {
+				// TODO: lint error format
 				fmt.Println(err)
-				return nil
 			}
 
 			return nil

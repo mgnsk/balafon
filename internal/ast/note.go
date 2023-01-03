@@ -6,9 +6,7 @@ import (
 	"sort"
 	"strconv"
 
-	"github.com/mgnsk/gong/internal/constants"
 	"github.com/mgnsk/gong/internal/parser/token"
-	"gitlab.com/gomidi/midi/v2/smf"
 )
 
 // Note: some list operations may be implemented with side effects.
@@ -88,10 +86,10 @@ type Note struct {
 	Name  rune
 }
 
-// Ticks returns the note duration in ticks.
-func (note *Note) Ticks() smf.MetricTicks {
+// Ticks returns the note duration in 32ths.
+func (note *Note) Len() uint8 {
 	value := note.Value()
-	length := constants.TicksPerWhole / smf.MetricTicks(value)
+	length := 32 / value
 	newLength := length
 	dots := note.NumDots()
 	for i := uint(0); i < dots; i++ {
@@ -99,7 +97,7 @@ func (note *Note) Ticks() smf.MetricTicks {
 		newLength += length
 	}
 	if division := note.Tuplet(); division > 0 {
-		newLength = newLength * 2 / smf.MetricTicks(division)
+		newLength = newLength * 2 / division
 	}
 	return newLength
 }

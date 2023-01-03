@@ -6,43 +6,18 @@ import (
 	"os"
 	"os/exec"
 	"runtime"
+	"strconv"
 	"strings"
 
-	"github.com/mgnsk/gong/internal/constants"
 	"github.com/mgnsk/gong/internal/interpreter"
 	"github.com/spf13/cobra"
 	"gitlab.com/gomidi/midi/v2"
-	"gitlab.com/gomidi/midi/v2/sequencer"
-	"gitlab.com/gomidi/midi/v2/smf"
+	"gitlab.com/gomidi/midi/v2/drivers"
 	// "gitlab.com/gomidi/midi/v2/drivers"
 	// _ "gitlab.com/gomidi/midi/v2/drivers/rtmididrv"
 )
 
 func main() {
-	song := sequencer.New()
-	song.AddBar(sequencer.Bar)
-
-	bar := sequencer.Bar{
-		Events: sequencer.Events{
-			{
-				TrackNo:  0,
-				Pos:      0,
-				Duration: constants.TicksPerWhole.Ticks32th(),
-				Message:  smf.Message(midi.NoteOn(0, 60, 127)),
-			},
-		},
-	}
-
-	for _, ev := range events {
-		if num, denom, ok := getMeter(ev); ok {
-			bar.TimeSig = [2]uint8{num, denom}
-		} else {
-			bar.Events = append(bar.Events, ev)
-		}
-	}
-
-	os.Exit(0)
-
 	defer midi.CloseDriver()
 
 	root := &cobra.Command{
@@ -109,20 +84,20 @@ func createRunShellCommand(input io.Reader) func(*cobra.Command, []string) error
 			}()
 		}
 
-		// out, err := getPort(c.Flag("port").Value.String())
-		// if err != nil {
-		// 	return err
-		// }
-
-		// if err := out.Open(); err != nil {
-		// 	return err
-		// }
-
 		if input != nil {
 			panic("TODO: implement stdin")
 			// if _, err := it.EvalAll(input); err != nil {
 			// 	return err
 			// }
+		}
+
+		out, err := getPort(c.Flag("port").Value.String())
+		if err != nil {
+			return err
+		}
+
+		if err := out.Open(); err != nil {
+			return err
 		}
 
 		// resultC := make(chan result)
@@ -140,9 +115,8 @@ func createRunShellCommand(input io.Reader) func(*cobra.Command, []string) error
 
 		// fmt.Printf("Welcome to the gong shell on MIDI port '%d: %s'!\n", out.Number(), out.String())
 
-		sh := interpreter.NewShell()
+		sh := interpreter.NewShell(out)
 
-		// s := newShell(it, prompt.NewStandardInputParser()).Run()
 		pt := newBufferedPrompt(sh.Execute, sh.Complete)
 		pt.Run()
 
@@ -153,10 +127,10 @@ func createRunShellCommand(input io.Reader) func(*cobra.Command, []string) error
 	}
 }
 
-// func getPort(port string) (drivers.Out, error) {
-// 	portNum, err := strconv.Atoi(port)
-// 	if err == nil {
-// 		return midi.OutPort(portNum)
-// 	}
-// 	return midi.FindOutPort(port)
-// }
+func getPort(port string) (drivers.Out, error) {
+	portNum, err := strconv.Atoi(port)
+	if err == nil {
+		return midi.OutPort(portNum)
+	}
+	return midi.FindOutPort(port)
+}

@@ -28,106 +28,140 @@ type Interpreter struct {
 	parser *parser.Parser
 	keymap map[midiKey]uint8
 	// ringing     map[midiKey]struct{}
-	bars        map[string]sequencer.Events
+	song        *sequencer.Song
+	buffer      sequencer.Events
+	bars        map[string]sequencer.Bar
+	curTimeSig  [2]uint8
 	curChannel  uint8
 	curVelocity uint8
 }
 
-func (it *Interpreter) clone() *Interpreter {
+// beginBar clones the interpreter but with empty song and buffer.
+func (it *Interpreter) beginBar() *Interpreter {
 	newIt := New()
 
-	// Use the same maps, assign and bar are not allowed in bars.
+	// Use the same maps, assign and bar commands are not allowed in bars.
 	newIt.keymap = it.keymap
 	newIt.bars = it.bars
+	newIt.curTimeSig = it.curTimeSig
 	newIt.curChannel = it.curChannel
 	newIt.curVelocity = it.curVelocity
 
 	return newIt
 }
 
-// TODO: parseOption: fillBarSilence - fills bars with
-
-func (it *Interpreter) Eval(input string) (*sequencer.Song, error) {
+func (it *Interpreter) Eval(input string) error {
 	res, err := it.parser.Parse(lexer.NewLexer([]byte(input)))
 	if err != nil {
-		return nil, err
+		return err
 	}
 
 	declList, ok := res.(ast.NodeList)
 	if !ok {
-		return nil, fmt.Errorf("invalid input, expected ast.DeclList")
+		return fmt.Errorf("invalid input, expected ast.DeclList")
 	}
 
 	return it.EvalAST(declList)
 }
 
-func (it *Interpreter) EvalAST(declList ast.NodeList) (*sequencer.Song, error) {
-	var (
-		song   = sequencer.New()
-		buffer sequencer.Events
-	)
+func (it *Interpreter) Flush() (song *sequencer.Song) {
+	song = it.song
 
+	if len(it.buffer) > 0 {
+		if song == nil {
+			song = sequencer.New()
+		}
+		song.AddBar(it.createBar(it.buffer))
+	}
+
+	it.song = nil
+	it.buffer = it.buffer[:0]
+
+	return song
+}
+
+func (it *Interpreter) EvalAST(declList ast.NodeList) error {
 	for _, decl := range declList {
 		switch decl := decl.(type) {
 		case ast.Bar:
 			if _, ok := it.bars[decl.Name]; ok {
-				return nil, fmt.Errorf("bar '%s' already defined", decl.Name)
+				return fmt.Errorf("bar '%s' already defined", decl.Name)
 			}
+			// TODO flush?
+			// does bar remember previous tempo
+			// when used again after another tempo change?
 
-			events, err := it.clone().parse(decl.DeclList)
+			// the situation: it has buffered events (not notes)
+			// a bar is defined, does the buffer also get cloned?
+
+			// TODO: clone but with empty buffer
+			itBar := it.beginBar()
+
+			events, err := itBar.parseBar(decl.DeclList)
 			if err != nil {
-				return nil, err
+				return err
 			}
 
-			it.bars[decl.Name] = events
+			it.bars[decl.Name] = sequencer.Bar{
+				TimeSig: itBar.curTimeSig,
+				Events:  events,
+			}
 
 		case ast.CmdPlay:
-			events, ok := it.bars[string(decl)]
+			bar, ok := it.bars[string(decl)]
 			if !ok {
-				return nil, fmt.Errorf("unknown bar '%s'", string(decl))
+				return fmt.Errorf("unknown bar '%s'", string(decl))
 			}
 
-			buffer = append(buffer, events...)
+			it.curTimeSig = bar.TimeSig
+			if it.song == nil {
+				it.song = sequencer.New()
+			}
+			it.song.AddBar(bar)
 
 		default:
-			events, err := it.parse(ast.NodeList{decl})
+			events, err := it.parseBar(ast.NodeList{decl})
 			if err != nil {
-				return nil, err
+				return err
 			}
 
-			buffer = append(buffer, events...)
+			it.buffer = append(it.buffer, events...)
 		}
 
-		if getDuration(buffer) > 0 {
-			song.AddBar(createBar(buffer))
-			buffer = buffer[:0]
+		if len32th := getLen32th(it.buffer); len32th > 0 {
+			if len32th > uint32(getBarLength32th(it.curTimeSig)) {
+				return fmt.Errorf("bar too long")
+			}
+			if it.song == nil {
+				it.song = sequencer.New()
+			}
+			it.song.AddBar(it.createBar(it.buffer))
+			it.buffer = it.buffer[:0]
 		}
 	}
 
-	if len(buffer) > 0 {
-		song.AddBar(createBar(buffer))
-	}
-
-	return song, nil
+	return nil
 }
 
-func createBar(events sequencer.Events) sequencer.Bar {
+func getBarLength32th(timeSig [2]uint8) uint8 {
+	return timeSig[0] * 32 / timeSig[1]
+}
+
+func (it *Interpreter) createBar(events sequencer.Events) sequencer.Bar {
 	bar := sequencer.Bar{
-		Events: make(sequencer.Events, 0, len(events)),
+		TimeSig: it.curTimeSig,
+		Events:  make(sequencer.Events, 0, len(events)),
 	}
 
 	for _, ev := range events {
-		if num, denom, ok := getMeter(ev); ok {
-			bar.TimeSig = [2]uint8{num, denom}
-		} else {
-			bar.Events = append(bar.Events, ev)
-		}
+		bar.Events = append(bar.Events, ev)
 	}
 
 	return bar
 }
 
-func (it *Interpreter) parse(declList ast.NodeList) (sequencer.Events, error) {
+// parseBar parses declList as if it were a whole bar.
+func (it *Interpreter) parseBar(declList ast.NodeList) (sequencer.Events, error) {
 	var events sequencer.Events
 
 	for _, decl := range declList {
@@ -144,9 +178,7 @@ func (it *Interpreter) parse(declList ast.NodeList) (sequencer.Events, error) {
 			})
 
 		case ast.CmdTimeSig:
-			events = append(events, &sequencer.Event{
-				Message: smf.MetaMeter(decl.Num, decl.Denom),
-			})
+			it.curTimeSig = [2]uint8{decl.Num, decl.Denom}
 
 		case ast.CmdChannel:
 			it.curChannel = uint8(decl)
@@ -192,7 +224,7 @@ func (it *Interpreter) parse(declList ast.NodeList) (sequencer.Events, error) {
 	return events, nil
 }
 
-func getDuration(events sequencer.Events) uint32 {
+func getLen32th(events sequencer.Events) uint32 {
 	var d uint32
 	for _, ev := range events {
 		d += uint32(ev.Duration)
@@ -575,15 +607,15 @@ func getMeter(event *sequencer.Event) (num uint8, denom uint8, ok bool) {
 // parseNoteList parses a note list into messages with relative ticks.
 func (it *Interpreter) parseNoteList(noteList ast.NoteList) (sequencer.Events, error) {
 	var (
-		events sequencer.Events
-		tick   smf.MetricTicks
+		events   sequencer.Events
+		tick32th uint8
 	)
 
 	for _, note := range noteList {
-		length := note.Ticks()
+		length32th := note.Len()
 
 		if note.IsPause() {
-			tick += length
+			tick32th += length32th
 			continue
 		}
 
@@ -628,15 +660,17 @@ func (it *Interpreter) parseNoteList(noteList ast.NoteList) (sequencer.Events, e
 		// 	it.setRingingOff(note.Name)
 		// }
 
-		var pos uint8
-		if tick > 0 {
-			pos = uint8(tick.Ticks32th())
-		}
+		// 1th - 32
+		// 2th - 16
+		// 4th - 8
+		// 8th - 4
+		// 16th - 2
+		// 32th - 1
 
 		events = append(events, &sequencer.Event{
 			TrackNo:  int(it.curChannel),
-			Pos:      pos,
-			Duration: uint8(length.Ticks32th()),
+			Pos:      tick32th,
+			Duration: length32th,
 			Message:  smf.Message(midi.NoteOn(it.curChannel, key, velocity)),
 		})
 
@@ -644,7 +678,9 @@ func (it *Interpreter) parseNoteList(noteList ast.NoteList) (sequencer.Events, e
 		// 	it.setRingingOn(note.Name)
 		// }
 
-		tick += length
+		// only advance tick if note length > 0
+
+		tick32th += length32th
 	}
 
 	sort.Sort(events)
@@ -684,7 +720,8 @@ func New() *Interpreter {
 		parser: parser.NewParser(),
 		keymap: map[midiKey]uint8{},
 		// ringing:     map[midiKey]struct{}{},
-		bars:        map[string]sequencer.Events{},
+		bars:        map[string]sequencer.Bar{},
+		curTimeSig:  [2]uint8{4, 4},
 		curVelocity: constants.DefaultVelocity,
 	}
 }

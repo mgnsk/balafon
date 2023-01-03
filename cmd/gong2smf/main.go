@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"io"
 
 	"github.com/mgnsk/gong/internal/interpreter"
@@ -25,9 +26,15 @@ func main() {
 				return err
 			}
 
-			song, err := interpreter.New().Eval(string(input))
-			if err != nil {
+			it := interpreter.New()
+
+			if err := it.Eval(string(input)); err != nil {
 				return err
+			}
+
+			song := it.Flush()
+			if song == nil {
+				return fmt.Errorf("empty input")
 			}
 
 			s := song.ToSMF1()

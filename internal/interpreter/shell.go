@@ -5,21 +5,25 @@ import (
 	"fmt"
 
 	"github.com/c-bata/go-prompt"
+	"gitlab.com/gomidi/midi/v2/drivers"
 	"gitlab.com/gomidi/midi/v2/smf"
 )
 
 // Shell is a gong shell.
 type Shell struct {
-	it *Interpreter
+	out drivers.Out
+	it  *Interpreter
+	buf bytes.Buffer
 }
 
 // Execute the input.
 func (s *Shell) Execute(in string) {
-	song, err := s.it.Eval(in)
-	if err != nil {
+	if err := s.it.Eval(in); err != nil {
 		fmt.Println(err)
 		return
 	}
+
+	song := s.it.Flush()
 
 	if song.Bars().Len() == 0 {
 		return
@@ -27,43 +31,20 @@ func (s *Shell) Execute(in string) {
 
 	sm := song.ToSMF1()
 
-	// sm.Logger = log.Default()
+	s.buf.Reset()
 
-	fmt.Println(sm.String())
-
-	var buf bytes.Buffer
-
-	sm.WriteFile("test.mid")
-	if _, err := sm.WriteTo(&buf); err != nil {
+	if _, err := sm.WriteTo(&s.buf); err != nil {
 		panic(err)
 	}
 
-	fmt.Println(buf.String())
-
-	// tr := smf.ReadTracksFrom(&buf)
-
-	// tr.Do(func(ev smf.TrackEvent) {
-	// 	spew.Dump(ev)
-	// })
-
-	s2, err := smf.ReadFrom(&buf)
-	if err != nil {
+	rd := smf.ReadTracksFrom(&s.buf)
+	if err := rd.Error(); err != nil {
 		panic(err)
 	}
 
-	fmt.Println(s2.String())
-	_ = s2
-
-	// fmt.Println(s2.String())
-	// // rd := smf.ReadTracksFrom(&buf)
-	// // if err := rd.Error(); err != nil {
-	// // 	panic(err)
-	// // }
-
-	// // rd.Do(func(ev smf.TrackEvent) {
-	// // 	panic("wat")
-	// // 	// fmt.Println(ev.Message.String())
-	// // })
+	if err := rd.Play(s.out); err != nil {
+		fmt.Println(err)
+	}
 }
 
 // Complete the input.
@@ -72,8 +53,9 @@ func (s *Shell) Complete(in prompt.Document) []prompt.Suggest {
 }
 
 // NewShell creates a gong shell.
-func NewShell() *Shell {
+func NewShell(out drivers.Out) *Shell {
 	return &Shell{
-		it: New(),
+		out: out,
+		it:  New(),
 	}
 }

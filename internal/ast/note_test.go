@@ -5,6 +5,7 @@ import (
 	"io"
 	"testing"
 
+	"github.com/mgnsk/gong/internal/ast"
 	. "github.com/onsi/gomega"
 	"github.com/onsi/gomega/types"
 )
@@ -153,6 +154,52 @@ func TestForbiddenDuplicateProperty(t *testing.T) {
 
 			_, err := parse(input)
 			g.Expect(err).To(HaveOccurred())
+		})
+	}
+}
+
+func TestNoteLengths(t *testing.T) {
+	for _, tc := range []struct {
+		input   string
+		len32th uint8
+	}{
+		{
+			input:   "k", // Quarter note.
+			len32th: 8,
+		},
+		{
+			input:   "k.", // Dotted quarter note, x1.5.
+			len32th: 12,
+		},
+		{
+			input:   "k..", // Double dotted quarter note, x1.75.
+			len32th: 14,
+		},
+		{
+			input:   "k...", // Triple dotted quarter note, x1.875.
+			len32th: 15,
+		},
+		{
+			input:   "k/3", // Triplet quarter note.
+			len32th: 5,     // TODO: precision
+		},
+		{
+			input:   "k/5", // Quintuplet quarter note.
+			len32th: 3,     // TODO: precision
+		},
+		{
+			input:   "k./3", // Dotted triplet quarter note == quarter note.
+			len32th: 8,
+		},
+	} {
+		t.Run(tc.input, func(t *testing.T) {
+			g := NewWithT(t)
+
+			res, err := parse(tc.input)
+			g.Expect(err).NotTo(HaveOccurred())
+
+			note := res.(ast.NodeList)[0].(ast.NoteList)[0]
+			g.Expect(note.Len()).To(Equal(tc.len32th))
 		})
 	}
 }
