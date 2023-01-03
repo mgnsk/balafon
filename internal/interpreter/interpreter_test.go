@@ -6,7 +6,6 @@ import (
 	"testing"
 	"time"
 
-	"github.com/davecgh/go-spew/spew"
 	"github.com/mgnsk/gong/internal/constants"
 	"github.com/mgnsk/gong/internal/interpreter"
 	. "github.com/onsi/gomega"
@@ -495,10 +494,9 @@ timesig 1 4
 bar "test"
 	channel 1
 	c
-
-	channel 2
-	d
 end
+
+// Calling play should flush the buffered tempo command.
 
 play "test"
 d
@@ -507,69 +505,38 @@ d
 
 	song := it.Flush()
 
-	g.Expect(song.Bars()).To(HaveLen(2))
-
-	spew.Dump(song.Bars())
-
-	sm := song.ToSMF1()
-
-	var buf bytes.Buffer
-
-	_, err = sm.WriteTo(&buf)
-	g.Expect(err).NotTo(HaveOccurred())
-
-	rd := smf.ReadTracksFrom(&buf)
-	g.Expect(rd.Error()).NotTo(HaveOccurred())
-
-	var events []smf.TrackEvent
-
-	rd.
-		Only(midi.NoteOnMsg, midi.NoteOffMsg).
-		Do(func(ev smf.TrackEvent) {
-			events = append(events, ev)
-		})
-
-	spew.Dump(events)
-
-	// // To assert sanity.
-	// g.Expect(events).To(ConsistOf(
-	// 	smf.TrackEvent{
-	// 		Event: smf.Event{
-	// 			Delta:   0 * uint32(constants.TicksPerQuarter),
-	// 			Message: smf.Message(midi.NoteOn(0, 60, constants.DefaultVelocity)),
-	// 		},
-	// 		TrackNo:         1,
-	// 		AbsTicks:        0 * int64(constants.TicksPerQuarter),
-	// 		AbsMicroSeconds: (0 * time.Second).Microseconds(),
-	// 	},
-	// 	smf.TrackEvent{
-	// 		Event: smf.Event{
-	// 			Delta:   1 * uint32(constants.TicksPerQuarter),
-	// 			Message: smf.Message(midi.NoteOff(0, 60)),
-	// 		},
-	// 		TrackNo:         1,
-	// 		AbsTicks:        1 * int64(constants.TicksPerQuarter),
-	// 		AbsMicroSeconds: (1 * time.Second).Microseconds(),
-	// 	},
-	// 	smf.TrackEvent{
-	// 		Event: smf.Event{
-	// 			Delta:   3 * uint32(constants.TicksPerQuarter),
-	// 			Message: smf.Message(midi.NoteOn(0, 60, constants.DefaultVelocity)),
-	// 		},
-	// 		TrackNo:         1,
-	// 		AbsTicks:        4 * int64(constants.TicksPerQuarter),
-	// 		AbsMicroSeconds: (4 * time.Second).Microseconds(),
-	// 	},
-	// 	smf.TrackEvent{
-	// 		Event: smf.Event{
-	// 			Delta:   1 * uint32(constants.TicksPerQuarter),
-	// 			Message: smf.Message(midi.NoteOff(0, 60)),
-	// 		},
-	// 		TrackNo:         1,
-	// 		AbsTicks:        5 * int64(constants.TicksPerQuarter),
-	// 		AbsMicroSeconds: (5 * time.Second).Microseconds(),
-	// 	},
-	// ))
+	g.Expect(song.Bars()).To(ConsistOf(
+		&sequencer.Bar{
+			Number:  0,
+			TimeSig: [2]uint8{1, 4},
+			Events: sequencer.Events{
+				&sequencer.Event{
+					TrackNo:  0,
+					Pos:      0,
+					Duration: 0,
+					Message:  smf.MetaTempo(60),
+				},
+				&sequencer.Event{
+					TrackNo:  1,
+					Pos:      0,
+					Duration: 8,
+					Message:  smf.Message(midi.NoteOn(1, 60, constants.DefaultVelocity)),
+				},
+			},
+		},
+		&sequencer.Bar{
+			Number:  1,
+			TimeSig: [2]uint8{1, 4},
+			Events: sequencer.Events{
+				&sequencer.Event{
+					TrackNo:  2,
+					Pos:      0,
+					Duration: 8,
+					Message:  smf.Message(midi.NoteOn(2, 62, constants.DefaultVelocity)),
+				},
+			},
+		},
+	))
 }
 
 // func TestLetRing(t *testing.T) {

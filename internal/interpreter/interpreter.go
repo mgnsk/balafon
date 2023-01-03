@@ -64,18 +64,26 @@ func (it *Interpreter) Eval(input string) error {
 	return it.EvalAST(declList)
 }
 
+func (it *Interpreter) flushEvents() (events sequencer.Events) {
+	if len(it.buffer) > 0 {
+		events = it.buffer
+		it.buffer = it.buffer[:0]
+	}
+	return events
+}
+
 func (it *Interpreter) Flush() (song *sequencer.Song) {
 	song = it.song
 
-	if len(it.buffer) > 0 {
+	events := it.flushEvents()
+	if len(events) > 0 {
 		if song == nil {
 			song = sequencer.New()
 		}
-		song.AddBar(it.createBar(it.buffer))
+		song.AddBar(it.createBar(events))
 	}
 
 	it.song = nil
-	it.buffer = it.buffer[:0]
 
 	return song
 }
@@ -87,31 +95,34 @@ func (it *Interpreter) EvalAST(declList ast.NodeList) error {
 			if _, ok := it.bars[decl.Name]; ok {
 				return fmt.Errorf("bar '%s' already defined", decl.Name)
 			}
-			// TODO flush?
-			// does bar remember previous tempo
-			// when used again after another tempo change?
 
-			// the situation: it has buffered events (not notes)
-			// a bar is defined, does the buffer also get cloned?
-
-			// TODO: clone but with empty buffer
 			itBar := it.beginBar()
-
-			events, err := itBar.parseBar(decl.DeclList)
-			if err != nil {
+			if err := itBar.EvalAST(decl.DeclList); err != nil {
 				return err
 			}
 
-			it.bars[decl.Name] = sequencer.Bar{
-				TimeSig: itBar.curTimeSig,
-				Events:  events,
+			song := itBar.Flush()
+			if song == nil {
+				return fmt.Errorf("empty bar")
 			}
+
+			// The parsed bars are just multitrack tracks inside a single bar.
+			var multiTrackBar sequencer.Bar
+			for i, bar := range song.Bars() {
+				if i == 0 {
+					multiTrackBar.TimeSig = bar.TimeSig
+				}
+				multiTrackBar.Events = append(multiTrackBar.Events, bar.Events...)
+			}
+			it.bars[decl.Name] = multiTrackBar
 
 		case ast.CmdPlay:
 			bar, ok := it.bars[string(decl)]
 			if !ok {
 				return fmt.Errorf("unknown bar '%s'", string(decl))
 			}
+
+			bar.Events = append(it.flushEvents(), bar.Events...)
 
 			it.curTimeSig = bar.TimeSig
 			if it.song == nil {
@@ -124,7 +135,6 @@ func (it *Interpreter) EvalAST(declList ast.NodeList) error {
 			if err != nil {
 				return err
 			}
-
 			it.buffer = append(it.buffer, events...)
 		}
 
@@ -148,16 +158,13 @@ func getBarLength32th(timeSig [2]uint8) uint8 {
 }
 
 func (it *Interpreter) createBar(events sequencer.Events) sequencer.Bar {
-	bar := sequencer.Bar{
+	barEvents := make(sequencer.Events, len(events))
+	copy(barEvents, events)
+
+	return sequencer.Bar{
 		TimeSig: it.curTimeSig,
-		Events:  make(sequencer.Events, 0, len(events)),
+		Events:  barEvents,
 	}
-
-	for _, ev := range events {
-		bar.Events = append(bar.Events, ev)
-	}
-
-	return bar
 }
 
 // parseBar parses declList as if it were a whole bar.
