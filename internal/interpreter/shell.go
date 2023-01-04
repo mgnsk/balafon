@@ -6,6 +6,7 @@ import (
 
 	"github.com/c-bata/go-prompt"
 	"gitlab.com/gomidi/midi/v2/drivers"
+	"gitlab.com/gomidi/midi/v2/sequencer"
 	"gitlab.com/gomidi/midi/v2/smf"
 )
 
@@ -23,10 +24,15 @@ func (s *Shell) Execute(in string) {
 		return
 	}
 
-	song := s.it.Flush()
+	bars := s.it.Flush()
 
-	if song.Bars().Len() == 0 {
+	if len(bars) == 0 {
 		return
+	}
+
+	song := sequencer.New()
+	for _, bar := range bars {
+		song.AddBar(bar)
 	}
 
 	sm := song.ToSMF1()

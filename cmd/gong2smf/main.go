@@ -1,12 +1,12 @@
 package main
 
 import (
-	"fmt"
 	"io"
 
 	"github.com/mgnsk/gong/internal/interpreter"
 	"github.com/mgnsk/gong/internal/util"
 	"github.com/spf13/cobra"
+	"gitlab.com/gomidi/midi/v2/sequencer"
 )
 
 func main() {
@@ -32,9 +32,11 @@ func main() {
 				return err
 			}
 
-			song := it.Flush()
-			if song == nil {
-				return fmt.Errorf("empty input")
+			bars := it.Flush()
+
+			song := sequencer.New()
+			for _, bar := range bars {
+				song.AddBar(bar)
 			}
 
 			s := song.ToSMF1()

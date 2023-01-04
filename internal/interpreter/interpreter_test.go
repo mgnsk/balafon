@@ -89,14 +89,11 @@ func TestCommands(t *testing.T) {
 
 			g.Expect(it.Eval(tc.input)).To(Succeed())
 
-			song := it.Flush()
+			bars := it.Flush()
 
 			if tc.msg == nil {
-				g.Expect(song.Bars()).To(HaveLen(0))
+				g.Expect(bars).To(HaveLen(0))
 			} else {
-				g.Expect(song).NotTo(BeNil())
-
-				bars := song.Bars()
 				g.Expect(bars).To(HaveLen(1))
 				g.Expect(bars[0].TimeSig).To(Equal(tc.timesig))
 				g.Expect(bars[0].Events).To(HaveLen(1))
@@ -139,7 +136,7 @@ func TestSharpFlatNote(t *testing.T) {
 
 			g.Expect(it.Eval(tc.input)).To(Succeed())
 
-			bars := it.Flush().Bars()
+			bars := it.Flush()
 			g.Expect(bars).To(HaveLen(1))
 			g.Expect(bars[0].Events).To(HaveLen(1))
 			g.Expect(bars[0].Events[0].Message).To(BeEquivalentTo(midi.NoteOn(0, tc.key, constants.DefaultVelocity)))
@@ -180,7 +177,7 @@ func TestAccentuatedAndGhostNote(t *testing.T) {
 
 			g.Expect(it.Eval(tc.input)).To(Succeed())
 
-			bars := it.Flush().Bars()
+			bars := it.Flush()
 			g.Expect(bars).To(HaveLen(1))
 			g.Expect(bars[0].Events).To(HaveLen(1))
 			g.Expect(bars[0].Events[0].Message).To(BeEquivalentTo(midi.NoteOn(0, 60, tc.velocity)))
@@ -238,12 +235,11 @@ func TestNoteLengths(t *testing.T) {
 			g.Expect(it.Eval("assign k 36")).To(Succeed())
 			g.Expect(it.Eval(tc.input)).To(Succeed())
 
-			song := it.Flush()
+			bars := it.Flush()
 
 			t.Run("bar event duration", func(t *testing.T) {
 				g := NewWithT(t)
 
-				bars := song.Bars()
 				g.Expect(bars).To(HaveLen(1))
 				g.Expect(bars[0].TimeSig).To(Equal([2]uint8{4, 4}))
 
@@ -266,6 +262,11 @@ func TestNoteLengths(t *testing.T) {
 
 			t.Run("SMF event duration", func(t *testing.T) {
 				g := NewWithT(t)
+
+				song := sequencer.New()
+				for _, bar := range bars {
+					song.AddBar(bar)
+				}
 
 				sm := song.ToSMF1()
 
@@ -332,7 +333,7 @@ play "two"
 `)
 	g.Expect(err).NotTo(HaveOccurred())
 
-	bars := it.Flush().Bars()
+	bars := it.Flush()
 	g.Expect(bars).To(HaveLen(2))
 	g.Expect(bars[0].TimeSig).To(Equal([2]uint8{1, 4}))
 
@@ -364,7 +365,7 @@ c
 `)
 	g.Expect(err).NotTo(HaveOccurred())
 
-	bars := it.Flush().Bars()
+	bars := it.Flush()
 	g.Expect(bars).To(HaveLen(2))
 	g.Expect(bars[0].TimeSig).To(Equal([2]uint8{1, 4}))
 	g.Expect(bars[0].Len()).To(BeEquivalentTo(8))
@@ -389,9 +390,14 @@ c
 `)
 	g.Expect(err).NotTo(HaveOccurred())
 
-	song := it.Flush()
+	bars := it.Flush()
 
-	g.Expect(song.Bars()).To(HaveLen(2))
+	g.Expect(bars).To(HaveLen(2))
+
+	song := sequencer.New()
+	for _, bar := range bars {
+		song.AddBar(bar)
+	}
 
 	sm := song.ToSMF1()
 
@@ -507,10 +513,10 @@ c
 `)
 	g.Expect(err).NotTo(HaveOccurred())
 
-	song := it.Flush()
+	bars := it.Flush()
 
-	g.Expect(song.Bars()).To(ConsistOf(
-		&sequencer.Bar{
+	g.Expect(bars).To(ConsistOf(
+		sequencer.Bar{
 			Number:  0,
 			TimeSig: [2]uint8{2, 8},
 			Events: sequencer.Events{
@@ -564,8 +570,8 @@ c
 				},
 			},
 		},
-		&sequencer.Bar{
-			Number:  1,
+		sequencer.Bar{
+			Number:  0,
 			TimeSig: [2]uint8{1, 4},
 			Events: sequencer.Events{
 				&sequencer.Event{

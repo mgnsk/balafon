@@ -28,8 +28,8 @@ type Interpreter struct {
 	parser *parser.Parser
 	keymap map[midiKey]uint8
 	// ringing     map[midiKey]struct{}
-	song        *sequencer.Song
-	buffer      sequencer.Events
+	barBuffer   []sequencer.Bar
+	eventBuffer sequencer.Events
 	bars        map[string]sequencer.Bar
 	curTempo    float64
 	curTimeSig  [2]uint8
@@ -66,20 +66,16 @@ func (it *Interpreter) Eval(input string) error {
 	return it.evalTopLevel(declList)
 }
 
-func (it *Interpreter) Flush() (song *sequencer.Song) {
-	song = it.song
-	if song == nil {
-		song = sequencer.New()
+func (it *Interpreter) Flush() (bars []sequencer.Bar) {
+	bars = append(bars, it.barBuffer...)
+
+	if events := it.flushEvents(); len(events) > 0 {
+		bars = append(bars, it.createBar(events))
 	}
 
-	events := it.flushEvents()
-	if len(events) > 0 {
-		song.AddBar(it.createBar(events))
-	}
+	it.barBuffer = it.barBuffer[:0]
 
-	it.song = nil
-
-	return song
+	return bars
 }
 
 func (it *Interpreter) createBar(events sequencer.Events) sequencer.Bar {
@@ -93,9 +89,9 @@ func (it *Interpreter) createBar(events sequencer.Events) sequencer.Bar {
 }
 
 func (it *Interpreter) flushEvents() (events sequencer.Events) {
-	if len(it.buffer) > 0 {
-		events = it.buffer
-		it.buffer = it.buffer[:0]
+	if len(it.eventBuffer) > 0 {
+		events = it.eventBuffer
+		it.eventBuffer = it.eventBuffer[:0]
 	}
 	return events
 }
@@ -120,12 +116,12 @@ func (it *Interpreter) evalTopLevel(declList ast.NodeList) error {
 				return err
 			}
 
-			song := itBar.Flush()
+			bars := itBar.Flush()
 
 			// The parsed bars are just multitrack tracks inside a single bar.
 			var multiTrackBar sequencer.Bar
 			multiTrackBar.TimeSig = it.curTimeSig
-			for i, bar := range song.Bars() {
+			for i, bar := range bars {
 				if i == 0 {
 					multiTrackBar.TimeSig = bar.TimeSig
 				}
@@ -141,16 +137,13 @@ func (it *Interpreter) evalTopLevel(declList ast.NodeList) error {
 
 			bar.Events = append(it.flushEvents(), bar.Events...)
 
-			if it.song == nil {
-				it.song = sequencer.New()
-			}
-			it.song.AddBar(bar)
+			it.barBuffer = append(it.barBuffer, bar)
 
 			// Restore original tempo after playing a bar if changed.
 			for _, ev := range bar.Events {
 				var barTempo float64
 				if ev.Message.GetMetaTempo(&barTempo) && barTempo != it.curTempo {
-					it.buffer = append(it.buffer, &sequencer.Event{
+					it.eventBuffer = append(it.eventBuffer, &sequencer.Event{
 						Message: smf.MetaTempo(it.curTempo),
 					})
 					break
@@ -162,18 +155,15 @@ func (it *Interpreter) evalTopLevel(declList ast.NodeList) error {
 			if err != nil {
 				return err
 			}
-			it.buffer = append(it.buffer, events...)
+			it.eventBuffer = append(it.eventBuffer, events...)
 		}
 
-		if len32th := getLen32th(it.buffer); len32th > 0 {
+		if len32th := getLen32th(it.eventBuffer); len32th > 0 {
 			if len32th > uint32(getBarLength32th(it.curTimeSig)) {
 				return fmt.Errorf("bar too long")
 			}
-			if it.song == nil {
-				it.song = sequencer.New()
-			}
-			it.song.AddBar(it.createBar(it.buffer))
-			it.buffer = it.buffer[:0]
+			it.barBuffer = append(it.barBuffer, it.createBar(it.eventBuffer))
+			it.eventBuffer = it.eventBuffer[:0]
 		}
 	}
 
