@@ -403,23 +403,23 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `BarBodyCommand : "channel" uint	<< ast.NewCmdChannel(X[1].(*token.Token)) >>`,
+		String: `BarBodyCommand : "velocity" uint	<< ast.NewCmdVelocity(X[1].(*token.Token)) >>`,
 		Id:         "BarBodyCommand",
 		NTType:     15,
 		Index:      38,
 		NumSymbols: 2,
 		ReduceFunc: func(X []Attrib, C interface{}) (Attrib, error) {
-			return ast.NewCmdChannel(X[1].(*token.Token))
+			return ast.NewCmdVelocity(X[1].(*token.Token))
 		},
 	},
 	ProdTabEntry{
-		String: `BarBodyCommand : "velocity" uint	<< ast.NewCmdVelocity(X[1].(*token.Token)) >>`,
+		String: `BarBodyCommand : "channel" uint	<< ast.NewCmdChannel(X[1].(*token.Token)) >>`,
 		Id:         "BarBodyCommand",
 		NTType:     15,
 		Index:      39,
 		NumSymbols: 2,
 		ReduceFunc: func(X []Attrib, C interface{}) (Attrib, error) {
-			return ast.NewCmdVelocity(X[1].(*token.Token))
+			return ast.NewCmdChannel(X[1].(*token.Token))
 		},
 	},
 	ProdTabEntry{

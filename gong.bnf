@@ -111,8 +111,8 @@ TopLevelCommand
 BarBodyCommand
     : "tempo" uint                  << ast.NewCmdTempo($T1) >>
     | "timesig" uint uint           << ast.NewCmdTimeSig($T1, $T2) >>
-    | "channel" uint                << ast.NewCmdChannel($T1) >>
     | "velocity" uint               << ast.NewCmdVelocity($T1) >>
+    | "channel" uint                << ast.NewCmdChannel($T1) >>
     | "program" uint                << ast.NewCmdProgram($T1) >>
     | "control" uint uint           << ast.NewCmdControl($T1, $T2) >>
     | "play" stringLit              << ast.CmdPlay($T1.StringValue()), nil >>

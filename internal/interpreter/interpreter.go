@@ -31,9 +31,10 @@ type Interpreter struct {
 	song        *sequencer.Song
 	buffer      sequencer.Events
 	bars        map[string]sequencer.Bar
+	curTempo    float64
 	curTimeSig  [2]uint8
-	curChannel  uint8
 	curVelocity uint8
+	curChannel  uint8
 }
 
 // beginBar clones the interpreter but with empty song and buffer.
@@ -43,9 +44,10 @@ func (it *Interpreter) beginBar() *Interpreter {
 	// Use the same maps, assign and bar commands are not allowed in bars.
 	newIt.keymap = it.keymap
 	newIt.bars = it.bars
+	newIt.curTempo = it.curTempo
 	newIt.curTimeSig = it.curTimeSig
-	newIt.curChannel = it.curChannel
 	newIt.curVelocity = it.curVelocity
+	newIt.curChannel = it.curChannel
 
 	return newIt
 }
@@ -66,12 +68,12 @@ func (it *Interpreter) Eval(input string) error {
 
 func (it *Interpreter) Flush() (song *sequencer.Song) {
 	song = it.song
+	if song == nil {
+		song = sequencer.New()
+	}
 
 	events := it.flushEvents()
 	if len(events) > 0 {
-		if song == nil {
-			song = sequencer.New()
-		}
 		song.AddBar(it.createBar(events))
 	}
 
@@ -102,12 +104,10 @@ func (it *Interpreter) evalAST(declList ast.NodeList) error {
 			}
 
 			song := itBar.Flush()
-			if song == nil {
-				return fmt.Errorf("empty bar")
-			}
 
 			// The parsed bars are just multitrack tracks inside a single bar.
 			var multiTrackBar sequencer.Bar
+			multiTrackBar.TimeSig = it.curTimeSig
 			for i, bar := range song.Bars() {
 				if i == 0 {
 					multiTrackBar.TimeSig = bar.TimeSig
@@ -124,11 +124,21 @@ func (it *Interpreter) evalAST(declList ast.NodeList) error {
 
 			bar.Events = append(it.flushEvents(), bar.Events...)
 
-			it.curTimeSig = bar.TimeSig
 			if it.song == nil {
 				it.song = sequencer.New()
 			}
 			it.song.AddBar(bar)
+
+			// Restore original tempo after playing a bar if changed.
+			for _, ev := range bar.Events {
+				var barTempo float64
+				if ev.Message.GetMetaTempo(&barTempo) && barTempo != it.curTempo {
+					it.buffer = append(it.buffer, &sequencer.Event{
+						Message: smf.MetaTempo(it.curTempo),
+					})
+					break
+				}
+			}
 
 		default:
 			events, err := it.parseBar(ast.NodeList{decl})
@@ -180,6 +190,7 @@ func (it *Interpreter) parseBar(declList ast.NodeList) (sequencer.Events, error)
 			}
 
 		case ast.CmdTempo:
+			it.curTempo = float64(decl)
 			events = append(events, &sequencer.Event{
 				Message: smf.MetaTempo(float64(decl)),
 			})
@@ -187,11 +198,11 @@ func (it *Interpreter) parseBar(declList ast.NodeList) (sequencer.Events, error)
 		case ast.CmdTimeSig:
 			it.curTimeSig = [2]uint8{decl.Num, decl.Denom}
 
-		case ast.CmdChannel:
-			it.curChannel = uint8(decl)
-
 		case ast.CmdVelocity:
 			it.curVelocity = uint8(decl)
+
+		case ast.CmdChannel:
+			it.curChannel = uint8(decl)
 
 		case ast.CmdProgram:
 			events = append(events, &sequencer.Event{

@@ -92,7 +92,7 @@ func TestCommands(t *testing.T) {
 			song := it.Flush()
 
 			if tc.msg == nil {
-				g.Expect(song).To(BeNil())
+				g.Expect(song.Bars()).To(HaveLen(0))
 			} else {
 				g.Expect(song).NotTo(BeNil())
 
@@ -310,44 +310,35 @@ func TestNoteLengths(t *testing.T) {
 	}
 }
 
-func TestBarScope(t *testing.T) {
+func TestNotEmptyBar(t *testing.T) {
 	g := NewWithT(t)
 
 	it := interpreter.New()
 
 	err := it.Eval(`
-velocity 10
+timesig 1 4
 
-channel 1
-assign c 60
-
-channel 2
-assign c 120
-
-channel 1
-
-bar "bar"
-    velocity 20
-
-    channel 2
-    c
+bar "one"
+	-
 end
 
-play "bar"
+bar "two"
+	program 1
+end
 
-// back to channel 1.
-
-c
+play "one"
+play "two"
+-
 `)
 	g.Expect(err).NotTo(HaveOccurred())
 
 	bars := it.Flush().Bars()
 	g.Expect(bars).To(HaveLen(2))
-	g.Expect(bars[0].Events).To(HaveLen(1))
-	g.Expect(bars[0].Events[0].Message).To(BeEquivalentTo(midi.NoteOn(2, 120, 20)))
+	g.Expect(bars[0].TimeSig).To(Equal([2]uint8{1, 4}))
 
+	g.Expect(bars[1].TimeSig).To(Equal([2]uint8{1, 4}))
 	g.Expect(bars[1].Events).To(HaveLen(1))
-	g.Expect(bars[1].Events[0].Message).To(BeEquivalentTo(midi.NoteOn(1, 60, 10)))
+	g.Expect(bars[1].Events[0].Message).To(BeEquivalentTo(midi.ProgramChange(0, 1)))
 }
 
 func TestTimeSignature(t *testing.T) {
@@ -367,7 +358,7 @@ end
 
 play "bar"
 
-// Expect time signature to be 1 4 in second bar.
+// Expect time signature to be restored to 3 4 in next bar.
 
 c
 `)
@@ -378,7 +369,7 @@ c
 	g.Expect(bars[0].TimeSig).To(Equal([2]uint8{1, 4}))
 	g.Expect(bars[0].Len()).To(BeEquivalentTo(8))
 
-	g.Expect(bars[1].TimeSig).To(Equal([2]uint8{1, 4}))
+	g.Expect(bars[1].TimeSig).To(Equal([2]uint8{3, 4}))
 	g.Expect(bars[0].Len()).To(BeEquivalentTo(8))
 }
 
@@ -476,30 +467,43 @@ ccccc
 	g.Expect(err).To(HaveOccurred())
 }
 
-func TestBarTempo(t *testing.T) {
+func TestTempoTimeSigVelocityScopedToBar(t *testing.T) {
 	g := NewWithT(t)
 
 	it := interpreter.New()
 
 	err := it.Eval(`
-channel 1
-assign c 60
-
-channel 2
-assign d 62
-
+channel 2; assign d 62
+channel 1; assign c 60
 tempo 60
 timesig 1 4
+velocity 50
+program 1
+control 1 1
 
 bar "test"
-	channel 1
+	tempo 120
+	timesig 2 8
+	velocity 25
+
+	program 2
+	control 1 2
+
+	// on channel 1:
+
 	c
+
+	channel 2
+	d
 end
 
-// Calling play should flush the buffered tempo command.
+// Calling play should flush the buffered commands from this scope before the bar.
 
 play "test"
-d
+
+// Channel is 1, tempo 60, timesig 1 4, velocity 50.
+
+c
 `)
 	g.Expect(err).NotTo(HaveOccurred())
 
@@ -508,6 +512,60 @@ d
 	g.Expect(song.Bars()).To(ConsistOf(
 		&sequencer.Bar{
 			Number:  0,
+			TimeSig: [2]uint8{2, 8},
+			Events: sequencer.Events{
+				&sequencer.Event{
+					TrackNo:  0,
+					Pos:      0,
+					Duration: 0,
+					Message:  smf.MetaTempo(60),
+				},
+				&sequencer.Event{
+					TrackNo:  0,
+					Pos:      0,
+					Duration: 0,
+					Message:  smf.Message(midi.ProgramChange(1, 1)),
+				},
+				&sequencer.Event{
+					TrackNo:  0,
+					Pos:      0,
+					Duration: 0,
+					Message:  smf.Message(midi.ControlChange(1, 1, 1)),
+				},
+				&sequencer.Event{
+					TrackNo:  0,
+					Pos:      0,
+					Duration: 0,
+					Message:  smf.MetaTempo(120),
+				},
+				&sequencer.Event{
+					TrackNo:  0,
+					Pos:      0,
+					Duration: 0,
+					Message:  smf.Message(midi.ProgramChange(1, 2)),
+				},
+				&sequencer.Event{
+					TrackNo:  0,
+					Pos:      0,
+					Duration: 0,
+					Message:  smf.Message(midi.ControlChange(1, 1, 2)),
+				},
+				&sequencer.Event{
+					TrackNo:  1,
+					Pos:      0,
+					Duration: 8,
+					Message:  smf.Message(midi.NoteOn(1, 60, 25)),
+				},
+				&sequencer.Event{
+					TrackNo:  2,
+					Pos:      0,
+					Duration: 8,
+					Message:  smf.Message(midi.NoteOn(2, 62, 25)),
+				},
+			},
+		},
+		&sequencer.Bar{
+			Number:  1,
 			TimeSig: [2]uint8{1, 4},
 			Events: sequencer.Events{
 				&sequencer.Event{
@@ -520,19 +578,7 @@ d
 					TrackNo:  1,
 					Pos:      0,
 					Duration: 8,
-					Message:  smf.Message(midi.NoteOn(1, 60, constants.DefaultVelocity)),
-				},
-			},
-		},
-		&sequencer.Bar{
-			Number:  1,
-			TimeSig: [2]uint8{1, 4},
-			Events: sequencer.Events{
-				&sequencer.Event{
-					TrackNo:  2,
-					Pos:      0,
-					Duration: 8,
-					Message:  smf.Message(midi.NoteOn(2, 62, constants.DefaultVelocity)),
+					Message:  smf.Message(midi.NoteOn(1, 60, 50)),
 				},
 			},
 		},

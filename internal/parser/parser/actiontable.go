@@ -38,8 +38,8 @@ var actionTab = actionTable{
 			reduce(2), // assign, reduce: RepeatTerminator
 			reduce(2), // tempo, reduce: RepeatTerminator
 			reduce(2), // timesig, reduce: RepeatTerminator
-			reduce(2), // channel, reduce: RepeatTerminator
 			reduce(2), // velocity, reduce: RepeatTerminator
+			reduce(2), // channel, reduce: RepeatTerminator
 			reduce(2), // program, reduce: RepeatTerminator
 			reduce(2), // control, reduce: RepeatTerminator
 			reduce(2), // play, reduce: RepeatTerminator
@@ -74,8 +74,8 @@ var actionTab = actionTable{
 			nil,          // assign
 			nil,          // tempo
 			nil,          // timesig
-			nil,          // channel
 			nil,          // velocity
+			nil,          // channel
 			nil,          // program
 			nil,          // control
 			nil,          // play
@@ -110,8 +110,8 @@ var actionTab = actionTable{
 			shift(19), // assign
 			shift(20), // tempo
 			shift(21), // timesig
-			shift(22), // channel
-			shift(23), // velocity
+			shift(22), // velocity
+			shift(23), // channel
 			shift(24), // program
 			shift(25), // control
 			shift(26), // play
@@ -146,8 +146,8 @@ var actionTab = actionTable{
 			reduce(2), // assign, reduce: RepeatTerminator
 			reduce(2), // tempo, reduce: RepeatTerminator
 			reduce(2), // timesig, reduce: RepeatTerminator
-			reduce(2), // channel, reduce: RepeatTerminator
 			reduce(2), // velocity, reduce: RepeatTerminator
+			reduce(2), // channel, reduce: RepeatTerminator
 			reduce(2), // program, reduce: RepeatTerminator
 			reduce(2), // control, reduce: RepeatTerminator
 			reduce(2), // play, reduce: RepeatTerminator
@@ -182,8 +182,8 @@ var actionTab = actionTable{
 			nil,       // assign
 			nil,       // tempo
 			nil,       // timesig
-			nil,       // channel
 			nil,       // velocity
+			nil,       // channel
 			nil,       // program
 			nil,       // control
 			nil,       // play
@@ -218,8 +218,8 @@ var actionTab = actionTable{
 			nil,       // assign
 			nil,       // tempo
 			nil,       // timesig
-			nil,       // channel
 			nil,       // velocity
+			nil,       // channel
 			nil,       // program
 			nil,       // control
 			nil,       // play
@@ -254,8 +254,8 @@ var actionTab = actionTable{
 			nil,       // assign
 			nil,       // tempo
 			nil,       // timesig
-			nil,       // channel
 			nil,       // velocity
+			nil,       // channel
 			nil,       // program
 			nil,       // control
 			nil,       // play
@@ -290,8 +290,8 @@ var actionTab = actionTable{
 			nil,       // assign
 			nil,       // tempo
 			nil,       // timesig
-			nil,       // channel
 			nil,       // velocity
+			nil,       // channel
 			nil,       // program
 			nil,       // control
 			nil,       // play
@@ -326,8 +326,8 @@ var actionTab = actionTable{
 			nil,        // assign
 			nil,        // tempo
 			nil,        // timesig
-			nil,        // channel
 			nil,        // velocity
+			nil,        // channel
 			nil,        // program
 			nil,        // control
 			nil,        // play
@@ -362,8 +362,8 @@ var actionTab = actionTable{
 			nil,        // assign
 			nil,        // tempo
 			nil,        // timesig
-			nil,        // channel
 			nil,        // velocity
+			nil,        // channel
 			nil,        // program
 			nil,        // control
 			nil,        // play
@@ -398,8 +398,8 @@ var actionTab = actionTable{
 			nil,        // assign
 			nil,        // tempo
 			nil,        // timesig
-			nil,        // channel
 			nil,        // velocity
+			nil,        // channel
 			nil,        // program
 			nil,        // control
 			nil,        // play
@@ -434,8 +434,8 @@ var actionTab = actionTable{
 			nil,        // assign
 			nil,        // tempo
 			nil,        // timesig
-			nil,        // channel
 			nil,        // velocity
+			nil,        // channel
 			nil,        // program
 			nil,        // control
 			nil,        // play
@@ -470,8 +470,8 @@ var actionTab = actionTable{
 			nil,        // assign
 			nil,        // tempo
 			nil,        // timesig
-			nil,        // channel
 			nil,        // velocity
+			nil,        // channel
 			nil,        // program
 			nil,        // control
 			nil,        // play
@@ -506,8 +506,8 @@ var actionTab = actionTable{
 			nil,       // assign
 			nil,       // tempo
 			nil,       // timesig
-			nil,       // channel
 			nil,       // velocity
+			nil,       // channel
 			nil,       // program
 			nil,       // control
 			nil,       // play
@@ -542,8 +542,8 @@ var actionTab = actionTable{
 			nil,        // assign
 			nil,        // tempo
 			nil,        // timesig
-			nil,        // channel
 			nil,        // velocity
+			nil,        // channel
 			nil,        // program
 			nil,        // control
 			nil,        // play
@@ -578,8 +578,8 @@ var actionTab = actionTable{
 			nil,        // assign
 			nil,        // tempo
 			nil,        // timesig
-			nil,        // channel
 			nil,        // velocity
+			nil,        // channel
 			nil,        // program
 			nil,        // control
 			nil,        // play
@@ -614,8 +614,8 @@ var actionTab = actionTable{
 			nil,       // assign
 			nil,       // tempo
 			nil,       // timesig
-			nil,       // channel
 			nil,       // velocity
+			nil,       // channel
 			nil,       // program
 			nil,       // control
 			nil,       // play
@@ -650,8 +650,8 @@ var actionTab = actionTable{
 			nil,        // assign
 			nil,        // tempo
 			nil,        // timesig
-			nil,        // channel
 			nil,        // velocity
+			nil,        // channel
 			nil,        // program
 			nil,        // control
 			nil,        // play
@@ -686,8 +686,8 @@ var actionTab = actionTable{
 			nil,        // assign
 			nil,        // tempo
 			nil,        // timesig
-			nil,        // channel
 			nil,        // velocity
+			nil,        // channel
 			nil,        // program
 			nil,        // control
 			nil,        // play
@@ -722,8 +722,8 @@ var actionTab = actionTable{
 			nil,       // assign
 			nil,       // tempo
 			nil,       // timesig
-			nil,       // channel
 			nil,       // velocity
+			nil,       // channel
 			nil,       // program
 			nil,       // control
 			nil,       // play
@@ -758,8 +758,8 @@ var actionTab = actionTable{
 			nil,       // assign
 			nil,       // tempo
 			nil,       // timesig
-			nil,       // channel
 			nil,       // velocity
+			nil,       // channel
 			nil,       // program
 			nil,       // control
 			nil,       // play
@@ -794,8 +794,8 @@ var actionTab = actionTable{
 			nil,       // assign
 			nil,       // tempo
 			nil,       // timesig
-			nil,       // channel
 			nil,       // velocity
+			nil,       // channel
 			nil,       // program
 			nil,       // control
 			nil,       // play
@@ -830,8 +830,8 @@ var actionTab = actionTable{
 			nil,       // assign
 			nil,       // tempo
 			nil,       // timesig
-			nil,       // channel
 			nil,       // velocity
+			nil,       // channel
 			nil,       // program
 			nil,       // control
 			nil,       // play
@@ -866,8 +866,8 @@ var actionTab = actionTable{
 			nil,       // assign
 			nil,       // tempo
 			nil,       // timesig
-			nil,       // channel
 			nil,       // velocity
+			nil,       // channel
 			nil,       // program
 			nil,       // control
 			nil,       // play
@@ -902,8 +902,8 @@ var actionTab = actionTable{
 			nil,       // assign
 			nil,       // tempo
 			nil,       // timesig
-			nil,       // channel
 			nil,       // velocity
+			nil,       // channel
 			nil,       // program
 			nil,       // control
 			nil,       // play
@@ -938,8 +938,8 @@ var actionTab = actionTable{
 			nil,       // assign
 			nil,       // tempo
 			nil,       // timesig
-			nil,       // channel
 			nil,       // velocity
+			nil,       // channel
 			nil,       // program
 			nil,       // control
 			nil,       // play
@@ -974,8 +974,8 @@ var actionTab = actionTable{
 			nil,       // assign
 			nil,       // tempo
 			nil,       // timesig
-			nil,       // channel
 			nil,       // velocity
+			nil,       // channel
 			nil,       // program
 			nil,       // control
 			nil,       // play
@@ -1010,8 +1010,8 @@ var actionTab = actionTable{
 			nil,        // assign
 			nil,        // tempo
 			nil,        // timesig
-			nil,        // channel
 			nil,        // velocity
+			nil,        // channel
 			nil,        // program
 			nil,        // control
 			nil,        // play
@@ -1046,8 +1046,8 @@ var actionTab = actionTable{
 			nil,        // assign
 			nil,        // tempo
 			nil,        // timesig
-			nil,        // channel
 			nil,        // velocity
+			nil,        // channel
 			nil,        // program
 			nil,        // control
 			nil,        // play
@@ -1082,8 +1082,8 @@ var actionTab = actionTable{
 			reduce(3), // assign, reduce: RepeatTerminator
 			reduce(3), // tempo, reduce: RepeatTerminator
 			reduce(3), // timesig, reduce: RepeatTerminator
-			reduce(3), // channel, reduce: RepeatTerminator
 			reduce(3), // velocity, reduce: RepeatTerminator
+			reduce(3), // channel, reduce: RepeatTerminator
 			reduce(3), // program, reduce: RepeatTerminator
 			reduce(3), // control, reduce: RepeatTerminator
 			reduce(3), // play, reduce: RepeatTerminator
@@ -1118,8 +1118,8 @@ var actionTab = actionTable{
 			nil,       // assign
 			nil,       // tempo
 			nil,       // timesig
-			nil,       // channel
 			nil,       // velocity
+			nil,       // channel
 			nil,       // program
 			nil,       // control
 			nil,       // play
@@ -1154,8 +1154,8 @@ var actionTab = actionTable{
 			reduce(2), // assign, reduce: RepeatTerminator
 			reduce(2), // tempo, reduce: RepeatTerminator
 			reduce(2), // timesig, reduce: RepeatTerminator
-			reduce(2), // channel, reduce: RepeatTerminator
 			reduce(2), // velocity, reduce: RepeatTerminator
+			reduce(2), // channel, reduce: RepeatTerminator
 			reduce(2), // program, reduce: RepeatTerminator
 			reduce(2), // control, reduce: RepeatTerminator
 			reduce(2), // play, reduce: RepeatTerminator
@@ -1190,8 +1190,8 @@ var actionTab = actionTable{
 			nil,       // assign
 			reduce(2), // tempo, reduce: RepeatTerminator
 			reduce(2), // timesig, reduce: RepeatTerminator
-			reduce(2), // channel, reduce: RepeatTerminator
 			reduce(2), // velocity, reduce: RepeatTerminator
+			reduce(2), // channel, reduce: RepeatTerminator
 			reduce(2), // program, reduce: RepeatTerminator
 			reduce(2), // control, reduce: RepeatTerminator
 			reduce(2), // play, reduce: RepeatTerminator
@@ -1226,8 +1226,8 @@ var actionTab = actionTable{
 			nil,        // assign
 			nil,        // tempo
 			nil,        // timesig
-			nil,        // channel
 			nil,        // velocity
+			nil,        // channel
 			nil,        // program
 			nil,        // control
 			nil,        // play
@@ -1262,8 +1262,8 @@ var actionTab = actionTable{
 			nil,        // assign
 			nil,        // tempo
 			nil,        // timesig
-			nil,        // channel
 			nil,        // velocity
+			nil,        // channel
 			nil,        // program
 			nil,        // control
 			nil,        // play
@@ -1298,8 +1298,8 @@ var actionTab = actionTable{
 			nil,        // assign
 			nil,        // tempo
 			nil,        // timesig
-			nil,        // channel
 			nil,        // velocity
+			nil,        // channel
 			nil,        // program
 			nil,        // control
 			nil,        // play
@@ -1334,8 +1334,8 @@ var actionTab = actionTable{
 			nil,        // assign
 			nil,        // tempo
 			nil,        // timesig
-			nil,        // channel
 			nil,        // velocity
+			nil,        // channel
 			nil,        // program
 			nil,        // control
 			nil,        // play
@@ -1370,8 +1370,8 @@ var actionTab = actionTable{
 			nil,        // assign
 			nil,        // tempo
 			nil,        // timesig
-			nil,        // channel
 			nil,        // velocity
+			nil,        // channel
 			nil,        // program
 			nil,        // control
 			nil,        // play
@@ -1406,8 +1406,8 @@ var actionTab = actionTable{
 			nil,        // assign
 			nil,        // tempo
 			nil,        // timesig
-			nil,        // channel
 			nil,        // velocity
+			nil,        // channel
 			nil,        // program
 			nil,        // control
 			nil,        // play
@@ -1442,8 +1442,8 @@ var actionTab = actionTable{
 			nil,        // assign
 			nil,        // tempo
 			nil,        // timesig
-			nil,        // channel
 			nil,        // velocity
+			nil,        // channel
 			nil,        // program
 			nil,        // control
 			nil,        // play
@@ -1478,8 +1478,8 @@ var actionTab = actionTable{
 			nil,        // assign
 			nil,        // tempo
 			nil,        // timesig
-			nil,        // channel
 			nil,        // velocity
+			nil,        // channel
 			nil,        // program
 			nil,        // control
 			nil,        // play
@@ -1514,8 +1514,8 @@ var actionTab = actionTable{
 			nil,        // assign
 			nil,        // tempo
 			nil,        // timesig
-			nil,        // channel
 			nil,        // velocity
+			nil,        // channel
 			nil,        // program
 			nil,        // control
 			nil,        // play
@@ -1550,8 +1550,8 @@ var actionTab = actionTable{
 			nil,        // assign
 			nil,        // tempo
 			nil,        // timesig
-			nil,        // channel
 			nil,        // velocity
+			nil,        // channel
 			nil,        // program
 			nil,        // control
 			nil,        // play
@@ -1586,8 +1586,8 @@ var actionTab = actionTable{
 			nil,        // assign
 			nil,        // tempo
 			nil,        // timesig
-			nil,        // channel
 			nil,        // velocity
+			nil,        // channel
 			nil,        // program
 			nil,        // control
 			nil,        // play
@@ -1622,8 +1622,8 @@ var actionTab = actionTable{
 			nil,       // assign
 			nil,       // tempo
 			nil,       // timesig
-			nil,       // channel
 			nil,       // velocity
+			nil,       // channel
 			nil,       // program
 			nil,       // control
 			nil,       // play
@@ -1658,8 +1658,8 @@ var actionTab = actionTable{
 			nil,        // assign
 			nil,        // tempo
 			nil,        // timesig
-			nil,        // channel
 			nil,        // velocity
+			nil,        // channel
 			nil,        // program
 			nil,        // control
 			nil,        // play
@@ -1694,8 +1694,8 @@ var actionTab = actionTable{
 			nil,        // assign
 			nil,        // tempo
 			nil,        // timesig
-			nil,        // channel
 			nil,        // velocity
+			nil,        // channel
 			nil,        // program
 			nil,        // control
 			nil,        // play
@@ -1730,8 +1730,8 @@ var actionTab = actionTable{
 			nil,       // assign
 			nil,       // tempo
 			nil,       // timesig
-			nil,       // channel
 			nil,       // velocity
+			nil,       // channel
 			nil,       // program
 			nil,       // control
 			nil,       // play
@@ -1766,8 +1766,8 @@ var actionTab = actionTable{
 			nil,        // assign
 			nil,        // tempo
 			nil,        // timesig
-			nil,        // channel
 			nil,        // velocity
+			nil,        // channel
 			nil,        // program
 			nil,        // control
 			nil,        // play
@@ -1802,8 +1802,8 @@ var actionTab = actionTable{
 			nil,        // assign
 			nil,        // tempo
 			nil,        // timesig
-			nil,        // channel
 			nil,        // velocity
+			nil,        // channel
 			nil,        // program
 			nil,        // control
 			nil,        // play
@@ -1838,8 +1838,8 @@ var actionTab = actionTable{
 			nil,       // assign
 			nil,       // tempo
 			nil,       // timesig
-			nil,       // channel
 			nil,       // velocity
+			nil,       // channel
 			nil,       // program
 			nil,       // control
 			nil,       // play
@@ -1874,8 +1874,8 @@ var actionTab = actionTable{
 			nil,        // assign
 			nil,        // tempo
 			nil,        // timesig
-			nil,        // channel
 			nil,        // velocity
+			nil,        // channel
 			nil,        // program
 			nil,        // control
 			nil,        // play
@@ -1910,8 +1910,8 @@ var actionTab = actionTable{
 			nil,       // assign
 			nil,       // tempo
 			nil,       // timesig
-			nil,       // channel
 			nil,       // velocity
+			nil,       // channel
 			nil,       // program
 			nil,       // control
 			nil,       // play
@@ -1946,8 +1946,8 @@ var actionTab = actionTable{
 			nil,        // assign
 			nil,        // tempo
 			nil,        // timesig
-			nil,        // channel
 			nil,        // velocity
+			nil,        // channel
 			nil,        // program
 			nil,        // control
 			nil,        // play
@@ -1982,8 +1982,8 @@ var actionTab = actionTable{
 			nil,        // assign
 			nil,        // tempo
 			nil,        // timesig
-			nil,        // channel
 			nil,        // velocity
+			nil,        // channel
 			nil,        // program
 			nil,        // control
 			nil,        // play
@@ -2018,8 +2018,8 @@ var actionTab = actionTable{
 			nil,        // assign
 			nil,        // tempo
 			nil,        // timesig
-			nil,        // channel
 			nil,        // velocity
+			nil,        // channel
 			nil,        // program
 			nil,        // control
 			nil,        // play
@@ -2054,8 +2054,8 @@ var actionTab = actionTable{
 			nil,       // assign
 			nil,       // tempo
 			nil,       // timesig
-			nil,       // channel
 			nil,       // velocity
+			nil,       // channel
 			nil,       // program
 			nil,       // control
 			nil,       // play
@@ -2090,8 +2090,8 @@ var actionTab = actionTable{
 			nil,        // assign
 			nil,        // tempo
 			nil,        // timesig
-			nil,        // channel
 			nil,        // velocity
+			nil,        // channel
 			nil,        // program
 			nil,        // control
 			nil,        // play
@@ -2126,8 +2126,8 @@ var actionTab = actionTable{
 			shift(19), // assign
 			shift(20), // tempo
 			shift(21), // timesig
-			shift(22), // channel
-			shift(23), // velocity
+			shift(22), // velocity
+			shift(23), // channel
 			shift(24), // program
 			shift(25), // control
 			shift(26), // play
@@ -2162,8 +2162,8 @@ var actionTab = actionTable{
 			reduce(2), // assign, reduce: RepeatTerminator
 			reduce(2), // tempo, reduce: RepeatTerminator
 			reduce(2), // timesig, reduce: RepeatTerminator
-			reduce(2), // channel, reduce: RepeatTerminator
 			reduce(2), // velocity, reduce: RepeatTerminator
+			reduce(2), // channel, reduce: RepeatTerminator
 			reduce(2), // program, reduce: RepeatTerminator
 			reduce(2), // control, reduce: RepeatTerminator
 			reduce(2), // play, reduce: RepeatTerminator
@@ -2198,8 +2198,8 @@ var actionTab = actionTable{
 			nil,        // assign
 			shift(93),  // tempo
 			shift(94),  // timesig
-			shift(95),  // channel
-			shift(96),  // velocity
+			shift(95),  // velocity
+			shift(96),  // channel
 			shift(97),  // program
 			shift(98),  // control
 			shift(99),  // play
@@ -2234,8 +2234,8 @@ var actionTab = actionTable{
 			nil,       // assign
 			reduce(2), // tempo, reduce: RepeatTerminator
 			reduce(2), // timesig, reduce: RepeatTerminator
-			reduce(2), // channel, reduce: RepeatTerminator
 			reduce(2), // velocity, reduce: RepeatTerminator
+			reduce(2), // channel, reduce: RepeatTerminator
 			reduce(2), // program, reduce: RepeatTerminator
 			reduce(2), // control, reduce: RepeatTerminator
 			reduce(2), // play, reduce: RepeatTerminator
@@ -2270,8 +2270,8 @@ var actionTab = actionTable{
 			nil,        // assign
 			nil,        // tempo
 			nil,        // timesig
-			nil,        // channel
 			nil,        // velocity
+			nil,        // channel
 			nil,        // program
 			nil,        // control
 			nil,        // play
@@ -2306,8 +2306,8 @@ var actionTab = actionTable{
 			nil,        // assign
 			nil,        // tempo
 			nil,        // timesig
-			nil,        // channel
 			nil,        // velocity
+			nil,        // channel
 			nil,        // program
 			nil,        // control
 			nil,        // play
@@ -2342,8 +2342,8 @@ var actionTab = actionTable{
 			nil,        // assign
 			nil,        // tempo
 			nil,        // timesig
-			nil,        // channel
 			nil,        // velocity
+			nil,        // channel
 			nil,        // program
 			nil,        // control
 			nil,        // play
@@ -2378,8 +2378,8 @@ var actionTab = actionTable{
 			nil,        // assign
 			nil,        // tempo
 			nil,        // timesig
-			nil,        // channel
 			nil,        // velocity
+			nil,        // channel
 			nil,        // program
 			nil,        // control
 			nil,        // play
@@ -2414,8 +2414,8 @@ var actionTab = actionTable{
 			nil,        // assign
 			nil,        // tempo
 			nil,        // timesig
-			nil,        // channel
 			nil,        // velocity
+			nil,        // channel
 			nil,        // program
 			nil,        // control
 			nil,        // play
@@ -2450,8 +2450,8 @@ var actionTab = actionTable{
 			nil,        // assign
 			nil,        // tempo
 			nil,        // timesig
-			nil,        // channel
 			nil,        // velocity
+			nil,        // channel
 			nil,        // program
 			nil,        // control
 			nil,        // play
@@ -2486,8 +2486,8 @@ var actionTab = actionTable{
 			nil,        // assign
 			nil,        // tempo
 			nil,        // timesig
-			nil,        // channel
 			nil,        // velocity
+			nil,        // channel
 			nil,        // program
 			nil,        // control
 			nil,        // play
@@ -2522,8 +2522,8 @@ var actionTab = actionTable{
 			nil,        // assign
 			nil,        // tempo
 			nil,        // timesig
-			nil,        // channel
 			nil,        // velocity
+			nil,        // channel
 			nil,        // program
 			nil,        // control
 			nil,        // play
@@ -2558,8 +2558,8 @@ var actionTab = actionTable{
 			nil,        // assign
 			nil,        // tempo
 			nil,        // timesig
-			nil,        // channel
 			nil,        // velocity
+			nil,        // channel
 			nil,        // program
 			nil,        // control
 			nil,        // play
@@ -2594,8 +2594,8 @@ var actionTab = actionTable{
 			nil,        // assign
 			nil,        // tempo
 			nil,        // timesig
-			nil,        // channel
 			nil,        // velocity
+			nil,        // channel
 			nil,        // program
 			nil,        // control
 			nil,        // play
@@ -2630,8 +2630,8 @@ var actionTab = actionTable{
 			nil,        // assign
 			nil,        // tempo
 			nil,        // timesig
-			nil,        // channel
 			nil,        // velocity
+			nil,        // channel
 			nil,        // program
 			nil,        // control
 			nil,        // play
@@ -2666,8 +2666,8 @@ var actionTab = actionTable{
 			nil,        // assign
 			nil,        // tempo
 			nil,        // timesig
-			nil,        // channel
 			nil,        // velocity
+			nil,        // channel
 			nil,        // program
 			nil,        // control
 			nil,        // play
@@ -2702,8 +2702,8 @@ var actionTab = actionTable{
 			nil,        // assign
 			nil,        // tempo
 			nil,        // timesig
-			nil,        // channel
 			nil,        // velocity
+			nil,        // channel
 			nil,        // program
 			nil,        // control
 			nil,        // play
@@ -2738,8 +2738,8 @@ var actionTab = actionTable{
 			nil,        // assign
 			nil,        // tempo
 			nil,        // timesig
-			nil,        // channel
 			nil,        // velocity
+			nil,        // channel
 			nil,        // program
 			nil,        // control
 			nil,        // play
@@ -2774,8 +2774,8 @@ var actionTab = actionTable{
 			nil,        // assign
 			nil,        // tempo
 			nil,        // timesig
-			nil,        // channel
 			nil,        // velocity
+			nil,        // channel
 			nil,        // program
 			nil,        // control
 			nil,        // play
@@ -2810,8 +2810,8 @@ var actionTab = actionTable{
 			nil,        // assign
 			nil,        // tempo
 			nil,        // timesig
-			nil,        // channel
 			nil,        // velocity
+			nil,        // channel
 			nil,        // program
 			nil,        // control
 			nil,        // play
@@ -2846,8 +2846,8 @@ var actionTab = actionTable{
 			nil,        // assign
 			nil,        // tempo
 			nil,        // timesig
-			nil,        // channel
 			nil,        // velocity
+			nil,        // channel
 			nil,        // program
 			nil,        // control
 			nil,        // play
@@ -2882,8 +2882,8 @@ var actionTab = actionTable{
 			nil,       // assign
 			nil,       // tempo
 			nil,       // timesig
-			nil,       // channel
 			nil,       // velocity
+			nil,       // channel
 			nil,       // program
 			nil,       // control
 			nil,       // play
@@ -2918,8 +2918,8 @@ var actionTab = actionTable{
 			reduce(3), // assign, reduce: RepeatTerminator
 			reduce(3), // tempo, reduce: RepeatTerminator
 			reduce(3), // timesig, reduce: RepeatTerminator
-			reduce(3), // channel, reduce: RepeatTerminator
 			reduce(3), // velocity, reduce: RepeatTerminator
+			reduce(3), // channel, reduce: RepeatTerminator
 			reduce(3), // program, reduce: RepeatTerminator
 			reduce(3), // control, reduce: RepeatTerminator
 			reduce(3), // play, reduce: RepeatTerminator
@@ -2954,8 +2954,8 @@ var actionTab = actionTable{
 			nil,        // assign
 			nil,        // tempo
 			nil,        // timesig
-			nil,        // channel
 			nil,        // velocity
+			nil,        // channel
 			nil,        // program
 			nil,        // control
 			nil,        // play
@@ -2990,8 +2990,8 @@ var actionTab = actionTable{
 			nil,        // assign
 			nil,        // tempo
 			nil,        // timesig
-			nil,        // channel
 			nil,        // velocity
+			nil,        // channel
 			nil,        // program
 			nil,        // control
 			nil,        // play
@@ -3026,8 +3026,8 @@ var actionTab = actionTable{
 			nil,        // assign
 			nil,        // tempo
 			nil,        // timesig
-			nil,        // channel
 			nil,        // velocity
+			nil,        // channel
 			nil,        // program
 			nil,        // control
 			nil,        // play
@@ -3062,8 +3062,8 @@ var actionTab = actionTable{
 			nil,        // assign
 			nil,        // tempo
 			nil,        // timesig
-			nil,        // channel
 			nil,        // velocity
+			nil,        // channel
 			nil,        // program
 			nil,        // control
 			nil,        // play
@@ -3098,8 +3098,8 @@ var actionTab = actionTable{
 			nil,        // assign
 			nil,        // tempo
 			nil,        // timesig
-			nil,        // channel
 			nil,        // velocity
+			nil,        // channel
 			nil,        // program
 			nil,        // control
 			nil,        // play
@@ -3134,8 +3134,8 @@ var actionTab = actionTable{
 			nil,        // assign
 			nil,        // tempo
 			nil,        // timesig
-			nil,        // channel
 			nil,        // velocity
+			nil,        // channel
 			nil,        // program
 			nil,        // control
 			nil,        // play
@@ -3170,8 +3170,8 @@ var actionTab = actionTable{
 			nil,        // assign
 			nil,        // tempo
 			nil,        // timesig
-			nil,        // channel
 			nil,        // velocity
+			nil,        // channel
 			nil,        // program
 			nil,        // control
 			nil,        // play
@@ -3206,8 +3206,8 @@ var actionTab = actionTable{
 			nil,        // assign
 			nil,        // tempo
 			nil,        // timesig
-			nil,        // channel
 			nil,        // velocity
+			nil,        // channel
 			nil,        // program
 			nil,        // control
 			nil,        // play
@@ -3242,8 +3242,8 @@ var actionTab = actionTable{
 			nil,        // assign
 			nil,        // tempo
 			nil,        // timesig
-			nil,        // channel
 			nil,        // velocity
+			nil,        // channel
 			nil,        // program
 			nil,        // control
 			nil,        // play
@@ -3278,8 +3278,8 @@ var actionTab = actionTable{
 			nil,       // assign
 			nil,       // tempo
 			nil,       // timesig
-			nil,       // channel
 			nil,       // velocity
+			nil,       // channel
 			nil,       // program
 			nil,       // control
 			nil,       // play
@@ -3314,8 +3314,8 @@ var actionTab = actionTable{
 			nil,        // assign
 			nil,        // tempo
 			nil,        // timesig
-			nil,        // channel
 			nil,        // velocity
+			nil,        // channel
 			nil,        // program
 			nil,        // control
 			nil,        // play
@@ -3350,8 +3350,8 @@ var actionTab = actionTable{
 			nil,        // assign
 			nil,        // tempo
 			nil,        // timesig
-			nil,        // channel
 			nil,        // velocity
+			nil,        // channel
 			nil,        // program
 			nil,        // control
 			nil,        // play
@@ -3386,8 +3386,8 @@ var actionTab = actionTable{
 			nil,        // assign
 			nil,        // tempo
 			nil,        // timesig
-			nil,        // channel
 			nil,        // velocity
+			nil,        // channel
 			nil,        // program
 			nil,        // control
 			nil,        // play
@@ -3422,8 +3422,8 @@ var actionTab = actionTable{
 			nil,        // assign
 			nil,        // tempo
 			nil,        // timesig
-			nil,        // channel
 			nil,        // velocity
+			nil,        // channel
 			nil,        // program
 			nil,        // control
 			nil,        // play
@@ -3458,8 +3458,8 @@ var actionTab = actionTable{
 			nil,        // assign
 			nil,        // tempo
 			nil,        // timesig
-			nil,        // channel
 			nil,        // velocity
+			nil,        // channel
 			nil,        // program
 			nil,        // control
 			nil,        // play
@@ -3494,8 +3494,8 @@ var actionTab = actionTable{
 			nil,        // assign
 			nil,        // tempo
 			nil,        // timesig
-			nil,        // channel
 			nil,        // velocity
+			nil,        // channel
 			nil,        // program
 			nil,        // control
 			nil,        // play
@@ -3530,8 +3530,8 @@ var actionTab = actionTable{
 			nil,        // assign
 			nil,        // tempo
 			nil,        // timesig
-			nil,        // channel
 			nil,        // velocity
+			nil,        // channel
 			nil,        // program
 			nil,        // control
 			nil,        // play
@@ -3566,8 +3566,8 @@ var actionTab = actionTable{
 			nil,        // assign
 			nil,        // tempo
 			nil,        // timesig
-			nil,        // channel
 			nil,        // velocity
+			nil,        // channel
 			nil,        // program
 			nil,        // control
 			nil,        // play
@@ -3602,8 +3602,8 @@ var actionTab = actionTable{
 			nil,        // assign
 			nil,        // tempo
 			nil,        // timesig
-			nil,        // channel
 			nil,        // velocity
+			nil,        // channel
 			nil,        // program
 			nil,        // control
 			nil,        // play
@@ -3638,8 +3638,8 @@ var actionTab = actionTable{
 			nil,        // assign
 			nil,        // tempo
 			nil,        // timesig
-			nil,        // channel
 			nil,        // velocity
+			nil,        // channel
 			nil,        // program
 			nil,        // control
 			nil,        // play
@@ -3674,8 +3674,8 @@ var actionTab = actionTable{
 			nil,        // assign
 			nil,        // tempo
 			nil,        // timesig
-			nil,        // channel
 			nil,        // velocity
+			nil,        // channel
 			nil,        // program
 			nil,        // control
 			nil,        // play
@@ -3710,8 +3710,8 @@ var actionTab = actionTable{
 			nil,       // assign
 			reduce(3), // tempo, reduce: RepeatTerminator
 			reduce(3), // timesig, reduce: RepeatTerminator
-			reduce(3), // channel, reduce: RepeatTerminator
 			reduce(3), // velocity, reduce: RepeatTerminator
+			reduce(3), // channel, reduce: RepeatTerminator
 			reduce(3), // program, reduce: RepeatTerminator
 			reduce(3), // control, reduce: RepeatTerminator
 			reduce(3), // play, reduce: RepeatTerminator
@@ -3746,8 +3746,8 @@ var actionTab = actionTable{
 			nil,        // assign
 			nil,        // tempo
 			nil,        // timesig
-			nil,        // channel
 			nil,        // velocity
+			nil,        // channel
 			nil,        // program
 			nil,        // control
 			nil,        // play
@@ -3782,8 +3782,8 @@ var actionTab = actionTable{
 			nil,        // assign
 			nil,        // tempo
 			nil,        // timesig
-			nil,        // channel
 			nil,        // velocity
+			nil,        // channel
 			nil,        // program
 			nil,        // control
 			nil,        // play
@@ -3818,8 +3818,8 @@ var actionTab = actionTable{
 			nil,        // assign
 			nil,        // tempo
 			nil,        // timesig
-			nil,        // channel
 			nil,        // velocity
+			nil,        // channel
 			nil,        // program
 			nil,        // control
 			nil,        // play
@@ -3854,8 +3854,8 @@ var actionTab = actionTable{
 			nil,        // assign
 			nil,        // tempo
 			nil,        // timesig
-			nil,        // channel
 			nil,        // velocity
+			nil,        // channel
 			nil,        // program
 			nil,        // control
 			nil,        // play
@@ -3890,8 +3890,8 @@ var actionTab = actionTable{
 			nil,       // assign
 			nil,       // tempo
 			nil,       // timesig
-			nil,       // channel
 			nil,       // velocity
+			nil,       // channel
 			nil,       // program
 			nil,       // control
 			nil,       // play
@@ -3926,8 +3926,8 @@ var actionTab = actionTable{
 			nil,        // assign
 			reduce(2),  // tempo, reduce: RepeatTerminator
 			reduce(2),  // timesig, reduce: RepeatTerminator
-			reduce(2),  // channel, reduce: RepeatTerminator
 			reduce(2),  // velocity, reduce: RepeatTerminator
+			reduce(2),  // channel, reduce: RepeatTerminator
 			reduce(2),  // program, reduce: RepeatTerminator
 			reduce(2),  // control, reduce: RepeatTerminator
 			reduce(2),  // play, reduce: RepeatTerminator
@@ -3962,8 +3962,8 @@ var actionTab = actionTable{
 			nil,        // assign
 			nil,        // tempo
 			nil,        // timesig
-			nil,        // channel
 			nil,        // velocity
+			nil,        // channel
 			nil,        // program
 			nil,        // control
 			nil,        // play
@@ -3998,8 +3998,8 @@ var actionTab = actionTable{
 			nil,        // assign
 			nil,        // tempo
 			nil,        // timesig
-			nil,        // channel
 			nil,        // velocity
+			nil,        // channel
 			nil,        // program
 			nil,        // control
 			nil,        // play
@@ -4034,8 +4034,8 @@ var actionTab = actionTable{
 			nil,        // assign
 			nil,        // tempo
 			nil,        // timesig
-			nil,        // channel
 			nil,        // velocity
+			nil,        // channel
 			nil,        // program
 			nil,        // control
 			nil,        // play
@@ -4070,8 +4070,8 @@ var actionTab = actionTable{
 			nil,        // assign
 			nil,        // tempo
 			nil,        // timesig
-			nil,        // channel
 			nil,        // velocity
+			nil,        // channel
 			nil,        // program
 			nil,        // control
 			nil,        // play
@@ -4106,8 +4106,8 @@ var actionTab = actionTable{
 			nil,        // assign
 			nil,        // tempo
 			nil,        // timesig
-			nil,        // channel
 			nil,        // velocity
+			nil,        // channel
 			nil,        // program
 			nil,        // control
 			nil,        // play
@@ -4142,8 +4142,8 @@ var actionTab = actionTable{
 			nil,        // assign
 			nil,        // tempo
 			nil,        // timesig
-			nil,        // channel
 			nil,        // velocity
+			nil,        // channel
 			nil,        // program
 			nil,        // control
 			nil,        // play
@@ -4178,8 +4178,8 @@ var actionTab = actionTable{
 			nil,        // assign
 			nil,        // tempo
 			nil,        // timesig
-			nil,        // channel
 			nil,        // velocity
+			nil,        // channel
 			nil,        // program
 			nil,        // control
 			nil,        // play
@@ -4214,8 +4214,8 @@ var actionTab = actionTable{
 			nil,        // assign
 			nil,        // tempo
 			nil,        // timesig
-			nil,        // channel
 			nil,        // velocity
+			nil,        // channel
 			nil,        // program
 			nil,        // control
 			nil,        // play
@@ -4250,8 +4250,8 @@ var actionTab = actionTable{
 			nil,        // assign
 			nil,        // tempo
 			nil,        // timesig
-			nil,        // channel
 			nil,        // velocity
+			nil,        // channel
 			nil,        // program
 			nil,        // control
 			nil,        // play
@@ -4286,8 +4286,8 @@ var actionTab = actionTable{
 			nil,        // assign
 			nil,        // tempo
 			nil,        // timesig
-			nil,        // channel
 			nil,        // velocity
+			nil,        // channel
 			nil,        // program
 			nil,        // control
 			nil,        // play
@@ -4322,8 +4322,8 @@ var actionTab = actionTable{
 			nil,        // assign
 			nil,        // tempo
 			nil,        // timesig
-			nil,        // channel
 			nil,        // velocity
+			nil,        // channel
 			nil,        // program
 			nil,        // control
 			nil,        // play
@@ -4358,8 +4358,8 @@ var actionTab = actionTable{
 			nil,        // assign
 			nil,        // tempo
 			nil,        // timesig
-			nil,        // channel
 			nil,        // velocity
+			nil,        // channel
 			nil,        // program
 			nil,        // control
 			nil,        // play
@@ -4394,8 +4394,8 @@ var actionTab = actionTable{
 			nil,        // assign
 			nil,        // tempo
 			nil,        // timesig
-			nil,        // channel
 			nil,        // velocity
+			nil,        // channel
 			nil,        // program
 			nil,        // control
 			nil,        // play
@@ -4430,8 +4430,8 @@ var actionTab = actionTable{
 			nil,        // assign
 			nil,        // tempo
 			nil,        // timesig
-			nil,        // channel
 			nil,        // velocity
+			nil,        // channel
 			nil,        // program
 			nil,        // control
 			nil,        // play
@@ -4466,8 +4466,8 @@ var actionTab = actionTable{
 			nil,        // assign
 			nil,        // tempo
 			nil,        // timesig
-			nil,        // channel
 			nil,        // velocity
+			nil,        // channel
 			nil,        // program
 			nil,        // control
 			nil,        // play
@@ -4502,8 +4502,8 @@ var actionTab = actionTable{
 			nil,        // assign
 			nil,        // tempo
 			nil,        // timesig
-			nil,        // channel
 			nil,        // velocity
+			nil,        // channel
 			nil,        // program
 			nil,        // control
 			nil,        // play
@@ -4538,8 +4538,8 @@ var actionTab = actionTable{
 			nil,        // assign
 			nil,        // tempo
 			nil,        // timesig
-			nil,        // channel
 			nil,        // velocity
+			nil,        // channel
 			nil,        // program
 			nil,        // control
 			nil,        // play
@@ -4574,8 +4574,8 @@ var actionTab = actionTable{
 			nil,        // assign
 			nil,        // tempo
 			nil,        // timesig
-			nil,        // channel
 			nil,        // velocity
+			nil,        // channel
 			nil,        // program
 			nil,        // control
 			nil,        // play
@@ -4610,8 +4610,8 @@ var actionTab = actionTable{
 			nil,        // assign
 			nil,        // tempo
 			nil,        // timesig
-			nil,        // channel
 			nil,        // velocity
+			nil,        // channel
 			nil,        // program
 			nil,        // control
 			nil,        // play
@@ -4646,8 +4646,8 @@ var actionTab = actionTable{
 			nil,        // assign
 			nil,        // tempo
 			nil,        // timesig
-			nil,        // channel
 			nil,        // velocity
+			nil,        // channel
 			nil,        // program
 			nil,        // control
 			nil,        // play
@@ -4682,8 +4682,8 @@ var actionTab = actionTable{
 			nil,        // assign
 			shift(93),  // tempo
 			shift(94),  // timesig
-			shift(95),  // channel
-			shift(96),  // velocity
+			shift(95),  // velocity
+			shift(96),  // channel
 			shift(97),  // program
 			shift(98),  // control
 			shift(99),  // play
@@ -4718,8 +4718,8 @@ var actionTab = actionTable{
 			nil,        // assign
 			reduce(2),  // tempo, reduce: RepeatTerminator
 			reduce(2),  // timesig, reduce: RepeatTerminator
-			reduce(2),  // channel, reduce: RepeatTerminator
 			reduce(2),  // velocity, reduce: RepeatTerminator
+			reduce(2),  // channel, reduce: RepeatTerminator
 			reduce(2),  // program, reduce: RepeatTerminator
 			reduce(2),  // control, reduce: RepeatTerminator
 			reduce(2),  // play, reduce: RepeatTerminator
@@ -4754,8 +4754,8 @@ var actionTab = actionTable{
 			nil,        // assign
 			nil,        // tempo
 			nil,        // timesig
-			nil,        // channel
 			nil,        // velocity
+			nil,        // channel
 			nil,        // program
 			nil,        // control
 			nil,        // play
@@ -4790,8 +4790,8 @@ var actionTab = actionTable{
 			nil,        // assign
 			nil,        // tempo
 			nil,        // timesig
-			nil,        // channel
 			nil,        // velocity
+			nil,        // channel
 			nil,        // program
 			nil,        // control
 			nil,        // play
@@ -4826,8 +4826,8 @@ var actionTab = actionTable{
 			nil,        // assign
 			nil,        // tempo
 			nil,        // timesig
-			nil,        // channel
 			nil,        // velocity
+			nil,        // channel
 			nil,        // program
 			nil,        // control
 			nil,        // play
@@ -4862,8 +4862,8 @@ var actionTab = actionTable{
 			nil,        // assign
 			nil,        // tempo
 			nil,        // timesig
-			nil,        // channel
 			nil,        // velocity
+			nil,        // channel
 			nil,        // program
 			nil,        // control
 			nil,        // play
@@ -4898,8 +4898,8 @@ var actionTab = actionTable{
 			nil,       // assign
 			nil,       // tempo
 			nil,       // timesig
-			nil,       // channel
 			nil,       // velocity
+			nil,       // channel
 			nil,       // program
 			nil,       // control
 			nil,       // play
@@ -4934,8 +4934,8 @@ var actionTab = actionTable{
 			nil,       // assign
 			reduce(3), // tempo, reduce: RepeatTerminator
 			reduce(3), // timesig, reduce: RepeatTerminator
-			reduce(3), // channel, reduce: RepeatTerminator
 			reduce(3), // velocity, reduce: RepeatTerminator
+			reduce(3), // channel, reduce: RepeatTerminator
 			reduce(3), // program, reduce: RepeatTerminator
 			reduce(3), // control, reduce: RepeatTerminator
 			reduce(3), // play, reduce: RepeatTerminator
@@ -4970,8 +4970,8 @@ var actionTab = actionTable{
 			nil,        // assign
 			nil,        // tempo
 			nil,        // timesig
-			nil,        // channel
 			nil,        // velocity
+			nil,        // channel
 			nil,        // program
 			nil,        // control
 			nil,        // play
