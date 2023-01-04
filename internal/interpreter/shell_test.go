@@ -1,7 +1,6 @@
 package interpreter_test
 
 import (
-	"fmt"
 	"testing"
 	"time"
 
@@ -16,12 +15,16 @@ func TestShell(t *testing.T) {
 	out, _ := midi.OutPort(0)
 	in, _ := midi.InPort(0)
 
-	start := time.Now()
+	var on, off time.Time
 
 	stop, _ := midi.ListenTo(in, func(msg midi.Message, timestampms int32) {
-		fmt.Printf("walltime: %s, timestamp: %d, msg: %s\n", time.Since(start), timestampms, msg.String())
+		switch msg.Type() {
+		case midi.NoteOnMsg:
+			on = time.Now()
+		case midi.NoteOffMsg:
+			off = time.Now()
+		}
 	})
-
 	defer stop()
 
 	g := NewWithT(t)
@@ -38,7 +41,7 @@ func TestShell(t *testing.T) {
 	play "test"
 	`)
 
-	_ = g
+	g.Expect(off).To(BeTemporally("~", on.Add(time.Second), 10*time.Millisecond))
 }
 
 // TODO: move some tests here from interpreter?
