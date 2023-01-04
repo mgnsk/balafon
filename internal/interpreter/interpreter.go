@@ -61,15 +61,7 @@ func (it *Interpreter) Eval(input string) error {
 		return fmt.Errorf("invalid input, expected ast.DeclList")
 	}
 
-	return it.EvalAST(declList)
-}
-
-func (it *Interpreter) flushEvents() (events sequencer.Events) {
-	if len(it.buffer) > 0 {
-		events = it.buffer
-		it.buffer = it.buffer[:0]
-	}
-	return events
+	return it.evalAST(declList)
 }
 
 func (it *Interpreter) Flush() (song *sequencer.Song) {
@@ -88,7 +80,15 @@ func (it *Interpreter) Flush() (song *sequencer.Song) {
 	return song
 }
 
-func (it *Interpreter) EvalAST(declList ast.NodeList) error {
+func (it *Interpreter) flushEvents() (events sequencer.Events) {
+	if len(it.buffer) > 0 {
+		events = it.buffer
+		it.buffer = it.buffer[:0]
+	}
+	return events
+}
+
+func (it *Interpreter) evalAST(declList ast.NodeList) error {
 	for _, decl := range declList {
 		switch decl := decl.(type) {
 		case ast.Bar:
@@ -97,7 +97,7 @@ func (it *Interpreter) EvalAST(declList ast.NodeList) error {
 			}
 
 			itBar := it.beginBar()
-			if err := itBar.EvalAST(decl.DeclList); err != nil {
+			if err := itBar.evalAST(decl.DeclList); err != nil {
 				return err
 			}
 
