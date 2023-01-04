@@ -105,6 +105,7 @@ Property
 
 TopLevelCommand
     : "assign" char uint            << ast.NewCmdAssign($T1, $T2) >>
+    | "play" stringLit              << ast.CmdPlay($T1.StringValue()), nil >>
     | BarBodyCommand
     ;
 
@@ -115,7 +116,6 @@ BarBodyCommand
     | "channel" uint                << ast.NewCmdChannel($T1) >>
     | "program" uint                << ast.NewCmdProgram($T1) >>
     | "control" uint uint           << ast.NewCmdControl($T1, $T2) >>
-    | "play" stringLit              << ast.CmdPlay($T1.StringValue()), nil >>
     | "start"                       << ast.CmdStart{}, nil >>
     | "stop"                        << ast.CmdStop{}, nil >>
     ;

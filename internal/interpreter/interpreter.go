@@ -63,7 +63,7 @@ func (it *Interpreter) Eval(input string) error {
 		return fmt.Errorf("invalid input, expected ast.DeclList")
 	}
 
-	return it.evalAST(declList)
+	return it.evalTopLevel(declList)
 }
 
 func (it *Interpreter) Flush() (song *sequencer.Song) {
@@ -82,6 +82,16 @@ func (it *Interpreter) Flush() (song *sequencer.Song) {
 	return song
 }
 
+func (it *Interpreter) createBar(events sequencer.Events) sequencer.Bar {
+	barEvents := make(sequencer.Events, len(events))
+	copy(barEvents, events)
+
+	return sequencer.Bar{
+		TimeSig: it.curTimeSig,
+		Events:  barEvents,
+	}
+}
+
 func (it *Interpreter) flushEvents() (events sequencer.Events) {
 	if len(it.buffer) > 0 {
 		events = it.buffer
@@ -90,16 +100,23 @@ func (it *Interpreter) flushEvents() (events sequencer.Events) {
 	return events
 }
 
-func (it *Interpreter) evalAST(declList ast.NodeList) error {
+func (it *Interpreter) evalTopLevel(declList ast.NodeList) error {
 	for _, decl := range declList {
 		switch decl := decl.(type) {
+		case ast.CmdAssign:
+			if err := it.assign(it.curChannel, decl.Note, decl.Key); err != nil {
+				return err
+			}
+
 		case ast.Bar:
 			if _, ok := it.bars[decl.Name]; ok {
 				return fmt.Errorf("bar '%s' already defined", decl.Name)
 			}
 
 			itBar := it.beginBar()
-			if err := itBar.evalAST(decl.DeclList); err != nil {
+			// Deliberately using evalTopLevel instead of evalBar inside bar for simplicity,
+			// the BNF restricts some commands in bars anyway.
+			if err := itBar.evalTopLevel(decl.DeclList); err != nil {
 				return err
 			}
 
@@ -141,7 +158,7 @@ func (it *Interpreter) evalAST(declList ast.NodeList) error {
 			}
 
 		default:
-			events, err := it.parseBar(ast.NodeList{decl})
+			events, err := it.evalBar(ast.NodeList{decl})
 			if err != nil {
 				return err
 			}
@@ -163,31 +180,11 @@ func (it *Interpreter) evalAST(declList ast.NodeList) error {
 	return nil
 }
 
-func getBarLength32th(timeSig [2]uint8) uint8 {
-	return timeSig[0] * 32 / timeSig[1]
-}
-
-func (it *Interpreter) createBar(events sequencer.Events) sequencer.Bar {
-	barEvents := make(sequencer.Events, len(events))
-	copy(barEvents, events)
-
-	return sequencer.Bar{
-		TimeSig: it.curTimeSig,
-		Events:  barEvents,
-	}
-}
-
-// parseBar parses declList as if it were a whole bar.
-func (it *Interpreter) parseBar(declList ast.NodeList) (sequencer.Events, error) {
+// evalBar parses declList as if it were a whole bar.
+func (it *Interpreter) evalBar(declList ast.NodeList) (sequencer.Events, error) {
 	var events sequencer.Events
-
 	for _, decl := range declList {
 		switch decl := decl.(type) {
-		case ast.CmdAssign:
-			// CmdAssign never occurs in a bar.
-			if err := it.assign(it.curChannel, decl.Note, decl.Key); err != nil {
-				return nil, err
-			}
 
 		case ast.CmdTempo:
 			it.curTempo = float64(decl)
@@ -240,6 +237,10 @@ func (it *Interpreter) parseBar(declList ast.NodeList) (sequencer.Events, error)
 	}
 
 	return events, nil
+}
+
+func getBarLength32th(timeSig [2]uint8) uint8 {
+	return timeSig[0] * 32 / timeSig[1]
 }
 
 func getLen32th(events sequencer.Events) uint32 {

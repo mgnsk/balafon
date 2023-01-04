@@ -63,6 +63,7 @@ func TestCommandsForbiddenInBar(t *testing.T) {
 	for _, input := range []string{
 		"assign c 60",
 		`bar "Inner" start end`,
+		`play "test"`,
 	} {
 		t.Run(input, func(t *testing.T) {
 			g := NewGomegaWithT(t)
