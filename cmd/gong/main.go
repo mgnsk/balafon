@@ -13,6 +13,7 @@ import (
 	"github.com/spf13/cobra"
 	"gitlab.com/gomidi/midi/v2"
 	"gitlab.com/gomidi/midi/v2/drivers"
+	_ "gitlab.com/gomidi/midi/v2/drivers/testdrv"
 	// "gitlab.com/gomidi/midi/v2/drivers"
 	// _ "gitlab.com/gomidi/midi/v2/drivers/rtmididrv"
 )
@@ -24,9 +25,9 @@ func main() {
 		Short: "gong is a MIDI control language and interpreter.",
 		RunE: func(c *cobra.Command, args []string) error {
 			fmt.Println("Available MIDI ports:")
-			// for _, out := range midi.GetOutPorts() {
-			// 	fmt.Printf("%d: %s\n", out.Number(), out.String())
-			// }
+			for _, out := range midi.GetOutPorts() {
+				fmt.Printf("%d: %s\n", out.Number(), out.String())
+			}
 			return nil
 		},
 	}
@@ -115,9 +116,19 @@ func createRunShellCommand(input io.Reader) func(*cobra.Command, []string) error
 
 		// fmt.Printf("Welcome to the gong shell on MIDI port '%d: %s'!\n", out.Number(), out.String())
 
+		it := interpreter.New()
 		sh := interpreter.NewShell(out)
 
-		pt := newBufferedPrompt(sh.Execute, sh.Complete)
+		pt := newBufferedPrompt(
+			func(in string) {
+				if err := it.Eval(in); err != nil {
+					fmt.Println(err)
+				} else if err = sh.Execute(it.Flush()...); err != nil {
+					fmt.Println(err)
+				}
+			},
+			sh.Complete,
+		)
 		pt.Run()
 
 		// cancel()

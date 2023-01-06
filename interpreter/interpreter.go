@@ -52,6 +52,7 @@ func (it *Interpreter) beginBar() *Interpreter {
 	return newIt
 }
 
+// Eval the input.
 func (it *Interpreter) Eval(input string) error {
 	res, err := it.parser.Parse(lexer.NewLexer([]byte(input)))
 	if err != nil {
@@ -66,6 +67,7 @@ func (it *Interpreter) Eval(input string) error {
 	return it.evalTopLevel(declList)
 }
 
+// Flush the parsed bar queue.
 func (it *Interpreter) Flush() (bars []sequencer.Bar) {
 	bars = append(bars, it.barBuffer...)
 

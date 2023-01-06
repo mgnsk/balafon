@@ -2,7 +2,6 @@ package interpreter
 
 import (
 	"bytes"
-	"fmt"
 
 	"github.com/c-bata/go-prompt"
 	"gitlab.com/gomidi/midi/v2/drivers"
@@ -13,21 +12,13 @@ import (
 // Shell is a gong shell.
 type Shell struct {
 	out drivers.Out
-	it  *Interpreter
 	buf bytes.Buffer
 }
 
-// Execute the input.
-func (s *Shell) Execute(in string) {
-	if err := s.it.Eval(in); err != nil {
-		fmt.Println(err)
-		return
-	}
-
-	bars := s.it.Flush()
-
+// Execute the bars.
+func (s *Shell) Execute(bars ...sequencer.Bar) error {
 	if len(bars) == 0 {
-		return
+		return nil
 	}
 
 	song := sequencer.New()
@@ -40,17 +31,15 @@ func (s *Shell) Execute(in string) {
 	s.buf.Reset()
 
 	if _, err := sm.WriteTo(&s.buf); err != nil {
-		panic(err)
+		return err
 	}
 
 	rd := smf.ReadTracksFrom(&s.buf)
 	if err := rd.Error(); err != nil {
-		panic(err)
+		return err
 	}
 
-	if err := rd.Play(s.out); err != nil {
-		fmt.Println(err)
-	}
+	return rd.Play(s.out)
 }
 
 // Complete the input.
@@ -62,6 +51,5 @@ func (s *Shell) Complete(in prompt.Document) []prompt.Suggest {
 func NewShell(out drivers.Out) *Shell {
 	return &Shell{
 		out: out,
-		it:  New(),
 	}
 }

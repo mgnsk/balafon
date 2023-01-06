@@ -29,17 +29,20 @@ func TestShell(t *testing.T) {
 
 	g := NewWithT(t)
 
-	sh := interpreter.NewShell(out)
-	sh.Execute(`
-	assign c 60
-	timesig 1 4
-	tempo 60
+	it := interpreter.New()
+	g.Expect(it.Eval(`
+assign c 60
+timesig 1 4
+tempo 60
 
-	bar "test"
-		c
-	end
-	play "test"
-	`)
+bar "test"
+	c
+end
+play "test"
+	`)).To(Succeed())
+
+	sh := interpreter.NewShell(out)
+	g.Expect(sh.Execute(it.Flush()...)).To(Succeed())
 
 	g.Expect(off).To(BeTemporally("~", on.Add(time.Second), 10*time.Millisecond))
 }
