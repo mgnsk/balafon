@@ -4,7 +4,7 @@ import (
 	"io"
 	"math"
 
-	"github.com/mgnsk/gong/internal/constants"
+	"github.com/mgnsk/gong/constants"
 	"github.com/mgnsk/gong/internal/parser/token"
 )
 

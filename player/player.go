@@ -5,7 +5,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/mgnsk/gong/internal/constants"
+	"github.com/mgnsk/gong/constants"
 	"gitlab.com/gomidi/midi/v2/drivers"
 	"gitlab.com/gomidi/midi/v2/sequencer"
 )

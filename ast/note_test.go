@@ -5,7 +5,7 @@ import (
 	"io"
 	"testing"
 
-	"github.com/mgnsk/gong/internal/ast"
+	"github.com/mgnsk/gong/ast"
 	. "github.com/onsi/gomega"
 	"github.com/onsi/gomega/types"
 )

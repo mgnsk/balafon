@@ -6,8 +6,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/mgnsk/gong/internal/constants"
-	"github.com/mgnsk/gong/internal/interpreter"
+	"github.com/mgnsk/gong/constants"
+	"github.com/mgnsk/gong/interpreter"
 	. "github.com/onsi/gomega"
 	"gitlab.com/gomidi/midi/v2"
 	"gitlab.com/gomidi/midi/v2/sequencer"

@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/mgnsk/gong/internal/interpreter"
-	"github.com/mgnsk/gong/internal/util"
+	"github.com/mgnsk/gong/interpreter"
+	"github.com/mgnsk/gong/util"
 	"github.com/spf13/cobra"
 )
 

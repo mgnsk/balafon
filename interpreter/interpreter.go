@@ -7,8 +7,8 @@ import (
 	"strconv"
 
 	"github.com/c-bata/go-prompt"
-	"github.com/mgnsk/gong/internal/ast"
-	"github.com/mgnsk/gong/internal/constants"
+	"github.com/mgnsk/gong/ast"
+	"github.com/mgnsk/gong/constants"
 	parseError "github.com/mgnsk/gong/internal/parser/errors"
 	"github.com/mgnsk/gong/internal/parser/lexer"
 	"github.com/mgnsk/gong/internal/parser/parser"
