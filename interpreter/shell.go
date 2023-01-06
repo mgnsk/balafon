@@ -17,7 +17,16 @@ type Shell struct {
 
 // Execute the bars.
 func (s *Shell) Execute(bars ...sequencer.Bar) error {
-	if len(bars) == 0 {
+	isPlayable := false
+	for _, bar := range bars {
+		for _, ev := range bar.Events {
+			if ev.Message.IsPlayable() {
+				isPlayable = true
+				break
+			}
+		}
+	}
+	if !isPlayable {
 		return nil
 	}
 

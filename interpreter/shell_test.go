@@ -7,33 +7,41 @@ import (
 	"github.com/mgnsk/gong/interpreter"
 	. "github.com/onsi/gomega"
 	"gitlab.com/gomidi/midi/v2"
+	"gitlab.com/gomidi/midi/v2/drivers"
 	_ "gitlab.com/gomidi/midi/v2/drivers/testdrv"
 )
 
-func TestShell(t *testing.T) {
-	defer midi.CloseDriver()
-	out, _ := midi.OutPort(0)
-	in, _ := midi.InPort(0)
+type testMessage struct {
+	ts  time.Time
+	msg midi.Message
+}
 
-	var on, off time.Time
+var (
+	out      drivers.Out
+	in       drivers.In
+	messages chan testMessage
+)
 
-	stop, _ := midi.ListenTo(in, func(msg midi.Message, timestampms int32) {
-		switch msg.Type() {
-		case midi.NoteOnMsg:
-			on = time.Now()
-		case midi.NoteOffMsg:
-			off = time.Now()
+func init() {
+	out, _ = midi.OutPort(0)
+	in, _ = midi.InPort(0)
+	messages = make(chan testMessage, 2)
+	midi.ListenTo(in, func(msg midi.Message, timestampms int32) {
+		messages <- testMessage{
+			ts:  time.Now(),
+			msg: msg,
 		}
 	})
-	defer stop()
+}
 
+func TestShell(t *testing.T) {
 	g := NewWithT(t)
 
 	it := interpreter.New()
 	g.Expect(it.Eval(`
 assign c 60
 timesig 1 4
-tempo 60
+tempo 600
 
 bar "test"
 	c
@@ -44,7 +52,31 @@ play "test"
 	sh := interpreter.NewShell(out)
 	g.Expect(sh.Execute(it.Flush()...)).To(Succeed())
 
-	g.Expect(off).To(BeTemporally("~", on.Add(time.Second), 10*time.Millisecond))
+	on := <-messages
+	off := <-messages
+
+	g.Expect(on.msg.Type()).To(Equal(midi.NoteOnMsg))
+	g.Expect(off.msg.Type()).To(Equal(midi.NoteOffMsg))
+
+	g.Expect(off.ts).To(BeTemporally("~", on.ts.Add(time.Second/10), 10*time.Millisecond))
 }
 
-// TODO: move some tests here from interpreter?
+func TestUnplayableBarSkipped(t *testing.T) {
+	g := NewWithT(t)
+
+	it := interpreter.New()
+	g.Expect(it.Eval(`
+tempo 60
+timesig 1 4
+velocity 25
+channel 1
+
+assign c 60
+-
+	`)).To(Succeed())
+
+	sh := interpreter.NewShell(out)
+	g.Expect(sh.Execute(it.Flush()...)).To(Succeed())
+
+	g.Expect(messages).NotTo(Receive())
+}
