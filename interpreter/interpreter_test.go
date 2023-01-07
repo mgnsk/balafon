@@ -360,7 +360,6 @@ end
 play "bar"
 
 // Expect time signature to be restored to 3 4 in next bar.
-
 c
 `)
 	g.Expect(err).NotTo(HaveOccurred())
@@ -496,7 +495,6 @@ bar "test"
 	control 1 2
 
 	// on channel 1:
-
 	c
 
 	channel 2
@@ -504,11 +502,9 @@ bar "test"
 end
 
 // Calling play should flush the buffered commands from this scope before the bar.
-
 play "test"
 
 // Channel is 1, tempo 60, timesig 1 4, velocity 50.
-
 c
 `)
 	g.Expect(err).NotTo(HaveOccurred())

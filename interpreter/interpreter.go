@@ -221,8 +221,6 @@ func (it *Interpreter) evalBar(declList ast.NodeList) (sequencer.Events, error) 
 
 			events = append(events, noteEvents...)
 
-		case ast.LineComment:
-		case ast.BlockComment:
 		default:
 			panic(fmt.Sprintf("parse: invalid token %T", decl))
 		}

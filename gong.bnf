@@ -17,9 +17,10 @@ dot     : '.' ;
 tuplet  : '/' '3' | '/' '5' ;
 letRing : '*' ;
 
-lineComment  : '/' '/' { . } '\n' ;
-blockComment : '/' '*' { . | '*' } '*' '/' ;
+_lineComment  : '/' '/' { . } '\n' ;
+_blockComment : '/' '*' { . | '*' } '*' '/' ;
 
+!comment    : _lineComment | _blockComment ;
 !whitespace : ' ' | '\t' | '\r' ;
 
 /* Syntax Part */
@@ -52,20 +53,13 @@ BarBodyDeclList
 
 TopLevelDecl
     : Bar
-    | Comment
     | TopLevelCommand
     | NoteList
     ;
 
 BarBodyDecl
-    : Comment
-    | BarBodyCommand
+    : BarBodyCommand
     | NoteList
-    ;
-
-Comment
-    : lineComment << ast.NewLineComment($T0), nil >>
-    | blockComment << ast.NewBlockComment($T0), nil >>
     ;
 
 Bar
