@@ -25,7 +25,7 @@ var (
 func init() {
 	out, _ = midi.OutPort(0)
 	in, _ = midi.InPort(0)
-	messages = make(chan testMessage, 2)
+	messages = make(chan testMessage, 4)
 	midi.ListenTo(in, func(msg midi.Message, timestampms int32) {
 		messages <- testMessage{
 			ts:  time.Now(),
@@ -34,31 +34,55 @@ func init() {
 	})
 }
 
-func TestShell(t *testing.T) {
+func TestShellTempo(t *testing.T) {
 	g := NewWithT(t)
 
 	it := interpreter.New()
 	g.Expect(it.Eval(`
 assign c 60
-timesig 1 4
-tempo 600
+tempo 60
 
-bar "test"
+bar "one"
+	timesig 1 4
 	c
 end
-play "test"
+
+bar "two"
+	timesig 2 4
+	tempo 120
+	c2
+end
+
+// local tempo 120:
+play "two"
+// global tempo 60:
+play "one"
 	`)).To(Succeed())
 
 	sh := interpreter.NewShell(out)
+
 	g.Expect(sh.Execute(it.Flush()...)).To(Succeed())
 
-	on := <-messages
-	off := <-messages
+	var msgs []testMessage
+L:
+	for {
+		select {
+		case msg := <-messages:
+			msgs = append(msgs, msg)
+		default:
+			break L
+		}
+	}
 
-	g.Expect(on.msg.Type()).To(Equal(midi.NoteOnMsg))
-	g.Expect(off.msg.Type()).To(Equal(midi.NoteOffMsg))
+	g.Expect(msgs).To(HaveLen(4))
+	g.Expect(msgs[0].msg.Type()).To(Equal(midi.NoteOnMsg))
+	g.Expect(msgs[1].msg.Type()).To(Equal(midi.NoteOffMsg))
+	g.Expect(msgs[2].msg.Type()).To(Equal(midi.NoteOnMsg))
+	g.Expect(msgs[3].msg.Type()).To(Equal(midi.NoteOffMsg))
 
-	g.Expect(off.ts).To(BeTemporally("~", on.ts.Add(time.Second/10), 10*time.Millisecond))
+	g.Expect(msgs[1].ts).To(BeTemporally("~", msgs[0].ts.Add(1*time.Second), 10*time.Millisecond))
+	g.Expect(msgs[2].ts).To(BeTemporally("~", msgs[1].ts, 10*time.Millisecond))
+	g.Expect(msgs[3].ts).To(BeTemporally("~", msgs[2].ts.Add(1*time.Second), 10*time.Millisecond))
 }
 
 func TestUnplayableBarSkipped(t *testing.T) {
