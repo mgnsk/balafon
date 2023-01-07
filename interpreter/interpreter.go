@@ -157,13 +157,15 @@ func (it *Interpreter) evalTopLevel(declList ast.NodeList) error {
 			if err != nil {
 				return err
 			}
+
+			if len32th := getLen32th(events); len32th > uint32(getBarLength32th(it.curTimeSig)) {
+				return fmt.Errorf("bar too long")
+			}
+
 			it.eventBuffer = append(it.eventBuffer, events...)
 		}
 
 		if len32th := getLen32th(it.eventBuffer); len32th > 0 {
-			if len32th > uint32(getBarLength32th(it.curTimeSig)) {
-				return fmt.Errorf("bar too long")
-			}
 			it.barBuffer = append(it.barBuffer, it.createBar(it.eventBuffer))
 			it.eventBuffer = it.eventBuffer[:0]
 		}

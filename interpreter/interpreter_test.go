@@ -472,6 +472,27 @@ ccccc
 	g.Expect(err).To(HaveOccurred())
 }
 
+func TestFlushSkipsTooLongBar(t *testing.T) {
+	g := NewWithT(t)
+
+	it := interpreter.New()
+
+	g.Expect(it.Eval("assign c 60")).To(Succeed())
+	g.Expect(it.Eval("timesig 4 4")).To(Succeed())
+	g.Expect(it.Eval("ccccc")).NotTo(Succeed())
+	g.Expect(it.Eval("c")).To(Succeed())
+
+	g.Expect(it.Flush()).To(ConsistOf(sequencer.Bar{
+		TimeSig: [2]uint8{4, 4},
+		Events: sequencer.Events{
+			&sequencer.Event{
+				Duration: 8,
+				Message:  smf.Message(midi.NoteOn(0, 60, constants.DefaultVelocity)),
+			},
+		},
+	}))
+}
+
 func TestTempoTimeSigVelocityScopedToBar(t *testing.T) {
 	g := NewWithT(t)
 
