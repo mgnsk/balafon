@@ -38,7 +38,6 @@ func main() {
 		Short:         "Run a gong shell",
 		SilenceErrors: true,
 		SilenceUsage:  true,
-		// RunE:          createRunShellCommand(nil),
 		RunE: func(c *cobra.Command, _ []string) error {
 			runDebugListener()
 
@@ -63,7 +62,6 @@ func main() {
 			if err != nil {
 				return err
 			}
-			// return createRunShellCommand(io.TeeReader(bytes.NewReader(file), os.Stdout))(c, args)
 
 			out, err := openOut(c.Flag("port").Value.String())
 			if err != nil {
@@ -77,25 +75,43 @@ func main() {
 
 			it.Flush()
 
+			fmt.Println(string(file))
+
 			return runPrompt(out, it)
 		},
 	})
 
-	// root.AddCommand(&cobra.Command{
-	// 	Use:   "play [file]",
-	// 	Short: "Play a file",
-	// 	Args:  cobra.ExactArgs(1),
-	// 	RunE:  playFile,
-	// })
+	root.AddCommand(&cobra.Command{
+		Use:   "play [file]",
+		Short: "Play a file",
+		Args:  cobra.ExactArgs(1),
+		RunE: func(c *cobra.Command, args []string) error {
+			runDebugListener()
+
+			file, err := ioutil.ReadFile(args[0])
+			if err != nil {
+				return err
+			}
+
+			out, err := openOut(c.Flag("port").Value.String())
+			if err != nil {
+				return err
+			}
+
+			it := interpreter.New()
+			if err := it.Eval(string(file)); err != nil {
+				return err
+			}
+
+			sh := interpreter.NewShell(out)
+
+			return sh.Execute(it.Flush()...)
+		},
+	})
 
 	if err := root.Execute(); err != nil {
 		panic(err)
 	}
-}
-
-type result struct {
-	input string
-	// messages []interpreter.Message
 }
 
 func restoreTerminal() {
