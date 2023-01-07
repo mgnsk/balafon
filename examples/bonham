@@ -20,33 +20,30 @@ assign q 45
 // Floor tom 2.
 assign g 41
 
+tempo 132
+timesig 4 4
 velocity 100
 
 // Start the first bar with a crash cymbal and let it ring.
 bar "bonham 1"
-timesig 4 4
-[[c*-o]   [x^-x]    [x^-x] [x^-x]]8/3
--         [-s)-]8/3 s      [-s)-]8/3
-[k^-k]8/3 [--k]8/3  -      [--k]8/3
--         X         -2
+	[[c*-o]   [x^-x]    [x^-x] [x^-x]]8/3
+	-         [-s)-]8/3 s      [-s)-]8/3
+	[k^-k]8/3 [--k]8/3  -      [--k]8/3
+	-         X         -2
 end
 
 bar "bonham 2"
-timesig 4 4
-[[x^-o]   [x^-x]    [x^-x] [x^-x]]8/3
--         [-s)-]8/3 s      [-s)-]8/3
-[k^-k]8/3 [--k]8/3  -      [--k]8/3
--         X         -2
+	[[x^-o]   [x^-x]    [x^-x] [x^-x]]8/3
+	-         [-s)-]8/3 s      [-s)-]8/3
+	[k^-k]8/3 [--k]8/3  -      [--k]8/3
+	-         X         -2
 end
 
 bar "fill"
-timesig 4 4
-[[x^-s] [sss] [ssq] [qgg]]8/3
-[[k-k]  [--k]]8/3   -2
--       X     X     X
+	[[x^-s] [sss] [ssq] [qgg]]8/3
+	[[k-k]  [--k]]8/3   -2
+	-       X     X     X
 end
-
-tempo 132
 
 // Count in.
 xxxo

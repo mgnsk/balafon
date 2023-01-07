@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"io"
+	"io/ioutil"
 	"os"
 	"os/exec"
 	"runtime"
@@ -23,12 +23,11 @@ func main() {
 
 	root := &cobra.Command{
 		Short: "gong is a MIDI control language and interpreter.",
-		RunE: func(c *cobra.Command, args []string) error {
+		Run: func(c *cobra.Command, args []string) {
 			fmt.Println("Available MIDI ports:")
 			for _, out := range midi.GetOutPorts() {
 				fmt.Printf("%d: %s\n", out.Number(), out.String())
 			}
-			return nil
 		},
 	}
 
@@ -39,21 +38,48 @@ func main() {
 		Short:         "Run a gong shell",
 		SilenceErrors: true,
 		SilenceUsage:  true,
-		RunE:          createRunShellCommand(nil),
+		// RunE:          createRunShellCommand(nil),
+		RunE: func(c *cobra.Command, _ []string) error {
+			runDebugListener()
+
+			out, err := openOut(c.Flag("port").Value.String())
+			if err != nil {
+				return err
+			}
+
+			it := interpreter.New()
+			return runPrompt(out, it)
+		},
 	})
 
-	// root.AddCommand(&cobra.Command{
-	// 	Use:   "load [file]",
-	// 	Short: "Load a file and continue in a gong shell",
-	// 	Args:  cobra.ExactArgs(1),
-	// 	RunE: func(c *cobra.Command, args []string) error {
-	// 		file, err := ioutil.ReadFile(args[0])
-	// 		if err != nil {
-	// 			return err
-	// 		}
-	// 		return createRunShellCommand(io.TeeReader(bytes.NewReader(file), os.Stdout))(c, args)
-	// 	},
-	// })
+	root.AddCommand(&cobra.Command{
+		Use:   "load [file]",
+		Short: "Load a file and continue in a gong shell",
+		Args:  cobra.ExactArgs(1),
+		RunE: func(c *cobra.Command, args []string) error {
+			runDebugListener()
+
+			file, err := ioutil.ReadFile(args[0])
+			if err != nil {
+				return err
+			}
+			// return createRunShellCommand(io.TeeReader(bytes.NewReader(file), os.Stdout))(c, args)
+
+			out, err := openOut(c.Flag("port").Value.String())
+			if err != nil {
+				return err
+			}
+
+			it := interpreter.New()
+			if err := it.Eval(string(file)); err != nil {
+				return err
+			}
+
+			it.Flush()
+
+			return runPrompt(out, it)
+		},
+	})
 
 	// root.AddCommand(&cobra.Command{
 	// 	Use:   "play [file]",
@@ -72,76 +98,63 @@ type result struct {
 	// messages []interpreter.Message
 }
 
-func createRunShellCommand(input io.Reader) func(*cobra.Command, []string) error {
-	return func(c *cobra.Command, _ []string) error {
-		if strings.Contains(runtime.GOOS, "linux") {
-			// TODO: eventually remove this when the bugs get fixed.
-			defer func() {
-				// Fix Ctrl+C not working after exit (https://github.com/c-bata/go-prompt/issues/228)
-				rawModeOff := exec.Command("/bin/stty", "-raw", "echo")
-				rawModeOff.Stdin = os.Stdin
-				_ = rawModeOff.Run()
-				rawModeOff.Wait()
-			}()
-		}
-
-		if input != nil {
-			panic("TODO: implement stdin")
-			// if _, err := it.EvalAll(input); err != nil {
-			// 	return err
-			// }
-		}
-
-		out, err := getPort(c.Flag("port").Value.String())
-		if err != nil {
-			return err
-		}
-
-		if err := out.Open(); err != nil {
-			return err
-		}
-
-		// resultC := make(chan result)
-		// ctx, cancel := context.WithCancel(context.Background())
-		// defer cancel()
-
-		// var wg sync.WaitGroup
-		// wg.Add(1)
-		// go func() {
-		// 	defer wg.Done()
-		// 	// if err := runPlayer(ctx, out, resultC, it.Tempo()); err != nil && !errors.Is(err, context.Canceled) {
-		// 	// 	panic(err)
-		// 	// }
-		// }()
-
-		// fmt.Printf("Welcome to the gong shell on MIDI port '%d: %s'!\n", out.Number(), out.String())
-
-		it := interpreter.New()
-		sh := interpreter.NewShell(out)
-
-		pt := newBufferedPrompt(
-			func(in string) {
-				if err := it.Eval(in); err != nil {
-					fmt.Println(err)
-				} else if err = sh.Execute(it.Flush()...); err != nil {
-					fmt.Println(err)
-				}
-			},
-			sh.Complete,
-		)
-		pt.Run()
-
-		// cancel()
-		// wg.Wait()
-
-		return nil
+func restoreTerminal() {
+	if strings.Contains(runtime.GOOS, "linux") {
+		// TODO: eventually remove this when the bugs get fixed.
+		// Fix Ctrl+C not working after exit (https://github.com/c-bata/go-prompt/issues/228)
+		rawModeOff := exec.Command("/bin/stty", "-raw", "echo")
+		rawModeOff.Stdin = os.Stdin
+		_ = rawModeOff.Run()
+		rawModeOff.Wait()
 	}
 }
 
-func getPort(port string) (drivers.Out, error) {
-	portNum, err := strconv.Atoi(port)
-	if err == nil {
-		return midi.OutPort(portNum)
+func runPrompt(out drivers.Out, it *interpreter.Interpreter) error {
+	sh := interpreter.NewShell(out)
+
+	pt := newBufferedPrompt(
+		func(in string) {
+			if err := it.Eval(in); err != nil {
+				fmt.Println(err)
+			} else if err = sh.Execute(it.Flush()...); err != nil {
+				fmt.Println(err)
+			}
+		},
+		sh.Complete,
+	)
+
+	defer restoreTerminal()
+	pt.Run()
+
+	return nil
+
+}
+
+func runDebugListener() {
+	in, err := midi.InPort(0)
+	if err != nil {
+		panic(err)
 	}
-	return midi.FindOutPort(port)
+
+	midi.ListenTo(in, func(msg midi.Message, timestampms int32) {
+		fmt.Println(msg)
+	})
+}
+
+func openOut(port string) (out drivers.Out, err error) {
+	if portNum, perr := strconv.Atoi(port); perr == nil {
+		out, err = midi.OutPort(portNum)
+	} else {
+		out, err = midi.FindOutPort(port)
+	}
+
+	if err != nil {
+		return nil, err
+	}
+
+	if perr := out.Open(); perr != nil {
+		return nil, perr
+	}
+
+	return out, nil
 }
