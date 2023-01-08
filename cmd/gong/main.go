@@ -13,9 +13,9 @@ import (
 	"github.com/spf13/cobra"
 	"gitlab.com/gomidi/midi/v2"
 	"gitlab.com/gomidi/midi/v2/drivers"
-	_ "gitlab.com/gomidi/midi/v2/drivers/testdrv"
-	// "gitlab.com/gomidi/midi/v2/drivers"
-	// _ "gitlab.com/gomidi/midi/v2/drivers/rtmididrv"
+
+	// _ "gitlab.com/gomidi/midi/v2/drivers/testdrv"
+	_ "gitlab.com/gomidi/midi/v2/drivers/rtmididrv"
 )
 
 func main() {
@@ -132,7 +132,13 @@ func runPrompt(out drivers.Out, it *interpreter.Interpreter) error {
 		func(in string) {
 			if err := it.Eval(in); err != nil {
 				fmt.Println(err)
-			} else if err = sh.Execute(it.Flush()...); err != nil {
+				return
+			}
+
+			bars := it.Flush()
+			// spew.Dump(bars)
+
+			if err := sh.Execute(bars...); err != nil {
 				fmt.Println(err)
 			}
 		},

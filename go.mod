@@ -10,6 +10,7 @@ require (
 	github.com/santhosh-tekuri/jsonschema/v5 v5.1.1
 	github.com/spf13/cobra v1.6.1
 	gitlab.com/gomidi/midi/v2 v2.0.25
+	golang.org/x/exp v0.0.0-20230105202349-8879d0199aa3
 	sigs.k8s.io/yaml v1.3.0
 )
 
