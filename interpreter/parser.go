@@ -219,7 +219,7 @@ func (p *Parser) parseNoteList(bar *sequencer.Bar, noteList ast.NoteList) error 
 	}
 
 	if p.pos > bar.Len() {
-		return fmt.Errorf("bar too long")
+		return fmt.Errorf("bar too long, timesig is %d/%d", p.timesig[0], p.timesig[1])
 	}
 
 	return nil
