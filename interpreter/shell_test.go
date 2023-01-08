@@ -53,9 +53,7 @@ bar "two"
 	c2
 end
 
-// local tempo 120:
 play "two"
-// global tempo 60:
 play "one"
 	`)).To(Succeed())
 

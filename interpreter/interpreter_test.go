@@ -37,11 +37,17 @@ func TestCommands(t *testing.T) {
 		{
 			"timesig 1 4",
 			[2]uint8{1, 4},
-			nil,
-			// TODO: why no tempo?
-			// [][]byte{
-			// 	smf.MetaTempo(200),
-			// },
+			nil, // Nil bar.
+		},
+		{
+			"velocity 10",
+			[2]uint8{4, 4},
+			nil, // Nil bar.
+		},
+		{
+			"channel 10",
+			[2]uint8{4, 4},
+			nil, // Nil bar.
 		},
 		{
 			"channel 10; assign c 60; c",
