@@ -14,7 +14,7 @@ import (
 type Interpreter struct {
 	parser    *parser.Parser
 	astParser *Parser
-	bars      []sequencer.Bar
+	bars      []*sequencer.Bar
 	tempo     float64
 }
 
@@ -41,109 +41,69 @@ func (it *Interpreter) Eval(input string) error {
 }
 
 // Flush the parsed bar queue.
-func (it *Interpreter) Flush() []sequencer.Bar {
+func (it *Interpreter) Flush() []*sequencer.Bar {
 	var (
-		timesig      = [2]uint8{4, 4}
+		timesig      [2]uint8
 		metaBuffer   sequencer.Events
-		playableBars []sequencer.Bar
+		playableBars []*sequencer.Bar
 	)
 
-	// Concatenate bars that consist only of meta events.
+	// Defer bars consisting of only meta events and concatenate them forward.
 	for _, bar := range it.bars {
-		var newTempo float64
-		hasTempoChange := false
-
-		for _, ev := range bar.Events {
-			if ev.Message.GetMetaTempo(&newTempo) {
-				hasTempoChange = true
-			}
-		}
+		timesig = bar.TimeSig
 
 		switch isPlayable(bar.Events) {
 		case true:
-			if hasTempoChange && newTempo != it.tempo {
-				// Restore the old tempo in next bar if not already pending.
-				containsTempo := false
-				for _, ev := range metaBuffer {
-					var pendingTempo float64
-					if ev.Message.GetMetaTempo(&pendingTempo) {
-						containsTempo = true
-						if pendingTempo != it.tempo {
-							panic("interpreter: pending tempo invariant failure")
-						}
-					}
-				}
-				if !containsTempo {
-					metaBuffer = append(metaBuffer, &sequencer.Event{
-						TrackNo: 0,
-						Message: smf.MetaTempo(it.tempo),
-					})
-				}
-			}
+			var barEvs sequencer.Events
+			barEvs = append(barEvs, metaBuffer...)
+			barEvs = append(barEvs, bar.Events...)
+			bar.Events = barEvs
 
-			// Filter the meta buffer in place to skip overridden tempo.
-			n := 0
-			for _, ev := range metaBuffer {
-				if hasTempoChange && ev.Message.Is(smf.MetaTempoMsg) {
-					// Bar already has tempo change.
-					// Keep in meta buffer for now.
-					metaBuffer[n] = ev
-					n++
-				} else {
-					// Prepend to bar.
-					bar.Events = append(sequencer.Events{ev}, bar.Events...)
-				}
-			}
-
-			barContainsTempo := false
-			for _, ev := range bar.Events {
-				if ev.Message.Is(smf.MetaTempoMsg) {
-					barContainsTempo = true
-					break
-				}
-			}
-
-			if !barContainsTempo {
-				// Always prepend tempo to each bar.
-				// This is used by live shell where tempo
-				bar.Events = append(sequencer.Events{&sequencer.Event{
-					TrackNo: 0,
-					Message: smf.MetaTempo(it.tempo),
-				}}, bar.Events...)
-			}
-
-			// if not has tempo change
-
-			metaBuffer = metaBuffer[:n]
+			metaBuffer = metaBuffer[:0]
 			playableBars = append(playableBars, bar)
-			timesig = bar.TimeSig
 
 		case false:
-			for _, ev := range bar.Events {
-				ev.Message.GetMetaTempo(&it.tempo)
-			}
-
 			// Bar that consists of meta events only.
 			metaBuffer = append(bar.Events, metaBuffer...)
-			// TODO: ordering sometimes flips
-			if !hasTempoChange {
-				metaBuffer = append(metaBuffer, &sequencer.Event{
-					TrackNo: 0,
-					Message: smf.MetaTempo(it.tempo),
-				})
-			}
 		}
 	}
 
-	// Append the last meta bar with the remaining meta events.
 	if len(metaBuffer) > 0 {
-		playableBars = append(playableBars, sequencer.Bar{
-			TimeSig: timesig,
-			Events:  metaBuffer,
-		})
+		// Append the remaining meta events to the end of last bar.
+		if len(playableBars) > 0 {
+			lastBar := playableBars[len(playableBars)-1]
+			pos := lastBar.Len()
+			for _, ev := range metaBuffer {
+				ev.Pos = pos
+			}
+			lastBar.Events = append(lastBar.Events, metaBuffer...)
+		} else {
+			playableBars = append(playableBars, &sequencer.Bar{
+				TimeSig: timesig,
+				Events:  metaBuffer,
+			})
+		}
 	}
 
 	it.bars = it.bars[:0]
+
+	for _, bar := range playableBars {
+		var newTempo float64
+		hasTempo := false
+		for _, ev := range bar.Events {
+			if ev.Message.GetMetaTempo(&newTempo) {
+				hasTempo = true
+				break
+			}
+		}
+		if hasTempo {
+			it.tempo = newTempo
+		} else {
+			bar.Events = append(sequencer.Events{&sequencer.Event{
+				Message: smf.MetaTempo(it.tempo),
+			}}, bar.Events...)
+		}
+	}
 
 	return playableBars
 }

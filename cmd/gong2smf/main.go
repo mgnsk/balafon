@@ -36,7 +36,7 @@ func main() {
 
 			song := sequencer.New()
 			for _, bar := range bars {
-				song.AddBar(bar)
+				song.AddBar(*bar)
 			}
 
 			s := song.ToSMF1()

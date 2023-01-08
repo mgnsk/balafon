@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/davecgh/go-spew/spew"
 	"github.com/mgnsk/gong/constants"
 	"github.com/mgnsk/gong/interpreter"
 	. "github.com/onsi/gomega"
@@ -110,7 +109,6 @@ func TestCommands(t *testing.T) {
 
 			bars := it.Flush()
 
-			spew.Dump(bars)
 			switch len(tc.messages) {
 			case 0:
 				g.Expect(bars).To(HaveLen(0))
@@ -289,7 +287,7 @@ func TestNoteLengths(t *testing.T) {
 
 				song := sequencer.New()
 				for _, bar := range bars {
-					song.AddBar(bar)
+					song.AddBar(*bar)
 				}
 
 				sm := song.ToSMF1()
@@ -359,7 +357,6 @@ play "two"
 
 	bars := it.Flush()
 
-	spew.Dump(bars)
 	g.Expect(bars).To(HaveLen(2))
 	g.Expect(bars[0].TimeSig).To(Equal([2]uint8{1, 4}))
 	g.Expect(bars[0].Events).To(HaveLen(1))
@@ -513,7 +510,9 @@ func TestFlushSkipsTooLongBar(t *testing.T) {
 	g.Expect(it.Eval("ccccc")).NotTo(Succeed())
 	g.Expect(it.Eval("c")).To(Succeed())
 
-	g.Expect(it.Flush()).To(ConsistOf(sequencer.Bar{
+	bars := it.Flush()
+
+	g.Expect(bars).To(ConsistOf(&sequencer.Bar{
 		TimeSig: [2]uint8{4, 4},
 		Events: sequencer.Events{
 			&sequencer.Event{
@@ -562,14 +561,10 @@ bar "two"
 	c
 end
 
-// Calling play should flush the buffered commands from this scope before the bar.
-// Pending global tempo 60 is skipped because this is the first bar that runs.
 play "one"
-
-// Tempo 60 still skipped.
 play "two"
 
-// Channel is 1, tempo 60, timesig 1 4, velocity 50.
+// Channel is 1, tempo 60, timesig 1 4, velocity 50 but tempo is 120.
 c
 `)
 	g.Expect(err).NotTo(HaveOccurred())
@@ -577,7 +572,7 @@ c
 	bars := it.Flush()
 
 	g.Expect(bars).To(ConsistOf(
-		sequencer.Bar{
+		&sequencer.Bar{
 			Number:  0,
 			TimeSig: [2]uint8{2, 8},
 			Events: sequencer.Events{
@@ -585,13 +580,19 @@ c
 					TrackNo:  1,
 					Pos:      0,
 					Duration: 0,
-					Message:  smf.Message(midi.ProgramChange(1, 1)),
+					Message:  smf.Message(midi.ControlChange(1, 1, 1)),
 				},
 				&sequencer.Event{
 					TrackNo:  1,
 					Pos:      0,
 					Duration: 0,
-					Message:  smf.Message(midi.ControlChange(1, 1, 1)),
+					Message:  smf.Message(midi.ProgramChange(1, 1)),
+				},
+				&sequencer.Event{
+					TrackNo:  0,
+					Pos:      0,
+					Duration: 0,
+					Message:  smf.MetaTempo(60),
 				},
 				&sequencer.Event{
 					TrackNo:  0,
@@ -625,7 +626,7 @@ c
 				},
 			},
 		},
-		sequencer.Bar{
+		&sequencer.Bar{
 			Number:  0,
 			TimeSig: [2]uint8{2, 8},
 			Events: sequencer.Events{
@@ -643,7 +644,7 @@ c
 				},
 			},
 		},
-		sequencer.Bar{
+		&sequencer.Bar{
 			Number:  0,
 			TimeSig: [2]uint8{1, 4},
 			Events: sequencer.Events{
@@ -651,7 +652,7 @@ c
 					TrackNo:  0,
 					Pos:      0,
 					Duration: 0,
-					Message:  smf.MetaTempo(60),
+					Message:  smf.MetaTempo(120),
 				},
 				&sequencer.Event{
 					TrackNo:  1,
@@ -664,7 +665,7 @@ c
 	))
 }
 
-func TestTempoRestore(t *testing.T) {
+func TestTempoNotScopedToBar(t *testing.T) {
 	g := NewWithT(t)
 
 	it := interpreter.New()
@@ -674,7 +675,7 @@ channel 1; assign c 60
 tempo 60
 timesig 1 4
 
-// Flush the pending tempo command now.
+// Tempo 60 4th rest == 1s.
 -
 
 bar "one"
@@ -688,14 +689,8 @@ bar "two"
 	c
 end
 
-// Tempo 120.
 play "one"
-// Tempo 60.
 play "two"
-// Tempo 120.
-play "one"
-
-// Tempo 60.
 c
 `)
 	g.Expect(err).NotTo(HaveOccurred())
@@ -703,7 +698,7 @@ c
 	bars := it.Flush()
 
 	g.Expect(bars).To(ConsistOf(
-		sequencer.Bar{
+		&sequencer.Bar{
 			Number:  0,
 			TimeSig: [2]uint8{1, 4},
 			Events: sequencer.Events{
@@ -715,7 +710,7 @@ c
 				},
 			},
 		},
-		sequencer.Bar{
+		&sequencer.Bar{
 			Number:  0,
 			TimeSig: [2]uint8{2, 8},
 			Events: sequencer.Events{
@@ -733,25 +728,7 @@ c
 				},
 			},
 		},
-		sequencer.Bar{
-			Number:  0,
-			TimeSig: [2]uint8{2, 8},
-			Events: sequencer.Events{
-				&sequencer.Event{
-					TrackNo:  0,
-					Pos:      0,
-					Duration: 0,
-					Message:  smf.MetaTempo(60),
-				},
-				&sequencer.Event{
-					TrackNo:  1,
-					Pos:      0,
-					Duration: 8,
-					Message:  smf.Message(midi.NoteOn(1, 60, constants.DefaultVelocity)),
-				},
-			},
-		},
-		sequencer.Bar{
+		&sequencer.Bar{
 			Number:  0,
 			TimeSig: [2]uint8{2, 8},
 			Events: sequencer.Events{
@@ -769,7 +746,7 @@ c
 				},
 			},
 		},
-		sequencer.Bar{
+		&sequencer.Bar{
 			Number:  0,
 			TimeSig: [2]uint8{1, 4},
 			Events: sequencer.Events{
@@ -777,7 +754,7 @@ c
 					TrackNo:  0,
 					Pos:      0,
 					Duration: 0,
-					Message:  smf.MetaTempo(60),
+					Message:  smf.MetaTempo(120),
 				},
 				&sequencer.Event{
 					TrackNo:  1,

@@ -48,8 +48,8 @@ func NewParser() *Parser {
 }
 
 // Parse AST.
-func (p *Parser) Parse(declList ast.NodeList) ([]sequencer.Bar, error) {
-	var bars []sequencer.Bar
+func (p *Parser) Parse(declList ast.NodeList) ([]*sequencer.Bar, error) {
+	var bars []*sequencer.Bar
 
 	for _, decl := range declList {
 		switch decl := decl.(type) {
@@ -63,7 +63,6 @@ func (p *Parser) Parse(declList ast.NodeList) ([]sequencer.Bar, error) {
 			if _, ok := p.bars[decl.Name]; ok {
 				return nil, fmt.Errorf("bar '%s' already defined", decl.Name)
 			}
-
 			barParser := p.beginBar()
 			newBar, err := barParser.parseBar(decl.DeclList)
 			if err != nil {
@@ -79,7 +78,7 @@ func (p *Parser) Parse(declList ast.NodeList) ([]sequencer.Bar, error) {
 			if !ok {
 				return nil, fmt.Errorf("unknown bar '%s'", string(decl))
 			}
-			bars = append(bars, *savedBar)
+			bars = append(bars, savedBar)
 
 		default:
 			bar, err := p.parseBar(ast.NodeList{decl})
@@ -87,7 +86,7 @@ func (p *Parser) Parse(declList ast.NodeList) ([]sequencer.Bar, error) {
 				return nil, err
 			}
 			if bar != nil {
-				bars = append(bars, *bar)
+				bars = append(bars, bar)
 			}
 		}
 	}
@@ -110,7 +109,7 @@ func (p *Parser) parseBar(declList ast.NodeList) (*sequencer.Bar, error) {
 
 		case ast.CmdTimeSig:
 			p.timesig = [2]uint8{decl.Num, decl.Denom}
-			bar.TimeSig = [2]uint8{decl.Num, decl.Denom}
+			bar.TimeSig = p.timesig
 
 		case ast.CmdVelocity:
 			p.velocity = uint8(decl)
