@@ -1,15 +1,14 @@
 package interpreter_test
 
 import (
-	"bytes"
 	"fmt"
+	"sort"
 	"testing"
 
 	"github.com/mgnsk/gong/constants"
 	"github.com/mgnsk/gong/interpreter"
 	. "github.com/onsi/gomega"
 	"gitlab.com/gomidi/midi/v2"
-	"gitlab.com/gomidi/midi/v2/sequencer"
 	"gitlab.com/gomidi/midi/v2/smf"
 )
 
@@ -215,39 +214,32 @@ func TestAccentuatedAndGhostNote(t *testing.T) {
 
 func TestNoteLengths(t *testing.T) {
 	for _, tc := range []struct {
-		input        string
-		offAtPrecise uint32
-		offAtRounded uint32
+		input string
+		offAt uint32
 	}{
 		{
-			input:        "k", // Quarter note.
-			offAtPrecise: uint32(constants.TicksPerQuarter),
-			offAtRounded: uint32(constants.TicksPerQuarter),
+			input: "k", // Quarter note.
+			offAt: uint32(constants.TicksPerQuarter),
 		},
 		{
-			input:        "k.", // Dotted quarter note, x1.5.
-			offAtPrecise: uint32(constants.TicksPerQuarter * 3 / 2),
-			offAtRounded: uint32(constants.TicksPerQuarter * 3 / 2),
+			input: "k.", // Dotted quarter note, x1.5.
+			offAt: uint32(constants.TicksPerQuarter * 3 / 2),
 		},
 		{
-			input:        "k..", // Double dotted quarter note, x1.75.
-			offAtPrecise: uint32(constants.TicksPerQuarter * 7 / 4),
-			offAtRounded: uint32(constants.TicksPerQuarter * 7 / 4),
+			input: "k..", // Double dotted quarter note, x1.75.
+			offAt: uint32(constants.TicksPerQuarter * 7 / 4),
 		},
 		{
-			input:        "k...", // Triplet dotted quarter note, x1.875.
-			offAtPrecise: uint32(constants.TicksPerQuarter * 15 / 8),
-			offAtRounded: uint32(constants.TicksPerQuarter * 15 / 8),
+			input: "k...", // Triplet dotted quarter note, x1.875.
+			offAt: uint32(constants.TicksPerQuarter * 15 / 8),
 		},
 		{
-			input:        "k/5", // Quintuplet quarter note.
-			offAtPrecise: uint32(constants.TicksPerQuarter * 2 / 5),
-			offAtRounded: uint32(constants.TicksPerQuarter * 3 / 8),
+			input: "k/5", // Quintuplet quarter note.
+			offAt: uint32(constants.TicksPerQuarter * 2 / 5),
 		},
 		{
-			input:        "k./3", // Dotted triplet quarter note == quarter note.
-			offAtPrecise: uint32(constants.TicksPerQuarter),
-			offAtRounded: uint32(constants.TicksPerQuarter),
+			input: "k./3", // Dotted triplet quarter note == quarter note.
+			offAt: uint32(constants.TicksPerQuarter),
 		},
 	} {
 		t.Run(tc.input, func(t *testing.T) {
@@ -263,78 +255,24 @@ func TestNoteLengths(t *testing.T) {
 			g.Expect(it.Eval(tc.input)).To(Succeed())
 
 			bars := it.Flush()
+			g.Expect(bars).To(HaveLen(1))
+			g.Expect(bars[0].TimeSig).To(Equal([2]uint8{4, 4}))
 
-			t.Run("bar event duration", func(t *testing.T) {
-				g := NewWithT(t)
-
-				g.Expect(bars).To(HaveLen(1))
-				g.Expect(bars[0].TimeSig).To(Equal([2]uint8{4, 4}))
-
-				events := bars[0].Events
-				g.Expect(events).To(ConsistOf(
-					interpreter.Event{
-						Channel:  0,
-						Pos:      0,
-						Duration: 0,
-						Message:  smf.MetaTempo(float64(tempo)),
-					},
-					interpreter.Event{
-						Channel:  0,
-						Pos:      0,
-						Duration: tc.offAtPrecise,
-						Message:  smf.Message(midi.NoteOn(0, 36, constants.DefaultVelocity)),
-					},
-				))
-			})
-
-			t.Run("SMF event duration", func(t *testing.T) {
-				g := NewWithT(t)
-
-				song := sequencer.New()
-				for _, bar := range bars {
-					song.AddBar(bar.Export())
-				}
-
-				sm := song.ToSMF1()
-
-				var buf bytes.Buffer
-
-				_, err := sm.WriteTo(&buf)
-				g.Expect(err).NotTo(HaveOccurred())
-
-				rd := smf.ReadTracksFrom(&buf)
-				g.Expect(rd.Error()).NotTo(HaveOccurred())
-
-				var events []smf.TrackEvent
-
-				rd.
-					Only(midi.NoteOnMsg, midi.NoteOffMsg).
-					Do(func(ev smf.TrackEvent) {
-						events = append(events, ev)
-					})
-
-				// TODO
-				// g.Expect(events).To(ConsistOf(
-				// 	smf.TrackEvent{
-				// 		Event: smf.Event{
-				// 			Delta:   0,
-				// 			Message: smf.Message(midi.NoteOn(0, 36, constants.DefaultVelocity)),
-				// 		},
-				// 		TrackNo:         1,
-				// 		AbsTicks:        0,
-				// 		AbsMicroSeconds: 0,
-				// 	},
-				// 	smf.TrackEvent{
-				// 		Event: smf.Event{
-				// 			Delta:   tc.offAtPrecise,
-				// 			Message: smf.Message(midi.NoteOff(0, 36)),
-				// 		},
-				// 		TrackNo:  1,
-				// 		AbsTicks: int64(tc.offAtRounded),
-				// 		// AbsMicroSeconds: bars[0].Duration().Microseconds(),
-				// 	},
-				// ))
-			})
+			events := bars[0].Events
+			g.Expect(events).To(ConsistOf(
+				interpreter.Event{
+					Channel:  0,
+					Pos:      0,
+					Duration: 0,
+					Message:  smf.MetaTempo(float64(tempo)),
+				},
+				interpreter.Event{
+					Channel:  0,
+					Pos:      0,
+					Duration: tc.offAt,
+					Message:  smf.Message(midi.NoteOn(0, 36, constants.DefaultVelocity)),
+				},
+			))
 		})
 	}
 }
@@ -405,92 +343,6 @@ c
 	g.Expect(bars[1].Cap()).To(BeEquivalentTo(3 * constants.TicksPerQuarter))
 }
 
-// TODO
-// func TestSMFBarAutoFill(t *testing.T) {
-// 	g := NewWithT(t)
-
-// 	it := interpreter.New()
-
-// 	err := it.Eval(`
-// assign c 60
-
-// tempo 60
-// timesig 4 4
-
-// c
-// c
-// `)
-// 	g.Expect(err).NotTo(HaveOccurred())
-
-// 	bars := it.Flush()
-
-// 	g.Expect(bars).To(HaveLen(2))
-
-// 	song := interpreter.New()
-// 	for _, bar := range bars {
-// 		song.AddBar(bar)
-// 	}
-
-// 	sm := song.ToSMF1()
-
-// 	var buf bytes.Buffer
-
-// 	_, err = sm.WriteTo(&buf)
-// 	g.Expect(err).NotTo(HaveOccurred())
-
-// 	rd := smf.ReadTracksFrom(&buf)
-// 	g.Expect(rd.Error()).NotTo(HaveOccurred())
-
-// 	var events []smf.TrackEvent
-
-// 	rd.
-// 		Only(midi.NoteOnMsg, midi.NoteOffMsg).
-// 		Do(func(ev smf.TrackEvent) {
-// 			events = append(events, ev)
-// 		})
-
-// 	spew.Dump(events)
-// 	// To assert sanity.
-// 	g.Expect(events).To(ConsistOf(
-// 		smf.TrackEvent{
-// 			Event: smf.Event{
-// 				Delta:   0 * uint32(constants.TicksPerQuarter),
-// 				Message: smf.Message(midi.NoteOn(0, 60, constants.DefaultVelocity)),
-// 			},
-// 			Channel:         1,
-// 			AbsTicks:        0 * int64(constants.TicksPerQuarter),
-// 			AbsMicroSeconds: (0 * time.Second).Microseconds(),
-// 		},
-// 		smf.TrackEvent{
-// 			Event: smf.Event{
-// 				Delta:   1 * uint32(constants.TicksPerQuarter),
-// 				Message: smf.Message(midi.NoteOff(0, 60)),
-// 			},
-// 			Channel:         1,
-// 			AbsTicks:        1 * int64(constants.TicksPerQuarter),
-// 			AbsMicroSeconds: (1 * time.Second).Microseconds(),
-// 		},
-// 		smf.TrackEvent{
-// 			Event: smf.Event{
-// 				Delta:   3 * uint32(constants.TicksPerQuarter),
-// 				Message: smf.Message(midi.NoteOn(0, 60, constants.DefaultVelocity)),
-// 			},
-// 			Channel:         1,
-// 			AbsTicks:        4 * int64(constants.TicksPerQuarter),
-// 			AbsMicroSeconds: (4 * time.Second).Microseconds(),
-// 		},
-// 		smf.TrackEvent{
-// 			Event: smf.Event{
-// 				Delta:   1 * uint32(constants.TicksPerQuarter),
-// 				Message: smf.Message(midi.NoteOff(0, 60)),
-// 			},
-// 			Channel:         1,
-// 			AbsTicks:        5 * int64(constants.TicksPerQuarter),
-// 			AbsMicroSeconds: (5 * time.Second).Microseconds(),
-// 		},
-// 	))
-// }
-
 func TestBarTooLong(t *testing.T) {
 	g := NewWithT(t)
 
@@ -531,6 +383,40 @@ func TestFlushSkipsTooLongBar(t *testing.T) {
 			},
 		},
 	}))
+}
+
+func TestMultiTrackNotesAreSorted(t *testing.T) {
+	g := NewWithT(t)
+
+	it := interpreter.New()
+
+	input := `
+channel 1
+assign x 42
+channel 2
+assign k 36
+timesig 4 4
+bar "test"
+	channel 1
+	xxxx
+	channel 2
+	kkkk
+end
+play "test"
+`
+
+	g.Expect(it.Eval(input)).To(Succeed())
+
+	bars := it.Flush()
+	g.Expect(bars).To(HaveLen(1))
+	g.Expect(bars[0].Events).To(HaveLen(9))
+
+	positions := make([]int, len(bars[0].Events))
+	for i, ev := range bars[0].Events {
+		positions[i] = int(ev.Pos)
+	}
+
+	g.Expect(sort.IntsAreSorted(positions)).To(BeTrue())
 }
 
 func TestPendingGlobalCommands(t *testing.T) {
@@ -652,13 +538,13 @@ timesig 1 4
 // Tempo 60 4th rest == 1s.
 -
 
-bar "one"
-	tempo 120
+bar "two"
 	timesig 2 8
 	c
 end
 
-bar "two"
+bar "one"
+	tempo 120
 	timesig 2 8
 	c
 end

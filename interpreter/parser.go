@@ -139,8 +139,6 @@ func (p *Parser) parseBar(declList ast.NodeList) (*Bar, error) {
 		return nil, nil
 	}
 
-	// bar.SortEvents()
-
 	return bar, nil
 }
 

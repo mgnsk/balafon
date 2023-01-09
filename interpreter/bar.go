@@ -14,19 +14,40 @@ type Bar struct {
 	Tempo   float64
 }
 
-// Len returns the bar's actual length in ticks.
-func (b *Bar) Len() uint32 {
-	durations := map[uint8]uint32{}
-	for _, ev := range b.Events {
-		durations[ev.Channel] += ev.Duration
+// IsMeta returns whether the bar consists of only meta events.
+func (b *Bar) IsMeta() bool {
+	if len(b.Events) == 0 {
+		// A bar that consists of rests only.
+		// TODO: nil bar is not valid and is not emitted by Parser.
+		return false
 	}
-	var dur uint32
-	for _, v := range durations {
-		if v > dur {
-			dur = v
+
+	for _, ev := range b.Events {
+		if ev.Duration > 0 {
+			return false
 		}
 	}
-	return dur
+
+	return true
+}
+
+// Len returns the bar's actual length in ticks.
+func (b *Bar) Len() uint32 {
+	var lastPos uint32
+	for _, ev := range b.Events {
+		if ev.Pos >= lastPos {
+			lastPos = ev.Pos
+		}
+	}
+
+	var dur uint32
+	for _, ev := range b.Events {
+		if ev.Pos == lastPos && ev.Duration > dur {
+			dur = ev.Duration
+		}
+	}
+
+	return lastPos + dur
 }
 
 // Cap returns the bar's capacity in ticks.
@@ -36,14 +57,8 @@ func (b *Bar) Cap() uint32 {
 
 // Duration returns the bar's duration.
 func (b *Bar) Duration() time.Duration {
-	return constants.TicksPerQuarter.Duration(b.Tempo, b.Len())
+	return constants.TicksPerQuarter.Duration(b.Tempo, b.Cap())
 }
-
-// func tickDuration(bpm float64) time.Duration {
-// 	var d smf.MetricTicks
-// 	d.Duration(bpm, 1)
-// 	return time.Duration(float64(time.Minute) / bpm / float64(constants.TicksPerQuarter))
-// }
 
 // Export the bar to a sequencer.Bar.
 // Note: this loses precision as ticks are converted to 32ths.
@@ -54,7 +69,8 @@ func (b *Bar) Export() sequencer.Bar {
 			events := make(sequencer.Events, len(b.Events))
 			for i, ev := range b.Events {
 				events[i] = &sequencer.Event{
-					TrackNo:  int(ev.Channel),
+					TrackNo: int(ev.Channel),
+					// TODO
 					Pos:      ticksTo32th(ev.Pos),
 					Duration: ticksTo32th(ev.Duration),
 					Message:  ev.Message,

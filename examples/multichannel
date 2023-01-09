@@ -1,54 +1,11 @@
-// lead
 channel 1
-assign c 60
-assign d 62
-
-// bass
+assign x 42
 channel 2
-assign c 48
-assign d 50
-
-// drums
-channel 10
 assign k 36
-assign s 38
-
-bar "sound A" {
-    channel 1; program 1
-    channel 2; program 1
-    channel 10; program 127
-}
-
-bar "lead reverb on" { channel 1; control 100 100 }
-bar "lead reverb off" { channel 1; control 100 0 }
-bar "tempo 1" { tempo 120 }
-bar "tempo 2" { tempo 200 }
-
-bar "Verse" {
-    timesig 4 4
-
-    channel 1
-    ccdd
-    [cd]2
-
-    channel 2
-    [cd]2
-
-    channel 10
-    ksks
-}
-
-bar "Fill" {
-    timesig 3 8
-    channel 10
-    [ksk]8
-}
-
-play "tempo 1"
-play "sound A"
-play "lead reverb on"
-play "Verse"
-play "lead reverb off"
-play "tempo 2"
-play "Fill"
-play "Verse"
+bar "test"
+	channel 1
+	xxxx
+	channel 2
+	kkkk
+end
+play "test"

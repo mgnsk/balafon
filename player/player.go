@@ -2,63 +2,91 @@ package player
 
 import (
 	"context"
-	"sync"
+	"sort"
 	"time"
 
 	"github.com/mgnsk/gong/constants"
+	"github.com/mgnsk/gong/interpreter"
+	"gitlab.com/gomidi/midi/v2"
 	"gitlab.com/gomidi/midi/v2/drivers"
-	"gitlab.com/gomidi/midi/v2/sequencer"
+	"gitlab.com/gomidi/midi/v2/smf"
 )
 
-// Player plays back interpreted messages into a MIDI output port.
+// Player plays back MIDI bars into an output port.
 type Player struct {
-	out          drivers.Out
-	timer        *time.Timer
-	tickDuration time.Duration
-	once         sync.Once
-	currentPos   uint32
+	out        drivers.Out
+	timer      *time.Timer
+	events     []interpreter.Event
+	currentPos uint32
 }
 
-// Play the message.
-func (p *Player) Play(ctx context.Context, bar *sequencer.Bar) error {
+// for _, ev := range bar.Events {
+// }
+
+// Play the bar.
+func (p *Player) Play(ctx context.Context, bars ...*interpreter.Bar) error {
+	for _, bar := range bars {
+		p.events = p.events[:0]
+
+		for _, ev := range bar.Events {
+			p.events = append(p.events, ev)
+
+			var ch, key, vel uint8
+			if ev.Message.GetNoteOn(&ch, &key, &vel) {
+				p.events = append(p.events, interpreter.Event{
+					Message:  smf.Message(midi.NoteOff(ch, key)),
+					Pos:      ev.Pos + ev.Duration,
+					Duration: 0,
+					Channel:  ch,
+				})
+			}
+		}
+
+		sort.Slice(p.events, func(i, j int) bool {
+			return p.events[i].Pos < p.events[j].Pos
+		})
+
+		for _, ev := range p.events {
+			if ev.Pos > p.currentPos {
+				d := constants.TicksPerQuarter.Duration(bar.Tempo, ev.Pos-p.currentPos)
+				p.timer.Reset(d)
+				select {
+				case <-ctx.Done():
+					return ctx.Err()
+				case <-p.timer.C:
+				}
+			}
+
+			if ev.Message.IsPlayable() {
+				if err := p.out.Send(ev.Message); err != nil {
+					return err
+				}
+			}
+
+			p.currentPos = ev.Pos
+		}
+
+		// Handle incomplete bars by sleeping until the end.
+		if pause := bar.Cap() - p.currentPos; pause > 0 {
+			d := constants.TicksPerQuarter.Duration(bar.Tempo, pause)
+			p.timer.Reset(d)
+			select {
+			case <-ctx.Done():
+				return ctx.Err()
+			case <-p.timer.C:
+			}
+		}
+	}
+
 	return nil
-	// var bpm float64
-
-	// if smf.Message(event.Message).GetMetaTempo(&bpm) {
-	// 	p.SetTempo(uint16(bpm))
-	// 	return nil
-	// }
-
-	// p.once.Do(func() {
-	// 	p.currentPos = uint32(bar.AbsTicks)
-	// })
-
-	// if event.Tick > p.currentPos {
-	// 	p.timer.Reset(time.Duration(event.Tick-p.currentPos) * p.tickDuration)
-	// 	select {
-	// 	case <-ctx.Done():
-	// 		return ctx.Err()
-	// 	case <-p.timer.C:
-	// 	}
-	// 	p.currentPos = event.Tick
-	// }
-
-	// return p.out.Send(event.Message)
-}
-
-// SetTempo sets the current tempo.
-func (p *Player) SetTempo(bpm uint16) {
-	p.tickDuration = time.Duration(float64(time.Minute) / float64(bpm) / float64(constants.TicksPerQuarter))
 }
 
 // New creates a new Player instance.
 func New(out drivers.Out) *Player {
 	timer := time.NewTimer(0)
 	<-timer.C
-	p := &Player{
+	return &Player{
 		out:   out,
 		timer: timer,
 	}
-	// p.SetTempo(constants.DefaultTempo)
-	return p
 }

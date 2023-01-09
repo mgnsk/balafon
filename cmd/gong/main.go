@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"io/ioutil"
 	"os"
@@ -9,7 +10,9 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/c-bata/go-prompt"
 	"github.com/mgnsk/gong/interpreter"
+	"github.com/mgnsk/gong/player"
 	"github.com/spf13/cobra"
 	"gitlab.com/gomidi/midi/v2"
 	"gitlab.com/gomidi/midi/v2/drivers"
@@ -103,9 +106,8 @@ func main() {
 				return err
 			}
 
-			sh := interpreter.NewShell(out)
-
-			return sh.Execute(it.Flush()...)
+			p := player.New(out)
+			return p.Play(context.TODO(), it.Flush()...)
 		},
 	})
 
@@ -126,7 +128,7 @@ func restoreTerminal() {
 }
 
 func runPrompt(out drivers.Out, it *interpreter.Interpreter) error {
-	sh := interpreter.NewShell(out)
+	p := player.New(out)
 
 	pt := newBufferedPrompt(
 		func(in string) {
@@ -134,22 +136,20 @@ func runPrompt(out drivers.Out, it *interpreter.Interpreter) error {
 				fmt.Println(err)
 				return
 			}
-
-			bars := it.Flush()
-			// spew.Dump(bars)
-
-			if err := sh.Execute(bars...); err != nil {
+			if err := p.Play(context.TODO(), it.Flush()...); err != nil {
 				fmt.Println(err)
+				return
 			}
 		},
-		sh.Complete,
+		func(in prompt.Document) []prompt.Suggest {
+			return nil
+		},
 	)
 
 	defer restoreTerminal()
 	pt.Run()
 
 	return nil
-
 }
 
 func runDebugListener() {

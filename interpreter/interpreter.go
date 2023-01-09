@@ -2,6 +2,7 @@ package interpreter
 
 import (
 	"fmt"
+	"sort"
 
 	"github.com/mgnsk/gong/ast"
 	"github.com/mgnsk/gong/constants"
@@ -52,37 +53,27 @@ func (it *Interpreter) Flush() []*Bar {
 	for _, bar := range it.bars {
 		timesig = bar.TimeSig
 
-		switch isPlayable(bar.Events) {
-		case true:
-			var barEvs []Event
-			barEvs = append(barEvs, metaBuffer...)
-			barEvs = append(barEvs, bar.Events...)
-			bar.Events = barEvs
-
-			metaBuffer = metaBuffer[:0]
-			playableBars = append(playableBars, bar)
-
-		case false:
+		if bar.IsMeta() {
 			// Bar that consists of meta events only.
 			metaBuffer = append(metaBuffer, bar.Events...)
+			continue
 		}
+
+		var barEvs []Event
+		barEvs = append(barEvs, metaBuffer...)
+		barEvs = append(barEvs, bar.Events...)
+		bar.Events = barEvs
+
+		metaBuffer = metaBuffer[:0]
+		playableBars = append(playableBars, bar)
 	}
 
 	if len(metaBuffer) > 0 {
-		// Append the remaining meta events to the end of last bar.
-		if len(playableBars) > 0 {
-			lastBar := playableBars[len(playableBars)-1]
-			pos := lastBar.Len()
-			for _, ev := range metaBuffer {
-				ev.Pos = pos
-			}
-			lastBar.Events = append(lastBar.Events, metaBuffer...)
-		} else {
-			playableBars = append(playableBars, &Bar{
-				TimeSig: timesig,
-				Events:  metaBuffer,
-			})
-		}
+		// Append the remaining meta events to a new bar.
+		playableBars = append(playableBars, &Bar{
+			TimeSig: timesig,
+			Events:  metaBuffer,
+		})
 	}
 
 	it.bars = it.bars[:0]
@@ -104,6 +95,9 @@ func (it *Interpreter) Flush() []*Bar {
 			}}, bar.Events...)
 		}
 		bar.Tempo = it.tempo
+		sort.Slice(bar.Events, func(i, j int) bool {
+			return bar.Events[i].Pos < bar.Events[j].Pos
+		})
 	}
 
 	return playableBars
@@ -116,17 +110,4 @@ func New() *Interpreter {
 		astParser: NewParser(),
 		tempo:     constants.DefaultTempo,
 	}
-}
-
-func isPlayable(events []Event) bool {
-	if len(events) == 0 {
-		// A bar that consists of rests only.
-		return true
-	}
-	for _, ev := range events {
-		if ev.Duration > 0 {
-			return true
-		}
-	}
-	return false
 }

@@ -45,7 +45,7 @@ func newBufferedPrompt(execute prompt.Executor, complete prompt.Completer) *buff
 		func(in string) {
 			if strings.HasPrefix(in, "bar") {
 				p.buffer.WriteString(in)
-				p.buffer.WriteString(" ")
+				p.buffer.WriteString("; ")
 
 				p.livePrefix = "...    "
 				p.livePrefixEnabled = true
@@ -67,7 +67,7 @@ func newBufferedPrompt(execute prompt.Executor, complete prompt.Completer) *buff
 
 			if p.livePrefixEnabled {
 				p.buffer.WriteString(in)
-				p.buffer.WriteString(" ")
+				p.buffer.WriteString("; ")
 
 				p.livePrefix = "...    "
 				p.livePrefixEnabled = true
