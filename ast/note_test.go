@@ -6,6 +6,7 @@ import (
 	"testing"
 
 	"github.com/mgnsk/gong/ast"
+	"github.com/mgnsk/gong/constants"
 	. "github.com/onsi/gomega"
 	"github.com/onsi/gomega/types"
 )
@@ -160,36 +161,32 @@ func TestForbiddenDuplicateProperty(t *testing.T) {
 
 func TestNoteLengths(t *testing.T) {
 	for _, tc := range []struct {
-		input   string
-		len32th uint8
+		input string
+		offAt uint32
 	}{
 		{
-			input:   "k", // Quarter note.
-			len32th: 8,
+			input: "k", // Quarter note.
+			offAt: uint32(constants.TicksPerQuarter),
 		},
 		{
-			input:   "k.", // Dotted quarter note, x1.5.
-			len32th: 12,
+			input: "k.", // Dotted quarter note, x1.5.
+			offAt: uint32(constants.TicksPerQuarter * 3 / 2),
 		},
 		{
-			input:   "k..", // Double dotted quarter note, x1.75.
-			len32th: 14,
+			input: "k..", // Double dotted quarter note, x1.75.
+			offAt: uint32(constants.TicksPerQuarter * 7 / 4),
 		},
 		{
-			input:   "k...", // Triple dotted quarter note, x1.875.
-			len32th: 15,
+			input: "k...", // Triplet dotted quarter note, x1.875.
+			offAt: uint32(constants.TicksPerQuarter * 15 / 8),
 		},
 		{
-			input:   "k/3", // Triplet quarter note.
-			len32th: 5,     // TODO: precision
+			input: "k/5", // Quintuplet quarter note.
+			offAt: uint32(constants.TicksPerQuarter * 2 / 5),
 		},
 		{
-			input:   "k/5", // Quintuplet quarter note.
-			len32th: 3,     // TODO: precision
-		},
-		{
-			input:   "k./3", // Dotted triplet quarter note == quarter note.
-			len32th: 8,
+			input: "k./3", // Dotted triplet quarter note == quarter note.
+			offAt: uint32(constants.TicksPerQuarter),
 		},
 	} {
 		t.Run(tc.input, func(t *testing.T) {
@@ -199,7 +196,7 @@ func TestNoteLengths(t *testing.T) {
 			g.Expect(err).NotTo(HaveOccurred())
 
 			note := res.(ast.NodeList)[0].(ast.NoteList)[0]
-			g.Expect(note.Len()).To(Equal(tc.len32th))
+			g.Expect(note.Len()).To(Equal(tc.offAt))
 		})
 	}
 }

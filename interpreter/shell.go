@@ -17,7 +17,7 @@ type Shell struct {
 }
 
 // Execute the bars.
-func (s *Shell) Execute(bars ...*sequencer.Bar) error {
+func (s *Shell) Execute(bars ...*Bar) error {
 	// isPlayable := false
 	// for _, bar := range bars {
 	// 	for _, ev := range bar.Events {
@@ -33,7 +33,7 @@ func (s *Shell) Execute(bars ...*sequencer.Bar) error {
 
 	song := sequencer.New()
 	for _, bar := range bars {
-		song.AddBar(*bar)
+		song.AddBar(bar.Export())
 	}
 
 	sm := song.ToSMF1()

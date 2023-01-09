@@ -4,9 +4,9 @@ import (
 	"fmt"
 
 	"github.com/mgnsk/gong/ast"
+	"github.com/mgnsk/gong/constants"
 	"github.com/mgnsk/gong/internal/parser/lexer"
 	"github.com/mgnsk/gong/internal/parser/parser"
-	"gitlab.com/gomidi/midi/v2/sequencer"
 	"gitlab.com/gomidi/midi/v2/smf"
 )
 
@@ -14,7 +14,7 @@ import (
 type Interpreter struct {
 	parser    *parser.Parser
 	astParser *Parser
-	bars      []*sequencer.Bar
+	bars      []*Bar
 	tempo     float64
 }
 
@@ -41,11 +41,11 @@ func (it *Interpreter) Eval(input string) error {
 }
 
 // Flush the parsed bar queue.
-func (it *Interpreter) Flush() []*sequencer.Bar {
+func (it *Interpreter) Flush() []*Bar {
 	var (
 		timesig      [2]uint8
-		metaBuffer   sequencer.Events
-		playableBars []*sequencer.Bar
+		metaBuffer   []Event
+		playableBars []*Bar
 	)
 
 	// Defer bars consisting of only meta events and concatenate them forward.
@@ -54,7 +54,7 @@ func (it *Interpreter) Flush() []*sequencer.Bar {
 
 		switch isPlayable(bar.Events) {
 		case true:
-			var barEvs sequencer.Events
+			var barEvs []Event
 			barEvs = append(barEvs, metaBuffer...)
 			barEvs = append(barEvs, bar.Events...)
 			bar.Events = barEvs
@@ -78,7 +78,7 @@ func (it *Interpreter) Flush() []*sequencer.Bar {
 			}
 			lastBar.Events = append(lastBar.Events, metaBuffer...)
 		} else {
-			playableBars = append(playableBars, &sequencer.Bar{
+			playableBars = append(playableBars, &Bar{
 				TimeSig: timesig,
 				Events:  metaBuffer,
 			})
@@ -91,18 +91,19 @@ func (it *Interpreter) Flush() []*sequencer.Bar {
 		var newTempo float64
 		hasTempo := false
 		for _, ev := range bar.Events {
+			// Get the last tempo event.
 			if ev.Message.GetMetaTempo(&newTempo) {
 				hasTempo = true
-				break
 			}
 		}
 		if hasTempo {
 			it.tempo = newTempo
 		} else {
-			bar.Events = append(sequencer.Events{&sequencer.Event{
+			bar.Events = append([]Event{{
 				Message: smf.MetaTempo(it.tempo),
 			}}, bar.Events...)
 		}
+		bar.Tempo = it.tempo
 	}
 
 	return playableBars
@@ -113,11 +114,11 @@ func New() *Interpreter {
 	return &Interpreter{
 		parser:    parser.NewParser(),
 		astParser: NewParser(),
-		tempo:     120,
+		tempo:     constants.DefaultTempo,
 	}
 }
 
-func isPlayable(events sequencer.Events) bool {
+func isPlayable(events []Event) bool {
 	if len(events) == 0 {
 		// A bar that consists of rests only.
 		return true

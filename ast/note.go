@@ -6,6 +6,7 @@ import (
 	"sort"
 	"strconv"
 
+	"github.com/mgnsk/gong/constants"
 	"github.com/mgnsk/gong/internal/parser/token"
 )
 
@@ -86,17 +87,16 @@ type Note struct {
 	Name  rune
 }
 
-// Ticks returns the note duration in 32ths.
-func (note *Note) Len() uint8 {
-	value := note.Value()
-	length := 32 / value
+// Len returns the note duration in ticks.
+func (note *Note) Len() uint32 {
+	length := uint32(constants.TicksPerWhole) / uint32(note.Value())
 	newLength := length
 	dots := note.NumDots()
 	for i := uint(0); i < dots; i++ {
 		length /= 2
 		newLength += length
 	}
-	if division := note.Tuplet(); division > 0 {
+	if division := uint32(note.Tuplet()); division > 0 {
 		newLength = newLength * 2 / division
 	}
 	return newLength

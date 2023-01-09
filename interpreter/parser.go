@@ -6,20 +6,19 @@ import (
 	"github.com/mgnsk/gong/ast"
 	"github.com/mgnsk/gong/constants"
 	"gitlab.com/gomidi/midi/v2"
-	"gitlab.com/gomidi/midi/v2/sequencer"
 	"gitlab.com/gomidi/midi/v2/smf"
 )
 
-// Parser parses AST into sequencer events.
+// Parser parses AST into events.
 type Parser struct {
 	velocity uint8
 	channel  uint8
 
-	pos     uint8
+	pos     uint32
 	timesig [2]uint8
 
 	keymap *KeyMap
-	bars   map[string]*sequencer.Bar
+	bars   map[string]*Bar
 }
 
 func (p *Parser) beginBar() *Parser {
@@ -43,13 +42,13 @@ func NewParser() *Parser {
 		pos:      0,
 		timesig:  [2]uint8{4, 4},
 		keymap:   NewKeyMap(),
-		bars:     map[string]*sequencer.Bar{},
+		bars:     map[string]*Bar{},
 	}
 }
 
 // Parse AST.
-func (p *Parser) Parse(declList ast.NodeList) ([]*sequencer.Bar, error) {
-	var bars []*sequencer.Bar
+func (p *Parser) Parse(declList ast.NodeList) ([]*Bar, error) {
+	var bars []*Bar
 
 	for _, decl := range declList {
 		switch decl := decl.(type) {
@@ -94,18 +93,15 @@ func (p *Parser) Parse(declList ast.NodeList) ([]*sequencer.Bar, error) {
 	return bars, nil
 }
 
-func (p *Parser) parseBar(declList ast.NodeList) (*sequencer.Bar, error) {
-	bar := &sequencer.Bar{
+func (p *Parser) parseBar(declList ast.NodeList) (*Bar, error) {
+	bar := &Bar{
 		TimeSig: p.timesig,
 	}
 
 	for _, decl := range declList {
 		switch decl := decl.(type) {
 		case ast.CmdTempo:
-			bar.Events = append(bar.Events, &sequencer.Event{
-				TrackNo: 0,
-				Message: smf.MetaTempo(float64(decl)),
-			})
+			bar.PrependMetaMessage(smf.MetaTempo(float64(decl)))
 
 		case ast.CmdTimeSig:
 			p.timesig = [2]uint8{decl.Num, decl.Denom}
@@ -118,28 +114,16 @@ func (p *Parser) parseBar(declList ast.NodeList) (*sequencer.Bar, error) {
 			p.channel = uint8(decl)
 
 		case ast.CmdProgram:
-			bar.Events = append(bar.Events, &sequencer.Event{
-				TrackNo: int(p.channel),
-				Message: smf.Message(midi.ProgramChange(p.channel, uint8(decl))),
-			})
+			bar.PrependMetaMessage(midi.ProgramChange(p.channel, uint8(decl)))
 
 		case ast.CmdControl:
-			bar.Events = append(bar.Events, &sequencer.Event{
-				TrackNo: int(p.channel),
-				Message: smf.Message(midi.ControlChange(p.channel, decl.Control, decl.Parameter)),
-			})
+			bar.PrependMetaMessage(midi.ControlChange(p.channel, decl.Control, decl.Parameter))
 
 		case ast.CmdStart:
-			bar.Events = append(bar.Events, &sequencer.Event{
-				TrackNo: int(p.channel),
-				Message: smf.Message(midi.Start()),
-			})
+			bar.PrependMetaMessage(midi.Start())
 
 		case ast.CmdStop:
-			bar.Events = append(bar.Events, &sequencer.Event{
-				TrackNo: int(p.channel),
-				Message: smf.Message(midi.Stop()),
-			})
+			bar.PrependMetaMessage(midi.Stop())
 
 		case ast.NoteList:
 			if err := p.parseNoteList(bar, decl); err != nil {
@@ -155,20 +139,20 @@ func (p *Parser) parseBar(declList ast.NodeList) (*sequencer.Bar, error) {
 		return nil, nil
 	}
 
-	bar.SortEvents()
+	// bar.SortEvents()
 
 	return bar, nil
 }
 
 // parseNoteList parses a note list into messages with relative ticks.
-func (p *Parser) parseNoteList(bar *sequencer.Bar, noteList ast.NoteList) error {
+func (p *Parser) parseNoteList(bar *Bar, noteList ast.NoteList) error {
 	p.pos = 0
 
 	for _, note := range noteList {
-		length32th := note.Len()
+		noteLen := note.Len()
 
 		if note.IsPause() {
-			p.pos += length32th
+			p.pos += noteLen
 			continue
 		}
 
@@ -208,17 +192,17 @@ func (p *Parser) parseNoteList(bar *sequencer.Bar, noteList ast.NoteList) error 
 			velocity -= 10
 		}
 
-		bar.Events = append(bar.Events, &sequencer.Event{
-			TrackNo:  int(p.channel),
+		bar.Events = append(bar.Events, Event{
+			Channel:  p.channel,
 			Pos:      p.pos,
-			Duration: length32th,
+			Duration: noteLen,
 			Message:  smf.Message(midi.NoteOn(p.channel, key, velocity)),
 		})
 
-		p.pos += length32th
+		p.pos += noteLen
 	}
 
-	if p.pos > bar.Len() {
+	if p.pos > bar.Cap() {
 		return fmt.Errorf("bar too long, timesig is %d/%d", p.timesig[0], p.timesig[1])
 	}
 
