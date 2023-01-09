@@ -64,7 +64,7 @@ func (it *Interpreter) Flush() []*Bar {
 
 		case false:
 			// Bar that consists of meta events only.
-			metaBuffer = append(bar.Events, metaBuffer...)
+			metaBuffer = append(metaBuffer, bar.Events...)
 		}
 	}
 

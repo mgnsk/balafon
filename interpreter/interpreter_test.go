@@ -585,9 +585,9 @@ c
 			TimeSig: [2]uint8{2, 8},
 			Tempo:   120,
 			Events: []interpreter.Event{
-				{Message: smf.Message(midi.ControlChange(1, 1, 1))},
-				{Message: smf.Message(midi.ProgramChange(1, 1))},
 				{Message: smf.MetaTempo(60)},
+				{Message: smf.Message(midi.ProgramChange(1, 1))},
+				{Message: smf.Message(midi.ControlChange(1, 1, 1))},
 				{Message: smf.MetaTempo(120)},
 				{Message: smf.Message(midi.ProgramChange(1, 2))},
 				{Message: smf.Message(midi.ControlChange(1, 1, 2))},
@@ -645,6 +645,7 @@ func TestTempoIsGlobal(t *testing.T) {
 
 	err := it.Eval(`
 channel 1; assign c 60
+tempo 120
 tempo 60
 timesig 1 4
 
@@ -675,6 +676,7 @@ c
 			TimeSig: [2]uint8{1, 4},
 			Tempo:   60,
 			Events: []interpreter.Event{
+				{Message: smf.MetaTempo(120)},
 				{Message: smf.MetaTempo(60)},
 			},
 		},
