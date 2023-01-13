@@ -2,8 +2,8 @@ package interpreter_test
 
 import (
 	"fmt"
-	"sort"
 	"testing"
+	"time"
 
 	"github.com/mgnsk/gong/constants"
 	"github.com/mgnsk/gong/interpreter"
@@ -22,7 +22,6 @@ func TestCommands(t *testing.T) {
 			"assign c 60; c",
 			[2]uint8{4, 4},
 			[][]byte{
-				smf.MetaTempo(120),
 				midi.NoteOn(0, 60, constants.DefaultVelocity),
 			},
 		},
@@ -52,7 +51,6 @@ func TestCommands(t *testing.T) {
 			"channel 10; assign c 60; c",
 			[2]uint8{4, 4},
 			[][]byte{
-				smf.MetaTempo(120),
 				midi.NoteOn(10, 60, constants.DefaultVelocity),
 			},
 		},
@@ -60,7 +58,6 @@ func TestCommands(t *testing.T) {
 			"velocity 30; assign c 60; c",
 			[2]uint8{4, 4},
 			[][]byte{
-				smf.MetaTempo(120),
 				midi.NoteOn(0, 60, 30),
 			},
 		},
@@ -68,7 +65,6 @@ func TestCommands(t *testing.T) {
 			"program 0",
 			[2]uint8{4, 4},
 			[][]byte{
-				smf.MetaTempo(120),
 				midi.ProgramChange(0, 0),
 			},
 		},
@@ -76,7 +72,6 @@ func TestCommands(t *testing.T) {
 			"control 1 2",
 			[2]uint8{4, 4},
 			[][]byte{
-				smf.MetaTempo(120),
 				midi.ControlChange(0, 1, 2),
 			},
 		},
@@ -84,7 +79,6 @@ func TestCommands(t *testing.T) {
 			`assign c 60; bar "bar" timesig 1 4; c end; play "bar"`,
 			[2]uint8{1, 4},
 			[][]byte{
-				smf.MetaTempo(120),
 				midi.NoteOn(0, 60, constants.DefaultVelocity),
 			},
 		},
@@ -92,7 +86,6 @@ func TestCommands(t *testing.T) {
 			"start",
 			[2]uint8{4, 4},
 			[][]byte{
-				smf.MetaTempo(120),
 				midi.Start(),
 			},
 		},
@@ -100,7 +93,6 @@ func TestCommands(t *testing.T) {
 			"stop",
 			[2]uint8{4, 4},
 			[][]byte{
-				smf.MetaTempo(120),
 				midi.Stop(),
 			},
 		},
@@ -163,9 +155,8 @@ func TestSharpFlatNote(t *testing.T) {
 
 			bars := it.Flush()
 			g.Expect(bars).To(HaveLen(1))
-			g.Expect(bars[0].Events).To(HaveLen(2))
-			g.Expect(bars[0].Events[0].Message).To(BeEquivalentTo(smf.MetaTempo(120)))
-			g.Expect(bars[0].Events[1].Message).To(BeEquivalentTo(midi.NoteOn(0, tc.key, constants.DefaultVelocity)))
+			g.Expect(bars[0].Events).To(HaveLen(1))
+			g.Expect(bars[0].Events[0].Message).To(BeEquivalentTo(midi.NoteOn(0, tc.key, constants.DefaultVelocity)))
 		})
 	}
 }
@@ -205,9 +196,8 @@ func TestAccentuatedAndGhostNote(t *testing.T) {
 
 			bars := it.Flush()
 			g.Expect(bars).To(HaveLen(1))
-			g.Expect(bars[0].Events).To(HaveLen(2))
-			g.Expect(bars[0].Events[0].Message).To(BeEquivalentTo(smf.MetaTempo(120)))
-			g.Expect(bars[0].Events[1].Message).To(BeEquivalentTo(midi.NoteOn(0, 60, tc.velocity)))
+			g.Expect(bars[0].Events).To(HaveLen(1))
+			g.Expect(bars[0].Events[0].Message).To(BeEquivalentTo(midi.NoteOn(0, 60, tc.velocity)))
 		})
 	}
 }
@@ -230,7 +220,7 @@ func TestNoteLengths(t *testing.T) {
 			offAt: uint32(constants.TicksPerQuarter * 7 / 4),
 		},
 		{
-			input: "k...", // Triplet dotted quarter note, x1.875.
+			input: "k...", // Triple dotted quarter note, x1.875.
 			offAt: uint32(constants.TicksPerQuarter * 15 / 8),
 		},
 		{
@@ -303,13 +293,61 @@ play "two"
 
 	g.Expect(bars).To(HaveLen(2))
 	g.Expect(bars[0].TimeSig).To(Equal([2]uint8{1, 4}))
-	g.Expect(bars[0].Events).To(HaveLen(1))
-	g.Expect(bars[0].Events[0].Message).To(BeEquivalentTo(smf.MetaTempo(120)))
+	g.Expect(bars[0].Events).To(HaveLen(0))
 
 	g.Expect(bars[1].TimeSig).To(Equal([2]uint8{1, 4}))
-	g.Expect(bars[1].Events).To(HaveLen(2))
-	g.Expect(bars[1].Events[0].Message).To(BeEquivalentTo(smf.MetaTempo(120)))
-	g.Expect(bars[1].Events[1].Message).To(BeEquivalentTo(midi.ProgramChange(0, 1)))
+	g.Expect(bars[1].Events).To(HaveLen(1))
+	g.Expect(bars[1].Events[0].Message).To(BeEquivalentTo(midi.ProgramChange(0, 1)))
+}
+
+func TestSilence(t *testing.T) {
+	t.Run("end of bar", func(t *testing.T) {
+		g := NewWithT(t)
+
+		it := interpreter.New()
+
+		err := it.Eval(`
+timesig 4 4
+assign c 60
+c
+`)
+		g.Expect(err).NotTo(HaveOccurred())
+
+		bars := it.Flush()
+
+		g.Expect(bars).To(HaveLen(1))
+		g.Expect(bars[0].Cap()).To(Equal(uint32(constants.TicksPerWhole)))
+		g.Expect(bars[0].Events).To(HaveLen(1))
+		g.Expect(bars[0].Events[0]).To(Equal(interpreter.Event{
+			Message:  smf.Message(midi.NoteOn(0, 60, constants.DefaultVelocity)),
+			Pos:      0,
+			Duration: 960,
+		}))
+	})
+
+	t.Run("beginning of bar", func(t *testing.T) {
+		g := NewWithT(t)
+
+		it := interpreter.New()
+
+		err := it.Eval(`
+timesig 4 4
+assign c 60
+---c
+`)
+		g.Expect(err).NotTo(HaveOccurred())
+
+		bars := it.Flush()
+
+		g.Expect(bars).To(HaveLen(1))
+		g.Expect(bars[0].Cap()).To(Equal(uint32(constants.TicksPerWhole)))
+		g.Expect(bars[0].Events).To(HaveLen(1))
+		g.Expect(bars[0].Events[0]).To(Equal(interpreter.Event{
+			Message:  smf.Message(midi.NoteOn(0, 60, constants.DefaultVelocity)),
+			Pos:      uint32(3 * constants.TicksPerQuarter),
+			Duration: 960,
+		}))
+	})
 }
 
 func TestTimeSignature(t *testing.T) {
@@ -372,11 +410,7 @@ func TestFlushSkipsTooLongBar(t *testing.T) {
 
 	g.Expect(bars).To(ConsistOf(&interpreter.Bar{
 		TimeSig: [2]uint8{4, 4},
-		Tempo:   120,
 		Events: []interpreter.Event{
-			{
-				Message: smf.MetaTempo(120),
-			},
 			{
 				Duration: uint32(constants.TicksPerQuarter),
 				Message:  smf.Message(midi.NoteOn(0, 60, constants.DefaultVelocity)),
@@ -385,22 +419,32 @@ func TestFlushSkipsTooLongBar(t *testing.T) {
 	}))
 }
 
-func TestMultiTrackNotesAreSorted(t *testing.T) {
+func TestMultiTrackNotesAreSortedPairs(t *testing.T) {
 	g := NewWithT(t)
 
 	it := interpreter.New()
 
 	input := `
 channel 1
-assign x 42
+assign a 0
+assign b 1
+assign c 2
+assign d 3
+
 channel 2
-assign k 36
+assign a 0
+assign b 1
+assign c 2
+assign d 3
+
+tempo 60
 timesig 4 4
+
 bar "test"
 	channel 1
-	xxxx
+	abcd
 	channel 2
-	kkkk
+	abcd
 end
 play "test"
 `
@@ -409,14 +453,21 @@ play "test"
 
 	bars := it.Flush()
 	g.Expect(bars).To(HaveLen(1))
+	g.Expect(bars[0].Duration(60)).To(Equal(4 * time.Second))
 	g.Expect(bars[0].Events).To(HaveLen(9))
 
-	positions := make([]int, len(bars[0].Events))
-	for i, ev := range bars[0].Events {
-		positions[i] = int(ev.Pos)
+	keyPositions := map[uint8][]uint32{}
+	for _, ev := range bars[0].Events[1:] {
+		var ch, key, vel uint8
+		g.Expect(ev.Message.GetNoteOn(&ch, &key, &vel)).To(BeTrue())
+		keyPositions[key] = append(keyPositions[key], ev.Pos)
 	}
 
-	g.Expect(sort.IntsAreSorted(positions)).To(BeTrue())
+	g.Expect(keyPositions).To(HaveLen(4))
+	for _, pos := range keyPositions {
+		g.Expect(pos).To(HaveLen(2))
+		g.Expect(pos[0]).To(Equal(pos[1]))
+	}
 }
 
 func TestPendingGlobalCommands(t *testing.T) {
@@ -469,7 +520,6 @@ c
 	g.Expect(bars).To(ConsistOf(
 		&interpreter.Bar{
 			TimeSig: [2]uint8{2, 8},
-			Tempo:   120,
 			Events: []interpreter.Event{
 				{Message: smf.MetaTempo(60)},
 				{Message: smf.Message(midi.ProgramChange(1, 1))},
@@ -493,7 +543,6 @@ c
 		},
 		&interpreter.Bar{
 			TimeSig: [2]uint8{1, 4},
-			Tempo:   120,
 			Events: []interpreter.Event{
 				{
 					Message: smf.MetaTempo(120),
@@ -508,11 +557,7 @@ c
 		},
 		&interpreter.Bar{
 			TimeSig: [2]uint8{1, 4},
-			Tempo:   120,
 			Events: []interpreter.Event{
-				{
-					Message: smf.MetaTempo(120),
-				},
 				{
 					Channel:  1,
 					Pos:      0,
@@ -560,7 +605,6 @@ c
 	g.Expect(bars).To(ConsistOf(
 		&interpreter.Bar{
 			TimeSig: [2]uint8{1, 4},
-			Tempo:   60,
 			Events: []interpreter.Event{
 				{Message: smf.MetaTempo(120)},
 				{Message: smf.MetaTempo(60)},
@@ -568,9 +612,7 @@ c
 		},
 		&interpreter.Bar{
 			TimeSig: [2]uint8{2, 8},
-			Tempo:   120,
 			Events: []interpreter.Event{
-				{Message: smf.MetaTempo(120)},
 				{
 					Channel:  1,
 					Pos:      0,
@@ -581,7 +623,6 @@ c
 		},
 		&interpreter.Bar{
 			TimeSig: [2]uint8{2, 8},
-			Tempo:   120,
 			Events: []interpreter.Event{
 				{Message: smf.MetaTempo(120)},
 				{
@@ -594,9 +635,7 @@ c
 		},
 		&interpreter.Bar{
 			TimeSig: [2]uint8{1, 4},
-			Tempo:   120,
 			Events: []interpreter.Event{
-				{Message: smf.MetaTempo(120)},
 				{
 					Channel:  1,
 					Pos:      0,

@@ -1,7 +1,6 @@
 package main
 
 import (
-	"context"
 	"fmt"
 	"io/ioutil"
 	"os"
@@ -12,12 +11,10 @@ import (
 
 	"github.com/c-bata/go-prompt"
 	"github.com/mgnsk/gong/interpreter"
-	"github.com/mgnsk/gong/player"
+	"github.com/mgnsk/gong/sequencer"
 	"github.com/spf13/cobra"
 	"gitlab.com/gomidi/midi/v2"
 	"gitlab.com/gomidi/midi/v2/drivers"
-
-	// _ "gitlab.com/gomidi/midi/v2/drivers/testdrv"
 	_ "gitlab.com/gomidi/midi/v2/drivers/rtmididrv"
 )
 
@@ -42,8 +39,6 @@ func main() {
 		SilenceErrors: true,
 		SilenceUsage:  true,
 		RunE: func(c *cobra.Command, _ []string) error {
-			runDebugListener()
-
 			out, err := openOut(c.Flag("port").Value.String())
 			if err != nil {
 				return err
@@ -59,8 +54,6 @@ func main() {
 		Short: "Load a file and continue in a gong shell",
 		Args:  cobra.ExactArgs(1),
 		RunE: func(c *cobra.Command, args []string) error {
-			runDebugListener()
-
 			file, err := ioutil.ReadFile(args[0])
 			if err != nil {
 				return err
@@ -89,8 +82,6 @@ func main() {
 		Short: "Play a file",
 		Args:  cobra.ExactArgs(1),
 		RunE: func(c *cobra.Command, args []string) error {
-			runDebugListener()
-
 			file, err := ioutil.ReadFile(args[0])
 			if err != nil {
 				return err
@@ -106,8 +97,10 @@ func main() {
 				return err
 			}
 
-			p := player.New(out)
-			return p.Play(context.TODO(), it.Flush()...)
+			s := sequencer.NewSequencer()
+			s.AddBars(it.Flush()...)
+
+			return s.Play(out)
 		},
 	})
 
@@ -128,15 +121,15 @@ func restoreTerminal() {
 }
 
 func runPrompt(out drivers.Out, it *interpreter.Interpreter) error {
-	p := player.New(out)
-
 	pt := newBufferedPrompt(
 		func(in string) {
 			if err := it.Eval(in); err != nil {
 				fmt.Println(err)
 				return
 			}
-			if err := p.Play(context.TODO(), it.Flush()...); err != nil {
+			s := sequencer.NewSequencer()
+			s.AddBars(it.Flush()...)
+			if err := s.Play(out); err != nil {
 				fmt.Println(err)
 				return
 			}
@@ -150,17 +143,6 @@ func runPrompt(out drivers.Out, it *interpreter.Interpreter) error {
 	pt.Run()
 
 	return nil
-}
-
-func runDebugListener() {
-	in, err := midi.InPort(0)
-	if err != nil {
-		panic(err)
-	}
-
-	midi.ListenTo(in, func(msg midi.Message, timestampms int32) {
-		fmt.Println(msg)
-	})
 }
 
 func openOut(port string) (out drivers.Out, err error) {

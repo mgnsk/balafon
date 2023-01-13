@@ -8,7 +8,6 @@ import (
 	"github.com/mgnsk/gong/constants"
 	"github.com/mgnsk/gong/internal/parser/lexer"
 	"github.com/mgnsk/gong/internal/parser/parser"
-	"gitlab.com/gomidi/midi/v2/smf"
 )
 
 // Interpreter evaluates text input and emits MIDI events.
@@ -79,23 +78,7 @@ func (it *Interpreter) Flush() []*Bar {
 	it.bars = it.bars[:0]
 
 	for _, bar := range playableBars {
-		var newTempo float64
-		hasTempo := false
-		for _, ev := range bar.Events {
-			// Get the last tempo event.
-			if ev.Message.GetMetaTempo(&newTempo) {
-				hasTempo = true
-			}
-		}
-		if hasTempo {
-			it.tempo = newTempo
-		} else {
-			bar.Events = append([]Event{{
-				Message: smf.MetaTempo(it.tempo),
-			}}, bar.Events...)
-		}
-		bar.Tempo = it.tempo
-		sort.Slice(bar.Events, func(i, j int) bool {
+		sort.SliceStable(bar.Events, func(i, j int) bool {
 			return bar.Events[i].Pos < bar.Events[j].Pos
 		})
 	}

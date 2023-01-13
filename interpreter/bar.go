@@ -11,7 +11,6 @@ import (
 type Bar struct {
 	Events  []Event
 	TimeSig [2]uint8
-	Tempo   float64
 }
 
 // IsMeta returns whether the bar consists of only meta events.
@@ -31,33 +30,14 @@ func (b *Bar) IsMeta() bool {
 	return true
 }
 
-// Len returns the bar's actual length in ticks.
-func (b *Bar) Len() uint32 {
-	var lastPos uint32
-	for _, ev := range b.Events {
-		if ev.Pos >= lastPos {
-			lastPos = ev.Pos
-		}
-	}
-
-	var dur uint32
-	for _, ev := range b.Events {
-		if ev.Pos == lastPos && ev.Duration > dur {
-			dur = ev.Duration
-		}
-	}
-
-	return lastPos + dur
-}
-
 // Cap returns the bar's capacity in ticks.
 func (b *Bar) Cap() uint32 {
 	return uint32(b.TimeSig[0]) * (uint32(constants.TicksPerWhole) / uint32(b.TimeSig[1]))
 }
 
 // Duration returns the bar's duration.
-func (b *Bar) Duration() time.Duration {
-	return constants.TicksPerQuarter.Duration(b.Tempo, b.Cap())
+func (b *Bar) Duration(tempo float64) time.Duration {
+	return constants.TicksPerQuarter.Duration(tempo, b.Cap())
 }
 
 // Export the bar to a sequencer.Bar.
