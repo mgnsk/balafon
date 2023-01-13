@@ -1,9 +1,6 @@
 ## Introduction
 
-gong is a small multitrack MIDI control language. It consists of a shell with live mode,
-an SMF compiler, and a playback engine.
-
-There exists a strict YAML specification that compiles down to gong script.
+gong is a small multitrack MIDI control language. It consists of a shell with live mode, player and a linter.
 
 ## Install
 
@@ -12,103 +9,99 @@ Not tested on platforms other than Linux.
 
 ```sh
 go install github.com/mgnsk/gong/cmd/gong@latest # Requires rtmidi development package.
-go install github.com/mgnsk/gong/cmd/gong2smf@latest
-go install github.com/mgnsk/gong/cmd/gonglint@latest
-go install github.com/mgnsk/gong/cmd/yaml2gong@latest
 ```
 
 ## Running
 
 - The default command lists the available MIDI ports. The default port is the 0 port.
-  ```sh
+
+```sh
   $ gong
   0: Midi Through:Midi Through Port-0 14:0
   1: Hydrogen:Hydrogen Midi-In 135:0
   2: VMPK Input:in 128:0
-  ```
+```
+
 - Play a file through a specific port. The port name must contain the passed in flag value:
-  ```sh
+
+```sh
   $ gong play --port "VMPK" examples/bach
-  ```
-  To use piped input, pass `-` as the argument:
-  ```sh
+```
+
+To use piped input, pass `-` as the argument:
+
+```sh
   $ cat examples/bach | gong play --port "VMPK" -
-  ```
+```
+
 - Port can also be specified by its number:
-  ```sh
+
+```sh
   $ gong play --port 2 examples/bonham
-  ```
+```
+
 - Enter a shell on the default port:
-  ```sh
+
+```sh
   $ gong shell
-  Welcome to the gong shell on MIDI port '0: Midi Through:Midi Through Port-0 14:0'!
-  >
-  ```
-  A shell is a line-based shell for the gong language.
+  >>>
+```
+
+A shell is a text shell for the gong language. It is capable of multiline input when entering bars.
+
 - Enter a shell on a specific port:
-  ```sh
+
+```sh
   $ gong shell --port "Hydrogen"
-  Welcome to the gong shell on MIDI port '1: Hydrogen:Hydrogen Midi-In 128:0'!
-  >
-  ```
+  >>>
+```
+
 - Load a file and enter a shell:
-  ```sh
+
+```sh
   $ gong load --port "Hydrogen" examples/bonham
-  Welcome to the gong shell on MIDI port '1: Hydrogen:Hydrogen Midi-In 128:0'!
-  >
-  ```
-- Enter live mode by entering the `live` command:
-  ```sh
+  >>>
+```
+
+- Enter live mode by entering the `live` command (TODO):
+
+```sh
   > live
   Entered live mode. Press Ctrl+D to exit.
-  ```
-  Live mode is an unbuffered input mode in the shell. Whenever an assigned key is pressed,
-  the corresponding MIDI note on event is immediately sent to the port. In this mode, all notes
-  are left ringing and a note off event is sent only when a key is pressed more than once.
-- Lint a file:
-  ```sh
-  $ gonglint examples/bonham
-  ```
-- Compile to SMF:
-  ```sh
-  $ gong2smf -o examples/bonham.mid examples/bonham
-  ```
-  Piping is also supported:
-  ```sh
-  $ cat examples/bach | gong2smf -o examples/bach.mid -
-  ```
-- Compile a YAML file to gong script and play it:
-  ```sh
-  $ yaml2gong examples/example.yml | gong play -
-  ```
-- Compile a YAML file to SMF:
+```
 
-  ```sh
-  $ yaml2gong examples/example.yml | gong2smf -o example.mid -
-  ```
+Live mode is an unbuffered input mode in the shell. Whenever an assigned key is pressed,
+the corresponding MIDI note on event is immediately sent to the port. In this mode, no note off events are sent to the port.
+
+- Lint a file:
+
+```sh
+  $ gong lint examples/bonham
+```
 
 - Help.
 
-  ```sh
-  gong is a MIDI control language and interpreter.
+```sh
+> gong --help
+gong is a MIDI control language and interpreter.
 
-  Usage:
-     [flags]
-     [command]
+Usage:
+   [flags]
+   [command]
 
-  Available Commands:
-    completion  Generate the autocompletion script for the specified shell
-    help        Help about any command
-    load        Load a file and continue in a gong shell
-    play        Play a file
-    shell       Run a gong shell
+Available Commands:
+  completion  Generate the autocompletion script for the specified shell
+  help        Help about any command
+  lint        Lint a file
+  load        Load a file and continue in a gong shell
+  play        Play a file
+  shell       Run a gong shell
 
-  Flags:
-    -h, --help          help for this command
-        --port string   MIDI output port (default "0")
+Flags:
+  -h, --help   help for this command
 
-  Use " [command] --help" for more information about a command.
-  ```
+Use " [command] --help" for more information about a command.
+```
 
 ## Syntax
 
@@ -240,25 +233,24 @@ Commands apply globally unless specified in a named bar that can be called later
 - #### Bars
 
   Bars are used to specify multiple tracks playing at once.
-  Commands used inside bars are not scoped and have global state.
-  For example setting a channel, it becomes the default for all following messages.
-  In multi-channel files, each bar must specify the its channel.
-  See a multi-channel example at the end of this document.
+  Only `timesig`, `velocity` and `channel` are scoped to the bar.
+  Other commands are executed globally the bar is played using the `play` command.
 
   ```
   // Define a bar.
   bar "Rock beat"
   // Setting timesig makes the interpreter validate the bar length.
+  // Incomplete bars are filled with silence.
   timesig 4 4
-  [xx xx xx xx]8
-  // Using braces for nice alignment.
-  [k  s  k  s]
+      [xx xx xx xx]8
+      // Using braces for nice alignment.
+      [k  s  k  s]
   end
 
   // You can also write the same bar as:
   bar "The same beat"
-  [xxxxxxxx]8
-  ksks
+      [xxxxxxxx]8
+      ksks
   end
 
   // Play the bar.
@@ -298,33 +290,30 @@ assign q 45
 // Floor tom 2.
 assign g 41
 
+tempo 132
+timesig 4 4
 velocity 100
 
 // Start the first bar with a crash cymbal and let it ring.
 bar "bonham 1"
-timesig 4 4
-[[c*-o]   [x^-x]    [x^-x] [x^-x]]8/3
--         [-s)-]8/3 s      [-s)-]8/3
-[k^-k]8/3 [--k]8/3  -      [--k]8/3
--         X         -2
+	[[c*-o]   [x^-x]    [x^-x] [x^-x]]8/3
+	-         [-s)-]8/3 s^     [-s)-]8/3
+	[k-k]^8/3 [--k]8/3  -      [--k]8/3
+	-         X         -2
 end
 
 bar "bonham 2"
-timesig 4 4
-[[x^-o]   [x^-x]    [x^-x] [x^-x]]8/3
--         [-s)-]8/3 s      [-s)-]8/3
-[k^-k]8/3 [--k]8/3  -      [--k]8/3
--         X         -2
+	[[x^-o]   [x^-x]    [x^-x] [x^-x]]8/3
+	-         [-s)-]8/3 s^     [-s)-]8/3
+	[k-k]^8/3 [--k]8/3  -      [--k]8/3
+	-         X         -2
 end
 
 bar "fill"
-timesig 4 4
-[[x^-s] [sss] [ssq] [qgg]]8/3
-[[k-k]  [--k]]8/3   -2
--       X     X     X
+	[[x^-s] [sss] [ssq] [qgg]]8/3
+	[[k-k]^ [--k]]8/3   -2
+	-       X     X     X
 end
-
-tempo 132
 
 // Count in.
 xxxo
@@ -398,123 +387,19 @@ play "bar 2"
 The file is included in the `examples` directory.
 
 ```
-channel 10
-program 1
-// Kick drum.
-assign k 36
-// Acoustic snare drum.
-assign s 38
-// Hi-Hat closed.
+channel 1
 assign x 42
-
 channel 2
-program 2
-assign C 48
-assign c 60
-assign e 64
-assign g 67
-
-bar "bar 1"
-	timesig 4 4
-
+assign k 36
+tempo 60
+timesig 4 4
+bar "test"
 	channel 1
-	control 1 1
 	xxxx
-	ksks
-
 	channel 2
-	control 2 2
-	cegc
-	C1
+	kkkk
 end
-
-play "setup tracks"
-play "bar 1"
-```
-
-### YAML example
-
-The gong language has a strict YAML wrapper that compiles to valid gong script.
-
-The file is included in the `examples` directory.
-
-```yaml
----
-instruments:
-  lead:
-    channel: 1
-    assign:
-      c: 60
-      d: 62
-
-  bass:
-    channel: 2
-    assign:
-      c: 48
-      d: 50
-
-  drums:
-    channel: 10
-    assign:
-      k: 36
-      s: 38
-
-bars:
-  - name: sound A
-    params:
-      lead:
-        program: 1
-      bass:
-        program: 1
-      drums:
-        program: 127
-
-  - name: lead reverb on
-    params:
-      lead:
-        control: 100
-        parameter: 100
-
-  - name: lead reverb off
-    params:
-      lead:
-        control: 100
-        parameter: 0
-
-  - name: tempo 1
-    tempo: 120
-
-  - name: tempo 2
-    tempo: 200
-
-  - name: Verse
-    time: 4
-    sig: 4
-    tracks:
-      bass:
-        - "[cd]2"
-      lead:
-        - ccdd
-        - "[cd]2"
-      drums:
-        - ksks
-
-  - name: Fill
-    time: 3
-    sig: 8
-    tracks:
-      drums:
-        - "[ksk]8"
-
-play:
-  - tempo 1
-  - sound A
-  - lead reverb on
-  - Verse
-  - lead reverb off
-  - tempo 2
-  - Fill
-  - Verse
+play "test"
 ```
 
 ## Possible features in the future
