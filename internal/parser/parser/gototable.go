@@ -2,7 +2,7 @@
 
 package parser
 
-const numNTSymbols = 9
+const numNTSymbols = 15
 
 type (
 	gotoTable [numStates]gotoRow
@@ -12,794 +12,2212 @@ type (
 var gotoTab = gotoTable{
 	gotoRow{ // S0
 		-1, // S'
-		1,  // Expr
-		2,  // NoteList
-		4,  // NoteGroup
-		5,  // Note
-		7,  // NoteSymbol
+		1,  // SourceFile
+		2,  // RepeatTerminator
+		-1, // TopLevelDeclList
+		-1, // BarBodyDeclList
+		-1, // TopLevelDecl
+		-1, // BarBodyDecl
+		-1, // Bar
+		-1, // NoteList
+		-1, // NoteObject
+		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		3,  // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S1
 		-1, // S'
-		-1, // Expr
+		-1, // SourceFile
+		-1, // RepeatTerminator
+		-1, // TopLevelDeclList
+		-1, // BarBodyDeclList
+		-1, // TopLevelDecl
+		-1, // BarBodyDecl
+		-1, // Bar
 		-1, // NoteList
-		-1, // NoteGroup
-		-1, // Note
+		-1, // NoteObject
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S2
 		-1, // S'
-		-1, // Expr
-		-1, // NoteList
-		-1, // NoteGroup
-		-1, // Note
-		-1, // NoteSymbol
+		-1, // SourceFile
+		-1, // RepeatTerminator
+		4,  // TopLevelDeclList
+		-1, // BarBodyDeclList
+		5,  // TopLevelDecl
+		-1, // BarBodyDecl
+		6,  // Bar
+		8,  // NoteList
+		11, // NoteObject
+		12, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		7,  // TopLevelCommand
+		9,  // BarBodyCommand
 	},
 	gotoRow{ // S3
 		-1, // S'
-		-1, // Expr
+		-1, // SourceFile
+		26, // RepeatTerminator
+		-1, // TopLevelDeclList
+		-1, // BarBodyDeclList
+		-1, // TopLevelDecl
+		-1, // BarBodyDecl
+		-1, // Bar
 		-1, // NoteList
-		-1, // NoteGroup
-		-1, // Note
+		-1, // NoteObject
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S4
 		-1, // S'
-		-1, // Expr
-		22, // NoteList
-		4,  // NoteGroup
-		5,  // Note
-		7,  // NoteSymbol
+		-1, // SourceFile
+		-1, // RepeatTerminator
+		-1, // TopLevelDeclList
+		-1, // BarBodyDeclList
+		-1, // TopLevelDecl
+		-1, // BarBodyDecl
+		-1, // Bar
+		-1, // NoteList
+		-1, // NoteObject
+		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S5
 		-1, // S'
-		-1, // Expr
-		23, // NoteList
-		4,  // NoteGroup
-		5,  // Note
-		7,  // NoteSymbol
+		-1, // SourceFile
+		27, // RepeatTerminator
+		-1, // TopLevelDeclList
+		-1, // BarBodyDeclList
+		-1, // TopLevelDecl
+		-1, // BarBodyDecl
+		-1, // Bar
+		-1, // NoteList
+		-1, // NoteObject
+		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S6
 		-1, // S'
-		-1, // Expr
-		24, // NoteList
-		25, // NoteGroup
-		26, // Note
-		28, // NoteSymbol
+		-1, // SourceFile
+		-1, // RepeatTerminator
+		-1, // TopLevelDeclList
+		-1, // BarBodyDeclList
+		-1, // TopLevelDecl
+		-1, // BarBodyDecl
+		-1, // Bar
+		-1, // NoteList
+		-1, // NoteObject
+		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S7
 		-1, // S'
-		-1, // Expr
+		-1, // SourceFile
+		-1, // RepeatTerminator
+		-1, // TopLevelDeclList
+		-1, // BarBodyDeclList
+		-1, // TopLevelDecl
+		-1, // BarBodyDecl
+		-1, // Bar
 		-1, // NoteList
-		-1, // NoteGroup
-		-1, // Note
+		-1, // NoteObject
 		-1, // NoteSymbol
-		31, // PropertyList
-		32, // Property
-		-1, // Command
+		-1, // PropertyList
+		-1, // Property
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S8
 		-1, // S'
-		-1, // Expr
+		-1, // SourceFile
+		-1, // RepeatTerminator
+		-1, // TopLevelDeclList
+		-1, // BarBodyDeclList
+		-1, // TopLevelDecl
+		-1, // BarBodyDecl
+		-1, // Bar
 		-1, // NoteList
-		-1, // NoteGroup
-		-1, // Note
+		-1, // NoteObject
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S9
 		-1, // S'
-		-1, // Expr
+		-1, // SourceFile
+		-1, // RepeatTerminator
+		-1, // TopLevelDeclList
+		-1, // BarBodyDeclList
+		-1, // TopLevelDecl
+		-1, // BarBodyDecl
+		-1, // Bar
 		-1, // NoteList
-		-1, // NoteGroup
-		-1, // Note
+		-1, // NoteObject
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S10
 		-1, // S'
-		-1, // Expr
+		-1, // SourceFile
+		-1, // RepeatTerminator
+		-1, // TopLevelDeclList
+		-1, // BarBodyDeclList
+		-1, // TopLevelDecl
+		-1, // BarBodyDecl
+		-1, // Bar
 		-1, // NoteList
-		-1, // NoteGroup
-		-1, // Note
+		-1, // NoteObject
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S11
 		-1, // S'
-		-1, // Expr
-		-1, // NoteList
-		-1, // NoteGroup
-		-1, // Note
-		-1, // NoteSymbol
+		-1, // SourceFile
+		-1, // RepeatTerminator
+		-1, // TopLevelDeclList
+		-1, // BarBodyDeclList
+		-1, // TopLevelDecl
+		-1, // BarBodyDecl
+		-1, // Bar
+		30, // NoteList
+		11, // NoteObject
+		12, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S12
 		-1, // S'
-		-1, // Expr
+		-1, // SourceFile
+		-1, // RepeatTerminator
+		-1, // TopLevelDeclList
+		-1, // BarBodyDeclList
+		-1, // TopLevelDecl
+		-1, // BarBodyDecl
+		-1, // Bar
 		-1, // NoteList
-		-1, // NoteGroup
-		-1, // Note
+		-1, // NoteObject
 		-1, // NoteSymbol
-		-1, // PropertyList
-		-1, // Property
-		-1, // Command
+		31, // PropertyList
+		32, // Property
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S13
 		-1, // S'
-		-1, // Expr
-		-1, // NoteList
-		-1, // NoteGroup
-		-1, // Note
-		-1, // NoteSymbol
+		-1, // SourceFile
+		-1, // RepeatTerminator
+		-1, // TopLevelDeclList
+		-1, // BarBodyDeclList
+		-1, // TopLevelDecl
+		-1, // BarBodyDecl
+		-1, // Bar
+		41, // NoteList
+		42, // NoteObject
+		43, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S14
 		-1, // S'
-		-1, // Expr
+		-1, // SourceFile
+		-1, // RepeatTerminator
+		-1, // TopLevelDeclList
+		-1, // BarBodyDeclList
+		-1, // TopLevelDecl
+		-1, // BarBodyDecl
+		-1, // Bar
 		-1, // NoteList
-		-1, // NoteGroup
-		-1, // Note
+		-1, // NoteObject
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S15
 		-1, // S'
-		-1, // Expr
+		-1, // SourceFile
+		-1, // RepeatTerminator
+		-1, // TopLevelDeclList
+		-1, // BarBodyDeclList
+		-1, // TopLevelDecl
+		-1, // BarBodyDecl
+		-1, // Bar
 		-1, // NoteList
-		-1, // NoteGroup
-		-1, // Note
+		-1, // NoteObject
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S16
 		-1, // S'
-		-1, // Expr
+		-1, // SourceFile
+		-1, // RepeatTerminator
+		-1, // TopLevelDeclList
+		-1, // BarBodyDeclList
+		-1, // TopLevelDecl
+		-1, // BarBodyDecl
+		-1, // Bar
 		-1, // NoteList
-		-1, // NoteGroup
-		-1, // Note
+		-1, // NoteObject
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S17
 		-1, // S'
-		-1, // Expr
+		-1, // SourceFile
+		-1, // RepeatTerminator
+		-1, // TopLevelDeclList
+		-1, // BarBodyDeclList
+		-1, // TopLevelDecl
+		-1, // BarBodyDecl
+		-1, // Bar
 		-1, // NoteList
-		-1, // NoteGroup
-		-1, // Note
+		-1, // NoteObject
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S18
 		-1, // S'
-		-1, // Expr
+		-1, // SourceFile
+		-1, // RepeatTerminator
+		-1, // TopLevelDeclList
+		-1, // BarBodyDeclList
+		-1, // TopLevelDecl
+		-1, // BarBodyDecl
+		-1, // Bar
 		-1, // NoteList
-		-1, // NoteGroup
-		-1, // Note
+		-1, // NoteObject
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S19
 		-1, // S'
-		-1, // Expr
+		-1, // SourceFile
+		-1, // RepeatTerminator
+		-1, // TopLevelDeclList
+		-1, // BarBodyDeclList
+		-1, // TopLevelDecl
+		-1, // BarBodyDecl
+		-1, // Bar
 		-1, // NoteList
-		-1, // NoteGroup
-		-1, // Note
+		-1, // NoteObject
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S20
 		-1, // S'
-		-1, // Expr
+		-1, // SourceFile
+		-1, // RepeatTerminator
+		-1, // TopLevelDeclList
+		-1, // BarBodyDeclList
+		-1, // TopLevelDecl
+		-1, // BarBodyDecl
+		-1, // Bar
 		-1, // NoteList
-		-1, // NoteGroup
-		-1, // Note
+		-1, // NoteObject
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S21
 		-1, // S'
-		-1, // Expr
+		-1, // SourceFile
+		-1, // RepeatTerminator
+		-1, // TopLevelDeclList
+		-1, // BarBodyDeclList
+		-1, // TopLevelDecl
+		-1, // BarBodyDecl
+		-1, // Bar
 		-1, // NoteList
-		-1, // NoteGroup
-		-1, // Note
+		-1, // NoteObject
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S22
 		-1, // S'
-		-1, // Expr
+		-1, // SourceFile
+		-1, // RepeatTerminator
+		-1, // TopLevelDeclList
+		-1, // BarBodyDeclList
+		-1, // TopLevelDecl
+		-1, // BarBodyDecl
+		-1, // Bar
 		-1, // NoteList
-		-1, // NoteGroup
-		-1, // Note
+		-1, // NoteObject
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S23
 		-1, // S'
-		-1, // Expr
+		-1, // SourceFile
+		-1, // RepeatTerminator
+		-1, // TopLevelDeclList
+		-1, // BarBodyDeclList
+		-1, // TopLevelDecl
+		-1, // BarBodyDecl
+		-1, // Bar
 		-1, // NoteList
-		-1, // NoteGroup
-		-1, // Note
+		-1, // NoteObject
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S24
 		-1, // S'
-		-1, // Expr
+		-1, // SourceFile
+		-1, // RepeatTerminator
+		-1, // TopLevelDeclList
+		-1, // BarBodyDeclList
+		-1, // TopLevelDecl
+		-1, // BarBodyDecl
+		-1, // Bar
 		-1, // NoteList
-		-1, // NoteGroup
-		-1, // Note
+		-1, // NoteObject
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S25
 		-1, // S'
-		-1, // Expr
-		51, // NoteList
-		25, // NoteGroup
-		26, // Note
-		28, // NoteSymbol
+		-1, // SourceFile
+		-1, // RepeatTerminator
+		-1, // TopLevelDeclList
+		-1, // BarBodyDeclList
+		-1, // TopLevelDecl
+		-1, // BarBodyDecl
+		-1, // Bar
+		-1, // NoteList
+		-1, // NoteObject
+		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S26
 		-1, // S'
-		-1, // Expr
-		52, // NoteList
-		25, // NoteGroup
-		26, // Note
-		28, // NoteSymbol
+		-1, // SourceFile
+		-1, // RepeatTerminator
+		-1, // TopLevelDeclList
+		-1, // BarBodyDeclList
+		-1, // TopLevelDecl
+		-1, // BarBodyDecl
+		-1, // Bar
+		-1, // NoteList
+		-1, // NoteObject
+		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S27
 		-1, // S'
-		-1, // Expr
-		53, // NoteList
-		25, // NoteGroup
-		26, // Note
-		28, // NoteSymbol
+		-1, // SourceFile
+		-1, // RepeatTerminator
+		-1, // TopLevelDeclList
+		-1, // BarBodyDeclList
+		-1, // TopLevelDecl
+		-1, // BarBodyDecl
+		-1, // Bar
+		-1, // NoteList
+		-1, // NoteObject
+		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S28
 		-1, // S'
-		-1, // Expr
+		-1, // SourceFile
+		55, // RepeatTerminator
+		-1, // TopLevelDeclList
+		-1, // BarBodyDeclList
+		-1, // TopLevelDecl
+		-1, // BarBodyDecl
+		-1, // Bar
 		-1, // NoteList
-		-1, // NoteGroup
-		-1, // Note
+		-1, // NoteObject
 		-1, // NoteSymbol
-		54, // PropertyList
-		55, // Property
-		-1, // Command
+		-1, // PropertyList
+		-1, // Property
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S29
 		-1, // S'
-		-1, // Expr
+		-1, // SourceFile
+		57, // RepeatTerminator
+		-1, // TopLevelDeclList
+		-1, // BarBodyDeclList
+		-1, // TopLevelDecl
+		-1, // BarBodyDecl
+		-1, // Bar
 		-1, // NoteList
-		-1, // NoteGroup
-		-1, // Note
+		-1, // NoteObject
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S30
 		-1, // S'
-		-1, // Expr
+		-1, // SourceFile
+		-1, // RepeatTerminator
+		-1, // TopLevelDeclList
+		-1, // BarBodyDeclList
+		-1, // TopLevelDecl
+		-1, // BarBodyDecl
+		-1, // Bar
 		-1, // NoteList
-		-1, // NoteGroup
-		-1, // Note
+		-1, // NoteObject
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S31
 		-1, // S'
-		-1, // Expr
+		-1, // SourceFile
+		-1, // RepeatTerminator
+		-1, // TopLevelDeclList
+		-1, // BarBodyDeclList
+		-1, // TopLevelDecl
+		-1, // BarBodyDecl
+		-1, // Bar
 		-1, // NoteList
-		-1, // NoteGroup
-		-1, // Note
+		-1, // NoteObject
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S32
 		-1, // S'
-		-1, // Expr
+		-1, // SourceFile
+		-1, // RepeatTerminator
+		-1, // TopLevelDeclList
+		-1, // BarBodyDeclList
+		-1, // TopLevelDecl
+		-1, // BarBodyDecl
+		-1, // Bar
 		-1, // NoteList
-		-1, // NoteGroup
-		-1, // Note
+		-1, // NoteObject
 		-1, // NoteSymbol
-		64, // PropertyList
+		59, // PropertyList
 		32, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S33
 		-1, // S'
-		-1, // Expr
+		-1, // SourceFile
+		-1, // RepeatTerminator
+		-1, // TopLevelDeclList
+		-1, // BarBodyDeclList
+		-1, // TopLevelDecl
+		-1, // BarBodyDecl
+		-1, // Bar
 		-1, // NoteList
-		-1, // NoteGroup
-		-1, // Note
+		-1, // NoteObject
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S34
 		-1, // S'
-		-1, // Expr
+		-1, // SourceFile
+		-1, // RepeatTerminator
+		-1, // TopLevelDeclList
+		-1, // BarBodyDeclList
+		-1, // TopLevelDecl
+		-1, // BarBodyDecl
+		-1, // Bar
 		-1, // NoteList
-		-1, // NoteGroup
-		-1, // Note
+		-1, // NoteObject
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S35
 		-1, // S'
-		-1, // Expr
+		-1, // SourceFile
+		-1, // RepeatTerminator
+		-1, // TopLevelDeclList
+		-1, // BarBodyDeclList
+		-1, // TopLevelDecl
+		-1, // BarBodyDecl
+		-1, // Bar
 		-1, // NoteList
-		-1, // NoteGroup
-		-1, // Note
+		-1, // NoteObject
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S36
 		-1, // S'
-		-1, // Expr
+		-1, // SourceFile
+		-1, // RepeatTerminator
+		-1, // TopLevelDeclList
+		-1, // BarBodyDeclList
+		-1, // TopLevelDecl
+		-1, // BarBodyDecl
+		-1, // Bar
 		-1, // NoteList
-		-1, // NoteGroup
-		-1, // Note
+		-1, // NoteObject
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S37
 		-1, // S'
-		-1, // Expr
+		-1, // SourceFile
+		-1, // RepeatTerminator
+		-1, // TopLevelDeclList
+		-1, // BarBodyDeclList
+		-1, // TopLevelDecl
+		-1, // BarBodyDecl
+		-1, // Bar
 		-1, // NoteList
-		-1, // NoteGroup
-		-1, // Note
+		-1, // NoteObject
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S38
 		-1, // S'
-		-1, // Expr
+		-1, // SourceFile
+		-1, // RepeatTerminator
+		-1, // TopLevelDeclList
+		-1, // BarBodyDeclList
+		-1, // TopLevelDecl
+		-1, // BarBodyDecl
+		-1, // Bar
 		-1, // NoteList
-		-1, // NoteGroup
-		-1, // Note
+		-1, // NoteObject
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S39
 		-1, // S'
-		-1, // Expr
+		-1, // SourceFile
+		-1, // RepeatTerminator
+		-1, // TopLevelDeclList
+		-1, // BarBodyDeclList
+		-1, // TopLevelDecl
+		-1, // BarBodyDecl
+		-1, // Bar
 		-1, // NoteList
-		-1, // NoteGroup
-		-1, // Note
+		-1, // NoteObject
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S40
 		-1, // S'
-		-1, // Expr
+		-1, // SourceFile
+		-1, // RepeatTerminator
+		-1, // TopLevelDeclList
+		-1, // BarBodyDeclList
+		-1, // TopLevelDecl
+		-1, // BarBodyDecl
+		-1, // Bar
 		-1, // NoteList
-		-1, // NoteGroup
-		-1, // Note
+		-1, // NoteObject
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S41
 		-1, // S'
-		-1, // Expr
+		-1, // SourceFile
+		-1, // RepeatTerminator
+		-1, // TopLevelDeclList
+		-1, // BarBodyDeclList
+		-1, // TopLevelDecl
+		-1, // BarBodyDecl
+		-1, // Bar
 		-1, // NoteList
-		-1, // NoteGroup
-		-1, // Note
+		-1, // NoteObject
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S42
 		-1, // S'
-		-1, // Expr
-		-1, // NoteList
-		-1, // NoteGroup
-		-1, // Note
-		-1, // NoteSymbol
+		-1, // SourceFile
+		-1, // RepeatTerminator
+		-1, // TopLevelDeclList
+		-1, // BarBodyDeclList
+		-1, // TopLevelDecl
+		-1, // BarBodyDecl
+		-1, // Bar
+		61, // NoteList
+		42, // NoteObject
+		43, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S43
 		-1, // S'
-		-1, // Expr
+		-1, // SourceFile
+		-1, // RepeatTerminator
+		-1, // TopLevelDeclList
+		-1, // BarBodyDeclList
+		-1, // TopLevelDecl
+		-1, // BarBodyDecl
+		-1, // Bar
 		-1, // NoteList
-		-1, // NoteGroup
-		-1, // Note
+		-1, // NoteObject
 		-1, // NoteSymbol
-		-1, // PropertyList
-		-1, // Property
-		-1, // Command
+		62, // PropertyList
+		63, // Property
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S44
 		-1, // S'
-		-1, // Expr
-		-1, // NoteList
-		-1, // NoteGroup
-		-1, // Note
-		-1, // NoteSymbol
+		-1, // SourceFile
+		-1, // RepeatTerminator
+		-1, // TopLevelDeclList
+		-1, // BarBodyDeclList
+		-1, // TopLevelDecl
+		-1, // BarBodyDecl
+		-1, // Bar
+		72, // NoteList
+		42, // NoteObject
+		43, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S45
 		-1, // S'
-		-1, // Expr
+		-1, // SourceFile
+		-1, // RepeatTerminator
+		-1, // TopLevelDeclList
+		-1, // BarBodyDeclList
+		-1, // TopLevelDecl
+		-1, // BarBodyDecl
+		-1, // Bar
 		-1, // NoteList
-		-1, // NoteGroup
-		-1, // Note
+		-1, // NoteObject
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S46
 		-1, // S'
-		-1, // Expr
+		-1, // SourceFile
+		-1, // RepeatTerminator
+		-1, // TopLevelDeclList
+		-1, // BarBodyDeclList
+		-1, // TopLevelDecl
+		-1, // BarBodyDecl
+		-1, // Bar
 		-1, // NoteList
-		-1, // NoteGroup
-		-1, // Note
+		-1, // NoteObject
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S47
 		-1, // S'
-		-1, // Expr
+		-1, // SourceFile
+		-1, // RepeatTerminator
+		-1, // TopLevelDeclList
+		-1, // BarBodyDeclList
+		-1, // TopLevelDecl
+		-1, // BarBodyDecl
+		-1, // Bar
 		-1, // NoteList
-		-1, // NoteGroup
-		-1, // Note
+		-1, // NoteObject
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S48
 		-1, // S'
-		-1, // Expr
+		-1, // SourceFile
+		-1, // RepeatTerminator
+		-1, // TopLevelDeclList
+		-1, // BarBodyDeclList
+		-1, // TopLevelDecl
+		-1, // BarBodyDecl
+		-1, // Bar
 		-1, // NoteList
-		-1, // NoteGroup
-		-1, // Note
+		-1, // NoteObject
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S49
 		-1, // S'
-		-1, // Expr
+		-1, // SourceFile
+		-1, // RepeatTerminator
+		-1, // TopLevelDeclList
+		-1, // BarBodyDeclList
+		-1, // TopLevelDecl
+		-1, // BarBodyDecl
+		-1, // Bar
 		-1, // NoteList
-		-1, // NoteGroup
-		-1, // Note
+		-1, // NoteObject
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S50
 		-1, // S'
-		-1, // Expr
+		-1, // SourceFile
+		-1, // RepeatTerminator
+		-1, // TopLevelDeclList
+		-1, // BarBodyDeclList
+		-1, // TopLevelDecl
+		-1, // BarBodyDecl
+		-1, // Bar
 		-1, // NoteList
-		-1, // NoteGroup
-		-1, // Note
+		-1, // NoteObject
 		-1, // NoteSymbol
-		68, // PropertyList
-		32, // Property
-		-1, // Command
+		-1, // PropertyList
+		-1, // Property
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S51
 		-1, // S'
-		-1, // Expr
+		-1, // SourceFile
+		-1, // RepeatTerminator
+		-1, // TopLevelDeclList
+		-1, // BarBodyDeclList
+		-1, // TopLevelDecl
+		-1, // BarBodyDecl
+		-1, // Bar
 		-1, // NoteList
-		-1, // NoteGroup
-		-1, // Note
+		-1, // NoteObject
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S52
 		-1, // S'
-		-1, // Expr
+		-1, // SourceFile
+		-1, // RepeatTerminator
+		-1, // TopLevelDeclList
+		-1, // BarBodyDeclList
+		-1, // TopLevelDecl
+		-1, // BarBodyDecl
+		-1, // Bar
 		-1, // NoteList
-		-1, // NoteGroup
-		-1, // Note
+		-1, // NoteObject
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S53
 		-1, // S'
-		-1, // Expr
+		-1, // SourceFile
+		-1, // RepeatTerminator
+		-1, // TopLevelDeclList
+		-1, // BarBodyDeclList
+		-1, // TopLevelDecl
+		-1, // BarBodyDecl
+		-1, // Bar
 		-1, // NoteList
-		-1, // NoteGroup
-		-1, // Note
+		-1, // NoteObject
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S54
 		-1, // S'
-		-1, // Expr
+		-1, // SourceFile
+		-1, // RepeatTerminator
+		-1, // TopLevelDeclList
+		-1, // BarBodyDeclList
+		-1, // TopLevelDecl
+		-1, // BarBodyDecl
+		-1, // Bar
 		-1, // NoteList
-		-1, // NoteGroup
-		-1, // Note
+		-1, // NoteObject
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S55
 		-1, // S'
-		-1, // Expr
-		-1, // NoteList
-		-1, // NoteGroup
-		-1, // Note
-		-1, // NoteSymbol
-		70, // PropertyList
-		55, // Property
-		-1, // Command
+		-1, // SourceFile
+		-1, // RepeatTerminator
+		76, // TopLevelDeclList
+		-1, // BarBodyDeclList
+		5,  // TopLevelDecl
+		-1, // BarBodyDecl
+		6,  // Bar
+		8,  // NoteList
+		11, // NoteObject
+		12, // NoteSymbol
+		-1, // PropertyList
+		-1, // Property
+		7,  // TopLevelCommand
+		9,  // BarBodyCommand
 	},
 	gotoRow{ // S56
 		-1, // S'
-		-1, // Expr
+		-1, // SourceFile
+		77, // RepeatTerminator
+		-1, // TopLevelDeclList
+		-1, // BarBodyDeclList
+		-1, // TopLevelDecl
+		-1, // BarBodyDecl
+		-1, // Bar
 		-1, // NoteList
-		-1, // NoteGroup
-		-1, // Note
+		-1, // NoteObject
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S57
 		-1, // S'
-		-1, // Expr
-		-1, // NoteList
-		-1, // NoteGroup
-		-1, // Note
-		-1, // NoteSymbol
+		-1, // SourceFile
+		-1, // RepeatTerminator
+		-1, // TopLevelDeclList
+		78, // BarBodyDeclList
+		-1, // TopLevelDecl
+		79, // BarBodyDecl
+		-1, // Bar
+		80, // NoteList
+		82, // NoteObject
+		83, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		81, // BarBodyCommand
 	},
 	gotoRow{ // S58
 		-1, // S'
-		-1, // Expr
+		-1, // SourceFile
+		95, // RepeatTerminator
+		-1, // TopLevelDeclList
+		-1, // BarBodyDeclList
+		-1, // TopLevelDecl
+		-1, // BarBodyDecl
+		-1, // Bar
 		-1, // NoteList
-		-1, // NoteGroup
-		-1, // Note
+		-1, // NoteObject
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S59
 		-1, // S'
-		-1, // Expr
+		-1, // SourceFile
+		-1, // RepeatTerminator
+		-1, // TopLevelDeclList
+		-1, // BarBodyDeclList
+		-1, // TopLevelDecl
+		-1, // BarBodyDecl
+		-1, // Bar
 		-1, // NoteList
-		-1, // NoteGroup
-		-1, // Note
+		-1, // NoteObject
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S60
 		-1, // S'
-		-1, // Expr
+		-1, // SourceFile
+		-1, // RepeatTerminator
+		-1, // TopLevelDeclList
+		-1, // BarBodyDeclList
+		-1, // TopLevelDecl
+		-1, // BarBodyDecl
+		-1, // Bar
 		-1, // NoteList
-		-1, // NoteGroup
-		-1, // Note
+		-1, // NoteObject
 		-1, // NoteSymbol
-		-1, // PropertyList
-		-1, // Property
-		-1, // Command
+		96, // PropertyList
+		32, // Property
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S61
 		-1, // S'
-		-1, // Expr
+		-1, // SourceFile
+		-1, // RepeatTerminator
+		-1, // TopLevelDeclList
+		-1, // BarBodyDeclList
+		-1, // TopLevelDecl
+		-1, // BarBodyDecl
+		-1, // Bar
 		-1, // NoteList
-		-1, // NoteGroup
-		-1, // Note
+		-1, // NoteObject
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S62
 		-1, // S'
-		-1, // Expr
+		-1, // SourceFile
+		-1, // RepeatTerminator
+		-1, // TopLevelDeclList
+		-1, // BarBodyDeclList
+		-1, // TopLevelDecl
+		-1, // BarBodyDecl
+		-1, // Bar
 		-1, // NoteList
-		-1, // NoteGroup
-		-1, // Note
+		-1, // NoteObject
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S63
 		-1, // S'
-		-1, // Expr
+		-1, // SourceFile
+		-1, // RepeatTerminator
+		-1, // TopLevelDeclList
+		-1, // BarBodyDeclList
+		-1, // TopLevelDecl
+		-1, // BarBodyDecl
+		-1, // Bar
 		-1, // NoteList
-		-1, // NoteGroup
-		-1, // Note
+		-1, // NoteObject
 		-1, // NoteSymbol
-		-1, // PropertyList
-		-1, // Property
-		-1, // Command
+		97, // PropertyList
+		63, // Property
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S64
 		-1, // S'
-		-1, // Expr
+		-1, // SourceFile
+		-1, // RepeatTerminator
+		-1, // TopLevelDeclList
+		-1, // BarBodyDeclList
+		-1, // TopLevelDecl
+		-1, // BarBodyDecl
+		-1, // Bar
 		-1, // NoteList
-		-1, // NoteGroup
-		-1, // Note
+		-1, // NoteObject
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S65
 		-1, // S'
-		-1, // Expr
+		-1, // SourceFile
+		-1, // RepeatTerminator
+		-1, // TopLevelDeclList
+		-1, // BarBodyDeclList
+		-1, // TopLevelDecl
+		-1, // BarBodyDecl
+		-1, // Bar
 		-1, // NoteList
-		-1, // NoteGroup
-		-1, // Note
+		-1, // NoteObject
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S66
 		-1, // S'
-		-1, // Expr
+		-1, // SourceFile
+		-1, // RepeatTerminator
+		-1, // TopLevelDeclList
+		-1, // BarBodyDeclList
+		-1, // TopLevelDecl
+		-1, // BarBodyDecl
+		-1, // Bar
 		-1, // NoteList
-		-1, // NoteGroup
-		-1, // Note
+		-1, // NoteObject
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S67
 		-1, // S'
-		-1, // Expr
+		-1, // SourceFile
+		-1, // RepeatTerminator
+		-1, // TopLevelDeclList
+		-1, // BarBodyDeclList
+		-1, // TopLevelDecl
+		-1, // BarBodyDecl
+		-1, // Bar
 		-1, // NoteList
-		-1, // NoteGroup
-		-1, // Note
+		-1, // NoteObject
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S68
 		-1, // S'
-		-1, // Expr
+		-1, // SourceFile
+		-1, // RepeatTerminator
+		-1, // TopLevelDeclList
+		-1, // BarBodyDeclList
+		-1, // TopLevelDecl
+		-1, // BarBodyDecl
+		-1, // Bar
 		-1, // NoteList
-		-1, // NoteGroup
-		-1, // Note
+		-1, // NoteObject
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S69
 		-1, // S'
-		-1, // Expr
+		-1, // SourceFile
+		-1, // RepeatTerminator
+		-1, // TopLevelDeclList
+		-1, // BarBodyDeclList
+		-1, // TopLevelDecl
+		-1, // BarBodyDecl
+		-1, // Bar
 		-1, // NoteList
-		-1, // NoteGroup
-		-1, // Note
+		-1, // NoteObject
 		-1, // NoteSymbol
-		71, // PropertyList
-		55, // Property
-		-1, // Command
+		-1, // PropertyList
+		-1, // Property
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S70
 		-1, // S'
-		-1, // Expr
+		-1, // SourceFile
+		-1, // RepeatTerminator
+		-1, // TopLevelDeclList
+		-1, // BarBodyDeclList
+		-1, // TopLevelDecl
+		-1, // BarBodyDecl
+		-1, // Bar
 		-1, // NoteList
-		-1, // NoteGroup
-		-1, // Note
+		-1, // NoteObject
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 	gotoRow{ // S71
 		-1, // S'
-		-1, // Expr
+		-1, // SourceFile
+		-1, // RepeatTerminator
+		-1, // TopLevelDeclList
+		-1, // BarBodyDeclList
+		-1, // TopLevelDecl
+		-1, // BarBodyDecl
+		-1, // Bar
 		-1, // NoteList
-		-1, // NoteGroup
-		-1, // Note
+		-1, // NoteObject
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
-		-1, // Command
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
+	},
+	gotoRow{ // S72
+		-1, // S'
+		-1, // SourceFile
+		-1, // RepeatTerminator
+		-1, // TopLevelDeclList
+		-1, // BarBodyDeclList
+		-1, // TopLevelDecl
+		-1, // BarBodyDecl
+		-1, // Bar
+		-1, // NoteList
+		-1, // NoteObject
+		-1, // NoteSymbol
+		-1, // PropertyList
+		-1, // Property
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
+	},
+	gotoRow{ // S73
+		-1, // S'
+		-1, // SourceFile
+		-1, // RepeatTerminator
+		-1, // TopLevelDeclList
+		-1, // BarBodyDeclList
+		-1, // TopLevelDecl
+		-1, // BarBodyDecl
+		-1, // Bar
+		-1, // NoteList
+		-1, // NoteObject
+		-1, // NoteSymbol
+		-1, // PropertyList
+		-1, // Property
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
+	},
+	gotoRow{ // S74
+		-1, // S'
+		-1, // SourceFile
+		-1, // RepeatTerminator
+		-1, // TopLevelDeclList
+		-1, // BarBodyDeclList
+		-1, // TopLevelDecl
+		-1, // BarBodyDecl
+		-1, // Bar
+		-1, // NoteList
+		-1, // NoteObject
+		-1, // NoteSymbol
+		-1, // PropertyList
+		-1, // Property
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
+	},
+	gotoRow{ // S75
+		-1, // S'
+		-1, // SourceFile
+		-1, // RepeatTerminator
+		-1, // TopLevelDeclList
+		-1, // BarBodyDeclList
+		-1, // TopLevelDecl
+		-1, // BarBodyDecl
+		-1, // Bar
+		-1, // NoteList
+		-1, // NoteObject
+		-1, // NoteSymbol
+		-1, // PropertyList
+		-1, // Property
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
+	},
+	gotoRow{ // S76
+		-1, // S'
+		-1, // SourceFile
+		-1, // RepeatTerminator
+		-1, // TopLevelDeclList
+		-1, // BarBodyDeclList
+		-1, // TopLevelDecl
+		-1, // BarBodyDecl
+		-1, // Bar
+		-1, // NoteList
+		-1, // NoteObject
+		-1, // NoteSymbol
+		-1, // PropertyList
+		-1, // Property
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
+	},
+	gotoRow{ // S77
+		-1, // S'
+		-1, // SourceFile
+		-1, // RepeatTerminator
+		-1, // TopLevelDeclList
+		-1, // BarBodyDeclList
+		-1, // TopLevelDecl
+		-1, // BarBodyDecl
+		-1, // Bar
+		-1, // NoteList
+		-1, // NoteObject
+		-1, // NoteSymbol
+		-1, // PropertyList
+		-1, // Property
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
+	},
+	gotoRow{ // S78
+		-1, // S'
+		-1, // SourceFile
+		-1, // RepeatTerminator
+		-1, // TopLevelDeclList
+		-1, // BarBodyDeclList
+		-1, // TopLevelDecl
+		-1, // BarBodyDecl
+		-1, // Bar
+		-1, // NoteList
+		-1, // NoteObject
+		-1, // NoteSymbol
+		-1, // PropertyList
+		-1, // Property
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
+	},
+	gotoRow{ // S79
+		-1,  // S'
+		-1,  // SourceFile
+		100, // RepeatTerminator
+		-1,  // TopLevelDeclList
+		-1,  // BarBodyDeclList
+		-1,  // TopLevelDecl
+		-1,  // BarBodyDecl
+		-1,  // Bar
+		-1,  // NoteList
+		-1,  // NoteObject
+		-1,  // NoteSymbol
+		-1,  // PropertyList
+		-1,  // Property
+		-1,  // TopLevelCommand
+		-1,  // BarBodyCommand
+	},
+	gotoRow{ // S80
+		-1, // S'
+		-1, // SourceFile
+		-1, // RepeatTerminator
+		-1, // TopLevelDeclList
+		-1, // BarBodyDeclList
+		-1, // TopLevelDecl
+		-1, // BarBodyDecl
+		-1, // Bar
+		-1, // NoteList
+		-1, // NoteObject
+		-1, // NoteSymbol
+		-1, // PropertyList
+		-1, // Property
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
+	},
+	gotoRow{ // S81
+		-1, // S'
+		-1, // SourceFile
+		-1, // RepeatTerminator
+		-1, // TopLevelDeclList
+		-1, // BarBodyDeclList
+		-1, // TopLevelDecl
+		-1, // BarBodyDecl
+		-1, // Bar
+		-1, // NoteList
+		-1, // NoteObject
+		-1, // NoteSymbol
+		-1, // PropertyList
+		-1, // Property
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
+	},
+	gotoRow{ // S82
+		-1,  // S'
+		-1,  // SourceFile
+		-1,  // RepeatTerminator
+		-1,  // TopLevelDeclList
+		-1,  // BarBodyDeclList
+		-1,  // TopLevelDecl
+		-1,  // BarBodyDecl
+		-1,  // Bar
+		102, // NoteList
+		82,  // NoteObject
+		83,  // NoteSymbol
+		-1,  // PropertyList
+		-1,  // Property
+		-1,  // TopLevelCommand
+		-1,  // BarBodyCommand
+	},
+	gotoRow{ // S83
+		-1,  // S'
+		-1,  // SourceFile
+		-1,  // RepeatTerminator
+		-1,  // TopLevelDeclList
+		-1,  // BarBodyDeclList
+		-1,  // TopLevelDecl
+		-1,  // BarBodyDecl
+		-1,  // Bar
+		-1,  // NoteList
+		-1,  // NoteObject
+		-1,  // NoteSymbol
+		103, // PropertyList
+		104, // Property
+		-1,  // TopLevelCommand
+		-1,  // BarBodyCommand
+	},
+	gotoRow{ // S84
+		-1,  // S'
+		-1,  // SourceFile
+		-1,  // RepeatTerminator
+		-1,  // TopLevelDeclList
+		-1,  // BarBodyDeclList
+		-1,  // TopLevelDecl
+		-1,  // BarBodyDecl
+		-1,  // Bar
+		113, // NoteList
+		42,  // NoteObject
+		43,  // NoteSymbol
+		-1,  // PropertyList
+		-1,  // Property
+		-1,  // TopLevelCommand
+		-1,  // BarBodyCommand
+	},
+	gotoRow{ // S85
+		-1, // S'
+		-1, // SourceFile
+		-1, // RepeatTerminator
+		-1, // TopLevelDeclList
+		-1, // BarBodyDeclList
+		-1, // TopLevelDecl
+		-1, // BarBodyDecl
+		-1, // Bar
+		-1, // NoteList
+		-1, // NoteObject
+		-1, // NoteSymbol
+		-1, // PropertyList
+		-1, // Property
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
+	},
+	gotoRow{ // S86
+		-1, // S'
+		-1, // SourceFile
+		-1, // RepeatTerminator
+		-1, // TopLevelDeclList
+		-1, // BarBodyDeclList
+		-1, // TopLevelDecl
+		-1, // BarBodyDecl
+		-1, // Bar
+		-1, // NoteList
+		-1, // NoteObject
+		-1, // NoteSymbol
+		-1, // PropertyList
+		-1, // Property
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
+	},
+	gotoRow{ // S87
+		-1, // S'
+		-1, // SourceFile
+		-1, // RepeatTerminator
+		-1, // TopLevelDeclList
+		-1, // BarBodyDeclList
+		-1, // TopLevelDecl
+		-1, // BarBodyDecl
+		-1, // Bar
+		-1, // NoteList
+		-1, // NoteObject
+		-1, // NoteSymbol
+		-1, // PropertyList
+		-1, // Property
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
+	},
+	gotoRow{ // S88
+		-1, // S'
+		-1, // SourceFile
+		-1, // RepeatTerminator
+		-1, // TopLevelDeclList
+		-1, // BarBodyDeclList
+		-1, // TopLevelDecl
+		-1, // BarBodyDecl
+		-1, // Bar
+		-1, // NoteList
+		-1, // NoteObject
+		-1, // NoteSymbol
+		-1, // PropertyList
+		-1, // Property
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
+	},
+	gotoRow{ // S89
+		-1, // S'
+		-1, // SourceFile
+		-1, // RepeatTerminator
+		-1, // TopLevelDeclList
+		-1, // BarBodyDeclList
+		-1, // TopLevelDecl
+		-1, // BarBodyDecl
+		-1, // Bar
+		-1, // NoteList
+		-1, // NoteObject
+		-1, // NoteSymbol
+		-1, // PropertyList
+		-1, // Property
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
+	},
+	gotoRow{ // S90
+		-1, // S'
+		-1, // SourceFile
+		-1, // RepeatTerminator
+		-1, // TopLevelDeclList
+		-1, // BarBodyDeclList
+		-1, // TopLevelDecl
+		-1, // BarBodyDecl
+		-1, // Bar
+		-1, // NoteList
+		-1, // NoteObject
+		-1, // NoteSymbol
+		-1, // PropertyList
+		-1, // Property
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
+	},
+	gotoRow{ // S91
+		-1, // S'
+		-1, // SourceFile
+		-1, // RepeatTerminator
+		-1, // TopLevelDeclList
+		-1, // BarBodyDeclList
+		-1, // TopLevelDecl
+		-1, // BarBodyDecl
+		-1, // Bar
+		-1, // NoteList
+		-1, // NoteObject
+		-1, // NoteSymbol
+		-1, // PropertyList
+		-1, // Property
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
+	},
+	gotoRow{ // S92
+		-1, // S'
+		-1, // SourceFile
+		-1, // RepeatTerminator
+		-1, // TopLevelDeclList
+		-1, // BarBodyDeclList
+		-1, // TopLevelDecl
+		-1, // BarBodyDecl
+		-1, // Bar
+		-1, // NoteList
+		-1, // NoteObject
+		-1, // NoteSymbol
+		-1, // PropertyList
+		-1, // Property
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
+	},
+	gotoRow{ // S93
+		-1, // S'
+		-1, // SourceFile
+		-1, // RepeatTerminator
+		-1, // TopLevelDeclList
+		-1, // BarBodyDeclList
+		-1, // TopLevelDecl
+		-1, // BarBodyDecl
+		-1, // Bar
+		-1, // NoteList
+		-1, // NoteObject
+		-1, // NoteSymbol
+		-1, // PropertyList
+		-1, // Property
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
+	},
+	gotoRow{ // S94
+		-1, // S'
+		-1, // SourceFile
+		-1, // RepeatTerminator
+		-1, // TopLevelDeclList
+		-1, // BarBodyDeclList
+		-1, // TopLevelDecl
+		-1, // BarBodyDecl
+		-1, // Bar
+		-1, // NoteList
+		-1, // NoteObject
+		-1, // NoteSymbol
+		-1, // PropertyList
+		-1, // Property
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
+	},
+	gotoRow{ // S95
+		-1, // S'
+		-1, // SourceFile
+		-1, // RepeatTerminator
+		-1, // TopLevelDeclList
+		-1, // BarBodyDeclList
+		-1, // TopLevelDecl
+		-1, // BarBodyDecl
+		-1, // Bar
+		-1, // NoteList
+		-1, // NoteObject
+		-1, // NoteSymbol
+		-1, // PropertyList
+		-1, // Property
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
+	},
+	gotoRow{ // S96
+		-1, // S'
+		-1, // SourceFile
+		-1, // RepeatTerminator
+		-1, // TopLevelDeclList
+		-1, // BarBodyDeclList
+		-1, // TopLevelDecl
+		-1, // BarBodyDecl
+		-1, // Bar
+		-1, // NoteList
+		-1, // NoteObject
+		-1, // NoteSymbol
+		-1, // PropertyList
+		-1, // Property
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
+	},
+	gotoRow{ // S97
+		-1, // S'
+		-1, // SourceFile
+		-1, // RepeatTerminator
+		-1, // TopLevelDeclList
+		-1, // BarBodyDeclList
+		-1, // TopLevelDecl
+		-1, // BarBodyDecl
+		-1, // Bar
+		-1, // NoteList
+		-1, // NoteObject
+		-1, // NoteSymbol
+		-1, // PropertyList
+		-1, // Property
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
+	},
+	gotoRow{ // S98
+		-1,  // S'
+		-1,  // SourceFile
+		-1,  // RepeatTerminator
+		-1,  // TopLevelDeclList
+		-1,  // BarBodyDeclList
+		-1,  // TopLevelDecl
+		-1,  // BarBodyDecl
+		-1,  // Bar
+		-1,  // NoteList
+		-1,  // NoteObject
+		-1,  // NoteSymbol
+		120, // PropertyList
+		63,  // Property
+		-1,  // TopLevelCommand
+		-1,  // BarBodyCommand
+	},
+	gotoRow{ // S99
+		-1, // S'
+		-1, // SourceFile
+		-1, // RepeatTerminator
+		-1, // TopLevelDeclList
+		-1, // BarBodyDeclList
+		-1, // TopLevelDecl
+		-1, // BarBodyDecl
+		-1, // Bar
+		-1, // NoteList
+		-1, // NoteObject
+		-1, // NoteSymbol
+		-1, // PropertyList
+		-1, // Property
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
+	},
+	gotoRow{ // S100
+		-1, // S'
+		-1, // SourceFile
+		-1, // RepeatTerminator
+		-1, // TopLevelDeclList
+		-1, // BarBodyDeclList
+		-1, // TopLevelDecl
+		-1, // BarBodyDecl
+		-1, // Bar
+		-1, // NoteList
+		-1, // NoteObject
+		-1, // NoteSymbol
+		-1, // PropertyList
+		-1, // Property
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
+	},
+	gotoRow{ // S101
+		-1,  // S'
+		-1,  // SourceFile
+		121, // RepeatTerminator
+		-1,  // TopLevelDeclList
+		-1,  // BarBodyDeclList
+		-1,  // TopLevelDecl
+		-1,  // BarBodyDecl
+		-1,  // Bar
+		-1,  // NoteList
+		-1,  // NoteObject
+		-1,  // NoteSymbol
+		-1,  // PropertyList
+		-1,  // Property
+		-1,  // TopLevelCommand
+		-1,  // BarBodyCommand
+	},
+	gotoRow{ // S102
+		-1, // S'
+		-1, // SourceFile
+		-1, // RepeatTerminator
+		-1, // TopLevelDeclList
+		-1, // BarBodyDeclList
+		-1, // TopLevelDecl
+		-1, // BarBodyDecl
+		-1, // Bar
+		-1, // NoteList
+		-1, // NoteObject
+		-1, // NoteSymbol
+		-1, // PropertyList
+		-1, // Property
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
+	},
+	gotoRow{ // S103
+		-1, // S'
+		-1, // SourceFile
+		-1, // RepeatTerminator
+		-1, // TopLevelDeclList
+		-1, // BarBodyDeclList
+		-1, // TopLevelDecl
+		-1, // BarBodyDecl
+		-1, // Bar
+		-1, // NoteList
+		-1, // NoteObject
+		-1, // NoteSymbol
+		-1, // PropertyList
+		-1, // Property
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
+	},
+	gotoRow{ // S104
+		-1,  // S'
+		-1,  // SourceFile
+		-1,  // RepeatTerminator
+		-1,  // TopLevelDeclList
+		-1,  // BarBodyDeclList
+		-1,  // TopLevelDecl
+		-1,  // BarBodyDecl
+		-1,  // Bar
+		-1,  // NoteList
+		-1,  // NoteObject
+		-1,  // NoteSymbol
+		123, // PropertyList
+		104, // Property
+		-1,  // TopLevelCommand
+		-1,  // BarBodyCommand
+	},
+	gotoRow{ // S105
+		-1, // S'
+		-1, // SourceFile
+		-1, // RepeatTerminator
+		-1, // TopLevelDeclList
+		-1, // BarBodyDeclList
+		-1, // TopLevelDecl
+		-1, // BarBodyDecl
+		-1, // Bar
+		-1, // NoteList
+		-1, // NoteObject
+		-1, // NoteSymbol
+		-1, // PropertyList
+		-1, // Property
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
+	},
+	gotoRow{ // S106
+		-1, // S'
+		-1, // SourceFile
+		-1, // RepeatTerminator
+		-1, // TopLevelDeclList
+		-1, // BarBodyDeclList
+		-1, // TopLevelDecl
+		-1, // BarBodyDecl
+		-1, // Bar
+		-1, // NoteList
+		-1, // NoteObject
+		-1, // NoteSymbol
+		-1, // PropertyList
+		-1, // Property
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
+	},
+	gotoRow{ // S107
+		-1, // S'
+		-1, // SourceFile
+		-1, // RepeatTerminator
+		-1, // TopLevelDeclList
+		-1, // BarBodyDeclList
+		-1, // TopLevelDecl
+		-1, // BarBodyDecl
+		-1, // Bar
+		-1, // NoteList
+		-1, // NoteObject
+		-1, // NoteSymbol
+		-1, // PropertyList
+		-1, // Property
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
+	},
+	gotoRow{ // S108
+		-1, // S'
+		-1, // SourceFile
+		-1, // RepeatTerminator
+		-1, // TopLevelDeclList
+		-1, // BarBodyDeclList
+		-1, // TopLevelDecl
+		-1, // BarBodyDecl
+		-1, // Bar
+		-1, // NoteList
+		-1, // NoteObject
+		-1, // NoteSymbol
+		-1, // PropertyList
+		-1, // Property
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
+	},
+	gotoRow{ // S109
+		-1, // S'
+		-1, // SourceFile
+		-1, // RepeatTerminator
+		-1, // TopLevelDeclList
+		-1, // BarBodyDeclList
+		-1, // TopLevelDecl
+		-1, // BarBodyDecl
+		-1, // Bar
+		-1, // NoteList
+		-1, // NoteObject
+		-1, // NoteSymbol
+		-1, // PropertyList
+		-1, // Property
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
+	},
+	gotoRow{ // S110
+		-1, // S'
+		-1, // SourceFile
+		-1, // RepeatTerminator
+		-1, // TopLevelDeclList
+		-1, // BarBodyDeclList
+		-1, // TopLevelDecl
+		-1, // BarBodyDecl
+		-1, // Bar
+		-1, // NoteList
+		-1, // NoteObject
+		-1, // NoteSymbol
+		-1, // PropertyList
+		-1, // Property
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
+	},
+	gotoRow{ // S111
+		-1, // S'
+		-1, // SourceFile
+		-1, // RepeatTerminator
+		-1, // TopLevelDeclList
+		-1, // BarBodyDeclList
+		-1, // TopLevelDecl
+		-1, // BarBodyDecl
+		-1, // Bar
+		-1, // NoteList
+		-1, // NoteObject
+		-1, // NoteSymbol
+		-1, // PropertyList
+		-1, // Property
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
+	},
+	gotoRow{ // S112
+		-1, // S'
+		-1, // SourceFile
+		-1, // RepeatTerminator
+		-1, // TopLevelDeclList
+		-1, // BarBodyDeclList
+		-1, // TopLevelDecl
+		-1, // BarBodyDecl
+		-1, // Bar
+		-1, // NoteList
+		-1, // NoteObject
+		-1, // NoteSymbol
+		-1, // PropertyList
+		-1, // Property
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
+	},
+	gotoRow{ // S113
+		-1, // S'
+		-1, // SourceFile
+		-1, // RepeatTerminator
+		-1, // TopLevelDeclList
+		-1, // BarBodyDeclList
+		-1, // TopLevelDecl
+		-1, // BarBodyDecl
+		-1, // Bar
+		-1, // NoteList
+		-1, // NoteObject
+		-1, // NoteSymbol
+		-1, // PropertyList
+		-1, // Property
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
+	},
+	gotoRow{ // S114
+		-1, // S'
+		-1, // SourceFile
+		-1, // RepeatTerminator
+		-1, // TopLevelDeclList
+		-1, // BarBodyDeclList
+		-1, // TopLevelDecl
+		-1, // BarBodyDecl
+		-1, // Bar
+		-1, // NoteList
+		-1, // NoteObject
+		-1, // NoteSymbol
+		-1, // PropertyList
+		-1, // Property
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
+	},
+	gotoRow{ // S115
+		-1, // S'
+		-1, // SourceFile
+		-1, // RepeatTerminator
+		-1, // TopLevelDeclList
+		-1, // BarBodyDeclList
+		-1, // TopLevelDecl
+		-1, // BarBodyDecl
+		-1, // Bar
+		-1, // NoteList
+		-1, // NoteObject
+		-1, // NoteSymbol
+		-1, // PropertyList
+		-1, // Property
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
+	},
+	gotoRow{ // S116
+		-1, // S'
+		-1, // SourceFile
+		-1, // RepeatTerminator
+		-1, // TopLevelDeclList
+		-1, // BarBodyDeclList
+		-1, // TopLevelDecl
+		-1, // BarBodyDecl
+		-1, // Bar
+		-1, // NoteList
+		-1, // NoteObject
+		-1, // NoteSymbol
+		-1, // PropertyList
+		-1, // Property
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
+	},
+	gotoRow{ // S117
+		-1, // S'
+		-1, // SourceFile
+		-1, // RepeatTerminator
+		-1, // TopLevelDeclList
+		-1, // BarBodyDeclList
+		-1, // TopLevelDecl
+		-1, // BarBodyDecl
+		-1, // Bar
+		-1, // NoteList
+		-1, // NoteObject
+		-1, // NoteSymbol
+		-1, // PropertyList
+		-1, // Property
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
+	},
+	gotoRow{ // S118
+		-1, // S'
+		-1, // SourceFile
+		-1, // RepeatTerminator
+		-1, // TopLevelDeclList
+		-1, // BarBodyDeclList
+		-1, // TopLevelDecl
+		-1, // BarBodyDecl
+		-1, // Bar
+		-1, // NoteList
+		-1, // NoteObject
+		-1, // NoteSymbol
+		-1, // PropertyList
+		-1, // Property
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
+	},
+	gotoRow{ // S119
+		-1, // S'
+		-1, // SourceFile
+		-1, // RepeatTerminator
+		-1, // TopLevelDeclList
+		-1, // BarBodyDeclList
+		-1, // TopLevelDecl
+		-1, // BarBodyDecl
+		-1, // Bar
+		-1, // NoteList
+		-1, // NoteObject
+		-1, // NoteSymbol
+		-1, // PropertyList
+		-1, // Property
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
+	},
+	gotoRow{ // S120
+		-1, // S'
+		-1, // SourceFile
+		-1, // RepeatTerminator
+		-1, // TopLevelDeclList
+		-1, // BarBodyDeclList
+		-1, // TopLevelDecl
+		-1, // BarBodyDecl
+		-1, // Bar
+		-1, // NoteList
+		-1, // NoteObject
+		-1, // NoteSymbol
+		-1, // PropertyList
+		-1, // Property
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
+	},
+	gotoRow{ // S121
+		-1,  // S'
+		-1,  // SourceFile
+		-1,  // RepeatTerminator
+		-1,  // TopLevelDeclList
+		127, // BarBodyDeclList
+		-1,  // TopLevelDecl
+		79,  // BarBodyDecl
+		-1,  // Bar
+		80,  // NoteList
+		82,  // NoteObject
+		83,  // NoteSymbol
+		-1,  // PropertyList
+		-1,  // Property
+		-1,  // TopLevelCommand
+		81,  // BarBodyCommand
+	},
+	gotoRow{ // S122
+		-1,  // S'
+		-1,  // SourceFile
+		128, // RepeatTerminator
+		-1,  // TopLevelDeclList
+		-1,  // BarBodyDeclList
+		-1,  // TopLevelDecl
+		-1,  // BarBodyDecl
+		-1,  // Bar
+		-1,  // NoteList
+		-1,  // NoteObject
+		-1,  // NoteSymbol
+		-1,  // PropertyList
+		-1,  // Property
+		-1,  // TopLevelCommand
+		-1,  // BarBodyCommand
+	},
+	gotoRow{ // S123
+		-1, // S'
+		-1, // SourceFile
+		-1, // RepeatTerminator
+		-1, // TopLevelDeclList
+		-1, // BarBodyDeclList
+		-1, // TopLevelDecl
+		-1, // BarBodyDecl
+		-1, // Bar
+		-1, // NoteList
+		-1, // NoteObject
+		-1, // NoteSymbol
+		-1, // PropertyList
+		-1, // Property
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
+	},
+	gotoRow{ // S124
+		-1,  // S'
+		-1,  // SourceFile
+		-1,  // RepeatTerminator
+		-1,  // TopLevelDeclList
+		-1,  // BarBodyDeclList
+		-1,  // TopLevelDecl
+		-1,  // BarBodyDecl
+		-1,  // Bar
+		-1,  // NoteList
+		-1,  // NoteObject
+		-1,  // NoteSymbol
+		129, // PropertyList
+		104, // Property
+		-1,  // TopLevelCommand
+		-1,  // BarBodyCommand
+	},
+	gotoRow{ // S125
+		-1, // S'
+		-1, // SourceFile
+		-1, // RepeatTerminator
+		-1, // TopLevelDeclList
+		-1, // BarBodyDeclList
+		-1, // TopLevelDecl
+		-1, // BarBodyDecl
+		-1, // Bar
+		-1, // NoteList
+		-1, // NoteObject
+		-1, // NoteSymbol
+		-1, // PropertyList
+		-1, // Property
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
+	},
+	gotoRow{ // S126
+		-1, // S'
+		-1, // SourceFile
+		-1, // RepeatTerminator
+		-1, // TopLevelDeclList
+		-1, // BarBodyDeclList
+		-1, // TopLevelDecl
+		-1, // BarBodyDecl
+		-1, // Bar
+		-1, // NoteList
+		-1, // NoteObject
+		-1, // NoteSymbol
+		-1, // PropertyList
+		-1, // Property
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
+	},
+	gotoRow{ // S127
+		-1, // S'
+		-1, // SourceFile
+		-1, // RepeatTerminator
+		-1, // TopLevelDeclList
+		-1, // BarBodyDeclList
+		-1, // TopLevelDecl
+		-1, // BarBodyDecl
+		-1, // Bar
+		-1, // NoteList
+		-1, // NoteObject
+		-1, // NoteSymbol
+		-1, // PropertyList
+		-1, // Property
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
+	},
+	gotoRow{ // S128
+		-1, // S'
+		-1, // SourceFile
+		-1, // RepeatTerminator
+		-1, // TopLevelDeclList
+		-1, // BarBodyDeclList
+		-1, // TopLevelDecl
+		-1, // BarBodyDecl
+		-1, // Bar
+		-1, // NoteList
+		-1, // NoteObject
+		-1, // NoteSymbol
+		-1, // PropertyList
+		-1, // Property
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
+	},
+	gotoRow{ // S129
+		-1, // S'
+		-1, // SourceFile
+		-1, // RepeatTerminator
+		-1, // TopLevelDeclList
+		-1, // BarBodyDeclList
+		-1, // TopLevelDecl
+		-1, // BarBodyDecl
+		-1, // Bar
+		-1, // NoteList
+		-1, // NoteObject
+		-1, // NoteSymbol
+		-1, // PropertyList
+		-1, // Property
+		-1, // TopLevelCommand
+		-1, // BarBodyCommand
 	},
 }

@@ -1,32 +1,13 @@
-channel 10
-program 1
-// Kick drum.
-assign k 36
-// Acoustic snare drum.
-assign s 38
-// Hi-Hat closed.
+channel 1
 assign x 42
-
 channel 2
-program 2
-assign C 48
-assign c 60
-assign e 64
-assign g 67
-
-bar "bar 1"
-	timesig 4 4
-
+assign k 36
+tempo 60
+timesig 4 4
+bar "test"
 	channel 1
-	control 1 1
 	xxxx
-	ksks
-
 	channel 2
-	control 2 2
-	cegc
-	C1
+	kkkk
 end
-
-play "setup tracks"
-play "bar 1"
+play "test"
