@@ -72,8 +72,10 @@ func (s *Sequencer) Play(out drivers.Out) error {
 			time.Sleep(time.Duration(ev.AbsNanoseconds - last))
 			last = ev.AbsNanoseconds
 		}
-		if err := out.Send(ev.Message); err != nil {
-			return err
+		if ev.Message.IsPlayable() {
+			if err := out.Send(ev.Message); err != nil {
+				return err
+			}
 		}
 	}
 	return nil
