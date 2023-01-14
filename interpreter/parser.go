@@ -101,7 +101,9 @@ func (p *Parser) parseBar(declList ast.NodeList) (*Bar, error) {
 	for _, decl := range declList {
 		switch decl := decl.(type) {
 		case ast.CmdTempo:
-			bar.PrependMetaMessage(smf.MetaTempo(float64(decl)))
+			bar.Events = append(bar.Events, Event{
+				Message: smf.MetaTempo(float64(decl)),
+			})
 
 		case ast.CmdTimeSig:
 			p.timesig = [2]uint8{decl.Num, decl.Denom}
@@ -114,16 +116,24 @@ func (p *Parser) parseBar(declList ast.NodeList) (*Bar, error) {
 			p.channel = uint8(decl)
 
 		case ast.CmdProgram:
-			bar.PrependMetaMessage(midi.ProgramChange(p.channel, uint8(decl)))
+			bar.Events = append(bar.Events, Event{
+				Message: smf.Message(midi.ProgramChange(p.channel, uint8(decl))),
+			})
 
 		case ast.CmdControl:
-			bar.PrependMetaMessage(midi.ControlChange(p.channel, decl.Control, decl.Parameter))
+			bar.Events = append(bar.Events, Event{
+				Message: smf.Message(midi.ControlChange(p.channel, decl.Control, decl.Parameter)),
+			})
 
 		case ast.CmdStart:
-			bar.PrependMetaMessage(midi.Start())
+			bar.Events = append(bar.Events, Event{
+				Message: smf.Message(midi.Start()),
+			})
 
 		case ast.CmdStop:
-			bar.PrependMetaMessage(midi.Stop())
+			bar.Events = append(bar.Events, Event{
+				Message: smf.Message(midi.Stop()),
+			})
 
 		case ast.NoteList:
 			if err := p.parseNoteList(bar, decl); err != nil {

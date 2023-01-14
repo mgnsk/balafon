@@ -5,7 +5,6 @@ import (
 	"sort"
 
 	"github.com/mgnsk/gong/ast"
-	"github.com/mgnsk/gong/constants"
 	"github.com/mgnsk/gong/internal/parser/lexer"
 	"github.com/mgnsk/gong/internal/parser/parser"
 )
@@ -15,7 +14,6 @@ type Interpreter struct {
 	parser    *parser.Parser
 	astParser *Parser
 	bars      []*Bar
-	tempo     float64
 }
 
 // Eval the input.
@@ -44,34 +42,33 @@ func (it *Interpreter) Eval(input string) error {
 func (it *Interpreter) Flush() []*Bar {
 	var (
 		timesig      [2]uint8
-		metaBuffer   []Event
+		buf          []Event
 		playableBars []*Bar
 	)
 
-	// Defer bars consisting of only meta events and concatenate them forward.
+	// Defer virtual bars and concatenate them forward.
 	for _, bar := range it.bars {
 		timesig = bar.TimeSig
 
-		if bar.IsMeta() {
-			// Bar that consists of meta events only.
-			metaBuffer = append(metaBuffer, bar.Events...)
+		if bar.IsVirtual() {
+			buf = append(buf, bar.Events...)
 			continue
 		}
 
 		var barEvs []Event
-		barEvs = append(barEvs, metaBuffer...)
+		barEvs = append(barEvs, buf...)
 		barEvs = append(barEvs, bar.Events...)
 		bar.Events = barEvs
 
-		metaBuffer = metaBuffer[:0]
+		buf = buf[:0]
 		playableBars = append(playableBars, bar)
 	}
 
-	if len(metaBuffer) > 0 {
+	if len(buf) > 0 {
 		// Append the remaining meta events to a new bar.
 		playableBars = append(playableBars, &Bar{
 			TimeSig: timesig,
-			Events:  metaBuffer,
+			Events:  buf,
 		})
 	}
 
@@ -91,6 +88,5 @@ func New() *Interpreter {
 	return &Interpreter{
 		parser:    parser.NewParser(),
 		astParser: NewParser(),
-		tempo:     constants.DefaultTempo,
 	}
 }
