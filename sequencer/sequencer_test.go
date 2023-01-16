@@ -37,7 +37,7 @@ func TestSequencerTiming(t *testing.T) {
 			it := interpreter.New()
 			g.Expect(it.Eval(tc.input)).To(Succeed())
 
-			s := sequencer.NewSequencer()
+			s := sequencer.New()
 			s.AddBars(it.Flush()...)
 
 			sm := s.ToSMF1()
@@ -81,7 +81,7 @@ play "test"
 
 	g.Expect(it.Eval(input)).To(Succeed())
 
-	s := sequencer.NewSequencer()
+	s := sequencer.New()
 	s.AddBars(it.Flush()...)
 
 	sm := s.ToSMF1()
@@ -120,7 +120,7 @@ play "two"
 
 	g.Expect(it.Eval(input)).To(Succeed())
 
-	s := sequencer.NewSequencer()
+	s := sequencer.New()
 	s.AddBars(it.Flush()...)
 
 	sm := s.ToSMF1()
@@ -169,7 +169,7 @@ play "two"
 
 	g.Expect(it.Eval(input)).To(Succeed())
 
-	s := sequencer.NewSequencer()
+	s := sequencer.New()
 	s.AddBars(it.Flush()...)
 
 	sm := s.ToSMF1()

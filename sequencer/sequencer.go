@@ -86,8 +86,8 @@ func (s *Sequencer) ToSMF1() []TrackEvent {
 	return s.events
 }
 
-// NewSequencer creates an SMF sequencer.
-func NewSequencer() *Sequencer {
+// New creates an SMF sequencer.
+func New() *Sequencer {
 	return &Sequencer{
 		tempo: constants.DefaultTempo,
 	}

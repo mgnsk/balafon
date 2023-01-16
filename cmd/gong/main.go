@@ -9,15 +9,17 @@ import (
 	"runtime"
 	"strconv"
 	"strings"
+	"unicode/utf8"
 
 	"github.com/c-bata/go-prompt"
 	"github.com/mgnsk/gong/interpreter"
+	"github.com/mgnsk/gong/player"
 	"github.com/mgnsk/gong/sequencer"
-	"github.com/mgnsk/gong/util"
 	"github.com/spf13/cobra"
 	"gitlab.com/gomidi/midi/v2"
 	"gitlab.com/gomidi/midi/v2/drivers"
 	_ "gitlab.com/gomidi/midi/v2/drivers/rtmididrv"
+	"golang.org/x/term"
 )
 
 func addPortFlag(cmd *cobra.Command) {
@@ -39,6 +41,7 @@ func main() {
 
 	root.AddCommand(createCmdShell())
 	root.AddCommand(createCmdLoad())
+	root.AddCommand(createCmdLive())
 	root.AddCommand(createCmdPlay())
 	root.AddCommand(createCmdLint())
 
@@ -59,8 +62,9 @@ func createCmdShell() *cobra.Command {
 				return err
 			}
 
+			parser := prompt.NewStandardInputParser()
 			it := interpreter.New()
-			return runPrompt(out, it)
+			return runPrompt(out, parser, it)
 		},
 	}
 	addPortFlag(cmd)
@@ -94,7 +98,41 @@ func createCmdLoad() *cobra.Command {
 
 			fmt.Println(string(file))
 
-			return runPrompt(out, it)
+			parser := prompt.NewStandardInputParser()
+			return runPrompt(out, parser, it)
+		},
+	}
+	addPortFlag(cmd)
+	return cmd
+}
+
+func createCmdLive() *cobra.Command {
+	cmd := &cobra.Command{
+		Use:   "live [file]",
+		Short: "Load a file and continue in a live shell",
+		Args:  cobra.ExactArgs(1),
+		RunE: func(c *cobra.Command, args []string) error {
+			file, err := ioutil.ReadFile(args[0])
+			if err != nil {
+				return err
+			}
+
+			out, err := openOut(c.Flag("port").Value.String())
+			if err != nil {
+				return err
+			}
+
+			it := interpreter.New()
+			if err := it.Eval(string(file)); err != nil {
+				return err
+			}
+
+			it.Flush()
+
+			fmt.Println(string(file))
+
+			parser := prompt.NewStandardInputParser()
+			return runLive(out, parser, it)
 		},
 	}
 	addPortFlag(cmd)
@@ -122,10 +160,11 @@ func createCmdPlay() *cobra.Command {
 				return err
 			}
 
-			s := sequencer.NewSequencer()
+			s := sequencer.New()
 			s.AddBars(it.Flush()...)
 
-			return s.Play(out)
+			p := player.New(out)
+			return p.Play(s.ToSMF1()...)
 		},
 	}
 	addPortFlag(cmd)
@@ -138,7 +177,7 @@ func createCmdLint() *cobra.Command {
 		Short: "Lint a file",
 		Args:  cobra.ExactArgs(1),
 		RunE: func(c *cobra.Command, args []string) error {
-			f, err := util.Open(args[0])
+			f, err := openInputFile(args[0])
 			if err != nil {
 				return err
 			}
@@ -173,15 +212,54 @@ func restoreTerminal() {
 	}
 }
 
-func runPrompt(out drivers.Out, it *interpreter.Interpreter) error {
+func runLive(out drivers.Out, parser prompt.ConsoleParser, it *interpreter.Interpreter) error {
+	oldState, err := term.MakeRaw(int(os.Stdin.Fd()))
+	if err != nil {
+		panic(err)
+	}
+	defer term.Restore(int(os.Stdin.Fd()), oldState)
+
+	input := make([]byte, 1)
+
+	for {
+		_, err := os.Stdin.Read(input)
+		if err != nil {
+			return err
+		}
+
+		r, _ := utf8.DecodeRune(input)
+		if r == eot {
+			return nil
+		}
+
+		if err := it.Eval(string(r)); err != nil {
+			fmt.Println(err)
+			continue
+		}
+
+		for _, bar := range it.Flush() {
+			for _, ev := range bar.Events {
+				if ev.Message.Is(midi.NoteOnMsg) {
+					if err := out.Send(ev.Message); err != nil {
+						panic(err)
+					}
+				}
+			}
+		}
+	}
+}
+
+func runPrompt(out drivers.Out, parser prompt.ConsoleParser, it *interpreter.Interpreter) error {
 	pt := newBufferedPrompt(
 		func(in string) {
 			if err := it.Eval(in); err != nil {
 				fmt.Println(err)
 				return
 			}
-			s := sequencer.NewSequencer()
+
+			s := sequencer.New()
 			s.AddBars(it.Flush()...)
+
 			if err := s.Play(out); err != nil {
 				fmt.Println(err)
 				return
@@ -196,6 +274,21 @@ func runPrompt(out drivers.Out, it *interpreter.Interpreter) error {
 	pt.Run()
 
 	return nil
+}
+
+func openInputFile(name string) (io.ReadCloser, error) {
+	if name == "-" {
+		return os.Stdin, nil
+	} else if name == "" {
+		return nil, fmt.Errorf("file argument or '-' for stdin required")
+	}
+
+	f, err := os.Open(name)
+	if err != nil {
+		return nil, err
+	}
+
+	return f, nil
 }
 
 func openOut(port string) (out drivers.Out, err error) {
