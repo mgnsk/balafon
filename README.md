@@ -66,12 +66,11 @@ A shell is a text shell for the gong language. It is capable of multiline input 
 - Enter live mode by entering the `live` command (TODO):
 
 ```sh
-  > live
-  Entered live mode. Press Ctrl+D to exit.
+  $ gong live --port "Hydrogen" examples/live_drumset
 ```
 
 Live mode is an unbuffered input mode in the shell. Whenever an assigned key is pressed,
-the corresponding MIDI note on event is immediately sent to the port. In this mode, no note off events are sent to the port.
+a note on message is sent to the port.
 
 - Lint a file:
 
@@ -105,8 +104,8 @@ Use " [command] --help" for more information about a command.
 
 ## Syntax
 
-The language consists of commands and note lists, it is evaluated line by line from top to bottom. This makes an implementation capable of using both live and file inputs.
-Commands apply globally unless specified in a named bar that can be called later.
+The language consists of commands and note lists.
+The commands tempo, program, control, start and stop are global commands. The commands timesig, velocity and channel are local (when used in bars). TODO: make the distinction that global commands are like global functions and local commands are like local variables.
 
 - #### Comments
   ```
@@ -234,7 +233,7 @@ Commands apply globally unless specified in a named bar that can be called later
 
   Bars are used to specify multiple tracks playing at once.
   Only `timesig`, `velocity` and `channel` are scoped to the bar.
-  Other commands are executed globally the bar is played using the `play` command.
+  The bar is executed with the `play` command.
 
   ```
   // Define a bar.
