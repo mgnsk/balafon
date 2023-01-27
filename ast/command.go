@@ -250,14 +250,24 @@ func NewCmdControl(control, value *token.Token) (CmdControl, error) {
 }
 
 // CmdPlay is a bar play command.
-type CmdPlay string
+type CmdPlay struct {
+	Name  string
+	Token *token.Token
+}
+
+func NewCmdName(t *token.Token) (CmdPlay, error) {
+	return CmdPlay{
+		Name:  t.StringValue(),
+		Token: t,
+	}, nil
+}
 
 func (c CmdPlay) WriteTo(w io.Writer) (int64, error) {
 	ew := newErrWriter(w)
 	var n int
 
 	n += ew.WriteString("play \"")
-	n += ew.WriteString(string(c))
+	n += ew.WriteString(c.Name)
 	n += ew.WriteString("\"")
 
 	return int64(n), ew.Flush()

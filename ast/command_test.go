@@ -1,6 +1,7 @@
 package ast_test
 
 import (
+	"bytes"
 	"testing"
 
 	"github.com/mgnsk/gong/ast"
@@ -43,7 +44,7 @@ func TestValidCommands(t *testing.T) {
 		},
 		{
 			`play "chorus"`,
-			Equal(ast.CmdPlay("chorus")),
+			Equal(ast.CmdPlay{Name: "chorus"}),
 		},
 		{
 			`start`,
@@ -64,8 +65,9 @@ func TestValidCommands(t *testing.T) {
 			g.Expect(res).To(BeAssignableToTypeOf(ast.NodeList{}))
 			s = res.(ast.NodeList)
 
-			g.Expect(s).To(HaveLen(1))
-			g.Expect(s[0]).To(tc.match)
+			var buf bytes.Buffer
+			s.WriteTo(&buf)
+			g.Expect(buf.String()).To(Equal(tc.input))
 		})
 	}
 }

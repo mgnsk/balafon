@@ -46,13 +46,10 @@ play "Bar 1"
 
 	var buf1 bytes.Buffer
 	res1.(ast.NodeList).WriteTo(&buf1)
-
 	g.Expect(buf1.String()).To(Equal(strings.Trim(input1, " \n")))
 
 	res2, err := parse(input2)
 	g.Expect(err).NotTo(HaveOccurred())
-	g.Expect(res2).To(BeAssignableToTypeOf(ast.NodeList{}))
-	g.Expect(res2).To(Equal(res1))
 
 	var buf2 bytes.Buffer
 	res2.(ast.NodeList).WriteTo(&buf2)

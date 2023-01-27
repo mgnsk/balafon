@@ -73,9 +73,9 @@ func (p *Parser) Parse(declList ast.NodeList) ([]*Bar, error) {
 			p.bars[decl.Name] = newBar
 
 		case ast.CmdPlay:
-			savedBar, ok := p.bars[string(decl)]
+			savedBar, ok := p.bars[decl.Name]
 			if !ok {
-				return nil, fmt.Errorf("unknown bar '%s'", string(decl))
+				return nil, fmt.Errorf("unknown bar '%s'", decl.Name)
 			}
 			bars = append(bars, savedBar)
 

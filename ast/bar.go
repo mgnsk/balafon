@@ -2,10 +2,13 @@ package ast
 
 import (
 	"io"
+
+	"github.com/mgnsk/gong/internal/parser/token"
 )
 
 // Bar is a bar.
 type Bar struct {
+	Token    *token.Token
 	Name     string
 	DeclList NodeList
 }
@@ -30,6 +33,10 @@ func (b Bar) WriteTo(w io.Writer) (int64, error) {
 }
 
 // NewBar creates a new bar.
-func NewBar(name string, declList NodeList) Bar {
-	return Bar{Name: name, DeclList: declList}
+func NewBar(name *token.Token, declList NodeList) Bar {
+	return Bar{
+		Token:    name,
+		Name:     name.StringValue(),
+		DeclList: declList,
+	}
 }

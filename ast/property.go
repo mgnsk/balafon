@@ -11,8 +11,7 @@ import (
 
 // Property is a note property.
 type Property struct {
-	Type token.Type
-	Lit  []byte
+	*token.Token
 }
 
 // PropertyList is a list of note properties.
@@ -91,11 +90,11 @@ func NewPropertyList(t *token.Token, inner interface{}) (PropertyList, error) {
 		}
 
 		p := make(PropertyList, len(props)+1)
-		p[0] = Property{Type: t.Type, Lit: t.Lit}
+		p[0] = Property{&token.Token{Type: t.Type, Lit: t.Lit}}
 		copy(p[1:], props)
 		sort.Sort(p)
 		return p, nil
 	}
 
-	return PropertyList{Property{Type: t.Type, Lit: t.Lit}}, nil
+	return PropertyList{Property{&token.Token{Type: t.Type, Lit: t.Lit}}}, nil
 }
