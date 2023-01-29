@@ -75,19 +75,16 @@ func NewCmdTempo(bpm *token.Token) (CmdTempo, error) {
 }
 
 // CmdTimeSig is a time signature change command.
-type CmdTimeSig struct {
-	Num   uint8
-	Denom uint8
-}
+type CmdTimeSig [2]uint8
 
 func (c CmdTimeSig) WriteTo(w io.Writer) (int64, error) {
 	ew := newErrWriter(w)
 	var n int
 
 	n += ew.WriteString("timesig ")
-	n += ew.WriteInt(int(c.Num))
+	n += ew.WriteInt(int(c[0]))
 	n += ew.WriteString(" ")
-	n += ew.WriteInt(int(c.Denom))
+	n += ew.WriteInt(int(c[1]))
 
 	return int64(n), ew.Flush()
 }
@@ -113,8 +110,8 @@ func NewCmdTimeSig(num, denom *token.Token) (CmdTimeSig, error) {
 		return CmdTimeSig{}, err
 	}
 	return CmdTimeSig{
-		Num:   uint8(b),
-		Denom: uint8(v),
+		uint8(b),
+		uint8(v),
 	}, nil
 }
 

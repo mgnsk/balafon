@@ -106,8 +106,8 @@ func (p *Parser) parseBar(declList ast.NodeList) (*Bar, error) {
 			})
 
 		case ast.CmdTimeSig:
-			p.timesig = [2]uint8{decl.Num, decl.Denom}
-			bar.TimeSig = p.timesig
+			p.timesig = decl
+			bar.TimeSig = decl
 
 		case ast.CmdVelocity:
 			p.velocity = uint8(decl)
