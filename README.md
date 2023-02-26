@@ -1,3 +1,5 @@
+# Gong
+
 ## Introduction
 
 gong is a small multitrack MIDI control language. It consists of a shell with live mode, player and a linter.
@@ -16,35 +18,34 @@ go install github.com/mgnsk/gong/cmd/gong@latest # Requires rtmidi development p
 - The default command lists the available MIDI ports. The default port is the 0 port.
 
 ```sh
-  $ gong
-  0: Midi Through:Midi Through Port-0 14:0
-  1: Hydrogen:Hydrogen Midi-In 135:0
-  2: VMPK Input:in 128:0
+$ gong
+0: Midi Through:Midi Through Port-0 14:0
+1: Hydrogen:Hydrogen Midi-In 135:0
+2: VMPK Input:in 128:0
 ```
 
 - Play a file through a specific port. The port name must contain the passed in flag value:
 
 ```sh
-  $ gong play --port "VMPK" examples/bach
+gong play --port "VMPK" examples/bach
 ```
 
 To use piped input, pass `-` as the argument:
 
 ```sh
-  $ cat examples/bach | gong play --port "VMPK" -
+cat examples/bach | gong play --port "VMPK" -
 ```
 
 - Port can also be specified by its number:
 
 ```sh
-  $ gong play --port 2 examples/bonham
+gong play --port 2 examples/bonham
 ```
 
 - Enter a shell on the default port:
 
 ```sh
-  $ gong shell
-  >>>
+gong shell
 ```
 
 A shell is a text shell for the gong language. It is capable of multiline input when entering bars.
@@ -52,21 +53,19 @@ A shell is a text shell for the gong language. It is capable of multiline input 
 - Enter a shell on a specific port:
 
 ```sh
-  $ gong shell --port "Hydrogen"
-  >>>
+gong shell --port "Hydrogen"
 ```
 
 - Load a file and enter a shell:
 
 ```sh
-  $ gong load --port "Hydrogen" examples/bonham
-  >>>
+gong load --port "Hydrogen" examples/bonham
 ```
 
 - Enter live mode by entering the `live` command (TODO):
 
 ```sh
-  $ gong live --port "Hydrogen" examples/live_drumset
+gong live --port "Hydrogen" examples/live_drumset
 ```
 
 Live mode is an unbuffered input mode in the shell. Whenever an assigned key is pressed,
@@ -75,13 +74,13 @@ a note on message is sent to the port.
 - Lint a file:
 
 ```sh
-  $ gong lint examples/bonham
+gong lint examples/bonham
 ```
 
 - Help.
 
 ```sh
-> gong --help
+$ gong --help
 gong is a MIDI control language and interpreter.
 
 Usage:
@@ -92,6 +91,7 @@ Available Commands:
   completion  Generate the autocompletion script for the specified shell
   help        Help about any command
   lint        Lint a file
+  live        Load a file and continue in a live shell
   load        Load a file and continue in a gong shell
   play        Play a file
   shell       Run a gong shell
@@ -105,13 +105,16 @@ Use " [command] --help" for more information about a command.
 ## Syntax
 
 The language consists of commands and note lists.
-The commands tempo, program, control, start and stop are global commands. The commands timesig, velocity and channel are local (when used in bars). TODO: make the distinction that global commands are like global functions and local commands are like local variables.
+The commands tempo, program, control, start and stop are global commands.
+The commands timesig, velocity and channel, when used in bars, are local to bars.
 
-- #### Comments
+- ### Comments
+
   ```
   // This is a line comment.
   ```
-- #### Commands
+
+- ### Commands
 
   ```
   // Assign a note.
@@ -142,17 +145,22 @@ The commands tempo, program, control, start and stop are global commands. The co
   control 1 127
   ```
 
-- #### Note assignment
+- ### Note assignment
+
   Assign a MIDI note number to a note letter.
+
   ```
   // Kick drum (on the drum channel).
   assign k 36
   // Middle C (on other channels).
   assign c 60
   ```
-- #### Notes
+
+- ### Notes
+
   Notes are written as a letter symbol (must be assigned first) plus properties.
   The available properties are
+
   - sharp (`#`)
   - flat (`$`)
   - accentuated (`^`)
@@ -161,7 +169,9 @@ The commands tempo, program, control, start and stop are global commands. The co
   - dot (`.`)
   - tuplet (`/3`) (The number in the tuplet specifies the divison, for example a quintuplet `/5`)
   - let ring (`*`)
-- #### Note values
+
+- ### Note values
+
   ```
   // Whole note.
   x1
@@ -177,14 +187,18 @@ The commands tempo, program, control, start and stop are global commands. The co
   x32
   // And so on...
   ```
+
 - ### Rests
+
   ```
   // A quarter rest.
   -
   // An 8th rest.
   -8
   ```
-- #### Dotted notes and tuplets
+
+- ### Dotted notes and tuplets
+
   ```
   // Dotted quarter note.
   x.
@@ -199,7 +213,9 @@ The commands tempo, program, control, start and stop are global commands. The co
   // Dotted 8th quintuplet note.
   x8./5
   ```
-- #### Flat and sharp notes.
+
+- ### Flat and sharp notes
+
   ```
   // A note.
   c
@@ -208,7 +224,8 @@ The commands tempo, program, control, start and stop are global commands. The co
   // A flat note (MIDI note number - 1).
   c$
   ```
-- #### Note grouping
+
+- ### Note grouping
 
   Notes can be arbitrarily grouped and properties applied to multiple notes at once.
 
@@ -229,7 +246,7 @@ The commands tempo, program, control, start and stop are global commands. The co
   f8 c8 g8 f#8 c#8 g#8
   ```
 
-- #### Bars
+- ### Bars
 
   Bars are used to specify multiple tracks playing at once.
   Only `timesig`, `velocity` and `channel` are scoped to the bar.
@@ -263,7 +280,7 @@ The commands tempo, program, control, start and stop are global commands. The co
 The file is included in the `examples` directory. To play into the default port, run
 
 ```sh
-$ gong play examples/bonham
+gong play examples/bonham
 ```
 
 ```
@@ -333,7 +350,7 @@ play "fill"
 The file is included in the `examples` directory. To play into the default port, run
 
 ```sh
-$ gong play examples/bach
+gong play examples/bach
 ```
 
 It is possible to write melodies using gong in a limited way. Here's 2 bars of Bach:
