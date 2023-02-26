@@ -9,8 +9,7 @@ import (
 
 // Player is a MIDI player.
 type Player struct {
-	out  drivers.Out
-	last int64
+	out drivers.Out
 }
 
 // New creates a new player.
@@ -22,10 +21,17 @@ func New(out drivers.Out) *Player {
 
 // Play the events into the out port.
 func (p *Player) Play(events ...sequencer.TrackEvent) error {
+	if len(events) == 0 {
+		return nil
+	}
+
+	// Play the first event without sleep.
+	last := events[0].AbsNanoseconds
+
 	for _, ev := range events {
-		if delta := ev.AbsNanoseconds - p.last; delta > 0 {
+		if delta := ev.AbsNanoseconds - last; delta > 0 {
 			time.Sleep(time.Duration(delta))
-			p.last = ev.AbsNanoseconds
+			last = ev.AbsNanoseconds
 		}
 		if ev.Message.IsPlayable() {
 			if err := p.out.Send(ev.Message); err != nil {
@@ -33,5 +39,6 @@ func (p *Player) Play(events ...sequencer.TrackEvent) error {
 			}
 		}
 	}
+
 	return nil
 }

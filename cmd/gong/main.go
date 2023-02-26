@@ -88,17 +88,16 @@ func createCmdLoad() *cobra.Command {
 			}
 
 			it := interpreter.New()
+			seq := sequencer.New()
+
 			if err := it.Eval(string(file)); err != nil {
 				return err
 			}
 
-			// TODO: need to advance the sequencer
-			// to keep latest tempo
-			it.Flush()
-
 			fmt.Println(string(file))
 
-			seq := sequencer.New()
+			seq.AddBars(it.Flush()...)
+			seq.Flush()
 
 			runPrompt(out, it, seq)
 
