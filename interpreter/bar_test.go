@@ -27,11 +27,9 @@ func TestBarDurationMultiTrack(t *testing.T) {
 		TimeSig: [2]uint8{1, 4},
 		Events: []interpreter.Event{
 			{
-				Channel:  0,
 				Duration: uint32(constants.TicksPerQuarter),
 			},
 			{
-				Channel:  1,
 				Duration: uint32(constants.TicksPerQuarter),
 			},
 		},

@@ -261,7 +261,6 @@ func (it *Interpreter) parseNoteList(bar *Bar, noteList ast.NoteList) error {
 		}
 
 		bar.Events = append(bar.Events, Event{
-			Channel:  it.channel,
 			Pos:      it.pos,
 			Duration: noteLen,
 			Message:  smf.Message(midi.NoteOn(it.channel, key, velocity)),
@@ -269,7 +268,6 @@ func (it *Interpreter) parseNoteList(bar *Bar, noteList ast.NoteList) error {
 
 		if !note.IsLetRing() {
 			bar.Events = append(bar.Events, Event{
-				Channel:  it.channel,
 				Pos:      it.pos + noteLen,
 				Duration: 0,
 				Message:  smf.Message(midi.NoteOff(it.channel, key)),

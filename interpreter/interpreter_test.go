@@ -255,19 +255,16 @@ func TestNoteLengths(t *testing.T) {
 			g.Expect(bars[0].TimeSig).To(Equal([2]uint8{4, 4}))
 			g.Expect(bars[0].Events).To(ConsistOf(
 				interpreter.Event{
-					Channel:  0,
 					Pos:      0,
 					Duration: 0,
 					Message:  smf.MetaTempo(float64(tempo)),
 				},
 				interpreter.Event{
-					Channel:  0,
 					Pos:      0,
 					Duration: tc.offAt,
 					Message:  smf.Message(midi.NoteOn(0, 36, constants.DefaultVelocity)),
 				},
 				interpreter.Event{
-					Channel:  0,
 					Pos:      tc.offAt,
 					Duration: 0,
 					Message:  smf.Message(midi.NoteOff(0, 36)),
@@ -557,25 +554,21 @@ c
 				{Message: smf.Message(midi.ProgramChange(1, 2))},
 				{Message: smf.Message(midi.ControlChange(1, 1, 2))},
 				{
-					Channel:  1,
 					Pos:      0,
 					Duration: uint32(constants.TicksPerQuarter),
 					Message:  smf.Message(midi.NoteOn(1, 60, 25)),
 				},
 				{
-					Channel:  2,
 					Pos:      0,
 					Duration: uint32(constants.TicksPerQuarter),
 					Message:  smf.Message(midi.NoteOn(2, 62, 25)),
 				},
 				{
-					Channel:  1,
 					Pos:      uint32(constants.TicksPerQuarter),
 					Duration: 0,
 					Message:  smf.Message(midi.NoteOff(1, 60)),
 				},
 				{
-					Channel:  2,
 					Pos:      uint32(constants.TicksPerQuarter),
 					Duration: 0,
 					Message:  smf.Message(midi.NoteOff(2, 62)),
@@ -589,13 +582,11 @@ c
 					Message: smf.MetaTempo(120),
 				},
 				{
-					Channel:  1,
 					Pos:      0,
 					Duration: uint32(constants.TicksPerQuarter),
 					Message:  smf.Message(midi.NoteOn(1, 60, 50)),
 				},
 				{
-					Channel:  1,
 					Pos:      uint32(constants.TicksPerQuarter),
 					Duration: 0,
 					Message:  smf.Message(midi.NoteOff(1, 60)),
@@ -606,13 +597,11 @@ c
 			TimeSig: [2]uint8{1, 4},
 			Events: []interpreter.Event{
 				{
-					Channel:  1,
 					Pos:      0,
 					Duration: uint32(constants.TicksPerQuarter),
 					Message:  smf.Message(midi.NoteOn(1, 60, 50)),
 				},
 				{
-					Channel:  1,
 					Pos:      uint32(constants.TicksPerQuarter),
 					Duration: 0,
 					Message:  smf.Message(midi.NoteOff(1, 60)),
@@ -667,13 +656,11 @@ c
 			TimeSig: [2]uint8{2, 8},
 			Events: []interpreter.Event{
 				{
-					Channel:  1,
 					Pos:      0,
 					Duration: uint32(constants.TicksPerQuarter),
 					Message:  smf.Message(midi.NoteOn(1, 60, constants.DefaultVelocity)),
 				},
 				{
-					Channel:  1,
 					Pos:      uint32(constants.TicksPerQuarter),
 					Duration: 0,
 					Message:  smf.Message(midi.NoteOff(1, 60)),
@@ -685,13 +672,11 @@ c
 			Events: []interpreter.Event{
 				{Message: smf.MetaTempo(120)},
 				{
-					Channel:  1,
 					Pos:      0,
 					Duration: uint32(constants.TicksPerQuarter),
 					Message:  smf.Message(midi.NoteOn(1, 60, constants.DefaultVelocity)),
 				},
 				{
-					Channel:  1,
 					Pos:      uint32(constants.TicksPerQuarter),
 					Duration: 0,
 					Message:  smf.Message(midi.NoteOff(1, 60)),
@@ -702,13 +687,11 @@ c
 			TimeSig: [2]uint8{1, 4},
 			Events: []interpreter.Event{
 				{
-					Channel:  1,
 					Pos:      0,
 					Duration: uint32(constants.TicksPerQuarter),
 					Message:  smf.Message(midi.NoteOn(1, 60, constants.DefaultVelocity)),
 				},
 				{
-					Channel:  1,
 					Pos:      uint32(constants.TicksPerQuarter),
 					Duration: 0,
 					Message:  smf.Message(midi.NoteOff(1, 60)),

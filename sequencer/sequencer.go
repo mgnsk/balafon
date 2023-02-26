@@ -37,7 +37,6 @@ func (s *Sequencer) AddBars(bars ...*interpreter.Bar) {
 			var newTempo float64
 			if ev.Message.GetMetaTempo(&newTempo) {
 				s.tempo = newTempo
-				continue
 			}
 		}
 
