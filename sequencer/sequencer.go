@@ -1,7 +1,6 @@
 package sequencer
 
 import (
-	"sort"
 	"time"
 
 	"github.com/mgnsk/gong/constants"
@@ -9,6 +8,7 @@ import (
 	"gitlab.com/gomidi/midi/v2"
 	"gitlab.com/gomidi/midi/v2/drivers"
 	"gitlab.com/gomidi/midi/v2/smf"
+	"golang.org/x/exp/slices"
 )
 
 // TrackEvent is an SMF track event.
@@ -59,8 +59,8 @@ func (s *Sequencer) AddBars(bars ...*interpreter.Bar) {
 		s.absNanoseconds += constants.TicksPerQuarter.Duration(s.tempo, ticks).Nanoseconds()
 	}
 
-	sort.SliceStable(s.events, func(i, j int) bool {
-		return s.events[i].AbsTicks < s.events[j].AbsTicks
+	slices.SortStableFunc(s.events, func(a, b TrackEvent) bool {
+		return a.AbsTicks < b.AbsTicks
 	})
 }
 

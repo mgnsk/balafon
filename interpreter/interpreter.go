@@ -2,7 +2,6 @@ package interpreter
 
 import (
 	"fmt"
-	"sort"
 
 	"github.com/mgnsk/gong/ast"
 	"github.com/mgnsk/gong/constants"
@@ -10,6 +9,7 @@ import (
 	"github.com/mgnsk/gong/internal/parser/parser"
 	"gitlab.com/gomidi/midi/v2"
 	"gitlab.com/gomidi/midi/v2/smf"
+	"golang.org/x/exp/slices"
 )
 
 // Interpreter evaluates text input and emits MIDI events.
@@ -54,7 +54,7 @@ func (it *Interpreter) Flush() []*Bar {
 	var (
 		timesig      [2]uint8
 		buf          []Event
-		playableBars []*Bar
+		playableBars = make([]*Bar, 0, len(it.barBuffer))
 	)
 
 	// Defer virtual bars and concatenate them forward.
@@ -66,7 +66,7 @@ func (it *Interpreter) Flush() []*Bar {
 			continue
 		}
 
-		var barEvs []Event
+		barEvs := make([]Event, 0, len(buf)+len(bar.Events))
 		barEvs = append(barEvs, buf...)
 		barEvs = append(barEvs, bar.Events...)
 		bar.Events = barEvs
@@ -86,8 +86,8 @@ func (it *Interpreter) Flush() []*Bar {
 	it.barBuffer = it.barBuffer[:0]
 
 	for _, bar := range playableBars {
-		sort.SliceStable(bar.Events, func(i, j int) bool {
-			return bar.Events[i].Pos < bar.Events[j].Pos
+		slices.SortStableFunc(bar.Events, func(a, b Event) bool {
+			return a.Pos < b.Pos
 		})
 	}
 

@@ -4,10 +4,10 @@ go 1.19
 
 require (
 	github.com/c-bata/go-prompt v0.2.6
-	github.com/davecgh/go-spew v1.1.1
 	github.com/onsi/gomega v1.24.2
 	github.com/spf13/cobra v1.6.1
 	gitlab.com/gomidi/midi/v2 v2.0.25
+	golang.org/x/exp v0.0.0-20230224173230-c95f2b4c22f2
 	golang.org/x/term v0.4.0
 )
 
