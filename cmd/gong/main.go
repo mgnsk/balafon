@@ -4,11 +4,9 @@ import (
 	"fmt"
 	"io"
 	"io/ioutil"
+	"log"
 	"os"
-	"os/exec"
-	"runtime"
 	"strconv"
-	"strings"
 	"unicode/utf8"
 
 	"github.com/c-bata/go-prompt"
@@ -46,7 +44,7 @@ func main() {
 	root.AddCommand(createCmdLint())
 
 	if err := root.Execute(); err != nil {
-		panic(err)
+		log.Fatal(err)
 	}
 }
 
@@ -62,9 +60,10 @@ func createCmdShell() *cobra.Command {
 				return err
 			}
 
-			parser := prompt.NewStandardInputParser()
 			it := interpreter.New()
-			return runPrompt(out, parser, it)
+			runPrompt(out, it)
+
+			return nil
 		},
 	}
 	addPortFlag(cmd)
@@ -98,8 +97,9 @@ func createCmdLoad() *cobra.Command {
 
 			fmt.Println(string(file))
 
-			parser := prompt.NewStandardInputParser()
-			return runPrompt(out, parser, it)
+			runPrompt(out, it)
+
+			return nil
 		},
 	}
 	addPortFlag(cmd)
@@ -131,8 +131,7 @@ func createCmdLive() *cobra.Command {
 
 			fmt.Println(string(file))
 
-			parser := prompt.NewStandardInputParser()
-			return runLive(out, parser, it)
+			return runLive(out, it)
 		},
 	}
 	addPortFlag(cmd)
@@ -163,8 +162,11 @@ func createCmdPlay() *cobra.Command {
 			s := sequencer.New()
 			s.AddBars(it.Flush()...)
 
+			events := s.Flush()
+
 			p := player.New(out)
-			return p.Play(s.ToSMF1()...)
+
+			return p.Play(events...)
 		},
 	}
 	addPortFlag(cmd)
@@ -201,21 +203,10 @@ func createCmdLint() *cobra.Command {
 	return cmd
 }
 
-func restoreTerminal() {
-	if strings.Contains(runtime.GOOS, "linux") {
-		// TODO: eventually remove this when the bugs get fixed.
-		// Fix Ctrl+C not working after exit (https://github.com/c-bata/go-prompt/issues/228)
-		rawModeOff := exec.Command("/bin/stty", "-raw", "echo")
-		rawModeOff.Stdin = os.Stdin
-		_ = rawModeOff.Run()
-		rawModeOff.Wait()
-	}
-}
-
-func runLive(out drivers.Out, parser prompt.ConsoleParser, it *interpreter.Interpreter) error {
+func runLive(out drivers.Out, it *interpreter.Interpreter) error {
 	oldState, err := term.MakeRaw(int(os.Stdin.Fd()))
 	if err != nil {
-		panic(err)
+		return err
 	}
 	defer term.Restore(int(os.Stdin.Fd()), oldState)
 
@@ -241,7 +232,7 @@ func runLive(out drivers.Out, parser prompt.ConsoleParser, it *interpreter.Inter
 			for _, ev := range bar.Events {
 				if ev.Message.Is(midi.NoteOnMsg) {
 					if err := out.Send(ev.Message); err != nil {
-						panic(err)
+						return err
 					}
 				}
 			}
@@ -249,7 +240,9 @@ func runLive(out drivers.Out, parser prompt.ConsoleParser, it *interpreter.Inter
 	}
 }
 
-func runPrompt(out drivers.Out, parser prompt.ConsoleParser, it *interpreter.Interpreter) error {
+func runPrompt(out drivers.Out, it *interpreter.Interpreter) {
+	p := player.New(out)
+
 	pt := newBufferedPrompt(
 		func(in string) {
 			if err := it.Eval(in); err != nil {
@@ -260,7 +253,9 @@ func runPrompt(out drivers.Out, parser prompt.ConsoleParser, it *interpreter.Int
 			s := sequencer.New()
 			s.AddBars(it.Flush()...)
 
-			if err := s.Play(out); err != nil {
+			events := s.Flush()
+
+			if err := p.Play(events...); err != nil {
 				fmt.Println(err)
 				return
 			}
@@ -270,10 +265,7 @@ func runPrompt(out drivers.Out, parser prompt.ConsoleParser, it *interpreter.Int
 		},
 	)
 
-	defer restoreTerminal()
 	pt.Run()
-
-	return nil
 }
 
 func openInputFile(name string) (io.ReadCloser, error) {

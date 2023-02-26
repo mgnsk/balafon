@@ -2,6 +2,9 @@ package main
 
 import (
 	"bytes"
+	"os"
+	"os/exec"
+	"runtime"
 	"strings"
 
 	"github.com/c-bata/go-prompt"
@@ -126,7 +129,19 @@ func newBufferedPrompt(execute prompt.Executor, complete prompt.Completer) *buff
 }
 
 func (p *bufferedPrompt) Run() {
+	defer restoreTerminal()
 	p.pt.Run()
+}
+
+func restoreTerminal() {
+	if strings.Contains(runtime.GOOS, "linux") {
+		// TODO: eventually remove this when the bugs get fixed.
+		// Fix Ctrl+C not working after exit (https://github.com/c-bata/go-prompt/issues/228)
+		rawModeOff := exec.Command("/bin/stty", "-raw", "echo")
+		rawModeOff.Stdin = os.Stdin
+		_ = rawModeOff.Run()
+		rawModeOff.Wait()
+	}
 }
 
 // func (s *shell) runMetronomePrinter(ctx context.Context, reso uint) {

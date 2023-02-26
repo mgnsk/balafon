@@ -40,7 +40,7 @@ func TestSequencerTiming(t *testing.T) {
 			s := sequencer.New()
 			s.AddBars(it.Flush()...)
 
-			sm := s.ToSMF1()
+			sm := s.Flush()
 			g.Expect(sm).To(HaveLen(3))
 
 			g.Expect(sm[0].Message.Type()).To(Equal(smf.MetaTempoMsg))
@@ -84,7 +84,7 @@ play "test"
 	s := sequencer.New()
 	s.AddBars(it.Flush()...)
 
-	sm := s.ToSMF1()
+	sm := s.Flush()
 	g.Expect(sm).To(HaveLen(17))
 
 	g.Expect(sm[15].Message.Type()).To(Equal(midi.NoteOffMsg))
@@ -123,7 +123,7 @@ play "two"
 	s := sequencer.New()
 	s.AddBars(it.Flush()...)
 
-	sm := s.ToSMF1()
+	sm := s.Flush()
 	g.Expect(sm).To(HaveLen(5))
 
 	g.Expect(sm[1].Message.Type()).To(Equal(midi.NoteOnMsg))
@@ -172,7 +172,7 @@ play "two"
 	s := sequencer.New()
 	s.AddBars(it.Flush()...)
 
-	sm := s.ToSMF1()
+	sm := s.Flush()
 	g.Expect(sm).To(HaveLen(8))
 
 	g.Expect(sm[7]).To(Equal(sequencer.TrackEvent{

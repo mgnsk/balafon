@@ -1,12 +1,9 @@
 package sequencer
 
 import (
-	"time"
-
 	"github.com/mgnsk/gong/constants"
 	"github.com/mgnsk/gong/interpreter"
 	"gitlab.com/gomidi/midi/v2"
-	"gitlab.com/gomidi/midi/v2/drivers"
 	"gitlab.com/gomidi/midi/v2/smf"
 	"golang.org/x/exp/slices"
 )
@@ -64,26 +61,12 @@ func (s *Sequencer) AddBars(bars ...*interpreter.Bar) {
 	})
 }
 
-// Play the accumulated sequence into a MIDI out port.
-func (s *Sequencer) Play(out drivers.Out) error {
-	var last int64
-	for _, ev := range s.events {
-		if ev.AbsNanoseconds > last {
-			time.Sleep(time.Duration(ev.AbsNanoseconds - last))
-			last = ev.AbsNanoseconds
-		}
-		if ev.Message.IsPlayable() {
-			if err := out.Send(ev.Message); err != nil {
-				return err
-			}
-		}
-	}
-	return nil
-}
-
-// ToSMF1 emits the accumulated SMF tracks.
-func (s *Sequencer) ToSMF1() []TrackEvent {
-	return s.events
+// Flush emits the accumulated SMF tracks.
+func (s *Sequencer) Flush() []TrackEvent {
+	events := make([]TrackEvent, len(s.events))
+	copy(events, s.events)
+	s.events = s.events[:0]
+	return events
 }
 
 // New creates an SMF sequencer.
