@@ -1,6 +1,7 @@
 package player
 
 import (
+	"fmt"
 	"time"
 
 	"github.com/mgnsk/gong/sequencer"
@@ -9,7 +10,8 @@ import (
 
 // Player is a MIDI player.
 type Player struct {
-	out drivers.Out
+	out  drivers.Out
+	last int64
 }
 
 // New creates a new player.
@@ -21,11 +23,11 @@ func New(out drivers.Out) *Player {
 
 // Play the events into the out port.
 func (p *Player) Play(events ...sequencer.TrackEvent) error {
-	var last int64
 	for _, ev := range events {
-		if ev.AbsNanoseconds > last {
-			time.Sleep(time.Duration(ev.AbsNanoseconds - last))
-			last = ev.AbsNanoseconds
+		if delta := ev.AbsNanoseconds - p.last; delta > 0 {
+			fmt.Println(delta)
+			time.Sleep(time.Duration(delta))
+			p.last = ev.AbsNanoseconds
 		}
 		if ev.Message.IsPlayable() {
 			if err := p.out.Send(ev.Message); err != nil {

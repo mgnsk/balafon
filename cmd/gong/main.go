@@ -61,7 +61,8 @@ func createCmdShell() *cobra.Command {
 			}
 
 			it := interpreter.New()
-			runPrompt(out, it)
+			seq := sequencer.New()
+			runPrompt(out, it, seq)
 
 			return nil
 		},
@@ -97,7 +98,9 @@ func createCmdLoad() *cobra.Command {
 
 			fmt.Println(string(file))
 
-			runPrompt(out, it)
+			seq := sequencer.New()
+
+			runPrompt(out, it, seq)
 
 			return nil
 		},
@@ -240,7 +243,7 @@ func runLive(out drivers.Out, it *interpreter.Interpreter) error {
 	}
 }
 
-func runPrompt(out drivers.Out, it *interpreter.Interpreter) {
+func runPrompt(out drivers.Out, it *interpreter.Interpreter, seq *sequencer.Sequencer) {
 	p := player.New(out)
 
 	pt := newBufferedPrompt(
@@ -250,10 +253,9 @@ func runPrompt(out drivers.Out, it *interpreter.Interpreter) {
 				return
 			}
 
-			s := sequencer.New()
-			s.AddBars(it.Flush()...)
+			seq.AddBars(it.Flush()...)
 
-			events := s.Flush()
+			events := seq.Flush()
 
 			if err := p.Play(events...); err != nil {
 				fmt.Println(err)
