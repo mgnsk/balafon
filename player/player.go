@@ -1,7 +1,6 @@
 package player
 
 import (
-	"fmt"
 	"time"
 
 	"github.com/mgnsk/gong/sequencer"
@@ -25,7 +24,6 @@ func New(out drivers.Out) *Player {
 func (p *Player) Play(events ...sequencer.TrackEvent) error {
 	for _, ev := range events {
 		if delta := ev.AbsNanoseconds - p.last; delta > 0 {
-			fmt.Println(delta)
 			time.Sleep(time.Duration(delta))
 			p.last = ev.AbsNanoseconds
 		}

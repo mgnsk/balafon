@@ -23,6 +23,7 @@ func TestCommands(t *testing.T) {
 			[2]uint8{4, 4},
 			[][]byte{
 				midi.NoteOn(0, 60, constants.DefaultVelocity),
+				midi.NoteOff(0, 60),
 			},
 		},
 		{
@@ -52,6 +53,7 @@ func TestCommands(t *testing.T) {
 			[2]uint8{4, 4},
 			[][]byte{
 				midi.NoteOn(10, 60, constants.DefaultVelocity),
+				midi.NoteOff(10, 60),
 			},
 		},
 		{
@@ -59,6 +61,7 @@ func TestCommands(t *testing.T) {
 			[2]uint8{4, 4},
 			[][]byte{
 				midi.NoteOn(0, 60, 30),
+				midi.NoteOff(0, 60),
 			},
 		},
 		{
@@ -80,6 +83,7 @@ func TestCommands(t *testing.T) {
 			[2]uint8{1, 4},
 			[][]byte{
 				midi.NoteOn(0, 60, constants.DefaultVelocity),
+				midi.NoteOff(0, 60),
 			},
 		},
 		{
@@ -155,8 +159,9 @@ func TestSharpFlatNote(t *testing.T) {
 
 			bars := it.Flush()
 			g.Expect(bars).To(HaveLen(1))
-			g.Expect(bars[0].Events).To(HaveLen(1))
+			g.Expect(bars[0].Events).To(HaveLen(2))
 			g.Expect(bars[0].Events[0].Message).To(BeEquivalentTo(midi.NoteOn(0, tc.key, constants.DefaultVelocity)))
+			g.Expect(bars[0].Events[1].Message).To(BeEquivalentTo(midi.NoteOff(0, tc.key)))
 		})
 	}
 }
@@ -196,8 +201,9 @@ func TestAccentuatedAndGhostNote(t *testing.T) {
 
 			bars := it.Flush()
 			g.Expect(bars).To(HaveLen(1))
-			g.Expect(bars[0].Events).To(HaveLen(1))
+			g.Expect(bars[0].Events).To(HaveLen(2))
 			g.Expect(bars[0].Events[0].Message).To(BeEquivalentTo(midi.NoteOn(0, 60, tc.velocity)))
+			g.Expect(bars[0].Events[1].Message).To(BeEquivalentTo(midi.NoteOff(0, 60)))
 		})
 	}
 }
@@ -247,9 +253,7 @@ func TestNoteLengths(t *testing.T) {
 			bars := it.Flush()
 			g.Expect(bars).To(HaveLen(1))
 			g.Expect(bars[0].TimeSig).To(Equal([2]uint8{4, 4}))
-
-			events := bars[0].Events
-			g.Expect(events).To(ConsistOf(
+			g.Expect(bars[0].Events).To(ConsistOf(
 				interpreter.Event{
 					Channel:  0,
 					Pos:      0,
@@ -261,6 +265,12 @@ func TestNoteLengths(t *testing.T) {
 					Pos:      0,
 					Duration: tc.offAt,
 					Message:  smf.Message(midi.NoteOn(0, 36, constants.DefaultVelocity)),
+				},
+				interpreter.Event{
+					Channel:  0,
+					Pos:      tc.offAt,
+					Duration: 0,
+					Message:  smf.Message(midi.NoteOff(0, 36)),
 				},
 			))
 		})
@@ -317,12 +327,18 @@ c
 
 		g.Expect(bars).To(HaveLen(1))
 		g.Expect(bars[0].Cap()).To(Equal(uint32(constants.TicksPerWhole)))
-		g.Expect(bars[0].Events).To(HaveLen(1))
-		g.Expect(bars[0].Events[0]).To(Equal(interpreter.Event{
-			Message:  smf.Message(midi.NoteOn(0, 60, constants.DefaultVelocity)),
-			Pos:      0,
-			Duration: 960,
-		}))
+		g.Expect(bars[0].Events).To(ConsistOf(
+			interpreter.Event{
+				Message:  smf.Message(midi.NoteOn(0, 60, constants.DefaultVelocity)),
+				Pos:      0,
+				Duration: uint32(constants.TicksPerQuarter),
+			},
+			interpreter.Event{
+				Message:  smf.Message(midi.NoteOff(0, 60)),
+				Pos:      uint32(constants.TicksPerQuarter),
+				Duration: 0,
+			},
+		))
 	})
 
 	t.Run("beginning of bar", func(t *testing.T) {
@@ -341,12 +357,18 @@ assign c 60
 
 		g.Expect(bars).To(HaveLen(1))
 		g.Expect(bars[0].Cap()).To(Equal(uint32(constants.TicksPerWhole)))
-		g.Expect(bars[0].Events).To(HaveLen(1))
-		g.Expect(bars[0].Events[0]).To(Equal(interpreter.Event{
-			Message:  smf.Message(midi.NoteOn(0, 60, constants.DefaultVelocity)),
-			Pos:      uint32(3 * constants.TicksPerQuarter),
-			Duration: 960,
-		}))
+		g.Expect(bars[0].Events).To(ConsistOf(
+			interpreter.Event{
+				Message:  smf.Message(midi.NoteOn(0, 60, constants.DefaultVelocity)),
+				Pos:      uint32(3 * constants.TicksPerQuarter),
+				Duration: uint32(constants.TicksPerQuarter),
+			},
+			interpreter.Event{
+				Message:  smf.Message(midi.NoteOff(0, 60)),
+				Pos:      uint32(constants.TicksPerWhole),
+				Duration: 0,
+			},
+		))
 	})
 }
 
@@ -412,8 +434,14 @@ func TestFlushSkipsTooLongBar(t *testing.T) {
 		TimeSig: [2]uint8{4, 4},
 		Events: []interpreter.Event{
 			{
-				Duration: uint32(constants.TicksPerQuarter),
 				Message:  smf.Message(midi.NoteOn(0, 60, constants.DefaultVelocity)),
+				Pos:      0,
+				Duration: uint32(constants.TicksPerQuarter),
+			},
+			{
+				Message:  smf.Message(midi.NoteOff(0, 60)),
+				Pos:      uint32(constants.TicksPerQuarter),
+				Duration: 0,
 			},
 		},
 	}))
@@ -454,13 +482,14 @@ play "test"
 	bars := it.Flush()
 	g.Expect(bars).To(HaveLen(1))
 	g.Expect(bars[0].Duration(60)).To(Equal(4 * time.Second))
-	g.Expect(bars[0].Events).To(HaveLen(9))
+	g.Expect(bars[0].Events).To(HaveLen(1 + 16)) // 1 tempo, 8 note on, 8 note off
 
 	keyPositions := map[uint8][]uint32{}
-	for _, ev := range bars[0].Events[1:] {
+	for _, ev := range bars[0].Events[1:] { // skip first tempo msg
 		var ch, key, vel uint8
-		g.Expect(ev.Message.GetNoteOn(&ch, &key, &vel)).To(BeTrue())
-		keyPositions[key] = append(keyPositions[key], ev.Pos)
+		if ev.Message.GetNoteOn(&ch, &key, &vel) {
+			keyPositions[key] = append(keyPositions[key], ev.Pos)
+		}
 	}
 
 	g.Expect(keyPositions).To(HaveLen(4))
@@ -539,6 +568,18 @@ c
 					Duration: uint32(constants.TicksPerQuarter),
 					Message:  smf.Message(midi.NoteOn(2, 62, 25)),
 				},
+				{
+					Channel:  1,
+					Pos:      uint32(constants.TicksPerQuarter),
+					Duration: 0,
+					Message:  smf.Message(midi.NoteOff(1, 60)),
+				},
+				{
+					Channel:  2,
+					Pos:      uint32(constants.TicksPerQuarter),
+					Duration: 0,
+					Message:  smf.Message(midi.NoteOff(2, 62)),
+				},
 			},
 		},
 		&interpreter.Bar{
@@ -553,6 +594,12 @@ c
 					Duration: uint32(constants.TicksPerQuarter),
 					Message:  smf.Message(midi.NoteOn(1, 60, 50)),
 				},
+				{
+					Channel:  1,
+					Pos:      uint32(constants.TicksPerQuarter),
+					Duration: 0,
+					Message:  smf.Message(midi.NoteOff(1, 60)),
+				},
 			},
 		},
 		&interpreter.Bar{
@@ -563,6 +610,12 @@ c
 					Pos:      0,
 					Duration: uint32(constants.TicksPerQuarter),
 					Message:  smf.Message(midi.NoteOn(1, 60, 50)),
+				},
+				{
+					Channel:  1,
+					Pos:      uint32(constants.TicksPerQuarter),
+					Duration: 0,
+					Message:  smf.Message(midi.NoteOff(1, 60)),
 				},
 			},
 		},
@@ -619,6 +672,12 @@ c
 					Duration: uint32(constants.TicksPerQuarter),
 					Message:  smf.Message(midi.NoteOn(1, 60, constants.DefaultVelocity)),
 				},
+				{
+					Channel:  1,
+					Pos:      uint32(constants.TicksPerQuarter),
+					Duration: 0,
+					Message:  smf.Message(midi.NoteOff(1, 60)),
+				},
 			},
 		},
 		&interpreter.Bar{
@@ -631,6 +690,12 @@ c
 					Duration: uint32(constants.TicksPerQuarter),
 					Message:  smf.Message(midi.NoteOn(1, 60, constants.DefaultVelocity)),
 				},
+				{
+					Channel:  1,
+					Pos:      uint32(constants.TicksPerQuarter),
+					Duration: 0,
+					Message:  smf.Message(midi.NoteOff(1, 60)),
+				},
 			},
 		},
 		&interpreter.Bar{
@@ -642,38 +707,36 @@ c
 					Duration: uint32(constants.TicksPerQuarter),
 					Message:  smf.Message(midi.NoteOn(1, 60, constants.DefaultVelocity)),
 				},
+				{
+					Channel:  1,
+					Pos:      uint32(constants.TicksPerQuarter),
+					Duration: 0,
+					Message:  smf.Message(midi.NoteOff(1, 60)),
+				},
 			},
 		},
 	))
 }
 
-// func TestLetRing(t *testing.T) {
-// 	g := NewWithT(t)
+func TestLetRing(t *testing.T) {
+	g := NewWithT(t)
 
-// 	it := interpreter.New()
+	it := interpreter.New()
 
-// 	evalExpectNil(g, it, `assign k 36`)
+	g.Expect(it.Eval("assign k 36")).To(Succeed())
+	g.Expect(it.Eval("k*")).To(Succeed())
 
-// 	ms, err := it.Eval(`k*`)
-// 	g.Expect(err).NotTo(HaveOccurred())
-// 	g.Expect(ms).To(HaveLen(1))
-
-// 	g.Expect(ms[0].Pos).To(Equal(uint8(0)))
-// 	g.Expect(ms[0].Message).To(Equal(smf.Message(midi.NoteOn(0, 36, 127))))
-
-// 	// Expect the ringing note to be turned off.
-// 	// TODO
-
-// 	ms, err = it.Eval(`k`)
-// 	g.Expect(err).NotTo(HaveOccurred())
-// 	g.Expect(ms).To(HaveLen(1))
-
-// 	g.Expect(ms[0].Pos).To(Equal(uint8(0)))
-// 	g.Expect(ms[0].Message).To(Equal(smf.Message(midi.NoteOn(0, 36, 127))))
-
-// 	// g.Expect(ms[2].Pos).To(Equal(uint32(constants.TicksPerQuarter * 2)))
-// 	// g.Expect(ms[2].Message).To(Equal(smf.Message(midi.NoteOff(0, 36))))
-// }
+	bars := it.Flush()
+	g.Expect(bars).To(HaveLen(1))
+	g.Expect(bars[0].Events).To(ConsistOf(
+		interpreter.Event{
+			Message:  smf.Message(midi.NoteOn(0, 36, constants.DefaultVelocity)),
+			Pos:      0,
+			Duration: uint32(constants.TicksPerQuarter),
+		},
+		// No note off event.
+	))
+}
 
 // var (
 // 	testFile  []byte

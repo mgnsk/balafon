@@ -3,7 +3,6 @@ package sequencer
 import (
 	"github.com/mgnsk/gong/constants"
 	"github.com/mgnsk/gong/interpreter"
-	"gitlab.com/gomidi/midi/v2"
 	"gitlab.com/gomidi/midi/v2/smf"
 	"golang.org/x/exp/slices"
 )
@@ -39,15 +38,6 @@ func (s *Sequencer) AddBars(bars ...*interpreter.Bar) {
 			if ev.Message.GetMetaTempo(&newTempo) {
 				s.tempo = newTempo
 				continue
-			}
-
-			var ch, key, vel uint8
-			if ev.Message.GetNoteOn(&ch, &key, &vel) {
-				s.events = append(s.events, TrackEvent{
-					Message:        smf.Message(midi.NoteOff(ch, key)),
-					AbsTicks:       te.AbsTicks + ev.Duration,
-					AbsNanoseconds: te.AbsNanoseconds + constants.TicksPerQuarter.Duration(s.tempo, ev.Duration).Nanoseconds(),
-				})
 			}
 		}
 
