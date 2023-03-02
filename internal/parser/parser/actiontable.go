@@ -18,9 +18,9 @@ var actionTab = actionTable{
 			nil,       // ␚
 			nil,       // empty
 			shift(3),  // terminator
-			reduce(2), // bar, reduce: RepeatTerminator
+			reduce(2), // :bar, reduce: RepeatTerminator
 			nil,       // stringLit
-			nil,       // end
+			nil,       // :end
 			reduce(2), // [, reduce: RepeatTerminator
 			nil,       // ]
 			reduce(2), // char, reduce: RepeatTerminator
@@ -33,16 +33,16 @@ var actionTab = actionTable{
 			nil,       // dot
 			nil,       // tuplet
 			nil,       // letRing
-			reduce(2), // assign, reduce: RepeatTerminator
-			reduce(2), // play, reduce: RepeatTerminator
-			reduce(2), // tempo, reduce: RepeatTerminator
-			reduce(2), // timesig, reduce: RepeatTerminator
-			reduce(2), // velocity, reduce: RepeatTerminator
-			reduce(2), // channel, reduce: RepeatTerminator
-			reduce(2), // program, reduce: RepeatTerminator
-			reduce(2), // control, reduce: RepeatTerminator
-			reduce(2), // start, reduce: RepeatTerminator
-			reduce(2), // stop, reduce: RepeatTerminator
+			reduce(2), // :assign, reduce: RepeatTerminator
+			reduce(2), // :play, reduce: RepeatTerminator
+			reduce(2), // :tempo, reduce: RepeatTerminator
+			reduce(2), // :timesig, reduce: RepeatTerminator
+			reduce(2), // :velocity, reduce: RepeatTerminator
+			reduce(2), // :channel, reduce: RepeatTerminator
+			reduce(2), // :program, reduce: RepeatTerminator
+			reduce(2), // :control, reduce: RepeatTerminator
+			reduce(2), // :start, reduce: RepeatTerminator
+			reduce(2), // :stop, reduce: RepeatTerminator
 		},
 	},
 	actionRow{ // S1
@@ -52,9 +52,9 @@ var actionTab = actionTable{
 			accept(true), // ␚
 			nil,          // empty
 			nil,          // terminator
-			nil,          // bar
+			nil,          // :bar
 			nil,          // stringLit
-			nil,          // end
+			nil,          // :end
 			nil,          // [
 			nil,          // ]
 			nil,          // char
@@ -67,16 +67,16 @@ var actionTab = actionTable{
 			nil,          // dot
 			nil,          // tuplet
 			nil,          // letRing
-			nil,          // assign
-			nil,          // play
-			nil,          // tempo
-			nil,          // timesig
-			nil,          // velocity
-			nil,          // channel
-			nil,          // program
-			nil,          // control
-			nil,          // start
-			nil,          // stop
+			nil,          // :assign
+			nil,          // :play
+			nil,          // :tempo
+			nil,          // :timesig
+			nil,          // :velocity
+			nil,          // :channel
+			nil,          // :program
+			nil,          // :control
+			nil,          // :start
+			nil,          // :stop
 		},
 	},
 	actionRow{ // S2
@@ -86,9 +86,9 @@ var actionTab = actionTable{
 			nil,       // ␚
 			nil,       // empty
 			nil,       // terminator
-			shift(10), // bar
+			shift(10), // :bar
 			nil,       // stringLit
-			nil,       // end
+			nil,       // :end
 			shift(13), // [
 			nil,       // ]
 			shift(14), // char
@@ -101,16 +101,16 @@ var actionTab = actionTable{
 			nil,       // dot
 			nil,       // tuplet
 			nil,       // letRing
-			shift(16), // assign
-			shift(17), // play
-			shift(18), // tempo
-			shift(19), // timesig
-			shift(20), // velocity
-			shift(21), // channel
-			shift(22), // program
-			shift(23), // control
-			shift(24), // start
-			shift(25), // stop
+			shift(16), // :assign
+			shift(17), // :play
+			shift(18), // :tempo
+			shift(19), // :timesig
+			shift(20), // :velocity
+			shift(21), // :channel
+			shift(22), // :program
+			shift(23), // :control
+			shift(24), // :start
+			shift(25), // :stop
 		},
 	},
 	actionRow{ // S3
@@ -120,9 +120,9 @@ var actionTab = actionTable{
 			nil,       // ␚
 			nil,       // empty
 			shift(3),  // terminator
-			reduce(2), // bar, reduce: RepeatTerminator
+			reduce(2), // :bar, reduce: RepeatTerminator
 			nil,       // stringLit
-			nil,       // end
+			nil,       // :end
 			reduce(2), // [, reduce: RepeatTerminator
 			nil,       // ]
 			reduce(2), // char, reduce: RepeatTerminator
@@ -135,16 +135,16 @@ var actionTab = actionTable{
 			nil,       // dot
 			nil,       // tuplet
 			nil,       // letRing
-			reduce(2), // assign, reduce: RepeatTerminator
-			reduce(2), // play, reduce: RepeatTerminator
-			reduce(2), // tempo, reduce: RepeatTerminator
-			reduce(2), // timesig, reduce: RepeatTerminator
-			reduce(2), // velocity, reduce: RepeatTerminator
-			reduce(2), // channel, reduce: RepeatTerminator
-			reduce(2), // program, reduce: RepeatTerminator
-			reduce(2), // control, reduce: RepeatTerminator
-			reduce(2), // start, reduce: RepeatTerminator
-			reduce(2), // stop, reduce: RepeatTerminator
+			reduce(2), // :assign, reduce: RepeatTerminator
+			reduce(2), // :play, reduce: RepeatTerminator
+			reduce(2), // :tempo, reduce: RepeatTerminator
+			reduce(2), // :timesig, reduce: RepeatTerminator
+			reduce(2), // :velocity, reduce: RepeatTerminator
+			reduce(2), // :channel, reduce: RepeatTerminator
+			reduce(2), // :program, reduce: RepeatTerminator
+			reduce(2), // :control, reduce: RepeatTerminator
+			reduce(2), // :start, reduce: RepeatTerminator
+			reduce(2), // :stop, reduce: RepeatTerminator
 		},
 	},
 	actionRow{ // S4
@@ -154,9 +154,9 @@ var actionTab = actionTable{
 			reduce(1), // ␚, reduce: SourceFile
 			nil,       // empty
 			nil,       // terminator
-			nil,       // bar
+			nil,       // :bar
 			nil,       // stringLit
-			nil,       // end
+			nil,       // :end
 			nil,       // [
 			nil,       // ]
 			nil,       // char
@@ -169,16 +169,16 @@ var actionTab = actionTable{
 			nil,       // dot
 			nil,       // tuplet
 			nil,       // letRing
-			nil,       // assign
-			nil,       // play
-			nil,       // tempo
-			nil,       // timesig
-			nil,       // velocity
-			nil,       // channel
-			nil,       // program
-			nil,       // control
-			nil,       // start
-			nil,       // stop
+			nil,       // :assign
+			nil,       // :play
+			nil,       // :tempo
+			nil,       // :timesig
+			nil,       // :velocity
+			nil,       // :channel
+			nil,       // :program
+			nil,       // :control
+			nil,       // :start
+			nil,       // :stop
 		},
 	},
 	actionRow{ // S5
@@ -188,9 +188,9 @@ var actionTab = actionTable{
 			reduce(2), // ␚, reduce: RepeatTerminator
 			nil,       // empty
 			shift(28), // terminator
-			nil,       // bar
+			nil,       // :bar
 			nil,       // stringLit
-			nil,       // end
+			nil,       // :end
 			nil,       // [
 			nil,       // ]
 			nil,       // char
@@ -203,16 +203,16 @@ var actionTab = actionTable{
 			nil,       // dot
 			nil,       // tuplet
 			nil,       // letRing
-			nil,       // assign
-			nil,       // play
-			nil,       // tempo
-			nil,       // timesig
-			nil,       // velocity
-			nil,       // channel
-			nil,       // program
-			nil,       // control
-			nil,       // start
-			nil,       // stop
+			nil,       // :assign
+			nil,       // :play
+			nil,       // :tempo
+			nil,       // :timesig
+			nil,       // :velocity
+			nil,       // :channel
+			nil,       // :program
+			nil,       // :control
+			nil,       // :start
+			nil,       // :stop
 		},
 	},
 	actionRow{ // S6
@@ -222,9 +222,9 @@ var actionTab = actionTable{
 			reduce(8), // ␚, reduce: TopLevelDecl
 			nil,       // empty
 			reduce(8), // terminator, reduce: TopLevelDecl
-			nil,       // bar
+			nil,       // :bar
 			nil,       // stringLit
-			nil,       // end
+			nil,       // :end
 			nil,       // [
 			nil,       // ]
 			nil,       // char
@@ -237,16 +237,16 @@ var actionTab = actionTable{
 			nil,       // dot
 			nil,       // tuplet
 			nil,       // letRing
-			nil,       // assign
-			nil,       // play
-			nil,       // tempo
-			nil,       // timesig
-			nil,       // velocity
-			nil,       // channel
-			nil,       // program
-			nil,       // control
-			nil,       // start
-			nil,       // stop
+			nil,       // :assign
+			nil,       // :play
+			nil,       // :tempo
+			nil,       // :timesig
+			nil,       // :velocity
+			nil,       // :channel
+			nil,       // :program
+			nil,       // :control
+			nil,       // :start
+			nil,       // :stop
 		},
 	},
 	actionRow{ // S7
@@ -256,9 +256,9 @@ var actionTab = actionTable{
 			reduce(9), // ␚, reduce: TopLevelDecl
 			nil,       // empty
 			reduce(9), // terminator, reduce: TopLevelDecl
-			nil,       // bar
+			nil,       // :bar
 			nil,       // stringLit
-			nil,       // end
+			nil,       // :end
 			nil,       // [
 			nil,       // ]
 			nil,       // char
@@ -271,16 +271,16 @@ var actionTab = actionTable{
 			nil,       // dot
 			nil,       // tuplet
 			nil,       // letRing
-			nil,       // assign
-			nil,       // play
-			nil,       // tempo
-			nil,       // timesig
-			nil,       // velocity
-			nil,       // channel
-			nil,       // program
-			nil,       // control
-			nil,       // start
-			nil,       // stop
+			nil,       // :assign
+			nil,       // :play
+			nil,       // :tempo
+			nil,       // :timesig
+			nil,       // :velocity
+			nil,       // :channel
+			nil,       // :program
+			nil,       // :control
+			nil,       // :start
+			nil,       // :stop
 		},
 	},
 	actionRow{ // S8
@@ -290,9 +290,9 @@ var actionTab = actionTable{
 			reduce(10), // ␚, reduce: TopLevelDecl
 			nil,        // empty
 			reduce(10), // terminator, reduce: TopLevelDecl
-			nil,        // bar
+			nil,        // :bar
 			nil,        // stringLit
-			nil,        // end
+			nil,        // :end
 			nil,        // [
 			nil,        // ]
 			nil,        // char
@@ -305,16 +305,16 @@ var actionTab = actionTable{
 			nil,        // dot
 			nil,        // tuplet
 			nil,        // letRing
-			nil,        // assign
-			nil,        // play
-			nil,        // tempo
-			nil,        // timesig
-			nil,        // velocity
-			nil,        // channel
-			nil,        // program
-			nil,        // control
-			nil,        // start
-			nil,        // stop
+			nil,        // :assign
+			nil,        // :play
+			nil,        // :tempo
+			nil,        // :timesig
+			nil,        // :velocity
+			nil,        // :channel
+			nil,        // :program
+			nil,        // :control
+			nil,        // :start
+			nil,        // :stop
 		},
 	},
 	actionRow{ // S9
@@ -324,9 +324,9 @@ var actionTab = actionTable{
 			reduce(32), // ␚, reduce: TopLevelCommand
 			nil,        // empty
 			reduce(32), // terminator, reduce: TopLevelCommand
-			nil,        // bar
+			nil,        // :bar
 			nil,        // stringLit
-			nil,        // end
+			nil,        // :end
 			nil,        // [
 			nil,        // ]
 			nil,        // char
@@ -339,16 +339,16 @@ var actionTab = actionTable{
 			nil,        // dot
 			nil,        // tuplet
 			nil,        // letRing
-			nil,        // assign
-			nil,        // play
-			nil,        // tempo
-			nil,        // timesig
-			nil,        // velocity
-			nil,        // channel
-			nil,        // program
-			nil,        // control
-			nil,        // start
-			nil,        // stop
+			nil,        // :assign
+			nil,        // :play
+			nil,        // :tempo
+			nil,        // :timesig
+			nil,        // :velocity
+			nil,        // :channel
+			nil,        // :program
+			nil,        // :control
+			nil,        // :start
+			nil,        // :stop
 		},
 	},
 	actionRow{ // S10
@@ -358,9 +358,9 @@ var actionTab = actionTable{
 			nil,       // ␚
 			nil,       // empty
 			nil,       // terminator
-			nil,       // bar
+			nil,       // :bar
 			shift(29), // stringLit
-			nil,       // end
+			nil,       // :end
 			nil,       // [
 			nil,       // ]
 			nil,       // char
@@ -373,16 +373,16 @@ var actionTab = actionTable{
 			nil,       // dot
 			nil,       // tuplet
 			nil,       // letRing
-			nil,       // assign
-			nil,       // play
-			nil,       // tempo
-			nil,       // timesig
-			nil,       // velocity
-			nil,       // channel
-			nil,       // program
-			nil,       // control
-			nil,       // start
-			nil,       // stop
+			nil,       // :assign
+			nil,       // :play
+			nil,       // :tempo
+			nil,       // :timesig
+			nil,       // :velocity
+			nil,       // :channel
+			nil,       // :program
+			nil,       // :control
+			nil,       // :start
+			nil,       // :stop
 		},
 	},
 	actionRow{ // S11
@@ -392,9 +392,9 @@ var actionTab = actionTable{
 			reduce(14), // ␚, reduce: NoteList
 			nil,        // empty
 			reduce(14), // terminator, reduce: NoteList
-			nil,        // bar
+			nil,        // :bar
 			nil,        // stringLit
-			nil,        // end
+			nil,        // :end
 			shift(13),  // [
 			nil,        // ]
 			shift(14),  // char
@@ -407,16 +407,16 @@ var actionTab = actionTable{
 			nil,        // dot
 			nil,        // tuplet
 			nil,        // letRing
-			nil,        // assign
-			nil,        // play
-			nil,        // tempo
-			nil,        // timesig
-			nil,        // velocity
-			nil,        // channel
-			nil,        // program
-			nil,        // control
-			nil,        // start
-			nil,        // stop
+			nil,        // :assign
+			nil,        // :play
+			nil,        // :tempo
+			nil,        // :timesig
+			nil,        // :velocity
+			nil,        // :channel
+			nil,        // :program
+			nil,        // :control
+			nil,        // :start
+			nil,        // :stop
 		},
 	},
 	actionRow{ // S12
@@ -426,9 +426,9 @@ var actionTab = actionTable{
 			reduce(20), // ␚, reduce: PropertyList
 			nil,        // empty
 			reduce(20), // terminator, reduce: PropertyList
-			nil,        // bar
+			nil,        // :bar
 			nil,        // stringLit
-			nil,        // end
+			nil,        // :end
 			reduce(20), // [, reduce: PropertyList
 			nil,        // ]
 			reduce(20), // char, reduce: PropertyList
@@ -441,16 +441,16 @@ var actionTab = actionTable{
 			shift(38),  // dot
 			shift(39),  // tuplet
 			shift(40),  // letRing
-			nil,        // assign
-			nil,        // play
-			nil,        // tempo
-			nil,        // timesig
-			nil,        // velocity
-			nil,        // channel
-			nil,        // program
-			nil,        // control
-			nil,        // start
-			nil,        // stop
+			nil,        // :assign
+			nil,        // :play
+			nil,        // :tempo
+			nil,        // :timesig
+			nil,        // :velocity
+			nil,        // :channel
+			nil,        // :program
+			nil,        // :control
+			nil,        // :start
+			nil,        // :stop
 		},
 	},
 	actionRow{ // S13
@@ -460,9 +460,9 @@ var actionTab = actionTable{
 			nil,       // ␚
 			nil,       // empty
 			nil,       // terminator
-			nil,       // bar
+			nil,       // :bar
 			nil,       // stringLit
-			nil,       // end
+			nil,       // :end
 			shift(44), // [
 			nil,       // ]
 			shift(45), // char
@@ -475,16 +475,16 @@ var actionTab = actionTable{
 			nil,       // dot
 			nil,       // tuplet
 			nil,       // letRing
-			nil,       // assign
-			nil,       // play
-			nil,       // tempo
-			nil,       // timesig
-			nil,       // velocity
-			nil,       // channel
-			nil,       // program
-			nil,       // control
-			nil,       // start
-			nil,       // stop
+			nil,       // :assign
+			nil,       // :play
+			nil,       // :tempo
+			nil,       // :timesig
+			nil,       // :velocity
+			nil,       // :channel
+			nil,       // :program
+			nil,       // :control
+			nil,       // :start
+			nil,       // :stop
 		},
 	},
 	actionRow{ // S14
@@ -494,9 +494,9 @@ var actionTab = actionTable{
 			reduce(18), // ␚, reduce: NoteSymbol
 			nil,        // empty
 			reduce(18), // terminator, reduce: NoteSymbol
-			nil,        // bar
+			nil,        // :bar
 			nil,        // stringLit
-			nil,        // end
+			nil,        // :end
 			reduce(18), // [, reduce: NoteSymbol
 			nil,        // ]
 			reduce(18), // char, reduce: NoteSymbol
@@ -509,16 +509,16 @@ var actionTab = actionTable{
 			reduce(18), // dot, reduce: NoteSymbol
 			reduce(18), // tuplet, reduce: NoteSymbol
 			reduce(18), // letRing, reduce: NoteSymbol
-			nil,        // assign
-			nil,        // play
-			nil,        // tempo
-			nil,        // timesig
-			nil,        // velocity
-			nil,        // channel
-			nil,        // program
-			nil,        // control
-			nil,        // start
-			nil,        // stop
+			nil,        // :assign
+			nil,        // :play
+			nil,        // :tempo
+			nil,        // :timesig
+			nil,        // :velocity
+			nil,        // :channel
+			nil,        // :program
+			nil,        // :control
+			nil,        // :start
+			nil,        // :stop
 		},
 	},
 	actionRow{ // S15
@@ -528,9 +528,9 @@ var actionTab = actionTable{
 			reduce(19), // ␚, reduce: NoteSymbol
 			nil,        // empty
 			reduce(19), // terminator, reduce: NoteSymbol
-			nil,        // bar
+			nil,        // :bar
 			nil,        // stringLit
-			nil,        // end
+			nil,        // :end
 			reduce(19), // [, reduce: NoteSymbol
 			nil,        // ]
 			reduce(19), // char, reduce: NoteSymbol
@@ -543,16 +543,16 @@ var actionTab = actionTable{
 			reduce(19), // dot, reduce: NoteSymbol
 			reduce(19), // tuplet, reduce: NoteSymbol
 			reduce(19), // letRing, reduce: NoteSymbol
-			nil,        // assign
-			nil,        // play
-			nil,        // tempo
-			nil,        // timesig
-			nil,        // velocity
-			nil,        // channel
-			nil,        // program
-			nil,        // control
-			nil,        // start
-			nil,        // stop
+			nil,        // :assign
+			nil,        // :play
+			nil,        // :tempo
+			nil,        // :timesig
+			nil,        // :velocity
+			nil,        // :channel
+			nil,        // :program
+			nil,        // :control
+			nil,        // :start
+			nil,        // :stop
 		},
 	},
 	actionRow{ // S16
@@ -562,9 +562,9 @@ var actionTab = actionTable{
 			nil,       // ␚
 			nil,       // empty
 			nil,       // terminator
-			nil,       // bar
+			nil,       // :bar
 			nil,       // stringLit
-			nil,       // end
+			nil,       // :end
 			nil,       // [
 			nil,       // ]
 			shift(47), // char
@@ -577,16 +577,16 @@ var actionTab = actionTable{
 			nil,       // dot
 			nil,       // tuplet
 			nil,       // letRing
-			nil,       // assign
-			nil,       // play
-			nil,       // tempo
-			nil,       // timesig
-			nil,       // velocity
-			nil,       // channel
-			nil,       // program
-			nil,       // control
-			nil,       // start
-			nil,       // stop
+			nil,       // :assign
+			nil,       // :play
+			nil,       // :tempo
+			nil,       // :timesig
+			nil,       // :velocity
+			nil,       // :channel
+			nil,       // :program
+			nil,       // :control
+			nil,       // :start
+			nil,       // :stop
 		},
 	},
 	actionRow{ // S17
@@ -596,9 +596,9 @@ var actionTab = actionTable{
 			nil,       // ␚
 			nil,       // empty
 			nil,       // terminator
-			nil,       // bar
+			nil,       // :bar
 			shift(48), // stringLit
-			nil,       // end
+			nil,       // :end
 			nil,       // [
 			nil,       // ]
 			nil,       // char
@@ -611,16 +611,16 @@ var actionTab = actionTable{
 			nil,       // dot
 			nil,       // tuplet
 			nil,       // letRing
-			nil,       // assign
-			nil,       // play
-			nil,       // tempo
-			nil,       // timesig
-			nil,       // velocity
-			nil,       // channel
-			nil,       // program
-			nil,       // control
-			nil,       // start
-			nil,       // stop
+			nil,       // :assign
+			nil,       // :play
+			nil,       // :tempo
+			nil,       // :timesig
+			nil,       // :velocity
+			nil,       // :channel
+			nil,       // :program
+			nil,       // :control
+			nil,       // :start
+			nil,       // :stop
 		},
 	},
 	actionRow{ // S18
@@ -630,9 +630,9 @@ var actionTab = actionTable{
 			nil,       // ␚
 			nil,       // empty
 			nil,       // terminator
-			nil,       // bar
+			nil,       // :bar
 			nil,       // stringLit
-			nil,       // end
+			nil,       // :end
 			nil,       // [
 			nil,       // ]
 			nil,       // char
@@ -645,16 +645,16 @@ var actionTab = actionTable{
 			nil,       // dot
 			nil,       // tuplet
 			nil,       // letRing
-			nil,       // assign
-			nil,       // play
-			nil,       // tempo
-			nil,       // timesig
-			nil,       // velocity
-			nil,       // channel
-			nil,       // program
-			nil,       // control
-			nil,       // start
-			nil,       // stop
+			nil,       // :assign
+			nil,       // :play
+			nil,       // :tempo
+			nil,       // :timesig
+			nil,       // :velocity
+			nil,       // :channel
+			nil,       // :program
+			nil,       // :control
+			nil,       // :start
+			nil,       // :stop
 		},
 	},
 	actionRow{ // S19
@@ -664,9 +664,9 @@ var actionTab = actionTable{
 			nil,       // ␚
 			nil,       // empty
 			nil,       // terminator
-			nil,       // bar
+			nil,       // :bar
 			nil,       // stringLit
-			nil,       // end
+			nil,       // :end
 			nil,       // [
 			nil,       // ]
 			nil,       // char
@@ -679,16 +679,16 @@ var actionTab = actionTable{
 			nil,       // dot
 			nil,       // tuplet
 			nil,       // letRing
-			nil,       // assign
-			nil,       // play
-			nil,       // tempo
-			nil,       // timesig
-			nil,       // velocity
-			nil,       // channel
-			nil,       // program
-			nil,       // control
-			nil,       // start
-			nil,       // stop
+			nil,       // :assign
+			nil,       // :play
+			nil,       // :tempo
+			nil,       // :timesig
+			nil,       // :velocity
+			nil,       // :channel
+			nil,       // :program
+			nil,       // :control
+			nil,       // :start
+			nil,       // :stop
 		},
 	},
 	actionRow{ // S20
@@ -698,9 +698,9 @@ var actionTab = actionTable{
 			nil,       // ␚
 			nil,       // empty
 			nil,       // terminator
-			nil,       // bar
+			nil,       // :bar
 			nil,       // stringLit
-			nil,       // end
+			nil,       // :end
 			nil,       // [
 			nil,       // ]
 			nil,       // char
@@ -713,16 +713,16 @@ var actionTab = actionTable{
 			nil,       // dot
 			nil,       // tuplet
 			nil,       // letRing
-			nil,       // assign
-			nil,       // play
-			nil,       // tempo
-			nil,       // timesig
-			nil,       // velocity
-			nil,       // channel
-			nil,       // program
-			nil,       // control
-			nil,       // start
-			nil,       // stop
+			nil,       // :assign
+			nil,       // :play
+			nil,       // :tempo
+			nil,       // :timesig
+			nil,       // :velocity
+			nil,       // :channel
+			nil,       // :program
+			nil,       // :control
+			nil,       // :start
+			nil,       // :stop
 		},
 	},
 	actionRow{ // S21
@@ -732,9 +732,9 @@ var actionTab = actionTable{
 			nil,       // ␚
 			nil,       // empty
 			nil,       // terminator
-			nil,       // bar
+			nil,       // :bar
 			nil,       // stringLit
-			nil,       // end
+			nil,       // :end
 			nil,       // [
 			nil,       // ]
 			nil,       // char
@@ -747,16 +747,16 @@ var actionTab = actionTable{
 			nil,       // dot
 			nil,       // tuplet
 			nil,       // letRing
-			nil,       // assign
-			nil,       // play
-			nil,       // tempo
-			nil,       // timesig
-			nil,       // velocity
-			nil,       // channel
-			nil,       // program
-			nil,       // control
-			nil,       // start
-			nil,       // stop
+			nil,       // :assign
+			nil,       // :play
+			nil,       // :tempo
+			nil,       // :timesig
+			nil,       // :velocity
+			nil,       // :channel
+			nil,       // :program
+			nil,       // :control
+			nil,       // :start
+			nil,       // :stop
 		},
 	},
 	actionRow{ // S22
@@ -766,9 +766,9 @@ var actionTab = actionTable{
 			nil,       // ␚
 			nil,       // empty
 			nil,       // terminator
-			nil,       // bar
+			nil,       // :bar
 			nil,       // stringLit
-			nil,       // end
+			nil,       // :end
 			nil,       // [
 			nil,       // ]
 			nil,       // char
@@ -781,16 +781,16 @@ var actionTab = actionTable{
 			nil,       // dot
 			nil,       // tuplet
 			nil,       // letRing
-			nil,       // assign
-			nil,       // play
-			nil,       // tempo
-			nil,       // timesig
-			nil,       // velocity
-			nil,       // channel
-			nil,       // program
-			nil,       // control
-			nil,       // start
-			nil,       // stop
+			nil,       // :assign
+			nil,       // :play
+			nil,       // :tempo
+			nil,       // :timesig
+			nil,       // :velocity
+			nil,       // :channel
+			nil,       // :program
+			nil,       // :control
+			nil,       // :start
+			nil,       // :stop
 		},
 	},
 	actionRow{ // S23
@@ -800,9 +800,9 @@ var actionTab = actionTable{
 			nil,       // ␚
 			nil,       // empty
 			nil,       // terminator
-			nil,       // bar
+			nil,       // :bar
 			nil,       // stringLit
-			nil,       // end
+			nil,       // :end
 			nil,       // [
 			nil,       // ]
 			nil,       // char
@@ -815,16 +815,16 @@ var actionTab = actionTable{
 			nil,       // dot
 			nil,       // tuplet
 			nil,       // letRing
-			nil,       // assign
-			nil,       // play
-			nil,       // tempo
-			nil,       // timesig
-			nil,       // velocity
-			nil,       // channel
-			nil,       // program
-			nil,       // control
-			nil,       // start
-			nil,       // stop
+			nil,       // :assign
+			nil,       // :play
+			nil,       // :tempo
+			nil,       // :timesig
+			nil,       // :velocity
+			nil,       // :channel
+			nil,       // :program
+			nil,       // :control
+			nil,       // :start
+			nil,       // :stop
 		},
 	},
 	actionRow{ // S24
@@ -834,9 +834,9 @@ var actionTab = actionTable{
 			reduce(39), // ␚, reduce: BarBodyCommand
 			nil,        // empty
 			reduce(39), // terminator, reduce: BarBodyCommand
-			nil,        // bar
+			nil,        // :bar
 			nil,        // stringLit
-			nil,        // end
+			nil,        // :end
 			nil,        // [
 			nil,        // ]
 			nil,        // char
@@ -849,16 +849,16 @@ var actionTab = actionTable{
 			nil,        // dot
 			nil,        // tuplet
 			nil,        // letRing
-			nil,        // assign
-			nil,        // play
-			nil,        // tempo
-			nil,        // timesig
-			nil,        // velocity
-			nil,        // channel
-			nil,        // program
-			nil,        // control
-			nil,        // start
-			nil,        // stop
+			nil,        // :assign
+			nil,        // :play
+			nil,        // :tempo
+			nil,        // :timesig
+			nil,        // :velocity
+			nil,        // :channel
+			nil,        // :program
+			nil,        // :control
+			nil,        // :start
+			nil,        // :stop
 		},
 	},
 	actionRow{ // S25
@@ -868,9 +868,9 @@ var actionTab = actionTable{
 			reduce(40), // ␚, reduce: BarBodyCommand
 			nil,        // empty
 			reduce(40), // terminator, reduce: BarBodyCommand
-			nil,        // bar
+			nil,        // :bar
 			nil,        // stringLit
-			nil,        // end
+			nil,        // :end
 			nil,        // [
 			nil,        // ]
 			nil,        // char
@@ -883,16 +883,16 @@ var actionTab = actionTable{
 			nil,        // dot
 			nil,        // tuplet
 			nil,        // letRing
-			nil,        // assign
-			nil,        // play
-			nil,        // tempo
-			nil,        // timesig
-			nil,        // velocity
-			nil,        // channel
-			nil,        // program
-			nil,        // control
-			nil,        // start
-			nil,        // stop
+			nil,        // :assign
+			nil,        // :play
+			nil,        // :tempo
+			nil,        // :timesig
+			nil,        // :velocity
+			nil,        // :channel
+			nil,        // :program
+			nil,        // :control
+			nil,        // :start
+			nil,        // :stop
 		},
 	},
 	actionRow{ // S26
@@ -902,9 +902,9 @@ var actionTab = actionTable{
 			nil,       // ␚
 			nil,       // empty
 			nil,       // terminator
-			reduce(3), // bar, reduce: RepeatTerminator
+			reduce(3), // :bar, reduce: RepeatTerminator
 			nil,       // stringLit
-			nil,       // end
+			nil,       // :end
 			reduce(3), // [, reduce: RepeatTerminator
 			nil,       // ]
 			reduce(3), // char, reduce: RepeatTerminator
@@ -917,16 +917,16 @@ var actionTab = actionTable{
 			nil,       // dot
 			nil,       // tuplet
 			nil,       // letRing
-			reduce(3), // assign, reduce: RepeatTerminator
-			reduce(3), // play, reduce: RepeatTerminator
-			reduce(3), // tempo, reduce: RepeatTerminator
-			reduce(3), // timesig, reduce: RepeatTerminator
-			reduce(3), // velocity, reduce: RepeatTerminator
-			reduce(3), // channel, reduce: RepeatTerminator
-			reduce(3), // program, reduce: RepeatTerminator
-			reduce(3), // control, reduce: RepeatTerminator
-			reduce(3), // start, reduce: RepeatTerminator
-			reduce(3), // stop, reduce: RepeatTerminator
+			reduce(3), // :assign, reduce: RepeatTerminator
+			reduce(3), // :play, reduce: RepeatTerminator
+			reduce(3), // :tempo, reduce: RepeatTerminator
+			reduce(3), // :timesig, reduce: RepeatTerminator
+			reduce(3), // :velocity, reduce: RepeatTerminator
+			reduce(3), // :channel, reduce: RepeatTerminator
+			reduce(3), // :program, reduce: RepeatTerminator
+			reduce(3), // :control, reduce: RepeatTerminator
+			reduce(3), // :start, reduce: RepeatTerminator
+			reduce(3), // :stop, reduce: RepeatTerminator
 		},
 	},
 	actionRow{ // S27
@@ -936,9 +936,9 @@ var actionTab = actionTable{
 			reduce(5), // ␚, reduce: TopLevelDeclList
 			nil,       // empty
 			nil,       // terminator
-			nil,       // bar
+			nil,       // :bar
 			nil,       // stringLit
-			nil,       // end
+			nil,       // :end
 			nil,       // [
 			nil,       // ]
 			nil,       // char
@@ -951,16 +951,16 @@ var actionTab = actionTable{
 			nil,       // dot
 			nil,       // tuplet
 			nil,       // letRing
-			nil,       // assign
-			nil,       // play
-			nil,       // tempo
-			nil,       // timesig
-			nil,       // velocity
-			nil,       // channel
-			nil,       // program
-			nil,       // control
-			nil,       // start
-			nil,       // stop
+			nil,       // :assign
+			nil,       // :play
+			nil,       // :tempo
+			nil,       // :timesig
+			nil,       // :velocity
+			nil,       // :channel
+			nil,       // :program
+			nil,       // :control
+			nil,       // :start
+			nil,       // :stop
 		},
 	},
 	actionRow{ // S28
@@ -970,9 +970,9 @@ var actionTab = actionTable{
 			reduce(2), // ␚, reduce: RepeatTerminator
 			nil,       // empty
 			shift(56), // terminator
-			reduce(2), // bar, reduce: RepeatTerminator
+			reduce(2), // :bar, reduce: RepeatTerminator
 			nil,       // stringLit
-			nil,       // end
+			nil,       // :end
 			reduce(2), // [, reduce: RepeatTerminator
 			nil,       // ]
 			reduce(2), // char, reduce: RepeatTerminator
@@ -985,16 +985,16 @@ var actionTab = actionTable{
 			nil,       // dot
 			nil,       // tuplet
 			nil,       // letRing
-			reduce(2), // assign, reduce: RepeatTerminator
-			reduce(2), // play, reduce: RepeatTerminator
-			reduce(2), // tempo, reduce: RepeatTerminator
-			reduce(2), // timesig, reduce: RepeatTerminator
-			reduce(2), // velocity, reduce: RepeatTerminator
-			reduce(2), // channel, reduce: RepeatTerminator
-			reduce(2), // program, reduce: RepeatTerminator
-			reduce(2), // control, reduce: RepeatTerminator
-			reduce(2), // start, reduce: RepeatTerminator
-			reduce(2), // stop, reduce: RepeatTerminator
+			reduce(2), // :assign, reduce: RepeatTerminator
+			reduce(2), // :play, reduce: RepeatTerminator
+			reduce(2), // :tempo, reduce: RepeatTerminator
+			reduce(2), // :timesig, reduce: RepeatTerminator
+			reduce(2), // :velocity, reduce: RepeatTerminator
+			reduce(2), // :channel, reduce: RepeatTerminator
+			reduce(2), // :program, reduce: RepeatTerminator
+			reduce(2), // :control, reduce: RepeatTerminator
+			reduce(2), // :start, reduce: RepeatTerminator
+			reduce(2), // :stop, reduce: RepeatTerminator
 		},
 	},
 	actionRow{ // S29
@@ -1004,9 +1004,9 @@ var actionTab = actionTable{
 			nil,       // ␚
 			nil,       // empty
 			shift(58), // terminator
-			nil,       // bar
+			nil,       // :bar
 			nil,       // stringLit
-			nil,       // end
+			nil,       // :end
 			reduce(2), // [, reduce: RepeatTerminator
 			nil,       // ]
 			reduce(2), // char, reduce: RepeatTerminator
@@ -1019,16 +1019,16 @@ var actionTab = actionTable{
 			nil,       // dot
 			nil,       // tuplet
 			nil,       // letRing
-			nil,       // assign
-			nil,       // play
-			reduce(2), // tempo, reduce: RepeatTerminator
-			reduce(2), // timesig, reduce: RepeatTerminator
-			reduce(2), // velocity, reduce: RepeatTerminator
-			reduce(2), // channel, reduce: RepeatTerminator
-			reduce(2), // program, reduce: RepeatTerminator
-			reduce(2), // control, reduce: RepeatTerminator
-			reduce(2), // start, reduce: RepeatTerminator
-			reduce(2), // stop, reduce: RepeatTerminator
+			nil,       // :assign
+			nil,       // :play
+			reduce(2), // :tempo, reduce: RepeatTerminator
+			reduce(2), // :timesig, reduce: RepeatTerminator
+			reduce(2), // :velocity, reduce: RepeatTerminator
+			reduce(2), // :channel, reduce: RepeatTerminator
+			reduce(2), // :program, reduce: RepeatTerminator
+			reduce(2), // :control, reduce: RepeatTerminator
+			reduce(2), // :start, reduce: RepeatTerminator
+			reduce(2), // :stop, reduce: RepeatTerminator
 		},
 	},
 	actionRow{ // S30
@@ -1038,9 +1038,9 @@ var actionTab = actionTable{
 			reduce(15), // ␚, reduce: NoteList
 			nil,        // empty
 			reduce(15), // terminator, reduce: NoteList
-			nil,        // bar
+			nil,        // :bar
 			nil,        // stringLit
-			nil,        // end
+			nil,        // :end
 			nil,        // [
 			nil,        // ]
 			nil,        // char
@@ -1053,16 +1053,16 @@ var actionTab = actionTable{
 			nil,        // dot
 			nil,        // tuplet
 			nil,        // letRing
-			nil,        // assign
-			nil,        // play
-			nil,        // tempo
-			nil,        // timesig
-			nil,        // velocity
-			nil,        // channel
-			nil,        // program
-			nil,        // control
-			nil,        // start
-			nil,        // stop
+			nil,        // :assign
+			nil,        // :play
+			nil,        // :tempo
+			nil,        // :timesig
+			nil,        // :velocity
+			nil,        // :channel
+			nil,        // :program
+			nil,        // :control
+			nil,        // :start
+			nil,        // :stop
 		},
 	},
 	actionRow{ // S31
@@ -1072,9 +1072,9 @@ var actionTab = actionTable{
 			reduce(16), // ␚, reduce: NoteObject
 			nil,        // empty
 			reduce(16), // terminator, reduce: NoteObject
-			nil,        // bar
+			nil,        // :bar
 			nil,        // stringLit
-			nil,        // end
+			nil,        // :end
 			reduce(16), // [, reduce: NoteObject
 			nil,        // ]
 			reduce(16), // char, reduce: NoteObject
@@ -1087,16 +1087,16 @@ var actionTab = actionTable{
 			nil,        // dot
 			nil,        // tuplet
 			nil,        // letRing
-			nil,        // assign
-			nil,        // play
-			nil,        // tempo
-			nil,        // timesig
-			nil,        // velocity
-			nil,        // channel
-			nil,        // program
-			nil,        // control
-			nil,        // start
-			nil,        // stop
+			nil,        // :assign
+			nil,        // :play
+			nil,        // :tempo
+			nil,        // :timesig
+			nil,        // :velocity
+			nil,        // :channel
+			nil,        // :program
+			nil,        // :control
+			nil,        // :start
+			nil,        // :stop
 		},
 	},
 	actionRow{ // S32
@@ -1106,9 +1106,9 @@ var actionTab = actionTable{
 			reduce(20), // ␚, reduce: PropertyList
 			nil,        // empty
 			reduce(20), // terminator, reduce: PropertyList
-			nil,        // bar
+			nil,        // :bar
 			nil,        // stringLit
-			nil,        // end
+			nil,        // :end
 			reduce(20), // [, reduce: PropertyList
 			nil,        // ]
 			reduce(20), // char, reduce: PropertyList
@@ -1121,16 +1121,16 @@ var actionTab = actionTable{
 			shift(38),  // dot
 			shift(39),  // tuplet
 			shift(40),  // letRing
-			nil,        // assign
-			nil,        // play
-			nil,        // tempo
-			nil,        // timesig
-			nil,        // velocity
-			nil,        // channel
-			nil,        // program
-			nil,        // control
-			nil,        // start
-			nil,        // stop
+			nil,        // :assign
+			nil,        // :play
+			nil,        // :tempo
+			nil,        // :timesig
+			nil,        // :velocity
+			nil,        // :channel
+			nil,        // :program
+			nil,        // :control
+			nil,        // :start
+			nil,        // :stop
 		},
 	},
 	actionRow{ // S33
@@ -1140,9 +1140,9 @@ var actionTab = actionTable{
 			reduce(22), // ␚, reduce: Property
 			nil,        // empty
 			reduce(22), // terminator, reduce: Property
-			nil,        // bar
+			nil,        // :bar
 			nil,        // stringLit
-			nil,        // end
+			nil,        // :end
 			reduce(22), // [, reduce: Property
 			nil,        // ]
 			reduce(22), // char, reduce: Property
@@ -1155,16 +1155,16 @@ var actionTab = actionTable{
 			reduce(22), // dot, reduce: Property
 			reduce(22), // tuplet, reduce: Property
 			reduce(22), // letRing, reduce: Property
-			nil,        // assign
-			nil,        // play
-			nil,        // tempo
-			nil,        // timesig
-			nil,        // velocity
-			nil,        // channel
-			nil,        // program
-			nil,        // control
-			nil,        // start
-			nil,        // stop
+			nil,        // :assign
+			nil,        // :play
+			nil,        // :tempo
+			nil,        // :timesig
+			nil,        // :velocity
+			nil,        // :channel
+			nil,        // :program
+			nil,        // :control
+			nil,        // :start
+			nil,        // :stop
 		},
 	},
 	actionRow{ // S34
@@ -1174,9 +1174,9 @@ var actionTab = actionTable{
 			reduce(23), // ␚, reduce: Property
 			nil,        // empty
 			reduce(23), // terminator, reduce: Property
-			nil,        // bar
+			nil,        // :bar
 			nil,        // stringLit
-			nil,        // end
+			nil,        // :end
 			reduce(23), // [, reduce: Property
 			nil,        // ]
 			reduce(23), // char, reduce: Property
@@ -1189,16 +1189,16 @@ var actionTab = actionTable{
 			reduce(23), // dot, reduce: Property
 			reduce(23), // tuplet, reduce: Property
 			reduce(23), // letRing, reduce: Property
-			nil,        // assign
-			nil,        // play
-			nil,        // tempo
-			nil,        // timesig
-			nil,        // velocity
-			nil,        // channel
-			nil,        // program
-			nil,        // control
-			nil,        // start
-			nil,        // stop
+			nil,        // :assign
+			nil,        // :play
+			nil,        // :tempo
+			nil,        // :timesig
+			nil,        // :velocity
+			nil,        // :channel
+			nil,        // :program
+			nil,        // :control
+			nil,        // :start
+			nil,        // :stop
 		},
 	},
 	actionRow{ // S35
@@ -1208,9 +1208,9 @@ var actionTab = actionTable{
 			reduce(24), // ␚, reduce: Property
 			nil,        // empty
 			reduce(24), // terminator, reduce: Property
-			nil,        // bar
+			nil,        // :bar
 			nil,        // stringLit
-			nil,        // end
+			nil,        // :end
 			reduce(24), // [, reduce: Property
 			nil,        // ]
 			reduce(24), // char, reduce: Property
@@ -1223,16 +1223,16 @@ var actionTab = actionTable{
 			reduce(24), // dot, reduce: Property
 			reduce(24), // tuplet, reduce: Property
 			reduce(24), // letRing, reduce: Property
-			nil,        // assign
-			nil,        // play
-			nil,        // tempo
-			nil,        // timesig
-			nil,        // velocity
-			nil,        // channel
-			nil,        // program
-			nil,        // control
-			nil,        // start
-			nil,        // stop
+			nil,        // :assign
+			nil,        // :play
+			nil,        // :tempo
+			nil,        // :timesig
+			nil,        // :velocity
+			nil,        // :channel
+			nil,        // :program
+			nil,        // :control
+			nil,        // :start
+			nil,        // :stop
 		},
 	},
 	actionRow{ // S36
@@ -1242,9 +1242,9 @@ var actionTab = actionTable{
 			reduce(25), // ␚, reduce: Property
 			nil,        // empty
 			reduce(25), // terminator, reduce: Property
-			nil,        // bar
+			nil,        // :bar
 			nil,        // stringLit
-			nil,        // end
+			nil,        // :end
 			reduce(25), // [, reduce: Property
 			nil,        // ]
 			reduce(25), // char, reduce: Property
@@ -1257,16 +1257,16 @@ var actionTab = actionTable{
 			reduce(25), // dot, reduce: Property
 			reduce(25), // tuplet, reduce: Property
 			reduce(25), // letRing, reduce: Property
-			nil,        // assign
-			nil,        // play
-			nil,        // tempo
-			nil,        // timesig
-			nil,        // velocity
-			nil,        // channel
-			nil,        // program
-			nil,        // control
-			nil,        // start
-			nil,        // stop
+			nil,        // :assign
+			nil,        // :play
+			nil,        // :tempo
+			nil,        // :timesig
+			nil,        // :velocity
+			nil,        // :channel
+			nil,        // :program
+			nil,        // :control
+			nil,        // :start
+			nil,        // :stop
 		},
 	},
 	actionRow{ // S37
@@ -1276,9 +1276,9 @@ var actionTab = actionTable{
 			reduce(26), // ␚, reduce: Property
 			nil,        // empty
 			reduce(26), // terminator, reduce: Property
-			nil,        // bar
+			nil,        // :bar
 			nil,        // stringLit
-			nil,        // end
+			nil,        // :end
 			reduce(26), // [, reduce: Property
 			nil,        // ]
 			reduce(26), // char, reduce: Property
@@ -1291,16 +1291,16 @@ var actionTab = actionTable{
 			reduce(26), // dot, reduce: Property
 			reduce(26), // tuplet, reduce: Property
 			reduce(26), // letRing, reduce: Property
-			nil,        // assign
-			nil,        // play
-			nil,        // tempo
-			nil,        // timesig
-			nil,        // velocity
-			nil,        // channel
-			nil,        // program
-			nil,        // control
-			nil,        // start
-			nil,        // stop
+			nil,        // :assign
+			nil,        // :play
+			nil,        // :tempo
+			nil,        // :timesig
+			nil,        // :velocity
+			nil,        // :channel
+			nil,        // :program
+			nil,        // :control
+			nil,        // :start
+			nil,        // :stop
 		},
 	},
 	actionRow{ // S38
@@ -1310,9 +1310,9 @@ var actionTab = actionTable{
 			reduce(27), // ␚, reduce: Property
 			nil,        // empty
 			reduce(27), // terminator, reduce: Property
-			nil,        // bar
+			nil,        // :bar
 			nil,        // stringLit
-			nil,        // end
+			nil,        // :end
 			reduce(27), // [, reduce: Property
 			nil,        // ]
 			reduce(27), // char, reduce: Property
@@ -1325,16 +1325,16 @@ var actionTab = actionTable{
 			reduce(27), // dot, reduce: Property
 			reduce(27), // tuplet, reduce: Property
 			reduce(27), // letRing, reduce: Property
-			nil,        // assign
-			nil,        // play
-			nil,        // tempo
-			nil,        // timesig
-			nil,        // velocity
-			nil,        // channel
-			nil,        // program
-			nil,        // control
-			nil,        // start
-			nil,        // stop
+			nil,        // :assign
+			nil,        // :play
+			nil,        // :tempo
+			nil,        // :timesig
+			nil,        // :velocity
+			nil,        // :channel
+			nil,        // :program
+			nil,        // :control
+			nil,        // :start
+			nil,        // :stop
 		},
 	},
 	actionRow{ // S39
@@ -1344,9 +1344,9 @@ var actionTab = actionTable{
 			reduce(28), // ␚, reduce: Property
 			nil,        // empty
 			reduce(28), // terminator, reduce: Property
-			nil,        // bar
+			nil,        // :bar
 			nil,        // stringLit
-			nil,        // end
+			nil,        // :end
 			reduce(28), // [, reduce: Property
 			nil,        // ]
 			reduce(28), // char, reduce: Property
@@ -1359,16 +1359,16 @@ var actionTab = actionTable{
 			reduce(28), // dot, reduce: Property
 			reduce(28), // tuplet, reduce: Property
 			reduce(28), // letRing, reduce: Property
-			nil,        // assign
-			nil,        // play
-			nil,        // tempo
-			nil,        // timesig
-			nil,        // velocity
-			nil,        // channel
-			nil,        // program
-			nil,        // control
-			nil,        // start
-			nil,        // stop
+			nil,        // :assign
+			nil,        // :play
+			nil,        // :tempo
+			nil,        // :timesig
+			nil,        // :velocity
+			nil,        // :channel
+			nil,        // :program
+			nil,        // :control
+			nil,        // :start
+			nil,        // :stop
 		},
 	},
 	actionRow{ // S40
@@ -1378,9 +1378,9 @@ var actionTab = actionTable{
 			reduce(29), // ␚, reduce: Property
 			nil,        // empty
 			reduce(29), // terminator, reduce: Property
-			nil,        // bar
+			nil,        // :bar
 			nil,        // stringLit
-			nil,        // end
+			nil,        // :end
 			reduce(29), // [, reduce: Property
 			nil,        // ]
 			reduce(29), // char, reduce: Property
@@ -1393,16 +1393,16 @@ var actionTab = actionTable{
 			reduce(29), // dot, reduce: Property
 			reduce(29), // tuplet, reduce: Property
 			reduce(29), // letRing, reduce: Property
-			nil,        // assign
-			nil,        // play
-			nil,        // tempo
-			nil,        // timesig
-			nil,        // velocity
-			nil,        // channel
-			nil,        // program
-			nil,        // control
-			nil,        // start
-			nil,        // stop
+			nil,        // :assign
+			nil,        // :play
+			nil,        // :tempo
+			nil,        // :timesig
+			nil,        // :velocity
+			nil,        // :channel
+			nil,        // :program
+			nil,        // :control
+			nil,        // :start
+			nil,        // :stop
 		},
 	},
 	actionRow{ // S41
@@ -1412,9 +1412,9 @@ var actionTab = actionTable{
 			nil,       // ␚
 			nil,       // empty
 			nil,       // terminator
-			nil,       // bar
+			nil,       // :bar
 			nil,       // stringLit
-			nil,       // end
+			nil,       // :end
 			nil,       // [
 			shift(60), // ]
 			nil,       // char
@@ -1427,16 +1427,16 @@ var actionTab = actionTable{
 			nil,       // dot
 			nil,       // tuplet
 			nil,       // letRing
-			nil,       // assign
-			nil,       // play
-			nil,       // tempo
-			nil,       // timesig
-			nil,       // velocity
-			nil,       // channel
-			nil,       // program
-			nil,       // control
-			nil,       // start
-			nil,       // stop
+			nil,       // :assign
+			nil,       // :play
+			nil,       // :tempo
+			nil,       // :timesig
+			nil,       // :velocity
+			nil,       // :channel
+			nil,       // :program
+			nil,       // :control
+			nil,       // :start
+			nil,       // :stop
 		},
 	},
 	actionRow{ // S42
@@ -1446,9 +1446,9 @@ var actionTab = actionTable{
 			nil,        // ␚
 			nil,        // empty
 			nil,        // terminator
-			nil,        // bar
+			nil,        // :bar
 			nil,        // stringLit
-			nil,        // end
+			nil,        // :end
 			shift(44),  // [
 			reduce(14), // ], reduce: NoteList
 			shift(45),  // char
@@ -1461,16 +1461,16 @@ var actionTab = actionTable{
 			nil,        // dot
 			nil,        // tuplet
 			nil,        // letRing
-			nil,        // assign
-			nil,        // play
-			nil,        // tempo
-			nil,        // timesig
-			nil,        // velocity
-			nil,        // channel
-			nil,        // program
-			nil,        // control
-			nil,        // start
-			nil,        // stop
+			nil,        // :assign
+			nil,        // :play
+			nil,        // :tempo
+			nil,        // :timesig
+			nil,        // :velocity
+			nil,        // :channel
+			nil,        // :program
+			nil,        // :control
+			nil,        // :start
+			nil,        // :stop
 		},
 	},
 	actionRow{ // S43
@@ -1480,9 +1480,9 @@ var actionTab = actionTable{
 			nil,        // ␚
 			nil,        // empty
 			nil,        // terminator
-			nil,        // bar
+			nil,        // :bar
 			nil,        // stringLit
-			nil,        // end
+			nil,        // :end
 			reduce(20), // [, reduce: PropertyList
 			reduce(20), // ], reduce: PropertyList
 			reduce(20), // char, reduce: PropertyList
@@ -1495,16 +1495,16 @@ var actionTab = actionTable{
 			shift(69),  // dot
 			shift(70),  // tuplet
 			shift(71),  // letRing
-			nil,        // assign
-			nil,        // play
-			nil,        // tempo
-			nil,        // timesig
-			nil,        // velocity
-			nil,        // channel
-			nil,        // program
-			nil,        // control
-			nil,        // start
-			nil,        // stop
+			nil,        // :assign
+			nil,        // :play
+			nil,        // :tempo
+			nil,        // :timesig
+			nil,        // :velocity
+			nil,        // :channel
+			nil,        // :program
+			nil,        // :control
+			nil,        // :start
+			nil,        // :stop
 		},
 	},
 	actionRow{ // S44
@@ -1514,9 +1514,9 @@ var actionTab = actionTable{
 			nil,       // ␚
 			nil,       // empty
 			nil,       // terminator
-			nil,       // bar
+			nil,       // :bar
 			nil,       // stringLit
-			nil,       // end
+			nil,       // :end
 			shift(44), // [
 			nil,       // ]
 			shift(45), // char
@@ -1529,16 +1529,16 @@ var actionTab = actionTable{
 			nil,       // dot
 			nil,       // tuplet
 			nil,       // letRing
-			nil,       // assign
-			nil,       // play
-			nil,       // tempo
-			nil,       // timesig
-			nil,       // velocity
-			nil,       // channel
-			nil,       // program
-			nil,       // control
-			nil,       // start
-			nil,       // stop
+			nil,       // :assign
+			nil,       // :play
+			nil,       // :tempo
+			nil,       // :timesig
+			nil,       // :velocity
+			nil,       // :channel
+			nil,       // :program
+			nil,       // :control
+			nil,       // :start
+			nil,       // :stop
 		},
 	},
 	actionRow{ // S45
@@ -1548,9 +1548,9 @@ var actionTab = actionTable{
 			nil,        // ␚
 			nil,        // empty
 			nil,        // terminator
-			nil,        // bar
+			nil,        // :bar
 			nil,        // stringLit
-			nil,        // end
+			nil,        // :end
 			reduce(18), // [, reduce: NoteSymbol
 			reduce(18), // ], reduce: NoteSymbol
 			reduce(18), // char, reduce: NoteSymbol
@@ -1563,16 +1563,16 @@ var actionTab = actionTable{
 			reduce(18), // dot, reduce: NoteSymbol
 			reduce(18), // tuplet, reduce: NoteSymbol
 			reduce(18), // letRing, reduce: NoteSymbol
-			nil,        // assign
-			nil,        // play
-			nil,        // tempo
-			nil,        // timesig
-			nil,        // velocity
-			nil,        // channel
-			nil,        // program
-			nil,        // control
-			nil,        // start
-			nil,        // stop
+			nil,        // :assign
+			nil,        // :play
+			nil,        // :tempo
+			nil,        // :timesig
+			nil,        // :velocity
+			nil,        // :channel
+			nil,        // :program
+			nil,        // :control
+			nil,        // :start
+			nil,        // :stop
 		},
 	},
 	actionRow{ // S46
@@ -1582,9 +1582,9 @@ var actionTab = actionTable{
 			nil,        // ␚
 			nil,        // empty
 			nil,        // terminator
-			nil,        // bar
+			nil,        // :bar
 			nil,        // stringLit
-			nil,        // end
+			nil,        // :end
 			reduce(19), // [, reduce: NoteSymbol
 			reduce(19), // ], reduce: NoteSymbol
 			reduce(19), // char, reduce: NoteSymbol
@@ -1597,16 +1597,16 @@ var actionTab = actionTable{
 			reduce(19), // dot, reduce: NoteSymbol
 			reduce(19), // tuplet, reduce: NoteSymbol
 			reduce(19), // letRing, reduce: NoteSymbol
-			nil,        // assign
-			nil,        // play
-			nil,        // tempo
-			nil,        // timesig
-			nil,        // velocity
-			nil,        // channel
-			nil,        // program
-			nil,        // control
-			nil,        // start
-			nil,        // stop
+			nil,        // :assign
+			nil,        // :play
+			nil,        // :tempo
+			nil,        // :timesig
+			nil,        // :velocity
+			nil,        // :channel
+			nil,        // :program
+			nil,        // :control
+			nil,        // :start
+			nil,        // :stop
 		},
 	},
 	actionRow{ // S47
@@ -1616,9 +1616,9 @@ var actionTab = actionTable{
 			nil,       // ␚
 			nil,       // empty
 			nil,       // terminator
-			nil,       // bar
+			nil,       // :bar
 			nil,       // stringLit
-			nil,       // end
+			nil,       // :end
 			nil,       // [
 			nil,       // ]
 			nil,       // char
@@ -1631,16 +1631,16 @@ var actionTab = actionTable{
 			nil,       // dot
 			nil,       // tuplet
 			nil,       // letRing
-			nil,       // assign
-			nil,       // play
-			nil,       // tempo
-			nil,       // timesig
-			nil,       // velocity
-			nil,       // channel
-			nil,       // program
-			nil,       // control
-			nil,       // start
-			nil,       // stop
+			nil,       // :assign
+			nil,       // :play
+			nil,       // :tempo
+			nil,       // :timesig
+			nil,       // :velocity
+			nil,       // :channel
+			nil,       // :program
+			nil,       // :control
+			nil,       // :start
+			nil,       // :stop
 		},
 	},
 	actionRow{ // S48
@@ -1650,9 +1650,9 @@ var actionTab = actionTable{
 			reduce(31), // ␚, reduce: TopLevelCommand
 			nil,        // empty
 			reduce(31), // terminator, reduce: TopLevelCommand
-			nil,        // bar
+			nil,        // :bar
 			nil,        // stringLit
-			nil,        // end
+			nil,        // :end
 			nil,        // [
 			nil,        // ]
 			nil,        // char
@@ -1665,16 +1665,16 @@ var actionTab = actionTable{
 			nil,        // dot
 			nil,        // tuplet
 			nil,        // letRing
-			nil,        // assign
-			nil,        // play
-			nil,        // tempo
-			nil,        // timesig
-			nil,        // velocity
-			nil,        // channel
-			nil,        // program
-			nil,        // control
-			nil,        // start
-			nil,        // stop
+			nil,        // :assign
+			nil,        // :play
+			nil,        // :tempo
+			nil,        // :timesig
+			nil,        // :velocity
+			nil,        // :channel
+			nil,        // :program
+			nil,        // :control
+			nil,        // :start
+			nil,        // :stop
 		},
 	},
 	actionRow{ // S49
@@ -1684,9 +1684,9 @@ var actionTab = actionTable{
 			reduce(33), // ␚, reduce: BarBodyCommand
 			nil,        // empty
 			reduce(33), // terminator, reduce: BarBodyCommand
-			nil,        // bar
+			nil,        // :bar
 			nil,        // stringLit
-			nil,        // end
+			nil,        // :end
 			nil,        // [
 			nil,        // ]
 			nil,        // char
@@ -1699,16 +1699,16 @@ var actionTab = actionTable{
 			nil,        // dot
 			nil,        // tuplet
 			nil,        // letRing
-			nil,        // assign
-			nil,        // play
-			nil,        // tempo
-			nil,        // timesig
-			nil,        // velocity
-			nil,        // channel
-			nil,        // program
-			nil,        // control
-			nil,        // start
-			nil,        // stop
+			nil,        // :assign
+			nil,        // :play
+			nil,        // :tempo
+			nil,        // :timesig
+			nil,        // :velocity
+			nil,        // :channel
+			nil,        // :program
+			nil,        // :control
+			nil,        // :start
+			nil,        // :stop
 		},
 	},
 	actionRow{ // S50
@@ -1718,9 +1718,9 @@ var actionTab = actionTable{
 			nil,       // ␚
 			nil,       // empty
 			nil,       // terminator
-			nil,       // bar
+			nil,       // :bar
 			nil,       // stringLit
-			nil,       // end
+			nil,       // :end
 			nil,       // [
 			nil,       // ]
 			nil,       // char
@@ -1733,16 +1733,16 @@ var actionTab = actionTable{
 			nil,       // dot
 			nil,       // tuplet
 			nil,       // letRing
-			nil,       // assign
-			nil,       // play
-			nil,       // tempo
-			nil,       // timesig
-			nil,       // velocity
-			nil,       // channel
-			nil,       // program
-			nil,       // control
-			nil,       // start
-			nil,       // stop
+			nil,       // :assign
+			nil,       // :play
+			nil,       // :tempo
+			nil,       // :timesig
+			nil,       // :velocity
+			nil,       // :channel
+			nil,       // :program
+			nil,       // :control
+			nil,       // :start
+			nil,       // :stop
 		},
 	},
 	actionRow{ // S51
@@ -1752,9 +1752,9 @@ var actionTab = actionTable{
 			reduce(35), // ␚, reduce: BarBodyCommand
 			nil,        // empty
 			reduce(35), // terminator, reduce: BarBodyCommand
-			nil,        // bar
+			nil,        // :bar
 			nil,        // stringLit
-			nil,        // end
+			nil,        // :end
 			nil,        // [
 			nil,        // ]
 			nil,        // char
@@ -1767,16 +1767,16 @@ var actionTab = actionTable{
 			nil,        // dot
 			nil,        // tuplet
 			nil,        // letRing
-			nil,        // assign
-			nil,        // play
-			nil,        // tempo
-			nil,        // timesig
-			nil,        // velocity
-			nil,        // channel
-			nil,        // program
-			nil,        // control
-			nil,        // start
-			nil,        // stop
+			nil,        // :assign
+			nil,        // :play
+			nil,        // :tempo
+			nil,        // :timesig
+			nil,        // :velocity
+			nil,        // :channel
+			nil,        // :program
+			nil,        // :control
+			nil,        // :start
+			nil,        // :stop
 		},
 	},
 	actionRow{ // S52
@@ -1786,9 +1786,9 @@ var actionTab = actionTable{
 			reduce(36), // ␚, reduce: BarBodyCommand
 			nil,        // empty
 			reduce(36), // terminator, reduce: BarBodyCommand
-			nil,        // bar
+			nil,        // :bar
 			nil,        // stringLit
-			nil,        // end
+			nil,        // :end
 			nil,        // [
 			nil,        // ]
 			nil,        // char
@@ -1801,16 +1801,16 @@ var actionTab = actionTable{
 			nil,        // dot
 			nil,        // tuplet
 			nil,        // letRing
-			nil,        // assign
-			nil,        // play
-			nil,        // tempo
-			nil,        // timesig
-			nil,        // velocity
-			nil,        // channel
-			nil,        // program
-			nil,        // control
-			nil,        // start
-			nil,        // stop
+			nil,        // :assign
+			nil,        // :play
+			nil,        // :tempo
+			nil,        // :timesig
+			nil,        // :velocity
+			nil,        // :channel
+			nil,        // :program
+			nil,        // :control
+			nil,        // :start
+			nil,        // :stop
 		},
 	},
 	actionRow{ // S53
@@ -1820,9 +1820,9 @@ var actionTab = actionTable{
 			reduce(37), // ␚, reduce: BarBodyCommand
 			nil,        // empty
 			reduce(37), // terminator, reduce: BarBodyCommand
-			nil,        // bar
+			nil,        // :bar
 			nil,        // stringLit
-			nil,        // end
+			nil,        // :end
 			nil,        // [
 			nil,        // ]
 			nil,        // char
@@ -1835,16 +1835,16 @@ var actionTab = actionTable{
 			nil,        // dot
 			nil,        // tuplet
 			nil,        // letRing
-			nil,        // assign
-			nil,        // play
-			nil,        // tempo
-			nil,        // timesig
-			nil,        // velocity
-			nil,        // channel
-			nil,        // program
-			nil,        // control
-			nil,        // start
-			nil,        // stop
+			nil,        // :assign
+			nil,        // :play
+			nil,        // :tempo
+			nil,        // :timesig
+			nil,        // :velocity
+			nil,        // :channel
+			nil,        // :program
+			nil,        // :control
+			nil,        // :start
+			nil,        // :stop
 		},
 	},
 	actionRow{ // S54
@@ -1854,9 +1854,9 @@ var actionTab = actionTable{
 			nil,       // ␚
 			nil,       // empty
 			nil,       // terminator
-			nil,       // bar
+			nil,       // :bar
 			nil,       // stringLit
-			nil,       // end
+			nil,       // :end
 			nil,       // [
 			nil,       // ]
 			nil,       // char
@@ -1869,16 +1869,16 @@ var actionTab = actionTable{
 			nil,       // dot
 			nil,       // tuplet
 			nil,       // letRing
-			nil,       // assign
-			nil,       // play
-			nil,       // tempo
-			nil,       // timesig
-			nil,       // velocity
-			nil,       // channel
-			nil,       // program
-			nil,       // control
-			nil,       // start
-			nil,       // stop
+			nil,       // :assign
+			nil,       // :play
+			nil,       // :tempo
+			nil,       // :timesig
+			nil,       // :velocity
+			nil,       // :channel
+			nil,       // :program
+			nil,       // :control
+			nil,       // :start
+			nil,       // :stop
 		},
 	},
 	actionRow{ // S55
@@ -1888,9 +1888,9 @@ var actionTab = actionTable{
 			reduce(3), // ␚, reduce: RepeatTerminator
 			nil,       // empty
 			nil,       // terminator
-			shift(10), // bar
+			shift(10), // :bar
 			nil,       // stringLit
-			nil,       // end
+			nil,       // :end
 			shift(13), // [
 			nil,       // ]
 			shift(14), // char
@@ -1903,16 +1903,16 @@ var actionTab = actionTable{
 			nil,       // dot
 			nil,       // tuplet
 			nil,       // letRing
-			shift(16), // assign
-			shift(17), // play
-			shift(18), // tempo
-			shift(19), // timesig
-			shift(20), // velocity
-			shift(21), // channel
-			shift(22), // program
-			shift(23), // control
-			shift(24), // start
-			shift(25), // stop
+			shift(16), // :assign
+			shift(17), // :play
+			shift(18), // :tempo
+			shift(19), // :timesig
+			shift(20), // :velocity
+			shift(21), // :channel
+			shift(22), // :program
+			shift(23), // :control
+			shift(24), // :start
+			shift(25), // :stop
 		},
 	},
 	actionRow{ // S56
@@ -1922,9 +1922,9 @@ var actionTab = actionTable{
 			reduce(2), // ␚, reduce: RepeatTerminator
 			nil,       // empty
 			shift(56), // terminator
-			reduce(2), // bar, reduce: RepeatTerminator
+			reduce(2), // :bar, reduce: RepeatTerminator
 			nil,       // stringLit
-			nil,       // end
+			nil,       // :end
 			reduce(2), // [, reduce: RepeatTerminator
 			nil,       // ]
 			reduce(2), // char, reduce: RepeatTerminator
@@ -1937,16 +1937,16 @@ var actionTab = actionTable{
 			nil,       // dot
 			nil,       // tuplet
 			nil,       // letRing
-			reduce(2), // assign, reduce: RepeatTerminator
-			reduce(2), // play, reduce: RepeatTerminator
-			reduce(2), // tempo, reduce: RepeatTerminator
-			reduce(2), // timesig, reduce: RepeatTerminator
-			reduce(2), // velocity, reduce: RepeatTerminator
-			reduce(2), // channel, reduce: RepeatTerminator
-			reduce(2), // program, reduce: RepeatTerminator
-			reduce(2), // control, reduce: RepeatTerminator
-			reduce(2), // start, reduce: RepeatTerminator
-			reduce(2), // stop, reduce: RepeatTerminator
+			reduce(2), // :assign, reduce: RepeatTerminator
+			reduce(2), // :play, reduce: RepeatTerminator
+			reduce(2), // :tempo, reduce: RepeatTerminator
+			reduce(2), // :timesig, reduce: RepeatTerminator
+			reduce(2), // :velocity, reduce: RepeatTerminator
+			reduce(2), // :channel, reduce: RepeatTerminator
+			reduce(2), // :program, reduce: RepeatTerminator
+			reduce(2), // :control, reduce: RepeatTerminator
+			reduce(2), // :start, reduce: RepeatTerminator
+			reduce(2), // :stop, reduce: RepeatTerminator
 		},
 	},
 	actionRow{ // S57
@@ -1956,9 +1956,9 @@ var actionTab = actionTable{
 			nil,       // ␚
 			nil,       // empty
 			nil,       // terminator
-			nil,       // bar
+			nil,       // :bar
 			nil,       // stringLit
-			nil,       // end
+			nil,       // :end
 			shift(84), // [
 			nil,       // ]
 			shift(85), // char
@@ -1971,16 +1971,16 @@ var actionTab = actionTable{
 			nil,       // dot
 			nil,       // tuplet
 			nil,       // letRing
-			nil,       // assign
-			nil,       // play
-			shift(87), // tempo
-			shift(88), // timesig
-			shift(89), // velocity
-			shift(90), // channel
-			shift(91), // program
-			shift(92), // control
-			shift(93), // start
-			shift(94), // stop
+			nil,       // :assign
+			nil,       // :play
+			shift(87), // :tempo
+			shift(88), // :timesig
+			shift(89), // :velocity
+			shift(90), // :channel
+			shift(91), // :program
+			shift(92), // :control
+			shift(93), // :start
+			shift(94), // :stop
 		},
 	},
 	actionRow{ // S58
@@ -1990,9 +1990,9 @@ var actionTab = actionTable{
 			nil,       // ␚
 			nil,       // empty
 			shift(58), // terminator
-			nil,       // bar
+			nil,       // :bar
 			nil,       // stringLit
-			nil,       // end
+			nil,       // :end
 			reduce(2), // [, reduce: RepeatTerminator
 			nil,       // ]
 			reduce(2), // char, reduce: RepeatTerminator
@@ -2005,16 +2005,16 @@ var actionTab = actionTable{
 			nil,       // dot
 			nil,       // tuplet
 			nil,       // letRing
-			nil,       // assign
-			nil,       // play
-			reduce(2), // tempo, reduce: RepeatTerminator
-			reduce(2), // timesig, reduce: RepeatTerminator
-			reduce(2), // velocity, reduce: RepeatTerminator
-			reduce(2), // channel, reduce: RepeatTerminator
-			reduce(2), // program, reduce: RepeatTerminator
-			reduce(2), // control, reduce: RepeatTerminator
-			reduce(2), // start, reduce: RepeatTerminator
-			reduce(2), // stop, reduce: RepeatTerminator
+			nil,       // :assign
+			nil,       // :play
+			reduce(2), // :tempo, reduce: RepeatTerminator
+			reduce(2), // :timesig, reduce: RepeatTerminator
+			reduce(2), // :velocity, reduce: RepeatTerminator
+			reduce(2), // :channel, reduce: RepeatTerminator
+			reduce(2), // :program, reduce: RepeatTerminator
+			reduce(2), // :control, reduce: RepeatTerminator
+			reduce(2), // :start, reduce: RepeatTerminator
+			reduce(2), // :stop, reduce: RepeatTerminator
 		},
 	},
 	actionRow{ // S59
@@ -2024,9 +2024,9 @@ var actionTab = actionTable{
 			reduce(21), // ␚, reduce: PropertyList
 			nil,        // empty
 			reduce(21), // terminator, reduce: PropertyList
-			nil,        // bar
+			nil,        // :bar
 			nil,        // stringLit
-			nil,        // end
+			nil,        // :end
 			reduce(21), // [, reduce: PropertyList
 			nil,        // ]
 			reduce(21), // char, reduce: PropertyList
@@ -2039,16 +2039,16 @@ var actionTab = actionTable{
 			nil,        // dot
 			nil,        // tuplet
 			nil,        // letRing
-			nil,        // assign
-			nil,        // play
-			nil,        // tempo
-			nil,        // timesig
-			nil,        // velocity
-			nil,        // channel
-			nil,        // program
-			nil,        // control
-			nil,        // start
-			nil,        // stop
+			nil,        // :assign
+			nil,        // :play
+			nil,        // :tempo
+			nil,        // :timesig
+			nil,        // :velocity
+			nil,        // :channel
+			nil,        // :program
+			nil,        // :control
+			nil,        // :start
+			nil,        // :stop
 		},
 	},
 	actionRow{ // S60
@@ -2058,9 +2058,9 @@ var actionTab = actionTable{
 			reduce(20), // ␚, reduce: PropertyList
 			nil,        // empty
 			reduce(20), // terminator, reduce: PropertyList
-			nil,        // bar
+			nil,        // :bar
 			nil,        // stringLit
-			nil,        // end
+			nil,        // :end
 			reduce(20), // [, reduce: PropertyList
 			nil,        // ]
 			reduce(20), // char, reduce: PropertyList
@@ -2073,16 +2073,16 @@ var actionTab = actionTable{
 			shift(38),  // dot
 			shift(39),  // tuplet
 			shift(40),  // letRing
-			nil,        // assign
-			nil,        // play
-			nil,        // tempo
-			nil,        // timesig
-			nil,        // velocity
-			nil,        // channel
-			nil,        // program
-			nil,        // control
-			nil,        // start
-			nil,        // stop
+			nil,        // :assign
+			nil,        // :play
+			nil,        // :tempo
+			nil,        // :timesig
+			nil,        // :velocity
+			nil,        // :channel
+			nil,        // :program
+			nil,        // :control
+			nil,        // :start
+			nil,        // :stop
 		},
 	},
 	actionRow{ // S61
@@ -2092,9 +2092,9 @@ var actionTab = actionTable{
 			nil,        // ␚
 			nil,        // empty
 			nil,        // terminator
-			nil,        // bar
+			nil,        // :bar
 			nil,        // stringLit
-			nil,        // end
+			nil,        // :end
 			nil,        // [
 			reduce(15), // ], reduce: NoteList
 			nil,        // char
@@ -2107,16 +2107,16 @@ var actionTab = actionTable{
 			nil,        // dot
 			nil,        // tuplet
 			nil,        // letRing
-			nil,        // assign
-			nil,        // play
-			nil,        // tempo
-			nil,        // timesig
-			nil,        // velocity
-			nil,        // channel
-			nil,        // program
-			nil,        // control
-			nil,        // start
-			nil,        // stop
+			nil,        // :assign
+			nil,        // :play
+			nil,        // :tempo
+			nil,        // :timesig
+			nil,        // :velocity
+			nil,        // :channel
+			nil,        // :program
+			nil,        // :control
+			nil,        // :start
+			nil,        // :stop
 		},
 	},
 	actionRow{ // S62
@@ -2126,9 +2126,9 @@ var actionTab = actionTable{
 			nil,        // ␚
 			nil,        // empty
 			nil,        // terminator
-			nil,        // bar
+			nil,        // :bar
 			nil,        // stringLit
-			nil,        // end
+			nil,        // :end
 			reduce(16), // [, reduce: NoteObject
 			reduce(16), // ], reduce: NoteObject
 			reduce(16), // char, reduce: NoteObject
@@ -2141,16 +2141,16 @@ var actionTab = actionTable{
 			nil,        // dot
 			nil,        // tuplet
 			nil,        // letRing
-			nil,        // assign
-			nil,        // play
-			nil,        // tempo
-			nil,        // timesig
-			nil,        // velocity
-			nil,        // channel
-			nil,        // program
-			nil,        // control
-			nil,        // start
-			nil,        // stop
+			nil,        // :assign
+			nil,        // :play
+			nil,        // :tempo
+			nil,        // :timesig
+			nil,        // :velocity
+			nil,        // :channel
+			nil,        // :program
+			nil,        // :control
+			nil,        // :start
+			nil,        // :stop
 		},
 	},
 	actionRow{ // S63
@@ -2160,9 +2160,9 @@ var actionTab = actionTable{
 			nil,        // ␚
 			nil,        // empty
 			nil,        // terminator
-			nil,        // bar
+			nil,        // :bar
 			nil,        // stringLit
-			nil,        // end
+			nil,        // :end
 			reduce(20), // [, reduce: PropertyList
 			reduce(20), // ], reduce: PropertyList
 			reduce(20), // char, reduce: PropertyList
@@ -2175,16 +2175,16 @@ var actionTab = actionTable{
 			shift(69),  // dot
 			shift(70),  // tuplet
 			shift(71),  // letRing
-			nil,        // assign
-			nil,        // play
-			nil,        // tempo
-			nil,        // timesig
-			nil,        // velocity
-			nil,        // channel
-			nil,        // program
-			nil,        // control
-			nil,        // start
-			nil,        // stop
+			nil,        // :assign
+			nil,        // :play
+			nil,        // :tempo
+			nil,        // :timesig
+			nil,        // :velocity
+			nil,        // :channel
+			nil,        // :program
+			nil,        // :control
+			nil,        // :start
+			nil,        // :stop
 		},
 	},
 	actionRow{ // S64
@@ -2194,9 +2194,9 @@ var actionTab = actionTable{
 			nil,        // ␚
 			nil,        // empty
 			nil,        // terminator
-			nil,        // bar
+			nil,        // :bar
 			nil,        // stringLit
-			nil,        // end
+			nil,        // :end
 			reduce(22), // [, reduce: Property
 			reduce(22), // ], reduce: Property
 			reduce(22), // char, reduce: Property
@@ -2209,16 +2209,16 @@ var actionTab = actionTable{
 			reduce(22), // dot, reduce: Property
 			reduce(22), // tuplet, reduce: Property
 			reduce(22), // letRing, reduce: Property
-			nil,        // assign
-			nil,        // play
-			nil,        // tempo
-			nil,        // timesig
-			nil,        // velocity
-			nil,        // channel
-			nil,        // program
-			nil,        // control
-			nil,        // start
-			nil,        // stop
+			nil,        // :assign
+			nil,        // :play
+			nil,        // :tempo
+			nil,        // :timesig
+			nil,        // :velocity
+			nil,        // :channel
+			nil,        // :program
+			nil,        // :control
+			nil,        // :start
+			nil,        // :stop
 		},
 	},
 	actionRow{ // S65
@@ -2228,9 +2228,9 @@ var actionTab = actionTable{
 			nil,        // ␚
 			nil,        // empty
 			nil,        // terminator
-			nil,        // bar
+			nil,        // :bar
 			nil,        // stringLit
-			nil,        // end
+			nil,        // :end
 			reduce(23), // [, reduce: Property
 			reduce(23), // ], reduce: Property
 			reduce(23), // char, reduce: Property
@@ -2243,16 +2243,16 @@ var actionTab = actionTable{
 			reduce(23), // dot, reduce: Property
 			reduce(23), // tuplet, reduce: Property
 			reduce(23), // letRing, reduce: Property
-			nil,        // assign
-			nil,        // play
-			nil,        // tempo
-			nil,        // timesig
-			nil,        // velocity
-			nil,        // channel
-			nil,        // program
-			nil,        // control
-			nil,        // start
-			nil,        // stop
+			nil,        // :assign
+			nil,        // :play
+			nil,        // :tempo
+			nil,        // :timesig
+			nil,        // :velocity
+			nil,        // :channel
+			nil,        // :program
+			nil,        // :control
+			nil,        // :start
+			nil,        // :stop
 		},
 	},
 	actionRow{ // S66
@@ -2262,9 +2262,9 @@ var actionTab = actionTable{
 			nil,        // ␚
 			nil,        // empty
 			nil,        // terminator
-			nil,        // bar
+			nil,        // :bar
 			nil,        // stringLit
-			nil,        // end
+			nil,        // :end
 			reduce(24), // [, reduce: Property
 			reduce(24), // ], reduce: Property
 			reduce(24), // char, reduce: Property
@@ -2277,16 +2277,16 @@ var actionTab = actionTable{
 			reduce(24), // dot, reduce: Property
 			reduce(24), // tuplet, reduce: Property
 			reduce(24), // letRing, reduce: Property
-			nil,        // assign
-			nil,        // play
-			nil,        // tempo
-			nil,        // timesig
-			nil,        // velocity
-			nil,        // channel
-			nil,        // program
-			nil,        // control
-			nil,        // start
-			nil,        // stop
+			nil,        // :assign
+			nil,        // :play
+			nil,        // :tempo
+			nil,        // :timesig
+			nil,        // :velocity
+			nil,        // :channel
+			nil,        // :program
+			nil,        // :control
+			nil,        // :start
+			nil,        // :stop
 		},
 	},
 	actionRow{ // S67
@@ -2296,9 +2296,9 @@ var actionTab = actionTable{
 			nil,        // ␚
 			nil,        // empty
 			nil,        // terminator
-			nil,        // bar
+			nil,        // :bar
 			nil,        // stringLit
-			nil,        // end
+			nil,        // :end
 			reduce(25), // [, reduce: Property
 			reduce(25), // ], reduce: Property
 			reduce(25), // char, reduce: Property
@@ -2311,16 +2311,16 @@ var actionTab = actionTable{
 			reduce(25), // dot, reduce: Property
 			reduce(25), // tuplet, reduce: Property
 			reduce(25), // letRing, reduce: Property
-			nil,        // assign
-			nil,        // play
-			nil,        // tempo
-			nil,        // timesig
-			nil,        // velocity
-			nil,        // channel
-			nil,        // program
-			nil,        // control
-			nil,        // start
-			nil,        // stop
+			nil,        // :assign
+			nil,        // :play
+			nil,        // :tempo
+			nil,        // :timesig
+			nil,        // :velocity
+			nil,        // :channel
+			nil,        // :program
+			nil,        // :control
+			nil,        // :start
+			nil,        // :stop
 		},
 	},
 	actionRow{ // S68
@@ -2330,9 +2330,9 @@ var actionTab = actionTable{
 			nil,        // ␚
 			nil,        // empty
 			nil,        // terminator
-			nil,        // bar
+			nil,        // :bar
 			nil,        // stringLit
-			nil,        // end
+			nil,        // :end
 			reduce(26), // [, reduce: Property
 			reduce(26), // ], reduce: Property
 			reduce(26), // char, reduce: Property
@@ -2345,16 +2345,16 @@ var actionTab = actionTable{
 			reduce(26), // dot, reduce: Property
 			reduce(26), // tuplet, reduce: Property
 			reduce(26), // letRing, reduce: Property
-			nil,        // assign
-			nil,        // play
-			nil,        // tempo
-			nil,        // timesig
-			nil,        // velocity
-			nil,        // channel
-			nil,        // program
-			nil,        // control
-			nil,        // start
-			nil,        // stop
+			nil,        // :assign
+			nil,        // :play
+			nil,        // :tempo
+			nil,        // :timesig
+			nil,        // :velocity
+			nil,        // :channel
+			nil,        // :program
+			nil,        // :control
+			nil,        // :start
+			nil,        // :stop
 		},
 	},
 	actionRow{ // S69
@@ -2364,9 +2364,9 @@ var actionTab = actionTable{
 			nil,        // ␚
 			nil,        // empty
 			nil,        // terminator
-			nil,        // bar
+			nil,        // :bar
 			nil,        // stringLit
-			nil,        // end
+			nil,        // :end
 			reduce(27), // [, reduce: Property
 			reduce(27), // ], reduce: Property
 			reduce(27), // char, reduce: Property
@@ -2379,16 +2379,16 @@ var actionTab = actionTable{
 			reduce(27), // dot, reduce: Property
 			reduce(27), // tuplet, reduce: Property
 			reduce(27), // letRing, reduce: Property
-			nil,        // assign
-			nil,        // play
-			nil,        // tempo
-			nil,        // timesig
-			nil,        // velocity
-			nil,        // channel
-			nil,        // program
-			nil,        // control
-			nil,        // start
-			nil,        // stop
+			nil,        // :assign
+			nil,        // :play
+			nil,        // :tempo
+			nil,        // :timesig
+			nil,        // :velocity
+			nil,        // :channel
+			nil,        // :program
+			nil,        // :control
+			nil,        // :start
+			nil,        // :stop
 		},
 	},
 	actionRow{ // S70
@@ -2398,9 +2398,9 @@ var actionTab = actionTable{
 			nil,        // ␚
 			nil,        // empty
 			nil,        // terminator
-			nil,        // bar
+			nil,        // :bar
 			nil,        // stringLit
-			nil,        // end
+			nil,        // :end
 			reduce(28), // [, reduce: Property
 			reduce(28), // ], reduce: Property
 			reduce(28), // char, reduce: Property
@@ -2413,16 +2413,16 @@ var actionTab = actionTable{
 			reduce(28), // dot, reduce: Property
 			reduce(28), // tuplet, reduce: Property
 			reduce(28), // letRing, reduce: Property
-			nil,        // assign
-			nil,        // play
-			nil,        // tempo
-			nil,        // timesig
-			nil,        // velocity
-			nil,        // channel
-			nil,        // program
-			nil,        // control
-			nil,        // start
-			nil,        // stop
+			nil,        // :assign
+			nil,        // :play
+			nil,        // :tempo
+			nil,        // :timesig
+			nil,        // :velocity
+			nil,        // :channel
+			nil,        // :program
+			nil,        // :control
+			nil,        // :start
+			nil,        // :stop
 		},
 	},
 	actionRow{ // S71
@@ -2432,9 +2432,9 @@ var actionTab = actionTable{
 			nil,        // ␚
 			nil,        // empty
 			nil,        // terminator
-			nil,        // bar
+			nil,        // :bar
 			nil,        // stringLit
-			nil,        // end
+			nil,        // :end
 			reduce(29), // [, reduce: Property
 			reduce(29), // ], reduce: Property
 			reduce(29), // char, reduce: Property
@@ -2447,16 +2447,16 @@ var actionTab = actionTable{
 			reduce(29), // dot, reduce: Property
 			reduce(29), // tuplet, reduce: Property
 			reduce(29), // letRing, reduce: Property
-			nil,        // assign
-			nil,        // play
-			nil,        // tempo
-			nil,        // timesig
-			nil,        // velocity
-			nil,        // channel
-			nil,        // program
-			nil,        // control
-			nil,        // start
-			nil,        // stop
+			nil,        // :assign
+			nil,        // :play
+			nil,        // :tempo
+			nil,        // :timesig
+			nil,        // :velocity
+			nil,        // :channel
+			nil,        // :program
+			nil,        // :control
+			nil,        // :start
+			nil,        // :stop
 		},
 	},
 	actionRow{ // S72
@@ -2466,9 +2466,9 @@ var actionTab = actionTable{
 			nil,       // ␚
 			nil,       // empty
 			nil,       // terminator
-			nil,       // bar
+			nil,       // :bar
 			nil,       // stringLit
-			nil,       // end
+			nil,       // :end
 			nil,       // [
 			shift(98), // ]
 			nil,       // char
@@ -2481,16 +2481,16 @@ var actionTab = actionTable{
 			nil,       // dot
 			nil,       // tuplet
 			nil,       // letRing
-			nil,       // assign
-			nil,       // play
-			nil,       // tempo
-			nil,       // timesig
-			nil,       // velocity
-			nil,       // channel
-			nil,       // program
-			nil,       // control
-			nil,       // start
-			nil,       // stop
+			nil,       // :assign
+			nil,       // :play
+			nil,       // :tempo
+			nil,       // :timesig
+			nil,       // :velocity
+			nil,       // :channel
+			nil,       // :program
+			nil,       // :control
+			nil,       // :start
+			nil,       // :stop
 		},
 	},
 	actionRow{ // S73
@@ -2500,9 +2500,9 @@ var actionTab = actionTable{
 			reduce(30), // ␚, reduce: TopLevelCommand
 			nil,        // empty
 			reduce(30), // terminator, reduce: TopLevelCommand
-			nil,        // bar
+			nil,        // :bar
 			nil,        // stringLit
-			nil,        // end
+			nil,        // :end
 			nil,        // [
 			nil,        // ]
 			nil,        // char
@@ -2515,16 +2515,16 @@ var actionTab = actionTable{
 			nil,        // dot
 			nil,        // tuplet
 			nil,        // letRing
-			nil,        // assign
-			nil,        // play
-			nil,        // tempo
-			nil,        // timesig
-			nil,        // velocity
-			nil,        // channel
-			nil,        // program
-			nil,        // control
-			nil,        // start
-			nil,        // stop
+			nil,        // :assign
+			nil,        // :play
+			nil,        // :tempo
+			nil,        // :timesig
+			nil,        // :velocity
+			nil,        // :channel
+			nil,        // :program
+			nil,        // :control
+			nil,        // :start
+			nil,        // :stop
 		},
 	},
 	actionRow{ // S74
@@ -2534,9 +2534,9 @@ var actionTab = actionTable{
 			reduce(34), // ␚, reduce: BarBodyCommand
 			nil,        // empty
 			reduce(34), // terminator, reduce: BarBodyCommand
-			nil,        // bar
+			nil,        // :bar
 			nil,        // stringLit
-			nil,        // end
+			nil,        // :end
 			nil,        // [
 			nil,        // ]
 			nil,        // char
@@ -2549,16 +2549,16 @@ var actionTab = actionTable{
 			nil,        // dot
 			nil,        // tuplet
 			nil,        // letRing
-			nil,        // assign
-			nil,        // play
-			nil,        // tempo
-			nil,        // timesig
-			nil,        // velocity
-			nil,        // channel
-			nil,        // program
-			nil,        // control
-			nil,        // start
-			nil,        // stop
+			nil,        // :assign
+			nil,        // :play
+			nil,        // :tempo
+			nil,        // :timesig
+			nil,        // :velocity
+			nil,        // :channel
+			nil,        // :program
+			nil,        // :control
+			nil,        // :start
+			nil,        // :stop
 		},
 	},
 	actionRow{ // S75
@@ -2568,9 +2568,9 @@ var actionTab = actionTable{
 			reduce(38), // ␚, reduce: BarBodyCommand
 			nil,        // empty
 			reduce(38), // terminator, reduce: BarBodyCommand
-			nil,        // bar
+			nil,        // :bar
 			nil,        // stringLit
-			nil,        // end
+			nil,        // :end
 			nil,        // [
 			nil,        // ]
 			nil,        // char
@@ -2583,16 +2583,16 @@ var actionTab = actionTable{
 			nil,        // dot
 			nil,        // tuplet
 			nil,        // letRing
-			nil,        // assign
-			nil,        // play
-			nil,        // tempo
-			nil,        // timesig
-			nil,        // velocity
-			nil,        // channel
-			nil,        // program
-			nil,        // control
-			nil,        // start
-			nil,        // stop
+			nil,        // :assign
+			nil,        // :play
+			nil,        // :tempo
+			nil,        // :timesig
+			nil,        // :velocity
+			nil,        // :channel
+			nil,        // :program
+			nil,        // :control
+			nil,        // :start
+			nil,        // :stop
 		},
 	},
 	actionRow{ // S76
@@ -2602,9 +2602,9 @@ var actionTab = actionTable{
 			reduce(4), // ␚, reduce: TopLevelDeclList
 			nil,       // empty
 			nil,       // terminator
-			nil,       // bar
+			nil,       // :bar
 			nil,       // stringLit
-			nil,       // end
+			nil,       // :end
 			nil,       // [
 			nil,       // ]
 			nil,       // char
@@ -2617,16 +2617,16 @@ var actionTab = actionTable{
 			nil,       // dot
 			nil,       // tuplet
 			nil,       // letRing
-			nil,       // assign
-			nil,       // play
-			nil,       // tempo
-			nil,       // timesig
-			nil,       // velocity
-			nil,       // channel
-			nil,       // program
-			nil,       // control
-			nil,       // start
-			nil,       // stop
+			nil,       // :assign
+			nil,       // :play
+			nil,       // :tempo
+			nil,       // :timesig
+			nil,       // :velocity
+			nil,       // :channel
+			nil,       // :program
+			nil,       // :control
+			nil,       // :start
+			nil,       // :stop
 		},
 	},
 	actionRow{ // S77
@@ -2636,9 +2636,9 @@ var actionTab = actionTable{
 			reduce(3), // ␚, reduce: RepeatTerminator
 			nil,       // empty
 			nil,       // terminator
-			reduce(3), // bar, reduce: RepeatTerminator
+			reduce(3), // :bar, reduce: RepeatTerminator
 			nil,       // stringLit
-			nil,       // end
+			nil,       // :end
 			reduce(3), // [, reduce: RepeatTerminator
 			nil,       // ]
 			reduce(3), // char, reduce: RepeatTerminator
@@ -2651,16 +2651,16 @@ var actionTab = actionTable{
 			nil,       // dot
 			nil,       // tuplet
 			nil,       // letRing
-			reduce(3), // assign, reduce: RepeatTerminator
-			reduce(3), // play, reduce: RepeatTerminator
-			reduce(3), // tempo, reduce: RepeatTerminator
-			reduce(3), // timesig, reduce: RepeatTerminator
-			reduce(3), // velocity, reduce: RepeatTerminator
-			reduce(3), // channel, reduce: RepeatTerminator
-			reduce(3), // program, reduce: RepeatTerminator
-			reduce(3), // control, reduce: RepeatTerminator
-			reduce(3), // start, reduce: RepeatTerminator
-			reduce(3), // stop, reduce: RepeatTerminator
+			reduce(3), // :assign, reduce: RepeatTerminator
+			reduce(3), // :play, reduce: RepeatTerminator
+			reduce(3), // :tempo, reduce: RepeatTerminator
+			reduce(3), // :timesig, reduce: RepeatTerminator
+			reduce(3), // :velocity, reduce: RepeatTerminator
+			reduce(3), // :channel, reduce: RepeatTerminator
+			reduce(3), // :program, reduce: RepeatTerminator
+			reduce(3), // :control, reduce: RepeatTerminator
+			reduce(3), // :start, reduce: RepeatTerminator
+			reduce(3), // :stop, reduce: RepeatTerminator
 		},
 	},
 	actionRow{ // S78
@@ -2670,9 +2670,9 @@ var actionTab = actionTable{
 			nil,       // ␚
 			nil,       // empty
 			nil,       // terminator
-			nil,       // bar
+			nil,       // :bar
 			nil,       // stringLit
-			shift(99), // end
+			shift(99), // :end
 			nil,       // [
 			nil,       // ]
 			nil,       // char
@@ -2685,16 +2685,16 @@ var actionTab = actionTable{
 			nil,       // dot
 			nil,       // tuplet
 			nil,       // letRing
-			nil,       // assign
-			nil,       // play
-			nil,       // tempo
-			nil,       // timesig
-			nil,       // velocity
-			nil,       // channel
-			nil,       // program
-			nil,       // control
-			nil,       // start
-			nil,       // stop
+			nil,       // :assign
+			nil,       // :play
+			nil,       // :tempo
+			nil,       // :timesig
+			nil,       // :velocity
+			nil,       // :channel
+			nil,       // :program
+			nil,       // :control
+			nil,       // :start
+			nil,       // :stop
 		},
 	},
 	actionRow{ // S79
@@ -2704,9 +2704,9 @@ var actionTab = actionTable{
 			nil,        // ␚
 			nil,        // empty
 			shift(101), // terminator
-			nil,        // bar
+			nil,        // :bar
 			nil,        // stringLit
-			reduce(2),  // end, reduce: RepeatTerminator
+			reduce(2),  // :end, reduce: RepeatTerminator
 			nil,        // [
 			nil,        // ]
 			nil,        // char
@@ -2719,16 +2719,16 @@ var actionTab = actionTable{
 			nil,        // dot
 			nil,        // tuplet
 			nil,        // letRing
-			nil,        // assign
-			nil,        // play
-			nil,        // tempo
-			nil,        // timesig
-			nil,        // velocity
-			nil,        // channel
-			nil,        // program
-			nil,        // control
-			nil,        // start
-			nil,        // stop
+			nil,        // :assign
+			nil,        // :play
+			nil,        // :tempo
+			nil,        // :timesig
+			nil,        // :velocity
+			nil,        // :channel
+			nil,        // :program
+			nil,        // :control
+			nil,        // :start
+			nil,        // :stop
 		},
 	},
 	actionRow{ // S80
@@ -2738,9 +2738,9 @@ var actionTab = actionTable{
 			nil,        // ␚
 			nil,        // empty
 			reduce(12), // terminator, reduce: BarBodyDecl
-			nil,        // bar
+			nil,        // :bar
 			nil,        // stringLit
-			reduce(12), // end, reduce: BarBodyDecl
+			reduce(12), // :end, reduce: BarBodyDecl
 			nil,        // [
 			nil,        // ]
 			nil,        // char
@@ -2753,16 +2753,16 @@ var actionTab = actionTable{
 			nil,        // dot
 			nil,        // tuplet
 			nil,        // letRing
-			nil,        // assign
-			nil,        // play
-			nil,        // tempo
-			nil,        // timesig
-			nil,        // velocity
-			nil,        // channel
-			nil,        // program
-			nil,        // control
-			nil,        // start
-			nil,        // stop
+			nil,        // :assign
+			nil,        // :play
+			nil,        // :tempo
+			nil,        // :timesig
+			nil,        // :velocity
+			nil,        // :channel
+			nil,        // :program
+			nil,        // :control
+			nil,        // :start
+			nil,        // :stop
 		},
 	},
 	actionRow{ // S81
@@ -2772,9 +2772,9 @@ var actionTab = actionTable{
 			nil,        // ␚
 			nil,        // empty
 			reduce(11), // terminator, reduce: BarBodyDecl
-			nil,        // bar
+			nil,        // :bar
 			nil,        // stringLit
-			reduce(11), // end, reduce: BarBodyDecl
+			reduce(11), // :end, reduce: BarBodyDecl
 			nil,        // [
 			nil,        // ]
 			nil,        // char
@@ -2787,16 +2787,16 @@ var actionTab = actionTable{
 			nil,        // dot
 			nil,        // tuplet
 			nil,        // letRing
-			nil,        // assign
-			nil,        // play
-			nil,        // tempo
-			nil,        // timesig
-			nil,        // velocity
-			nil,        // channel
-			nil,        // program
-			nil,        // control
-			nil,        // start
-			nil,        // stop
+			nil,        // :assign
+			nil,        // :play
+			nil,        // :tempo
+			nil,        // :timesig
+			nil,        // :velocity
+			nil,        // :channel
+			nil,        // :program
+			nil,        // :control
+			nil,        // :start
+			nil,        // :stop
 		},
 	},
 	actionRow{ // S82
@@ -2806,9 +2806,9 @@ var actionTab = actionTable{
 			nil,        // ␚
 			nil,        // empty
 			reduce(14), // terminator, reduce: NoteList
-			nil,        // bar
+			nil,        // :bar
 			nil,        // stringLit
-			reduce(14), // end, reduce: NoteList
+			reduce(14), // :end, reduce: NoteList
 			shift(84),  // [
 			nil,        // ]
 			shift(85),  // char
@@ -2821,16 +2821,16 @@ var actionTab = actionTable{
 			nil,        // dot
 			nil,        // tuplet
 			nil,        // letRing
-			nil,        // assign
-			nil,        // play
-			nil,        // tempo
-			nil,        // timesig
-			nil,        // velocity
-			nil,        // channel
-			nil,        // program
-			nil,        // control
-			nil,        // start
-			nil,        // stop
+			nil,        // :assign
+			nil,        // :play
+			nil,        // :tempo
+			nil,        // :timesig
+			nil,        // :velocity
+			nil,        // :channel
+			nil,        // :program
+			nil,        // :control
+			nil,        // :start
+			nil,        // :stop
 		},
 	},
 	actionRow{ // S83
@@ -2840,9 +2840,9 @@ var actionTab = actionTable{
 			nil,        // ␚
 			nil,        // empty
 			reduce(20), // terminator, reduce: PropertyList
-			nil,        // bar
+			nil,        // :bar
 			nil,        // stringLit
-			reduce(20), // end, reduce: PropertyList
+			reduce(20), // :end, reduce: PropertyList
 			reduce(20), // [, reduce: PropertyList
 			nil,        // ]
 			reduce(20), // char, reduce: PropertyList
@@ -2855,16 +2855,16 @@ var actionTab = actionTable{
 			shift(110), // dot
 			shift(111), // tuplet
 			shift(112), // letRing
-			nil,        // assign
-			nil,        // play
-			nil,        // tempo
-			nil,        // timesig
-			nil,        // velocity
-			nil,        // channel
-			nil,        // program
-			nil,        // control
-			nil,        // start
-			nil,        // stop
+			nil,        // :assign
+			nil,        // :play
+			nil,        // :tempo
+			nil,        // :timesig
+			nil,        // :velocity
+			nil,        // :channel
+			nil,        // :program
+			nil,        // :control
+			nil,        // :start
+			nil,        // :stop
 		},
 	},
 	actionRow{ // S84
@@ -2874,9 +2874,9 @@ var actionTab = actionTable{
 			nil,       // ␚
 			nil,       // empty
 			nil,       // terminator
-			nil,       // bar
+			nil,       // :bar
 			nil,       // stringLit
-			nil,       // end
+			nil,       // :end
 			shift(44), // [
 			nil,       // ]
 			shift(45), // char
@@ -2889,16 +2889,16 @@ var actionTab = actionTable{
 			nil,       // dot
 			nil,       // tuplet
 			nil,       // letRing
-			nil,       // assign
-			nil,       // play
-			nil,       // tempo
-			nil,       // timesig
-			nil,       // velocity
-			nil,       // channel
-			nil,       // program
-			nil,       // control
-			nil,       // start
-			nil,       // stop
+			nil,       // :assign
+			nil,       // :play
+			nil,       // :tempo
+			nil,       // :timesig
+			nil,       // :velocity
+			nil,       // :channel
+			nil,       // :program
+			nil,       // :control
+			nil,       // :start
+			nil,       // :stop
 		},
 	},
 	actionRow{ // S85
@@ -2908,9 +2908,9 @@ var actionTab = actionTable{
 			nil,        // ␚
 			nil,        // empty
 			reduce(18), // terminator, reduce: NoteSymbol
-			nil,        // bar
+			nil,        // :bar
 			nil,        // stringLit
-			reduce(18), // end, reduce: NoteSymbol
+			reduce(18), // :end, reduce: NoteSymbol
 			reduce(18), // [, reduce: NoteSymbol
 			nil,        // ]
 			reduce(18), // char, reduce: NoteSymbol
@@ -2923,16 +2923,16 @@ var actionTab = actionTable{
 			reduce(18), // dot, reduce: NoteSymbol
 			reduce(18), // tuplet, reduce: NoteSymbol
 			reduce(18), // letRing, reduce: NoteSymbol
-			nil,        // assign
-			nil,        // play
-			nil,        // tempo
-			nil,        // timesig
-			nil,        // velocity
-			nil,        // channel
-			nil,        // program
-			nil,        // control
-			nil,        // start
-			nil,        // stop
+			nil,        // :assign
+			nil,        // :play
+			nil,        // :tempo
+			nil,        // :timesig
+			nil,        // :velocity
+			nil,        // :channel
+			nil,        // :program
+			nil,        // :control
+			nil,        // :start
+			nil,        // :stop
 		},
 	},
 	actionRow{ // S86
@@ -2942,9 +2942,9 @@ var actionTab = actionTable{
 			nil,        // ␚
 			nil,        // empty
 			reduce(19), // terminator, reduce: NoteSymbol
-			nil,        // bar
+			nil,        // :bar
 			nil,        // stringLit
-			reduce(19), // end, reduce: NoteSymbol
+			reduce(19), // :end, reduce: NoteSymbol
 			reduce(19), // [, reduce: NoteSymbol
 			nil,        // ]
 			reduce(19), // char, reduce: NoteSymbol
@@ -2957,16 +2957,16 @@ var actionTab = actionTable{
 			reduce(19), // dot, reduce: NoteSymbol
 			reduce(19), // tuplet, reduce: NoteSymbol
 			reduce(19), // letRing, reduce: NoteSymbol
-			nil,        // assign
-			nil,        // play
-			nil,        // tempo
-			nil,        // timesig
-			nil,        // velocity
-			nil,        // channel
-			nil,        // program
-			nil,        // control
-			nil,        // start
-			nil,        // stop
+			nil,        // :assign
+			nil,        // :play
+			nil,        // :tempo
+			nil,        // :timesig
+			nil,        // :velocity
+			nil,        // :channel
+			nil,        // :program
+			nil,        // :control
+			nil,        // :start
+			nil,        // :stop
 		},
 	},
 	actionRow{ // S87
@@ -2976,9 +2976,9 @@ var actionTab = actionTable{
 			nil,        // ␚
 			nil,        // empty
 			nil,        // terminator
-			nil,        // bar
+			nil,        // :bar
 			nil,        // stringLit
-			nil,        // end
+			nil,        // :end
 			nil,        // [
 			nil,        // ]
 			nil,        // char
@@ -2991,16 +2991,16 @@ var actionTab = actionTable{
 			nil,        // dot
 			nil,        // tuplet
 			nil,        // letRing
-			nil,        // assign
-			nil,        // play
-			nil,        // tempo
-			nil,        // timesig
-			nil,        // velocity
-			nil,        // channel
-			nil,        // program
-			nil,        // control
-			nil,        // start
-			nil,        // stop
+			nil,        // :assign
+			nil,        // :play
+			nil,        // :tempo
+			nil,        // :timesig
+			nil,        // :velocity
+			nil,        // :channel
+			nil,        // :program
+			nil,        // :control
+			nil,        // :start
+			nil,        // :stop
 		},
 	},
 	actionRow{ // S88
@@ -3010,9 +3010,9 @@ var actionTab = actionTable{
 			nil,        // ␚
 			nil,        // empty
 			nil,        // terminator
-			nil,        // bar
+			nil,        // :bar
 			nil,        // stringLit
-			nil,        // end
+			nil,        // :end
 			nil,        // [
 			nil,        // ]
 			nil,        // char
@@ -3025,16 +3025,16 @@ var actionTab = actionTable{
 			nil,        // dot
 			nil,        // tuplet
 			nil,        // letRing
-			nil,        // assign
-			nil,        // play
-			nil,        // tempo
-			nil,        // timesig
-			nil,        // velocity
-			nil,        // channel
-			nil,        // program
-			nil,        // control
-			nil,        // start
-			nil,        // stop
+			nil,        // :assign
+			nil,        // :play
+			nil,        // :tempo
+			nil,        // :timesig
+			nil,        // :velocity
+			nil,        // :channel
+			nil,        // :program
+			nil,        // :control
+			nil,        // :start
+			nil,        // :stop
 		},
 	},
 	actionRow{ // S89
@@ -3044,9 +3044,9 @@ var actionTab = actionTable{
 			nil,        // ␚
 			nil,        // empty
 			nil,        // terminator
-			nil,        // bar
+			nil,        // :bar
 			nil,        // stringLit
-			nil,        // end
+			nil,        // :end
 			nil,        // [
 			nil,        // ]
 			nil,        // char
@@ -3059,16 +3059,16 @@ var actionTab = actionTable{
 			nil,        // dot
 			nil,        // tuplet
 			nil,        // letRing
-			nil,        // assign
-			nil,        // play
-			nil,        // tempo
-			nil,        // timesig
-			nil,        // velocity
-			nil,        // channel
-			nil,        // program
-			nil,        // control
-			nil,        // start
-			nil,        // stop
+			nil,        // :assign
+			nil,        // :play
+			nil,        // :tempo
+			nil,        // :timesig
+			nil,        // :velocity
+			nil,        // :channel
+			nil,        // :program
+			nil,        // :control
+			nil,        // :start
+			nil,        // :stop
 		},
 	},
 	actionRow{ // S90
@@ -3078,9 +3078,9 @@ var actionTab = actionTable{
 			nil,        // ␚
 			nil,        // empty
 			nil,        // terminator
-			nil,        // bar
+			nil,        // :bar
 			nil,        // stringLit
-			nil,        // end
+			nil,        // :end
 			nil,        // [
 			nil,        // ]
 			nil,        // char
@@ -3093,16 +3093,16 @@ var actionTab = actionTable{
 			nil,        // dot
 			nil,        // tuplet
 			nil,        // letRing
-			nil,        // assign
-			nil,        // play
-			nil,        // tempo
-			nil,        // timesig
-			nil,        // velocity
-			nil,        // channel
-			nil,        // program
-			nil,        // control
-			nil,        // start
-			nil,        // stop
+			nil,        // :assign
+			nil,        // :play
+			nil,        // :tempo
+			nil,        // :timesig
+			nil,        // :velocity
+			nil,        // :channel
+			nil,        // :program
+			nil,        // :control
+			nil,        // :start
+			nil,        // :stop
 		},
 	},
 	actionRow{ // S91
@@ -3112,9 +3112,9 @@ var actionTab = actionTable{
 			nil,        // ␚
 			nil,        // empty
 			nil,        // terminator
-			nil,        // bar
+			nil,        // :bar
 			nil,        // stringLit
-			nil,        // end
+			nil,        // :end
 			nil,        // [
 			nil,        // ]
 			nil,        // char
@@ -3127,16 +3127,16 @@ var actionTab = actionTable{
 			nil,        // dot
 			nil,        // tuplet
 			nil,        // letRing
-			nil,        // assign
-			nil,        // play
-			nil,        // tempo
-			nil,        // timesig
-			nil,        // velocity
-			nil,        // channel
-			nil,        // program
-			nil,        // control
-			nil,        // start
-			nil,        // stop
+			nil,        // :assign
+			nil,        // :play
+			nil,        // :tempo
+			nil,        // :timesig
+			nil,        // :velocity
+			nil,        // :channel
+			nil,        // :program
+			nil,        // :control
+			nil,        // :start
+			nil,        // :stop
 		},
 	},
 	actionRow{ // S92
@@ -3146,9 +3146,9 @@ var actionTab = actionTable{
 			nil,        // ␚
 			nil,        // empty
 			nil,        // terminator
-			nil,        // bar
+			nil,        // :bar
 			nil,        // stringLit
-			nil,        // end
+			nil,        // :end
 			nil,        // [
 			nil,        // ]
 			nil,        // char
@@ -3161,16 +3161,16 @@ var actionTab = actionTable{
 			nil,        // dot
 			nil,        // tuplet
 			nil,        // letRing
-			nil,        // assign
-			nil,        // play
-			nil,        // tempo
-			nil,        // timesig
-			nil,        // velocity
-			nil,        // channel
-			nil,        // program
-			nil,        // control
-			nil,        // start
-			nil,        // stop
+			nil,        // :assign
+			nil,        // :play
+			nil,        // :tempo
+			nil,        // :timesig
+			nil,        // :velocity
+			nil,        // :channel
+			nil,        // :program
+			nil,        // :control
+			nil,        // :start
+			nil,        // :stop
 		},
 	},
 	actionRow{ // S93
@@ -3180,9 +3180,9 @@ var actionTab = actionTable{
 			nil,        // ␚
 			nil,        // empty
 			reduce(39), // terminator, reduce: BarBodyCommand
-			nil,        // bar
+			nil,        // :bar
 			nil,        // stringLit
-			reduce(39), // end, reduce: BarBodyCommand
+			reduce(39), // :end, reduce: BarBodyCommand
 			nil,        // [
 			nil,        // ]
 			nil,        // char
@@ -3195,16 +3195,16 @@ var actionTab = actionTable{
 			nil,        // dot
 			nil,        // tuplet
 			nil,        // letRing
-			nil,        // assign
-			nil,        // play
-			nil,        // tempo
-			nil,        // timesig
-			nil,        // velocity
-			nil,        // channel
-			nil,        // program
-			nil,        // control
-			nil,        // start
-			nil,        // stop
+			nil,        // :assign
+			nil,        // :play
+			nil,        // :tempo
+			nil,        // :timesig
+			nil,        // :velocity
+			nil,        // :channel
+			nil,        // :program
+			nil,        // :control
+			nil,        // :start
+			nil,        // :stop
 		},
 	},
 	actionRow{ // S94
@@ -3214,9 +3214,9 @@ var actionTab = actionTable{
 			nil,        // ␚
 			nil,        // empty
 			reduce(40), // terminator, reduce: BarBodyCommand
-			nil,        // bar
+			nil,        // :bar
 			nil,        // stringLit
-			reduce(40), // end, reduce: BarBodyCommand
+			reduce(40), // :end, reduce: BarBodyCommand
 			nil,        // [
 			nil,        // ]
 			nil,        // char
@@ -3229,16 +3229,16 @@ var actionTab = actionTable{
 			nil,        // dot
 			nil,        // tuplet
 			nil,        // letRing
-			nil,        // assign
-			nil,        // play
-			nil,        // tempo
-			nil,        // timesig
-			nil,        // velocity
-			nil,        // channel
-			nil,        // program
-			nil,        // control
-			nil,        // start
-			nil,        // stop
+			nil,        // :assign
+			nil,        // :play
+			nil,        // :tempo
+			nil,        // :timesig
+			nil,        // :velocity
+			nil,        // :channel
+			nil,        // :program
+			nil,        // :control
+			nil,        // :start
+			nil,        // :stop
 		},
 	},
 	actionRow{ // S95
@@ -3248,9 +3248,9 @@ var actionTab = actionTable{
 			nil,       // ␚
 			nil,       // empty
 			nil,       // terminator
-			nil,       // bar
+			nil,       // :bar
 			nil,       // stringLit
-			nil,       // end
+			nil,       // :end
 			reduce(3), // [, reduce: RepeatTerminator
 			nil,       // ]
 			reduce(3), // char, reduce: RepeatTerminator
@@ -3263,16 +3263,16 @@ var actionTab = actionTable{
 			nil,       // dot
 			nil,       // tuplet
 			nil,       // letRing
-			nil,       // assign
-			nil,       // play
-			reduce(3), // tempo, reduce: RepeatTerminator
-			reduce(3), // timesig, reduce: RepeatTerminator
-			reduce(3), // velocity, reduce: RepeatTerminator
-			reduce(3), // channel, reduce: RepeatTerminator
-			reduce(3), // program, reduce: RepeatTerminator
-			reduce(3), // control, reduce: RepeatTerminator
-			reduce(3), // start, reduce: RepeatTerminator
-			reduce(3), // stop, reduce: RepeatTerminator
+			nil,       // :assign
+			nil,       // :play
+			reduce(3), // :tempo, reduce: RepeatTerminator
+			reduce(3), // :timesig, reduce: RepeatTerminator
+			reduce(3), // :velocity, reduce: RepeatTerminator
+			reduce(3), // :channel, reduce: RepeatTerminator
+			reduce(3), // :program, reduce: RepeatTerminator
+			reduce(3), // :control, reduce: RepeatTerminator
+			reduce(3), // :start, reduce: RepeatTerminator
+			reduce(3), // :stop, reduce: RepeatTerminator
 		},
 	},
 	actionRow{ // S96
@@ -3282,9 +3282,9 @@ var actionTab = actionTable{
 			reduce(17), // ␚, reduce: NoteObject
 			nil,        // empty
 			reduce(17), // terminator, reduce: NoteObject
-			nil,        // bar
+			nil,        // :bar
 			nil,        // stringLit
-			nil,        // end
+			nil,        // :end
 			reduce(17), // [, reduce: NoteObject
 			nil,        // ]
 			reduce(17), // char, reduce: NoteObject
@@ -3297,16 +3297,16 @@ var actionTab = actionTable{
 			nil,        // dot
 			nil,        // tuplet
 			nil,        // letRing
-			nil,        // assign
-			nil,        // play
-			nil,        // tempo
-			nil,        // timesig
-			nil,        // velocity
-			nil,        // channel
-			nil,        // program
-			nil,        // control
-			nil,        // start
-			nil,        // stop
+			nil,        // :assign
+			nil,        // :play
+			nil,        // :tempo
+			nil,        // :timesig
+			nil,        // :velocity
+			nil,        // :channel
+			nil,        // :program
+			nil,        // :control
+			nil,        // :start
+			nil,        // :stop
 		},
 	},
 	actionRow{ // S97
@@ -3316,9 +3316,9 @@ var actionTab = actionTable{
 			nil,        // ␚
 			nil,        // empty
 			nil,        // terminator
-			nil,        // bar
+			nil,        // :bar
 			nil,        // stringLit
-			nil,        // end
+			nil,        // :end
 			reduce(21), // [, reduce: PropertyList
 			reduce(21), // ], reduce: PropertyList
 			reduce(21), // char, reduce: PropertyList
@@ -3331,16 +3331,16 @@ var actionTab = actionTable{
 			nil,        // dot
 			nil,        // tuplet
 			nil,        // letRing
-			nil,        // assign
-			nil,        // play
-			nil,        // tempo
-			nil,        // timesig
-			nil,        // velocity
-			nil,        // channel
-			nil,        // program
-			nil,        // control
-			nil,        // start
-			nil,        // stop
+			nil,        // :assign
+			nil,        // :play
+			nil,        // :tempo
+			nil,        // :timesig
+			nil,        // :velocity
+			nil,        // :channel
+			nil,        // :program
+			nil,        // :control
+			nil,        // :start
+			nil,        // :stop
 		},
 	},
 	actionRow{ // S98
@@ -3350,9 +3350,9 @@ var actionTab = actionTable{
 			nil,        // ␚
 			nil,        // empty
 			nil,        // terminator
-			nil,        // bar
+			nil,        // :bar
 			nil,        // stringLit
-			nil,        // end
+			nil,        // :end
 			reduce(20), // [, reduce: PropertyList
 			reduce(20), // ], reduce: PropertyList
 			reduce(20), // char, reduce: PropertyList
@@ -3365,16 +3365,16 @@ var actionTab = actionTable{
 			shift(69),  // dot
 			shift(70),  // tuplet
 			shift(71),  // letRing
-			nil,        // assign
-			nil,        // play
-			nil,        // tempo
-			nil,        // timesig
-			nil,        // velocity
-			nil,        // channel
-			nil,        // program
-			nil,        // control
-			nil,        // start
-			nil,        // stop
+			nil,        // :assign
+			nil,        // :play
+			nil,        // :tempo
+			nil,        // :timesig
+			nil,        // :velocity
+			nil,        // :channel
+			nil,        // :program
+			nil,        // :control
+			nil,        // :start
+			nil,        // :stop
 		},
 	},
 	actionRow{ // S99
@@ -3384,9 +3384,9 @@ var actionTab = actionTable{
 			reduce(13), // ␚, reduce: Bar
 			nil,        // empty
 			reduce(13), // terminator, reduce: Bar
-			nil,        // bar
+			nil,        // :bar
 			nil,        // stringLit
-			nil,        // end
+			nil,        // :end
 			nil,        // [
 			nil,        // ]
 			nil,        // char
@@ -3399,16 +3399,16 @@ var actionTab = actionTable{
 			nil,        // dot
 			nil,        // tuplet
 			nil,        // letRing
-			nil,        // assign
-			nil,        // play
-			nil,        // tempo
-			nil,        // timesig
-			nil,        // velocity
-			nil,        // channel
-			nil,        // program
-			nil,        // control
-			nil,        // start
-			nil,        // stop
+			nil,        // :assign
+			nil,        // :play
+			nil,        // :tempo
+			nil,        // :timesig
+			nil,        // :velocity
+			nil,        // :channel
+			nil,        // :program
+			nil,        // :control
+			nil,        // :start
+			nil,        // :stop
 		},
 	},
 	actionRow{ // S100
@@ -3418,9 +3418,9 @@ var actionTab = actionTable{
 			nil,       // ␚
 			nil,       // empty
 			nil,       // terminator
-			nil,       // bar
+			nil,       // :bar
 			nil,       // stringLit
-			reduce(7), // end, reduce: BarBodyDeclList
+			reduce(7), // :end, reduce: BarBodyDeclList
 			nil,       // [
 			nil,       // ]
 			nil,       // char
@@ -3433,16 +3433,16 @@ var actionTab = actionTable{
 			nil,       // dot
 			nil,       // tuplet
 			nil,       // letRing
-			nil,       // assign
-			nil,       // play
-			nil,       // tempo
-			nil,       // timesig
-			nil,       // velocity
-			nil,       // channel
-			nil,       // program
-			nil,       // control
-			nil,       // start
-			nil,       // stop
+			nil,       // :assign
+			nil,       // :play
+			nil,       // :tempo
+			nil,       // :timesig
+			nil,       // :velocity
+			nil,       // :channel
+			nil,       // :program
+			nil,       // :control
+			nil,       // :start
+			nil,       // :stop
 		},
 	},
 	actionRow{ // S101
@@ -3452,9 +3452,9 @@ var actionTab = actionTable{
 			nil,        // ␚
 			nil,        // empty
 			shift(122), // terminator
-			nil,        // bar
+			nil,        // :bar
 			nil,        // stringLit
-			reduce(2),  // end, reduce: RepeatTerminator
+			reduce(2),  // :end, reduce: RepeatTerminator
 			reduce(2),  // [, reduce: RepeatTerminator
 			nil,        // ]
 			reduce(2),  // char, reduce: RepeatTerminator
@@ -3467,16 +3467,16 @@ var actionTab = actionTable{
 			nil,        // dot
 			nil,        // tuplet
 			nil,        // letRing
-			nil,        // assign
-			nil,        // play
-			reduce(2),  // tempo, reduce: RepeatTerminator
-			reduce(2),  // timesig, reduce: RepeatTerminator
-			reduce(2),  // velocity, reduce: RepeatTerminator
-			reduce(2),  // channel, reduce: RepeatTerminator
-			reduce(2),  // program, reduce: RepeatTerminator
-			reduce(2),  // control, reduce: RepeatTerminator
-			reduce(2),  // start, reduce: RepeatTerminator
-			reduce(2),  // stop, reduce: RepeatTerminator
+			nil,        // :assign
+			nil,        // :play
+			reduce(2),  // :tempo, reduce: RepeatTerminator
+			reduce(2),  // :timesig, reduce: RepeatTerminator
+			reduce(2),  // :velocity, reduce: RepeatTerminator
+			reduce(2),  // :channel, reduce: RepeatTerminator
+			reduce(2),  // :program, reduce: RepeatTerminator
+			reduce(2),  // :control, reduce: RepeatTerminator
+			reduce(2),  // :start, reduce: RepeatTerminator
+			reduce(2),  // :stop, reduce: RepeatTerminator
 		},
 	},
 	actionRow{ // S102
@@ -3486,9 +3486,9 @@ var actionTab = actionTable{
 			nil,        // ␚
 			nil,        // empty
 			reduce(15), // terminator, reduce: NoteList
-			nil,        // bar
+			nil,        // :bar
 			nil,        // stringLit
-			reduce(15), // end, reduce: NoteList
+			reduce(15), // :end, reduce: NoteList
 			nil,        // [
 			nil,        // ]
 			nil,        // char
@@ -3501,16 +3501,16 @@ var actionTab = actionTable{
 			nil,        // dot
 			nil,        // tuplet
 			nil,        // letRing
-			nil,        // assign
-			nil,        // play
-			nil,        // tempo
-			nil,        // timesig
-			nil,        // velocity
-			nil,        // channel
-			nil,        // program
-			nil,        // control
-			nil,        // start
-			nil,        // stop
+			nil,        // :assign
+			nil,        // :play
+			nil,        // :tempo
+			nil,        // :timesig
+			nil,        // :velocity
+			nil,        // :channel
+			nil,        // :program
+			nil,        // :control
+			nil,        // :start
+			nil,        // :stop
 		},
 	},
 	actionRow{ // S103
@@ -3520,9 +3520,9 @@ var actionTab = actionTable{
 			nil,        // ␚
 			nil,        // empty
 			reduce(16), // terminator, reduce: NoteObject
-			nil,        // bar
+			nil,        // :bar
 			nil,        // stringLit
-			reduce(16), // end, reduce: NoteObject
+			reduce(16), // :end, reduce: NoteObject
 			reduce(16), // [, reduce: NoteObject
 			nil,        // ]
 			reduce(16), // char, reduce: NoteObject
@@ -3535,16 +3535,16 @@ var actionTab = actionTable{
 			nil,        // dot
 			nil,        // tuplet
 			nil,        // letRing
-			nil,        // assign
-			nil,        // play
-			nil,        // tempo
-			nil,        // timesig
-			nil,        // velocity
-			nil,        // channel
-			nil,        // program
-			nil,        // control
-			nil,        // start
-			nil,        // stop
+			nil,        // :assign
+			nil,        // :play
+			nil,        // :tempo
+			nil,        // :timesig
+			nil,        // :velocity
+			nil,        // :channel
+			nil,        // :program
+			nil,        // :control
+			nil,        // :start
+			nil,        // :stop
 		},
 	},
 	actionRow{ // S104
@@ -3554,9 +3554,9 @@ var actionTab = actionTable{
 			nil,        // ␚
 			nil,        // empty
 			reduce(20), // terminator, reduce: PropertyList
-			nil,        // bar
+			nil,        // :bar
 			nil,        // stringLit
-			reduce(20), // end, reduce: PropertyList
+			reduce(20), // :end, reduce: PropertyList
 			reduce(20), // [, reduce: PropertyList
 			nil,        // ]
 			reduce(20), // char, reduce: PropertyList
@@ -3569,16 +3569,16 @@ var actionTab = actionTable{
 			shift(110), // dot
 			shift(111), // tuplet
 			shift(112), // letRing
-			nil,        // assign
-			nil,        // play
-			nil,        // tempo
-			nil,        // timesig
-			nil,        // velocity
-			nil,        // channel
-			nil,        // program
-			nil,        // control
-			nil,        // start
-			nil,        // stop
+			nil,        // :assign
+			nil,        // :play
+			nil,        // :tempo
+			nil,        // :timesig
+			nil,        // :velocity
+			nil,        // :channel
+			nil,        // :program
+			nil,        // :control
+			nil,        // :start
+			nil,        // :stop
 		},
 	},
 	actionRow{ // S105
@@ -3588,9 +3588,9 @@ var actionTab = actionTable{
 			nil,        // ␚
 			nil,        // empty
 			reduce(22), // terminator, reduce: Property
-			nil,        // bar
+			nil,        // :bar
 			nil,        // stringLit
-			reduce(22), // end, reduce: Property
+			reduce(22), // :end, reduce: Property
 			reduce(22), // [, reduce: Property
 			nil,        // ]
 			reduce(22), // char, reduce: Property
@@ -3603,16 +3603,16 @@ var actionTab = actionTable{
 			reduce(22), // dot, reduce: Property
 			reduce(22), // tuplet, reduce: Property
 			reduce(22), // letRing, reduce: Property
-			nil,        // assign
-			nil,        // play
-			nil,        // tempo
-			nil,        // timesig
-			nil,        // velocity
-			nil,        // channel
-			nil,        // program
-			nil,        // control
-			nil,        // start
-			nil,        // stop
+			nil,        // :assign
+			nil,        // :play
+			nil,        // :tempo
+			nil,        // :timesig
+			nil,        // :velocity
+			nil,        // :channel
+			nil,        // :program
+			nil,        // :control
+			nil,        // :start
+			nil,        // :stop
 		},
 	},
 	actionRow{ // S106
@@ -3622,9 +3622,9 @@ var actionTab = actionTable{
 			nil,        // ␚
 			nil,        // empty
 			reduce(23), // terminator, reduce: Property
-			nil,        // bar
+			nil,        // :bar
 			nil,        // stringLit
-			reduce(23), // end, reduce: Property
+			reduce(23), // :end, reduce: Property
 			reduce(23), // [, reduce: Property
 			nil,        // ]
 			reduce(23), // char, reduce: Property
@@ -3637,16 +3637,16 @@ var actionTab = actionTable{
 			reduce(23), // dot, reduce: Property
 			reduce(23), // tuplet, reduce: Property
 			reduce(23), // letRing, reduce: Property
-			nil,        // assign
-			nil,        // play
-			nil,        // tempo
-			nil,        // timesig
-			nil,        // velocity
-			nil,        // channel
-			nil,        // program
-			nil,        // control
-			nil,        // start
-			nil,        // stop
+			nil,        // :assign
+			nil,        // :play
+			nil,        // :tempo
+			nil,        // :timesig
+			nil,        // :velocity
+			nil,        // :channel
+			nil,        // :program
+			nil,        // :control
+			nil,        // :start
+			nil,        // :stop
 		},
 	},
 	actionRow{ // S107
@@ -3656,9 +3656,9 @@ var actionTab = actionTable{
 			nil,        // ␚
 			nil,        // empty
 			reduce(24), // terminator, reduce: Property
-			nil,        // bar
+			nil,        // :bar
 			nil,        // stringLit
-			reduce(24), // end, reduce: Property
+			reduce(24), // :end, reduce: Property
 			reduce(24), // [, reduce: Property
 			nil,        // ]
 			reduce(24), // char, reduce: Property
@@ -3671,16 +3671,16 @@ var actionTab = actionTable{
 			reduce(24), // dot, reduce: Property
 			reduce(24), // tuplet, reduce: Property
 			reduce(24), // letRing, reduce: Property
-			nil,        // assign
-			nil,        // play
-			nil,        // tempo
-			nil,        // timesig
-			nil,        // velocity
-			nil,        // channel
-			nil,        // program
-			nil,        // control
-			nil,        // start
-			nil,        // stop
+			nil,        // :assign
+			nil,        // :play
+			nil,        // :tempo
+			nil,        // :timesig
+			nil,        // :velocity
+			nil,        // :channel
+			nil,        // :program
+			nil,        // :control
+			nil,        // :start
+			nil,        // :stop
 		},
 	},
 	actionRow{ // S108
@@ -3690,9 +3690,9 @@ var actionTab = actionTable{
 			nil,        // ␚
 			nil,        // empty
 			reduce(25), // terminator, reduce: Property
-			nil,        // bar
+			nil,        // :bar
 			nil,        // stringLit
-			reduce(25), // end, reduce: Property
+			reduce(25), // :end, reduce: Property
 			reduce(25), // [, reduce: Property
 			nil,        // ]
 			reduce(25), // char, reduce: Property
@@ -3705,16 +3705,16 @@ var actionTab = actionTable{
 			reduce(25), // dot, reduce: Property
 			reduce(25), // tuplet, reduce: Property
 			reduce(25), // letRing, reduce: Property
-			nil,        // assign
-			nil,        // play
-			nil,        // tempo
-			nil,        // timesig
-			nil,        // velocity
-			nil,        // channel
-			nil,        // program
-			nil,        // control
-			nil,        // start
-			nil,        // stop
+			nil,        // :assign
+			nil,        // :play
+			nil,        // :tempo
+			nil,        // :timesig
+			nil,        // :velocity
+			nil,        // :channel
+			nil,        // :program
+			nil,        // :control
+			nil,        // :start
+			nil,        // :stop
 		},
 	},
 	actionRow{ // S109
@@ -3724,9 +3724,9 @@ var actionTab = actionTable{
 			nil,        // ␚
 			nil,        // empty
 			reduce(26), // terminator, reduce: Property
-			nil,        // bar
+			nil,        // :bar
 			nil,        // stringLit
-			reduce(26), // end, reduce: Property
+			reduce(26), // :end, reduce: Property
 			reduce(26), // [, reduce: Property
 			nil,        // ]
 			reduce(26), // char, reduce: Property
@@ -3739,16 +3739,16 @@ var actionTab = actionTable{
 			reduce(26), // dot, reduce: Property
 			reduce(26), // tuplet, reduce: Property
 			reduce(26), // letRing, reduce: Property
-			nil,        // assign
-			nil,        // play
-			nil,        // tempo
-			nil,        // timesig
-			nil,        // velocity
-			nil,        // channel
-			nil,        // program
-			nil,        // control
-			nil,        // start
-			nil,        // stop
+			nil,        // :assign
+			nil,        // :play
+			nil,        // :tempo
+			nil,        // :timesig
+			nil,        // :velocity
+			nil,        // :channel
+			nil,        // :program
+			nil,        // :control
+			nil,        // :start
+			nil,        // :stop
 		},
 	},
 	actionRow{ // S110
@@ -3758,9 +3758,9 @@ var actionTab = actionTable{
 			nil,        // ␚
 			nil,        // empty
 			reduce(27), // terminator, reduce: Property
-			nil,        // bar
+			nil,        // :bar
 			nil,        // stringLit
-			reduce(27), // end, reduce: Property
+			reduce(27), // :end, reduce: Property
 			reduce(27), // [, reduce: Property
 			nil,        // ]
 			reduce(27), // char, reduce: Property
@@ -3773,16 +3773,16 @@ var actionTab = actionTable{
 			reduce(27), // dot, reduce: Property
 			reduce(27), // tuplet, reduce: Property
 			reduce(27), // letRing, reduce: Property
-			nil,        // assign
-			nil,        // play
-			nil,        // tempo
-			nil,        // timesig
-			nil,        // velocity
-			nil,        // channel
-			nil,        // program
-			nil,        // control
-			nil,        // start
-			nil,        // stop
+			nil,        // :assign
+			nil,        // :play
+			nil,        // :tempo
+			nil,        // :timesig
+			nil,        // :velocity
+			nil,        // :channel
+			nil,        // :program
+			nil,        // :control
+			nil,        // :start
+			nil,        // :stop
 		},
 	},
 	actionRow{ // S111
@@ -3792,9 +3792,9 @@ var actionTab = actionTable{
 			nil,        // ␚
 			nil,        // empty
 			reduce(28), // terminator, reduce: Property
-			nil,        // bar
+			nil,        // :bar
 			nil,        // stringLit
-			reduce(28), // end, reduce: Property
+			reduce(28), // :end, reduce: Property
 			reduce(28), // [, reduce: Property
 			nil,        // ]
 			reduce(28), // char, reduce: Property
@@ -3807,16 +3807,16 @@ var actionTab = actionTable{
 			reduce(28), // dot, reduce: Property
 			reduce(28), // tuplet, reduce: Property
 			reduce(28), // letRing, reduce: Property
-			nil,        // assign
-			nil,        // play
-			nil,        // tempo
-			nil,        // timesig
-			nil,        // velocity
-			nil,        // channel
-			nil,        // program
-			nil,        // control
-			nil,        // start
-			nil,        // stop
+			nil,        // :assign
+			nil,        // :play
+			nil,        // :tempo
+			nil,        // :timesig
+			nil,        // :velocity
+			nil,        // :channel
+			nil,        // :program
+			nil,        // :control
+			nil,        // :start
+			nil,        // :stop
 		},
 	},
 	actionRow{ // S112
@@ -3826,9 +3826,9 @@ var actionTab = actionTable{
 			nil,        // ␚
 			nil,        // empty
 			reduce(29), // terminator, reduce: Property
-			nil,        // bar
+			nil,        // :bar
 			nil,        // stringLit
-			reduce(29), // end, reduce: Property
+			reduce(29), // :end, reduce: Property
 			reduce(29), // [, reduce: Property
 			nil,        // ]
 			reduce(29), // char, reduce: Property
@@ -3841,16 +3841,16 @@ var actionTab = actionTable{
 			reduce(29), // dot, reduce: Property
 			reduce(29), // tuplet, reduce: Property
 			reduce(29), // letRing, reduce: Property
-			nil,        // assign
-			nil,        // play
-			nil,        // tempo
-			nil,        // timesig
-			nil,        // velocity
-			nil,        // channel
-			nil,        // program
-			nil,        // control
-			nil,        // start
-			nil,        // stop
+			nil,        // :assign
+			nil,        // :play
+			nil,        // :tempo
+			nil,        // :timesig
+			nil,        // :velocity
+			nil,        // :channel
+			nil,        // :program
+			nil,        // :control
+			nil,        // :start
+			nil,        // :stop
 		},
 	},
 	actionRow{ // S113
@@ -3860,9 +3860,9 @@ var actionTab = actionTable{
 			nil,        // ␚
 			nil,        // empty
 			nil,        // terminator
-			nil,        // bar
+			nil,        // :bar
 			nil,        // stringLit
-			nil,        // end
+			nil,        // :end
 			nil,        // [
 			shift(124), // ]
 			nil,        // char
@@ -3875,16 +3875,16 @@ var actionTab = actionTable{
 			nil,        // dot
 			nil,        // tuplet
 			nil,        // letRing
-			nil,        // assign
-			nil,        // play
-			nil,        // tempo
-			nil,        // timesig
-			nil,        // velocity
-			nil,        // channel
-			nil,        // program
-			nil,        // control
-			nil,        // start
-			nil,        // stop
+			nil,        // :assign
+			nil,        // :play
+			nil,        // :tempo
+			nil,        // :timesig
+			nil,        // :velocity
+			nil,        // :channel
+			nil,        // :program
+			nil,        // :control
+			nil,        // :start
+			nil,        // :stop
 		},
 	},
 	actionRow{ // S114
@@ -3894,9 +3894,9 @@ var actionTab = actionTable{
 			nil,        // ␚
 			nil,        // empty
 			reduce(33), // terminator, reduce: BarBodyCommand
-			nil,        // bar
+			nil,        // :bar
 			nil,        // stringLit
-			reduce(33), // end, reduce: BarBodyCommand
+			reduce(33), // :end, reduce: BarBodyCommand
 			nil,        // [
 			nil,        // ]
 			nil,        // char
@@ -3909,16 +3909,16 @@ var actionTab = actionTable{
 			nil,        // dot
 			nil,        // tuplet
 			nil,        // letRing
-			nil,        // assign
-			nil,        // play
-			nil,        // tempo
-			nil,        // timesig
-			nil,        // velocity
-			nil,        // channel
-			nil,        // program
-			nil,        // control
-			nil,        // start
-			nil,        // stop
+			nil,        // :assign
+			nil,        // :play
+			nil,        // :tempo
+			nil,        // :timesig
+			nil,        // :velocity
+			nil,        // :channel
+			nil,        // :program
+			nil,        // :control
+			nil,        // :start
+			nil,        // :stop
 		},
 	},
 	actionRow{ // S115
@@ -3928,9 +3928,9 @@ var actionTab = actionTable{
 			nil,        // ␚
 			nil,        // empty
 			nil,        // terminator
-			nil,        // bar
+			nil,        // :bar
 			nil,        // stringLit
-			nil,        // end
+			nil,        // :end
 			nil,        // [
 			nil,        // ]
 			nil,        // char
@@ -3943,16 +3943,16 @@ var actionTab = actionTable{
 			nil,        // dot
 			nil,        // tuplet
 			nil,        // letRing
-			nil,        // assign
-			nil,        // play
-			nil,        // tempo
-			nil,        // timesig
-			nil,        // velocity
-			nil,        // channel
-			nil,        // program
-			nil,        // control
-			nil,        // start
-			nil,        // stop
+			nil,        // :assign
+			nil,        // :play
+			nil,        // :tempo
+			nil,        // :timesig
+			nil,        // :velocity
+			nil,        // :channel
+			nil,        // :program
+			nil,        // :control
+			nil,        // :start
+			nil,        // :stop
 		},
 	},
 	actionRow{ // S116
@@ -3962,9 +3962,9 @@ var actionTab = actionTable{
 			nil,        // ␚
 			nil,        // empty
 			reduce(35), // terminator, reduce: BarBodyCommand
-			nil,        // bar
+			nil,        // :bar
 			nil,        // stringLit
-			reduce(35), // end, reduce: BarBodyCommand
+			reduce(35), // :end, reduce: BarBodyCommand
 			nil,        // [
 			nil,        // ]
 			nil,        // char
@@ -3977,16 +3977,16 @@ var actionTab = actionTable{
 			nil,        // dot
 			nil,        // tuplet
 			nil,        // letRing
-			nil,        // assign
-			nil,        // play
-			nil,        // tempo
-			nil,        // timesig
-			nil,        // velocity
-			nil,        // channel
-			nil,        // program
-			nil,        // control
-			nil,        // start
-			nil,        // stop
+			nil,        // :assign
+			nil,        // :play
+			nil,        // :tempo
+			nil,        // :timesig
+			nil,        // :velocity
+			nil,        // :channel
+			nil,        // :program
+			nil,        // :control
+			nil,        // :start
+			nil,        // :stop
 		},
 	},
 	actionRow{ // S117
@@ -3996,9 +3996,9 @@ var actionTab = actionTable{
 			nil,        // ␚
 			nil,        // empty
 			reduce(36), // terminator, reduce: BarBodyCommand
-			nil,        // bar
+			nil,        // :bar
 			nil,        // stringLit
-			reduce(36), // end, reduce: BarBodyCommand
+			reduce(36), // :end, reduce: BarBodyCommand
 			nil,        // [
 			nil,        // ]
 			nil,        // char
@@ -4011,16 +4011,16 @@ var actionTab = actionTable{
 			nil,        // dot
 			nil,        // tuplet
 			nil,        // letRing
-			nil,        // assign
-			nil,        // play
-			nil,        // tempo
-			nil,        // timesig
-			nil,        // velocity
-			nil,        // channel
-			nil,        // program
-			nil,        // control
-			nil,        // start
-			nil,        // stop
+			nil,        // :assign
+			nil,        // :play
+			nil,        // :tempo
+			nil,        // :timesig
+			nil,        // :velocity
+			nil,        // :channel
+			nil,        // :program
+			nil,        // :control
+			nil,        // :start
+			nil,        // :stop
 		},
 	},
 	actionRow{ // S118
@@ -4030,9 +4030,9 @@ var actionTab = actionTable{
 			nil,        // ␚
 			nil,        // empty
 			reduce(37), // terminator, reduce: BarBodyCommand
-			nil,        // bar
+			nil,        // :bar
 			nil,        // stringLit
-			reduce(37), // end, reduce: BarBodyCommand
+			reduce(37), // :end, reduce: BarBodyCommand
 			nil,        // [
 			nil,        // ]
 			nil,        // char
@@ -4045,16 +4045,16 @@ var actionTab = actionTable{
 			nil,        // dot
 			nil,        // tuplet
 			nil,        // letRing
-			nil,        // assign
-			nil,        // play
-			nil,        // tempo
-			nil,        // timesig
-			nil,        // velocity
-			nil,        // channel
-			nil,        // program
-			nil,        // control
-			nil,        // start
-			nil,        // stop
+			nil,        // :assign
+			nil,        // :play
+			nil,        // :tempo
+			nil,        // :timesig
+			nil,        // :velocity
+			nil,        // :channel
+			nil,        // :program
+			nil,        // :control
+			nil,        // :start
+			nil,        // :stop
 		},
 	},
 	actionRow{ // S119
@@ -4064,9 +4064,9 @@ var actionTab = actionTable{
 			nil,        // ␚
 			nil,        // empty
 			nil,        // terminator
-			nil,        // bar
+			nil,        // :bar
 			nil,        // stringLit
-			nil,        // end
+			nil,        // :end
 			nil,        // [
 			nil,        // ]
 			nil,        // char
@@ -4079,16 +4079,16 @@ var actionTab = actionTable{
 			nil,        // dot
 			nil,        // tuplet
 			nil,        // letRing
-			nil,        // assign
-			nil,        // play
-			nil,        // tempo
-			nil,        // timesig
-			nil,        // velocity
-			nil,        // channel
-			nil,        // program
-			nil,        // control
-			nil,        // start
-			nil,        // stop
+			nil,        // :assign
+			nil,        // :play
+			nil,        // :tempo
+			nil,        // :timesig
+			nil,        // :velocity
+			nil,        // :channel
+			nil,        // :program
+			nil,        // :control
+			nil,        // :start
+			nil,        // :stop
 		},
 	},
 	actionRow{ // S120
@@ -4098,9 +4098,9 @@ var actionTab = actionTable{
 			nil,        // ␚
 			nil,        // empty
 			nil,        // terminator
-			nil,        // bar
+			nil,        // :bar
 			nil,        // stringLit
-			nil,        // end
+			nil,        // :end
 			reduce(17), // [, reduce: NoteObject
 			reduce(17), // ], reduce: NoteObject
 			reduce(17), // char, reduce: NoteObject
@@ -4113,16 +4113,16 @@ var actionTab = actionTable{
 			nil,        // dot
 			nil,        // tuplet
 			nil,        // letRing
-			nil,        // assign
-			nil,        // play
-			nil,        // tempo
-			nil,        // timesig
-			nil,        // velocity
-			nil,        // channel
-			nil,        // program
-			nil,        // control
-			nil,        // start
-			nil,        // stop
+			nil,        // :assign
+			nil,        // :play
+			nil,        // :tempo
+			nil,        // :timesig
+			nil,        // :velocity
+			nil,        // :channel
+			nil,        // :program
+			nil,        // :control
+			nil,        // :start
+			nil,        // :stop
 		},
 	},
 	actionRow{ // S121
@@ -4132,9 +4132,9 @@ var actionTab = actionTable{
 			nil,       // ␚
 			nil,       // empty
 			nil,       // terminator
-			nil,       // bar
+			nil,       // :bar
 			nil,       // stringLit
-			reduce(3), // end, reduce: RepeatTerminator
+			reduce(3), // :end, reduce: RepeatTerminator
 			shift(84), // [
 			nil,       // ]
 			shift(85), // char
@@ -4147,16 +4147,16 @@ var actionTab = actionTable{
 			nil,       // dot
 			nil,       // tuplet
 			nil,       // letRing
-			nil,       // assign
-			nil,       // play
-			shift(87), // tempo
-			shift(88), // timesig
-			shift(89), // velocity
-			shift(90), // channel
-			shift(91), // program
-			shift(92), // control
-			shift(93), // start
-			shift(94), // stop
+			nil,       // :assign
+			nil,       // :play
+			shift(87), // :tempo
+			shift(88), // :timesig
+			shift(89), // :velocity
+			shift(90), // :channel
+			shift(91), // :program
+			shift(92), // :control
+			shift(93), // :start
+			shift(94), // :stop
 		},
 	},
 	actionRow{ // S122
@@ -4166,9 +4166,9 @@ var actionTab = actionTable{
 			nil,        // ␚
 			nil,        // empty
 			shift(122), // terminator
-			nil,        // bar
+			nil,        // :bar
 			nil,        // stringLit
-			reduce(2),  // end, reduce: RepeatTerminator
+			reduce(2),  // :end, reduce: RepeatTerminator
 			reduce(2),  // [, reduce: RepeatTerminator
 			nil,        // ]
 			reduce(2),  // char, reduce: RepeatTerminator
@@ -4181,16 +4181,16 @@ var actionTab = actionTable{
 			nil,        // dot
 			nil,        // tuplet
 			nil,        // letRing
-			nil,        // assign
-			nil,        // play
-			reduce(2),  // tempo, reduce: RepeatTerminator
-			reduce(2),  // timesig, reduce: RepeatTerminator
-			reduce(2),  // velocity, reduce: RepeatTerminator
-			reduce(2),  // channel, reduce: RepeatTerminator
-			reduce(2),  // program, reduce: RepeatTerminator
-			reduce(2),  // control, reduce: RepeatTerminator
-			reduce(2),  // start, reduce: RepeatTerminator
-			reduce(2),  // stop, reduce: RepeatTerminator
+			nil,        // :assign
+			nil,        // :play
+			reduce(2),  // :tempo, reduce: RepeatTerminator
+			reduce(2),  // :timesig, reduce: RepeatTerminator
+			reduce(2),  // :velocity, reduce: RepeatTerminator
+			reduce(2),  // :channel, reduce: RepeatTerminator
+			reduce(2),  // :program, reduce: RepeatTerminator
+			reduce(2),  // :control, reduce: RepeatTerminator
+			reduce(2),  // :start, reduce: RepeatTerminator
+			reduce(2),  // :stop, reduce: RepeatTerminator
 		},
 	},
 	actionRow{ // S123
@@ -4200,9 +4200,9 @@ var actionTab = actionTable{
 			nil,        // ␚
 			nil,        // empty
 			reduce(21), // terminator, reduce: PropertyList
-			nil,        // bar
+			nil,        // :bar
 			nil,        // stringLit
-			reduce(21), // end, reduce: PropertyList
+			reduce(21), // :end, reduce: PropertyList
 			reduce(21), // [, reduce: PropertyList
 			nil,        // ]
 			reduce(21), // char, reduce: PropertyList
@@ -4215,16 +4215,16 @@ var actionTab = actionTable{
 			nil,        // dot
 			nil,        // tuplet
 			nil,        // letRing
-			nil,        // assign
-			nil,        // play
-			nil,        // tempo
-			nil,        // timesig
-			nil,        // velocity
-			nil,        // channel
-			nil,        // program
-			nil,        // control
-			nil,        // start
-			nil,        // stop
+			nil,        // :assign
+			nil,        // :play
+			nil,        // :tempo
+			nil,        // :timesig
+			nil,        // :velocity
+			nil,        // :channel
+			nil,        // :program
+			nil,        // :control
+			nil,        // :start
+			nil,        // :stop
 		},
 	},
 	actionRow{ // S124
@@ -4234,9 +4234,9 @@ var actionTab = actionTable{
 			nil,        // ␚
 			nil,        // empty
 			reduce(20), // terminator, reduce: PropertyList
-			nil,        // bar
+			nil,        // :bar
 			nil,        // stringLit
-			reduce(20), // end, reduce: PropertyList
+			reduce(20), // :end, reduce: PropertyList
 			reduce(20), // [, reduce: PropertyList
 			nil,        // ]
 			reduce(20), // char, reduce: PropertyList
@@ -4249,16 +4249,16 @@ var actionTab = actionTable{
 			shift(110), // dot
 			shift(111), // tuplet
 			shift(112), // letRing
-			nil,        // assign
-			nil,        // play
-			nil,        // tempo
-			nil,        // timesig
-			nil,        // velocity
-			nil,        // channel
-			nil,        // program
-			nil,        // control
-			nil,        // start
-			nil,        // stop
+			nil,        // :assign
+			nil,        // :play
+			nil,        // :tempo
+			nil,        // :timesig
+			nil,        // :velocity
+			nil,        // :channel
+			nil,        // :program
+			nil,        // :control
+			nil,        // :start
+			nil,        // :stop
 		},
 	},
 	actionRow{ // S125
@@ -4268,9 +4268,9 @@ var actionTab = actionTable{
 			nil,        // ␚
 			nil,        // empty
 			reduce(34), // terminator, reduce: BarBodyCommand
-			nil,        // bar
+			nil,        // :bar
 			nil,        // stringLit
-			reduce(34), // end, reduce: BarBodyCommand
+			reduce(34), // :end, reduce: BarBodyCommand
 			nil,        // [
 			nil,        // ]
 			nil,        // char
@@ -4283,16 +4283,16 @@ var actionTab = actionTable{
 			nil,        // dot
 			nil,        // tuplet
 			nil,        // letRing
-			nil,        // assign
-			nil,        // play
-			nil,        // tempo
-			nil,        // timesig
-			nil,        // velocity
-			nil,        // channel
-			nil,        // program
-			nil,        // control
-			nil,        // start
-			nil,        // stop
+			nil,        // :assign
+			nil,        // :play
+			nil,        // :tempo
+			nil,        // :timesig
+			nil,        // :velocity
+			nil,        // :channel
+			nil,        // :program
+			nil,        // :control
+			nil,        // :start
+			nil,        // :stop
 		},
 	},
 	actionRow{ // S126
@@ -4302,9 +4302,9 @@ var actionTab = actionTable{
 			nil,        // ␚
 			nil,        // empty
 			reduce(38), // terminator, reduce: BarBodyCommand
-			nil,        // bar
+			nil,        // :bar
 			nil,        // stringLit
-			reduce(38), // end, reduce: BarBodyCommand
+			reduce(38), // :end, reduce: BarBodyCommand
 			nil,        // [
 			nil,        // ]
 			nil,        // char
@@ -4317,16 +4317,16 @@ var actionTab = actionTable{
 			nil,        // dot
 			nil,        // tuplet
 			nil,        // letRing
-			nil,        // assign
-			nil,        // play
-			nil,        // tempo
-			nil,        // timesig
-			nil,        // velocity
-			nil,        // channel
-			nil,        // program
-			nil,        // control
-			nil,        // start
-			nil,        // stop
+			nil,        // :assign
+			nil,        // :play
+			nil,        // :tempo
+			nil,        // :timesig
+			nil,        // :velocity
+			nil,        // :channel
+			nil,        // :program
+			nil,        // :control
+			nil,        // :start
+			nil,        // :stop
 		},
 	},
 	actionRow{ // S127
@@ -4336,9 +4336,9 @@ var actionTab = actionTable{
 			nil,       // ␚
 			nil,       // empty
 			nil,       // terminator
-			nil,       // bar
+			nil,       // :bar
 			nil,       // stringLit
-			reduce(6), // end, reduce: BarBodyDeclList
+			reduce(6), // :end, reduce: BarBodyDeclList
 			nil,       // [
 			nil,       // ]
 			nil,       // char
@@ -4351,16 +4351,16 @@ var actionTab = actionTable{
 			nil,       // dot
 			nil,       // tuplet
 			nil,       // letRing
-			nil,       // assign
-			nil,       // play
-			nil,       // tempo
-			nil,       // timesig
-			nil,       // velocity
-			nil,       // channel
-			nil,       // program
-			nil,       // control
-			nil,       // start
-			nil,       // stop
+			nil,       // :assign
+			nil,       // :play
+			nil,       // :tempo
+			nil,       // :timesig
+			nil,       // :velocity
+			nil,       // :channel
+			nil,       // :program
+			nil,       // :control
+			nil,       // :start
+			nil,       // :stop
 		},
 	},
 	actionRow{ // S128
@@ -4370,9 +4370,9 @@ var actionTab = actionTable{
 			nil,       // ␚
 			nil,       // empty
 			nil,       // terminator
-			nil,       // bar
+			nil,       // :bar
 			nil,       // stringLit
-			reduce(3), // end, reduce: RepeatTerminator
+			reduce(3), // :end, reduce: RepeatTerminator
 			reduce(3), // [, reduce: RepeatTerminator
 			nil,       // ]
 			reduce(3), // char, reduce: RepeatTerminator
@@ -4385,16 +4385,16 @@ var actionTab = actionTable{
 			nil,       // dot
 			nil,       // tuplet
 			nil,       // letRing
-			nil,       // assign
-			nil,       // play
-			reduce(3), // tempo, reduce: RepeatTerminator
-			reduce(3), // timesig, reduce: RepeatTerminator
-			reduce(3), // velocity, reduce: RepeatTerminator
-			reduce(3), // channel, reduce: RepeatTerminator
-			reduce(3), // program, reduce: RepeatTerminator
-			reduce(3), // control, reduce: RepeatTerminator
-			reduce(3), // start, reduce: RepeatTerminator
-			reduce(3), // stop, reduce: RepeatTerminator
+			nil,       // :assign
+			nil,       // :play
+			reduce(3), // :tempo, reduce: RepeatTerminator
+			reduce(3), // :timesig, reduce: RepeatTerminator
+			reduce(3), // :velocity, reduce: RepeatTerminator
+			reduce(3), // :channel, reduce: RepeatTerminator
+			reduce(3), // :program, reduce: RepeatTerminator
+			reduce(3), // :control, reduce: RepeatTerminator
+			reduce(3), // :start, reduce: RepeatTerminator
+			reduce(3), // :stop, reduce: RepeatTerminator
 		},
 	},
 	actionRow{ // S129
@@ -4404,9 +4404,9 @@ var actionTab = actionTable{
 			nil,        // ␚
 			nil,        // empty
 			reduce(17), // terminator, reduce: NoteObject
-			nil,        // bar
+			nil,        // :bar
 			nil,        // stringLit
-			reduce(17), // end, reduce: NoteObject
+			reduce(17), // :end, reduce: NoteObject
 			reduce(17), // [, reduce: NoteObject
 			nil,        // ]
 			reduce(17), // char, reduce: NoteObject
@@ -4419,16 +4419,16 @@ var actionTab = actionTable{
 			nil,        // dot
 			nil,        // tuplet
 			nil,        // letRing
-			nil,        // assign
-			nil,        // play
-			nil,        // tempo
-			nil,        // timesig
-			nil,        // velocity
-			nil,        // channel
-			nil,        // program
-			nil,        // control
-			nil,        // start
-			nil,        // stop
+			nil,        // :assign
+			nil,        // :play
+			nil,        // :tempo
+			nil,        // :timesig
+			nil,        // :velocity
+			nil,        // :channel
+			nil,        // :program
+			nil,        // :control
+			nil,        // :start
+			nil,        // :stop
 		},
 	},
 }

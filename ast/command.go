@@ -18,7 +18,7 @@ func (c CmdAssign) WriteTo(w io.Writer) (int64, error) {
 	ew := newErrWriter(w)
 	var n int
 
-	n += ew.WriteString("assign ")
+	n += ew.WriteString(":assign ")
 	n += ew.WriteRune(c.Note)
 	n += ew.WriteString(" ")
 	n += ew.WriteInt(int(c.Key))
@@ -52,7 +52,7 @@ func (c CmdTempo) WriteTo(w io.Writer) (int64, error) {
 	ew := newErrWriter(w)
 	var n int
 
-	n += ew.WriteString("tempo ")
+	n += ew.WriteString(":tempo ")
 	n += ew.WriteInt(int(c))
 
 	return int64(n), ew.Flush()
@@ -81,7 +81,7 @@ func (c CmdTimeSig) WriteTo(w io.Writer) (int64, error) {
 	ew := newErrWriter(w)
 	var n int
 
-	n += ew.WriteString("timesig ")
+	n += ew.WriteString(":timesig ")
 	n += ew.WriteInt(int(c[0]))
 	n += ew.WriteString(" ")
 	n += ew.WriteInt(int(c[1]))
@@ -122,7 +122,7 @@ func (c CmdChannel) WriteTo(w io.Writer) (int64, error) {
 	ew := newErrWriter(w)
 	var n int
 
-	n += ew.WriteString("channel ")
+	n += ew.WriteString(":channel ")
 	n += ew.WriteInt(int(c))
 
 	return int64(n), ew.Flush()
@@ -151,7 +151,7 @@ func (c CmdVelocity) WriteTo(w io.Writer) (int64, error) {
 	ew := newErrWriter(w)
 	var n int
 
-	n += ew.WriteString("velocity ")
+	n += ew.WriteString(":velocity ")
 	n += ew.WriteInt(int(c))
 
 	return int64(n), ew.Flush()
@@ -180,7 +180,7 @@ func (c CmdProgram) WriteTo(w io.Writer) (int64, error) {
 	ew := newErrWriter(w)
 	var n int
 
-	n += ew.WriteString("program ")
+	n += ew.WriteString(":program ")
 	n += ew.WriteInt(int(c))
 
 	return int64(n), ew.Flush()
@@ -212,7 +212,7 @@ func (c CmdControl) WriteTo(w io.Writer) (int64, error) {
 	ew := newErrWriter(w)
 	var n int
 
-	n += ew.WriteString("control ")
+	n += ew.WriteString(":control ")
 	n += ew.WriteInt(int(c.Control))
 	n += ew.WriteString(" ")
 	n += ew.WriteInt(int(c.Parameter))
@@ -263,7 +263,7 @@ func (c CmdPlay) WriteTo(w io.Writer) (int64, error) {
 	ew := newErrWriter(w)
 	var n int
 
-	n += ew.WriteString("play \"")
+	n += ew.WriteString(":play \"")
 	n += ew.WriteString(c.Name)
 	n += ew.WriteString("\"")
 
@@ -281,7 +281,7 @@ func (c CmdStart) WriteTo(w io.Writer) (int64, error) {
 	ew := newErrWriter(w)
 	var n int
 
-	n += ew.WriteString("start")
+	n += ew.WriteString(":start")
 
 	return int64(n), ew.Flush()
 }
@@ -297,7 +297,7 @@ func (c CmdStop) WriteTo(w io.Writer) (int64, error) {
 	ew := newErrWriter(w)
 	var n int
 
-	n += ew.WriteString("stop")
+	n += ew.WriteString(":stop")
 
 	return int64(n), ew.Flush()
 }

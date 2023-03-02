@@ -153,7 +153,7 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `Bar : "bar" stringLit RepeatTerminator BarBodyDeclList "end"	<< ast.NewBar(X[1].(*token.Token), X[3].(ast.NodeList)), nil >>`,
+		String: `Bar : ":bar" stringLit RepeatTerminator BarBodyDeclList ":end"	<< ast.NewBar(X[1].(*token.Token), X[3].(ast.NodeList)), nil >>`,
 		Id:         "Bar",
 		NTType:     7,
 		Index:      13,
@@ -323,7 +323,7 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `TopLevelCommand : "assign" char uint	<< ast.NewCmdAssign(X[1].(*token.Token), X[2].(*token.Token)) >>`,
+		String: `TopLevelCommand : ":assign" char uint	<< ast.NewCmdAssign(X[1].(*token.Token), X[2].(*token.Token)) >>`,
 		Id:         "TopLevelCommand",
 		NTType:     13,
 		Index:      30,
@@ -333,7 +333,7 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `TopLevelCommand : "play" stringLit	<< ast.NewCmdName(X[1].(*token.Token)) >>`,
+		String: `TopLevelCommand : ":play" stringLit	<< ast.NewCmdName(X[1].(*token.Token)) >>`,
 		Id:         "TopLevelCommand",
 		NTType:     13,
 		Index:      31,
@@ -353,7 +353,7 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `BarBodyCommand : "tempo" uint	<< ast.NewCmdTempo(X[1].(*token.Token)) >>`,
+		String: `BarBodyCommand : ":tempo" uint	<< ast.NewCmdTempo(X[1].(*token.Token)) >>`,
 		Id:         "BarBodyCommand",
 		NTType:     14,
 		Index:      33,
@@ -363,7 +363,7 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `BarBodyCommand : "timesig" uint uint	<< ast.NewCmdTimeSig(X[1].(*token.Token), X[2].(*token.Token)) >>`,
+		String: `BarBodyCommand : ":timesig" uint uint	<< ast.NewCmdTimeSig(X[1].(*token.Token), X[2].(*token.Token)) >>`,
 		Id:         "BarBodyCommand",
 		NTType:     14,
 		Index:      34,
@@ -373,7 +373,7 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `BarBodyCommand : "velocity" uint	<< ast.NewCmdVelocity(X[1].(*token.Token)) >>`,
+		String: `BarBodyCommand : ":velocity" uint	<< ast.NewCmdVelocity(X[1].(*token.Token)) >>`,
 		Id:         "BarBodyCommand",
 		NTType:     14,
 		Index:      35,
@@ -383,7 +383,7 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `BarBodyCommand : "channel" uint	<< ast.NewCmdChannel(X[1].(*token.Token)) >>`,
+		String: `BarBodyCommand : ":channel" uint	<< ast.NewCmdChannel(X[1].(*token.Token)) >>`,
 		Id:         "BarBodyCommand",
 		NTType:     14,
 		Index:      36,
@@ -393,7 +393,7 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `BarBodyCommand : "program" uint	<< ast.NewCmdProgram(X[1].(*token.Token)) >>`,
+		String: `BarBodyCommand : ":program" uint	<< ast.NewCmdProgram(X[1].(*token.Token)) >>`,
 		Id:         "BarBodyCommand",
 		NTType:     14,
 		Index:      37,
@@ -403,7 +403,7 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `BarBodyCommand : "control" uint uint	<< ast.NewCmdControl(X[1].(*token.Token), X[2].(*token.Token)) >>`,
+		String: `BarBodyCommand : ":control" uint uint	<< ast.NewCmdControl(X[1].(*token.Token), X[2].(*token.Token)) >>`,
 		Id:         "BarBodyCommand",
 		NTType:     14,
 		Index:      38,
@@ -413,7 +413,7 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `BarBodyCommand : "start"	<< ast.CmdStart{}, nil >>`,
+		String: `BarBodyCommand : ":start"	<< ast.CmdStart{}, nil >>`,
 		Id:         "BarBodyCommand",
 		NTType:     14,
 		Index:      39,
@@ -423,7 +423,7 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `BarBodyCommand : "stop"	<< ast.CmdStop{}, nil >>`,
+		String: `BarBodyCommand : ":stop"	<< ast.CmdStop{}, nil >>`,
 		Id:         "BarBodyCommand",
 		NTType:     14,
 		Index:      40,

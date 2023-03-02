@@ -44,8 +44,8 @@ func (w *errWriter) WriteByte(b byte) int {
 		w.err = err
 	}
 	return 1
-
 }
+
 func (w *errWriter) WriteRune(r rune) int {
 	if w.err != nil {
 		return 0

@@ -17,7 +17,7 @@ func (b Bar) WriteTo(w io.Writer) (int64, error) {
 	ew := newErrWriter(w)
 	var n int
 
-	n += ew.WriteString(`bar "`)
+	n += ew.WriteString(`:bar "`)
 	n += ew.WriteString(b.Name)
 	n += ew.WriteString("\"\n")
 
@@ -27,7 +27,7 @@ func (b Bar) WriteTo(w io.Writer) (int64, error) {
 		n += ew.WriteString("\n")
 	}
 
-	n += ew.WriteString("end")
+	n += ew.WriteString(":end")
 
 	return int64(n), ew.Flush()
 }

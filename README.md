@@ -106,7 +106,7 @@ Use " [command] --help" for more information about a command.
 
 The language consists of commands and note lists.
 The commands tempo, program, control, start and stop are global commands.
-The commands timesig, velocity and channel, when used in bars, are local to bars.
+The commands timesig, velocity and channel, when used in a bar, are scoped to that bar only.
 
 - ### Comments
 
@@ -116,34 +116,36 @@ The commands timesig, velocity and channel, when used in bars, are local to bars
 
 - ### Commands
 
-  ```
-  // Assign a note.
-  assign c 60
+Commands begin with a `:`.
 
-  // Start message.
-  start
+```
+// Assign a note.
+:assign c 60
 
-  // Stop message.
-  stop
+// Start message.
+:start
 
-  // Set the time signature.
-  timesig 4 4
+// Stop message.
+:stop
 
-  // Set the tempo.
-  tempo 120
+// Set time signature.
+:timesig 4 4
 
-  // Set the channel for all notes after this statement.
-  channel 10
+// Set tempo.
+:tempo 120
 
-  // Set current global velocity.
-  velocity 127
+// Set channel.
+:channel 10
 
-  // Program change message on the current channel.
-  program 0
+// Set velocity.
+:velocity 127
 
-  // Control change message on the current channel.
-  control 1 127
-  ```
+// Program change message on the current channel.
+:program 0
+
+// Control change message on the current channel.
+:control 1 127
+```
 
 - ### Note assignment
 
@@ -151,9 +153,9 @@ The commands timesig, velocity and channel, when used in bars, are local to bars
 
   ```
   // Kick drum (on the drum channel).
-  assign k 36
+  :assign k 36
   // Middle C (on other channels).
-  assign c 60
+  :assign c 60
   ```
 
 - ### Notes
@@ -254,23 +256,23 @@ The commands timesig, velocity and channel, when used in bars, are local to bars
 
   ```
   // Define a bar.
-  bar "Rock beat"
+  :bar "Rock beat"
   // Setting timesig makes the interpreter validate the bar length.
   // Incomplete bars are filled with silence.
-  timesig 4 4
+  :timesig 4 4
       [xx xx xx xx]8
       // Using braces for nice alignment.
       [k  s  k  s]
-  end
+  :end
 
   // You can also write the same bar as:
-  bar "The same beat"
+  :bar "The same beat"
       [xxxxxxxx]8
       ksks
-  end
+  :end
 
   // Play the bar.
-  play "Rock beat"
+  :play "Rock beat"
   ```
 
 ## Examples
@@ -287,62 +289,62 @@ gong play examples/bonham
 // A simplified Bonham half time shuffle
 
 // Percussion channel.
-channel 10
+:channel 10
 
 // Kick drum.
-assign k 36
+:assign k 36
 // Acoustic snare drum.
-assign s 38
+:assign s 38
 // Hi-Hat closed.
-assign x 42
+:assign x 42
 // Hi-Hat open.
-assign o 46
+:assign o 46
 // Hi-Hat foot.
-assign X 44
+:assign X 44
 // Crash cymbal.
-assign c 49
+:assign c 49
 // Low tom.
-assign q 45
+:assign q 45
 // Floor tom 2.
-assign g 41
+:assign g 41
 
-tempo 132
-timesig 4 4
-velocity 100
+:tempo 132
+:timesig 4 4
+:velocity 100
 
-// Start the first bar with a crash cymbal and let it ring.
-bar "bonham 1"
+// Start the first :bar with a crash cymbal and let it ring.
+:bar "bonham 1"
 	[[c*-o]   [x^-x]    [x^-x] [x^-x]]8/3
 	-         [-s)-]8/3 s^     [-s)-]8/3
 	[k-k]^8/3 [--k]8/3  -      [--k]8/3
 	-         X         -2
-end
+:end
 
-bar "bonham 2"
+:bar "bonham 2"
 	[[x^-o]   [x^-x]    [x^-x] [x^-x]]8/3
 	-         [-s)-]8/3 s^     [-s)-]8/3
 	[k-k]^8/3 [--k]8/3  -      [--k]8/3
 	-         X         -2
-end
+:end
 
-bar "fill"
+:bar "fill"
 	[[x^-s] [sss] [ssq] [qgg]]8/3
 	[[k-k]^ [--k]]8/3   -2
 	-       X     X     X
-end
+:end
 
 // Count in.
 xxxo
 
-// Play 8 bars of the Bonham groove.
-play "bonham 1"
-play "bonham 2"
-play "bonham 2"
-play "fill"
-play "bonham 1"
-play "bonham 2"
-play "bonham 2"
-play "fill"
+// Play 8 :bars of the Bonham groove.
+:play "bonham 1"
+:play "bonham 2"
+:play "bonham 2"
+:play "fill"
+:play "bonham 1"
+:play "bonham 2"
+:play "bonham 2"
+:play "fill"
 ```
 
 ### J.S. Bach - Musikalisches Opfer - 6. Canon A 2 Per Tonos
@@ -359,43 +361,43 @@ It is possible to write melodies using gong in a limited way. Here's 2 bars of B
 // J.S. Bach - Musikalisches Opfer - 6. Canon A 2 Per Tonos
 
 // C3
-assign C 48
-assign D 50
-assign E 52
-assign F 53
-assign G 55
-assign A 57
-assign B 59
+:assign C 48
+:assign D 50
+:assign E 52
+:assign F 53
+:assign G 55
+:assign A 57
+:assign B 59
 
 // C4 (middle C)
-assign c 60
-assign d 62
-assign e 64
-assign f 65
-assign g 67
-assign a 69
-assign b 71
+:assign c 60
+:assign d 62
+:assign e 64
+:assign f 65
+:assign g 67
+:assign a 69
+:assign b 71
 
-velocity 100
+:velocity 100
 
-bar "bar 1"
-timesig 4 4
-c.            d8 [e$ e f f#]8
-[-CE$G]16 c2          [B$A]8
-end
+:bar "bar 1"
+	:timesig 4 4
+	c.            d8 [e$ e f f#]8
+	[-CE$G]16 c2          [B$A]8
+:end
 
 // 16th rests instead of ties (unimplemented).
-bar "bar 2"
-timesig 4 4
-g2                  a$      [-fd$c]16
-[-GB$d]16  g2               [f e]8
-B$        [-EDE]16 [FCFG]16  A$
-end
+:bar "bar 2"
+	:timesig 4 4
+	g2                  a$      [-fd$c]16
+	[-GB$d]16  g2               [f e]8
+	B$        [-EDE]16 [FCFG]16  A$
+:end
 
-tempo 73
+:tempo 73
 
-play "bar 1"
-play "bar 2"
+:play "bar 1"
+:play "bar 2"
 ```
 
 ### Multichannel
@@ -403,19 +405,19 @@ play "bar 2"
 The file is included in the `examples` directory.
 
 ```
-channel 1
-assign x 42
-channel 2
-assign k 36
-tempo 60
-timesig 4 4
-bar "test"
-	channel 1
+:channel 1
+:assign x 42
+:channel 2
+:assign k 36
+:tempo 60
+:timesig 4 4
+:bar "test"
+	:channel 1
 	xxxx
-	channel 2
+	:channel 2
 	kkkk
-end
-play "test"
+:end
+:play "test"
 ```
 
 ## Possible features in the future

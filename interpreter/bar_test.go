@@ -52,13 +52,13 @@ func TestBarDurationTimeSignatures(t *testing.T) {
 			input:   "c",
 		},
 	} {
-		t.Run(fmt.Sprintf("timesig %s", tc.timesig), func(t *testing.T) {
+		t.Run(fmt.Sprintf(":timesig %s", tc.timesig), func(t *testing.T) {
 			g := NewWithT(t)
 
 			it := interpreter.New()
 
-			g.Expect(it.Eval(fmt.Sprintf("timesig %s", tc.timesig))).To(Succeed())
-			g.Expect(it.Eval("assign c 60")).To(Succeed())
+			g.Expect(it.Eval(fmt.Sprintf(":timesig %s", tc.timesig))).To(Succeed())
+			g.Expect(it.Eval(":assign c 60")).To(Succeed())
 			g.Expect(it.Eval(tc.input)).To(Succeed())
 
 			bars := it.Flush()

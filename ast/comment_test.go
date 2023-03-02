@@ -13,11 +13,11 @@ func TestComments(t *testing.T) {
 	for _, input := range []string{
 		`
 // this is a line comment
-assign c 60
+:assign c 60
 `,
 		`
 /* this is a block comment */
-assign c 60
+:assign c 60
 `,
 		`
 // this is a line comment
@@ -25,7 +25,7 @@ assign c 60
 this is a
 block comment
 */
-assign c 60
+:assign c 60
 `,
 	} {
 		res, err := parse(input)

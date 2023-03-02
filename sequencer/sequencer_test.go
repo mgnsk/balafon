@@ -19,15 +19,15 @@ func TestSequencerTiming(t *testing.T) {
 		absTicks uint32
 	}{
 		{
-			input:    "timesig 1 4; tempo 60; assign c 60; c",
+			input:    ":timesig 1 4; :tempo 60; :assign c 60; c",
 			absTicks: uint32(constants.TicksPerQuarter),
 		},
 		{
-			input:    "timesig 2 8; tempo 60; assign c 60; c",
+			input:    ":timesig 2 8; :tempo 60; :assign c 60; c",
 			absTicks: uint32(constants.TicksPerQuarter),
 		},
 		{
-			input:    "timesig 2 4; tempo 120; assign c 60; c2",
+			input:    ":timesig 2 4; :tempo 120; :assign c 60; c2",
 			absTicks: uint32(2 * constants.TicksPerQuarter),
 		},
 	} {
@@ -64,19 +64,19 @@ func TestSequencerMultiTrackTiming(t *testing.T) {
 	it := interpreter.New()
 
 	input := `
-channel 1
-assign x 42
-channel 2
-assign k 36
-tempo 60
-timesig 4 4
-bar "test"
-	channel 1
+:channel 1
+:assign x 42
+:channel 2
+:assign k 36
+:tempo 60
+:timesig 4 4
+:bar "test"
+	:channel 1
 	xxxx
-	channel 2
+	:channel 2
 	kkkk
-end
-play "test"
+:end
+:play "test"
 `
 
 	g.Expect(it.Eval(input)).To(Succeed())
@@ -102,20 +102,20 @@ func TestSilenceBetweenBars(t *testing.T) {
 	it := interpreter.New()
 
 	input := `
-assign x 42
-tempo 60
-timesig 2 4
+:assign x 42
+:tempo 60
+:timesig 2 4
 
-bar "one"
+:bar "one"
 	x-
-end
+:end
 
-bar "two"
+:bar "two"
 	-x
-end
+:end
 
-play "one"
-play "two"
+:play "one"
+:play "two"
 `
 
 	g.Expect(it.Eval(input)).To(Succeed())
@@ -149,22 +149,22 @@ func TestTempoChange(t *testing.T) {
 	it := interpreter.New()
 
 	input := `
-assign x 42
+:assign x 42
 
-bar "one"
-	timesig 1 4
-	tempo 60
+:bar "one"
+	:timesig 1 4
+	:tempo 60
 	x
-end
+:end
 
-bar "two"
-	timesig 2 4
-	tempo 120
+:bar "two"
+	:timesig 2 4
+	:tempo 120
 	xx
-end
+:end
 
-play "one"
-play "two"
+:play "one"
+:play "two"
 `
 
 	g.Expect(it.Eval(input)).To(Succeed())

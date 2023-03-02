@@ -6,6 +6,7 @@ import (
 	"github.com/mgnsk/gong/internal/parser/token"
 )
 
+// Property types.
 var (
 	typeChar      = mustGetType("char")
 	typeStringLit = mustGetType("stringLit")

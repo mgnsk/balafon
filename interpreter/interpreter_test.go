@@ -19,7 +19,7 @@ func TestCommands(t *testing.T) {
 		messages [][]byte
 	}{
 		{
-			"assign c 60; c",
+			":assign c 60; c",
 			[2]uint8{4, 4},
 			[][]byte{
 				midi.NoteOn(0, 60, constants.DefaultVelocity),
@@ -27,29 +27,29 @@ func TestCommands(t *testing.T) {
 			},
 		},
 		{
-			"tempo 200",
+			":tempo 200",
 			[2]uint8{4, 4},
 			[][]byte{
 				smf.MetaTempo(200),
 			},
 		},
 		{
-			"timesig 1 4",
+			":timesig 1 4",
 			[2]uint8{1, 4},
 			nil, // Nil bar.
 		},
 		{
-			"velocity 10",
+			":velocity 10",
 			[2]uint8{4, 4},
 			nil, // Nil bar.
 		},
 		{
-			"channel 10",
+			":channel 10",
 			[2]uint8{4, 4},
 			nil, // Nil bar.
 		},
 		{
-			"channel 10; assign c 60; c",
+			":channel 10; :assign c 60; c",
 			[2]uint8{4, 4},
 			[][]byte{
 				midi.NoteOn(10, 60, constants.DefaultVelocity),
@@ -57,7 +57,7 @@ func TestCommands(t *testing.T) {
 			},
 		},
 		{
-			"velocity 30; assign c 60; c",
+			":velocity 30; :assign c 60; c",
 			[2]uint8{4, 4},
 			[][]byte{
 				midi.NoteOn(0, 60, 30),
@@ -65,21 +65,21 @@ func TestCommands(t *testing.T) {
 			},
 		},
 		{
-			"program 0",
+			":program 0",
 			[2]uint8{4, 4},
 			[][]byte{
 				midi.ProgramChange(0, 0),
 			},
 		},
 		{
-			"control 1 2",
+			":control 1 2",
 			[2]uint8{4, 4},
 			[][]byte{
 				midi.ControlChange(0, 1, 2),
 			},
 		},
 		{
-			`assign c 60; bar "bar" timesig 1 4; c end; play "bar"`,
+			`:assign c 60; :bar "bar" :timesig 1 4; c :end; :play "bar"`,
 			[2]uint8{1, 4},
 			[][]byte{
 				midi.NoteOn(0, 60, constants.DefaultVelocity),
@@ -87,14 +87,14 @@ func TestCommands(t *testing.T) {
 			},
 		},
 		{
-			"start",
+			":start",
 			[2]uint8{4, 4},
 			[][]byte{
 				midi.Start(),
 			},
 		},
 		{
-			"stop",
+			":stop",
 			[2]uint8{4, 4},
 			[][]byte{
 				midi.Stop(),
@@ -138,8 +138,8 @@ func TestNoteAlreadyAssigned(t *testing.T) {
 
 	it := interpreter.New()
 
-	g.Expect(it.Eval("assign c 60")).To(Succeed())
-	g.Expect(it.Eval("assign c 61")).NotTo(Succeed())
+	g.Expect(it.Eval(":assign c 60")).To(Succeed())
+	g.Expect(it.Eval(":assign c 61")).NotTo(Succeed())
 }
 
 func TestSharpFlatNote(t *testing.T) {
@@ -147,8 +147,8 @@ func TestSharpFlatNote(t *testing.T) {
 		input string
 		key   uint8
 	}{
-		{"assign c 60; c#", 61},
-		{"assign c 60; c$", 59},
+		{":assign c 60; c#", 61},
+		{":assign c 60; c$", 59},
 	} {
 		t.Run(tc.input, func(t *testing.T) {
 			g := NewWithT(t)
@@ -168,8 +168,8 @@ func TestSharpFlatNote(t *testing.T) {
 
 func TestSharpFlatNoteRange(t *testing.T) {
 	for _, input := range []string{
-		"assign c 127; c#",
-		"assign c 0; c$",
+		":assign c 127; c#",
+		":assign c 0; c$",
 	} {
 		t.Run(input, func(t *testing.T) {
 			g := NewWithT(t)
@@ -186,11 +186,11 @@ func TestAccentuatedAndGhostNote(t *testing.T) {
 		input    string
 		velocity uint8
 	}{
-		{"velocity 100; assign c 60; c^", 110},
-		{"velocity 100; assign c 60; c^^", 120},
-		{"velocity 100; assign c 60; c^^^", constants.MaxValue},
-		{"velocity 20; assign c 60; c)", 10},
-		{"velocity 20; assign c 60; c))", 1},
+		{":velocity 100; :assign c 60; c^", 110},
+		{":velocity 100; :assign c 60; c^^", 120},
+		{":velocity 100; :assign c 60; c^^^", constants.MaxValue},
+		{":velocity 20; :assign c 60; c)", 10},
+		{":velocity 20; :assign c 60; c))", 1},
 	} {
 		t.Run(tc.input, func(t *testing.T) {
 			g := NewWithT(t)
@@ -245,9 +245,9 @@ func TestNoteLengths(t *testing.T) {
 
 			tempo := 60
 
-			g.Expect(it.Eval(fmt.Sprintf("tempo %d", tempo))).To(Succeed())
-			g.Expect(it.Eval("timesig 4 4")).To(Succeed())
-			g.Expect(it.Eval("assign k 36")).To(Succeed())
+			g.Expect(it.Eval(fmt.Sprintf(":tempo %d", tempo))).To(Succeed())
+			g.Expect(it.Eval(":timesig 4 4")).To(Succeed())
+			g.Expect(it.Eval(":assign k 36")).To(Succeed())
 			g.Expect(it.Eval(tc.input)).To(Succeed())
 
 			bars := it.Flush()
@@ -280,18 +280,18 @@ func TestNotEmptyBar(t *testing.T) {
 	it := interpreter.New()
 
 	err := it.Eval(`
-timesig 1 4
+:timesig 1 4
 
-bar "one"
+:bar "one"
 	-
-end
+:end
 
-bar "two"
-	program 1
-end
+:bar "two"
+	:program 1
+:end
 
-play "one"
-play "two"
+:play "one"
+:play "two"
 -
 `)
 	g.Expect(err).NotTo(HaveOccurred())
@@ -314,8 +314,8 @@ func TestSilence(t *testing.T) {
 		it := interpreter.New()
 
 		err := it.Eval(`
-timesig 4 4
-assign c 60
+:timesig 4 4
+:assign c 60
 c
 `)
 		g.Expect(err).NotTo(HaveOccurred())
@@ -344,8 +344,8 @@ c
 		it := interpreter.New()
 
 		err := it.Eval(`
-timesig 4 4
-assign c 60
+:timesig 4 4
+:assign c 60
 ---c
 `)
 		g.Expect(err).NotTo(HaveOccurred())
@@ -375,16 +375,16 @@ func TestTimeSignature(t *testing.T) {
 	it := interpreter.New()
 
 	err := it.Eval(`
-assign c 60
+:assign c 60
 
-timesig 3 4
+:timesig 3 4
 
-bar "bar"
-    timesig 1 4
+:bar "bar"
+	:timesig 1 4
     c
-end
+:end
 
-play "bar"
+:play "bar"
 
 // Expect time signature to be restored to 3 4 in next bar.
 c
@@ -406,8 +406,8 @@ func TestBarTooLong(t *testing.T) {
 	it := interpreter.New()
 
 	err := it.Eval(`
-assign c 60
-tempo 60
+:assign c 60
+:tempo 60
 // Default timesig 4 4.
 
 ccccc
@@ -420,9 +420,9 @@ func TestFlushSkipsTooLongBar(t *testing.T) {
 
 	it := interpreter.New()
 
-	g.Expect(it.Eval("assign c 60")).To(Succeed())
-	g.Expect(it.Eval("timesig 4 4")).To(Succeed())
-	g.Expect(it.Eval("ccccc")).NotTo(Succeed())
+	g.Expect(it.Eval(":assign c 60")).To(Succeed())
+	g.Expect(it.Eval(":timesig 4 4")).To(Succeed())
+	g.Expect(it.Eval(":ccccc")).NotTo(Succeed())
 	g.Expect(it.Eval("c")).To(Succeed())
 
 	bars := it.Flush()
@@ -450,28 +450,28 @@ func TestMultiTrackNotesAreSortedPairs(t *testing.T) {
 	it := interpreter.New()
 
 	input := `
-channel 1
-assign a 0
-assign b 1
-assign c 2
-assign d 3
+:channel 1
+:assign a 0
+:assign b 1
+:assign c 2
+:assign d 3
 
-channel 2
-assign a 0
-assign b 1
-assign c 2
-assign d 3
+:channel 2
+:assign a 0
+:assign b 1
+:assign c 2
+:assign d 3
 
-tempo 60
-timesig 4 4
+:tempo 60
+:timesig 4 4
 
-bar "test"
-	channel 1
+:bar "test"
+	:channel 1
 	abcd
-	channel 2
+	:channel 2
 	abcd
-end
-play "test"
+:end
+:play "test"
 `
 
 	g.Expect(it.Eval(input)).To(Succeed())
@@ -502,37 +502,37 @@ func TestPendingGlobalCommands(t *testing.T) {
 	it := interpreter.New()
 
 	err := it.Eval(`
-channel 2; assign d 62
-channel 1; assign c 60
-tempo 60
-timesig 1 4
-velocity 50
-program 1
-control 1 1
+:channel 2; :assign d 62
+:channel 1; :assign c 60
+:tempo 60
+:timesig 1 4
+:velocity 50
+:program 1
+:control 1 1
 
-bar "one"
-	tempo 120
-	timesig 2 8
-	velocity 25
+:bar "one"
+	:tempo 120
+	:timesig 2 8
+	:velocity 25
 
-	program 2
-	control 1 2
+	:program 2
+	:control 1 2
 
 	// on channel 1:
 	c
 
-	channel 2
+	:channel 2
 	d
-end
+:end
 
 // timesig 1 4
-bar "two"
-	tempo 120
+:bar "two"
+	:tempo 120
 	c
-end
+:end
 
-play "one"
-play "two"
+:play "one"
+:play "two"
 
 // Channel is 1, timesig 1 4, velocity 50 but tempo is 120.
 // Only timesig, velocity and channel are local to bars.
@@ -617,27 +617,27 @@ func TestTempoIsGlobal(t *testing.T) {
 	it := interpreter.New()
 
 	err := it.Eval(`
-channel 1; assign c 60
-tempo 120
-tempo 60
-timesig 1 4
+:channel 1; :assign c 60
+:tempo 120
+:tempo 60
+:timesig 1 4
 
 // Tempo 60 4th rest == 1s.
 -
 
-bar "two"
-	timesig 2 8
+:bar "two"
+	:timesig 2 8
 	c
-end
+:end
 
-bar "one"
-	tempo 120
-	timesig 2 8
+:bar "one"
+	:tempo 120
+	:timesig 2 8
 	c
-end
+:end
 
-play "one"
-play "two"
+:play "one"
+:play "two"
 c
 `)
 	g.Expect(err).NotTo(HaveOccurred())
@@ -706,7 +706,7 @@ func TestLetRing(t *testing.T) {
 
 	it := interpreter.New()
 
-	g.Expect(it.Eval("assign k 36")).To(Succeed())
+	g.Expect(it.Eval(":assign k 36")).To(Succeed())
 	g.Expect(it.Eval("k*")).To(Succeed())
 
 	bars := it.Flush()
@@ -719,6 +719,29 @@ func TestLetRing(t *testing.T) {
 		},
 		// No note off event.
 	))
+}
+
+func TestSyntaxNotAmbigous(t *testing.T) {
+	g := NewWithT(t)
+
+	it := interpreter.New()
+
+	g.Expect(it.Eval(`
+:assign t 0
+:assign e 1
+:assign m 2
+:assign p 3
+:assign o 4
+:bar "bar"
+	:timesig 5 4
+	tempo
+:end
+:play "bar"
+	`)).To(Succeed())
+
+	bars := it.Flush()
+	g.Expect(bars).To(HaveLen(1))
+	g.Expect(bars[0].Events).To(HaveLen(10))
 }
 
 // var (
