@@ -4,9 +4,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/mgnsk/gong/constants"
-	"github.com/mgnsk/gong/interpreter"
-	"github.com/mgnsk/gong/sequencer"
+	"github.com/mgnsk/balafon/constants"
+	"github.com/mgnsk/balafon/interpreter"
+	"github.com/mgnsk/balafon/sequencer"
 	. "github.com/onsi/gomega"
 	"gitlab.com/gomidi/midi/v2"
 	_ "gitlab.com/gomidi/midi/v2/drivers/testdrv"

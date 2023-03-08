@@ -3,10 +3,10 @@ package interpreter
 import (
 	"fmt"
 
-	"github.com/mgnsk/gong/ast"
-	"github.com/mgnsk/gong/constants"
-	"github.com/mgnsk/gong/internal/parser/lexer"
-	"github.com/mgnsk/gong/internal/parser/parser"
+	"github.com/mgnsk/balafon/ast"
+	"github.com/mgnsk/balafon/constants"
+	"github.com/mgnsk/balafon/internal/parser/lexer"
+	"github.com/mgnsk/balafon/internal/parser/parser"
 	"gitlab.com/gomidi/midi/v2"
 	"gitlab.com/gomidi/midi/v2/smf"
 	"golang.org/x/exp/slices"

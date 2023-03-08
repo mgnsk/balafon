@@ -3,7 +3,7 @@ package ast
 import (
 	"io"
 
-	"github.com/mgnsk/gong/internal/parser/token"
+	"github.com/mgnsk/balafon/internal/parser/token"
 )
 
 // Bar is a bar.

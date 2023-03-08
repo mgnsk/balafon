@@ -10,9 +10,9 @@ import (
 	"unicode/utf8"
 
 	"github.com/c-bata/go-prompt"
-	"github.com/mgnsk/gong/interpreter"
-	"github.com/mgnsk/gong/player"
-	"github.com/mgnsk/gong/sequencer"
+	"github.com/mgnsk/balafon/interpreter"
+	"github.com/mgnsk/balafon/player"
+	"github.com/mgnsk/balafon/sequencer"
 	"github.com/spf13/cobra"
 	"gitlab.com/gomidi/midi/v2"
 	"gitlab.com/gomidi/midi/v2/drivers"
@@ -28,7 +28,7 @@ func main() {
 	defer midi.CloseDriver()
 
 	root := &cobra.Command{
-		Short: "gong is a MIDI control language and interpreter.",
+		Short: "balafon is a MIDI control language and interpreter.",
 		Run: func(c *cobra.Command, args []string) {
 			fmt.Println("Available MIDI ports:")
 			for _, out := range midi.GetOutPorts() {
@@ -51,7 +51,7 @@ func main() {
 func createCmdShell() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:           "shell",
-		Short:         "Run a gong shell",
+		Short:         "Run a balafon shell",
 		SilenceErrors: true,
 		SilenceUsage:  true,
 		RunE: func(c *cobra.Command, _ []string) error {
@@ -74,7 +74,7 @@ func createCmdShell() *cobra.Command {
 func createCmdLoad() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "load [file]",
-		Short: "Load a file and continue in a gong shell",
+		Short: "Load a file and continue in a balafon shell",
 		Args:  cobra.ExactArgs(1),
 		RunE: func(c *cobra.Command, args []string) error {
 			file, err := ioutil.ReadFile(args[0])

@@ -6,7 +6,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/mgnsk/gong/ast"
+	"github.com/mgnsk/balafon/ast"
 	. "github.com/onsi/gomega"
 )
 

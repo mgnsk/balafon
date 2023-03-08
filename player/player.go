@@ -3,7 +3,7 @@ package player
 import (
 	"time"
 
-	"github.com/mgnsk/gong/sequencer"
+	"github.com/mgnsk/balafon/sequencer"
 	"gitlab.com/gomidi/midi/v2/drivers"
 )
 

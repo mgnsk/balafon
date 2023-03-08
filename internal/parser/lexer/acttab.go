@@ -5,7 +5,7 @@ package lexer
 import (
 	"fmt"
 
-	"github.com/mgnsk/gong/internal/parser/token"
+	"github.com/mgnsk/balafon/internal/parser/token"
 )
 
 type ActionTable [NumStates]ActionRow

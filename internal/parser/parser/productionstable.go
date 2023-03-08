@@ -3,8 +3,8 @@
 package parser
 
 import (
-    "github.com/mgnsk/gong/ast"
-    "github.com/mgnsk/gong/internal/parser/token"
+    "github.com/mgnsk/balafon/ast"
+    "github.com/mgnsk/balafon/internal/parser/token"
 )
 
 type (

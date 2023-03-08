@@ -1,4 +1,4 @@
-module github.com/mgnsk/gong
+module github.com/mgnsk/balafon
 
 go 1.19
 

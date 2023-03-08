@@ -3,8 +3,8 @@ package ast_test
 import (
 	"testing"
 
-	"github.com/mgnsk/gong/internal/parser/lexer"
-	"github.com/mgnsk/gong/internal/parser/parser"
+	"github.com/mgnsk/balafon/internal/parser/lexer"
+	"github.com/mgnsk/balafon/internal/parser/parser"
 )
 
 func parse(input string) (interface{}, error) {

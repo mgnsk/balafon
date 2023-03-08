@@ -5,8 +5,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/mgnsk/gong/constants"
-	"github.com/mgnsk/gong/interpreter"
+	"github.com/mgnsk/balafon/constants"
+	"github.com/mgnsk/balafon/interpreter"
 	. "github.com/onsi/gomega"
 )
 

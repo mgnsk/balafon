@@ -6,8 +6,8 @@ import (
 	"sort"
 	"strconv"
 
-	"github.com/mgnsk/gong/constants"
-	"github.com/mgnsk/gong/internal/parser/token"
+	"github.com/mgnsk/balafon/constants"
+	"github.com/mgnsk/balafon/internal/parser/token"
 )
 
 // Note: some list operations may be implemented with side effects.

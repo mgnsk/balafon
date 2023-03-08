@@ -1,16 +1,20 @@
-# Gong
+# Balafon
+
+> [Balafon](https://en.wikipedia.org/wiki/Balafon) - From Wikipedia, the free encyclopedia
+>
+> The balafon is a gourd-resonated xylophone, a type of struck idiophone. It is closely associated with the neighbouring Mandé, Senoufo and Gur peoples of West Africa, particularly the Guinean branch of the Mandinka ethnic group, but is now found across West Africa from Guinea to Mali. Its common name, balafon, is likely a European coinage combining its Mandinka name ߓߟߊ bala with the word ߝߐ߲ fôn 'to speak' or the Greek root phono.
 
 ## Introduction
 
-gong is a small multitrack MIDI control language. It consists of a shell with live mode, player and a linter.
+balafon is a small multitrack MIDI control language. It consists of a shell with live mode, player and a linter.
 
 ## Install
 
-To install the `gong` command from source, `go` and `rtmidi` are required.
+To install the `balafon` command from source, `go` and `rtmidi` are required.
 Not tested on platforms other than Linux.
 
 ```sh
-go install github.com/mgnsk/gong/cmd/gong@latest # Requires rtmidi development package.
+go install github.com/mgnsk/balafon/cmd/balafon@latest # Requires rtmidi development package.
 ```
 
 ## Running
@@ -18,7 +22,7 @@ go install github.com/mgnsk/gong/cmd/gong@latest # Requires rtmidi development p
 - The default command lists the available MIDI ports. The default port is the 0 port.
 
 ```sh
-$ gong
+$ balafon
 0: Midi Through:Midi Through Port-0 14:0
 1: Hydrogen:Hydrogen Midi-In 135:0
 2: VMPK Input:in 128:0
@@ -27,45 +31,45 @@ $ gong
 - Play a file through a specific port. The port name must contain the passed in flag value:
 
 ```sh
-gong play --port "VMPK" examples/bach
+balafon play --port "VMPK" examples/bach
 ```
 
 To use piped input, pass `-` as the argument:
 
 ```sh
-cat examples/bach | gong play --port "VMPK" -
+cat examples/bach | balafon play --port "VMPK" -
 ```
 
 - Port can also be specified by its number:
 
 ```sh
-gong play --port 2 examples/bonham
+balafon play --port 2 examples/bonham
 ```
 
 - Enter a shell on the default port:
 
 ```sh
-gong shell
+balafon shell
 ```
 
-A shell is a text shell for the gong language. It is capable of multiline input when entering bars.
+A shell is a text shell for the balafon language. It is capable of multiline input when entering bars.
 
 - Enter a shell on a specific port:
 
 ```sh
-gong shell --port "Hydrogen"
+balafon shell --port "Hydrogen"
 ```
 
 - Load a file and enter a shell:
 
 ```sh
-gong load --port "Hydrogen" examples/bonham
+balafon load --port "Hydrogen" examples/bonham
 ```
 
 - Enter live mode by entering the `live` command (TODO):
 
 ```sh
-gong live --port "Hydrogen" examples/live_drumset
+balafon live --port "Hydrogen" examples/live_drumset
 ```
 
 Live mode is an unbuffered input mode in the shell. Whenever an assigned key is pressed,
@@ -74,14 +78,14 @@ a note on message is sent to the port.
 - Lint a file:
 
 ```sh
-gong lint examples/bonham
+balafon lint examples/bonham
 ```
 
 - Help.
 
 ```sh
-$ gong --help
-gong is a MIDI control language and interpreter.
+$ balafon --help
+balafon is a MIDI control language and interpreter.
 
 Usage:
    [flags]
@@ -92,9 +96,9 @@ Available Commands:
   help        Help about any command
   lint        Lint a file
   live        Load a file and continue in a live shell
-  load        Load a file and continue in a gong shell
+  load        Load a file and continue in a balafon shell
   play        Play a file
-  shell       Run a gong shell
+  shell       Run a balafon shell
 
 Flags:
   -h, --help   help for this command
@@ -282,7 +286,7 @@ Commands begin with a `:`.
 The file is included in the `examples` directory. To play into the default port, run
 
 ```sh
-gong play examples/bonham
+balafon play examples/bonham
 ```
 
 ```
@@ -352,10 +356,10 @@ xxxo
 The file is included in the `examples` directory. To play into the default port, run
 
 ```sh
-gong play examples/bach
+balafon play examples/bach
 ```
 
-It is possible to write melodies using gong in a limited way. Here's 2 bars of Bach:
+It is possible to write melodies using balafon in a limited way. Here's 2 bars of Bach:
 
 ```
 // J.S. Bach - Musikalisches Opfer - 6. Canon A 2 Per Tonos

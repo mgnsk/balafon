@@ -4,8 +4,8 @@ import (
 	"io"
 	"math"
 
-	"github.com/mgnsk/gong/constants"
-	"github.com/mgnsk/gong/internal/parser/token"
+	"github.com/mgnsk/balafon/constants"
+	"github.com/mgnsk/balafon/internal/parser/token"
 )
 
 // CmdAssign is a note assignment command.

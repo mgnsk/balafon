@@ -6,7 +6,7 @@ import (
 	"sort"
 	"strconv"
 
-	"github.com/mgnsk/gong/internal/parser/token"
+	"github.com/mgnsk/balafon/internal/parser/token"
 )
 
 // Property is a note property.

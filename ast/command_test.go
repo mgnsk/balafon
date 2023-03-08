@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"testing"
 
-	"github.com/mgnsk/gong/ast"
+	"github.com/mgnsk/balafon/ast"
 	. "github.com/onsi/gomega"
 	"github.com/onsi/gomega/types"
 )
