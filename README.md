@@ -1,12 +1,13 @@
 # Balafon
 
-> [Balafon](https://en.wikipedia.org/wiki/Balafon) - From Wikipedia, the free encyclopedia
->
+
 > The balafon is a gourd-resonated xylophone, a type of struck idiophone. It is closely associated with the neighbouring Mandé, Senoufo and Gur peoples of West Africa, particularly the Guinean branch of the Mandinka ethnic group, but is now found across West Africa from Guinea to Mali. Its common name, balafon, is likely a European coinage combining its Mandinka name ߓߟߊ bala with the word ߝߐ߲ fôn 'to speak' or the Greek root phono.
+>
+> [Balafon](https://en.wikipedia.org/wiki/Balafon) - From Wikipedia, the free encyclopedia
 
 ## Introduction
 
-balafon is a small multitrack MIDI control language. It consists of a shell with live mode, player and a linter.
+balafon is a multitrack MIDI sequencer language and interpreter. It consists of a shell with live mode, player and a linter.
 
 ## Install
 
