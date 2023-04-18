@@ -3,7 +3,7 @@
 package lexer
 
 import (
-	"io/ioutil"
+	"os"
 	"unicode/utf8"
 
 	"github.com/mgnsk/balafon/internal/parser/token"
@@ -45,7 +45,7 @@ func (s *SourceContext) Source() string {
 }
 
 func NewLexerFile(fpath string) (*Lexer, error) {
-	src, err := ioutil.ReadFile(fpath)
+	src, err := os.ReadFile(fpath)
 	if err != nil {
 		return nil, err
 	}
@@ -238,9 +238,9 @@ Lexer symbols:
 106: ' '
 107: '\t'
 108: '\r'
-109: 'a'-'z'
-110: 'A'-'Z'
-111: '1'-'9'
-112: '0'-'9'
+109: '1'-'9'
+110: '0'-'9'
+111: 'a'-'z'
+112: 'A'-'Z'
 113: .
 */

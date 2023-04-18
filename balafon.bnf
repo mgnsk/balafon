@@ -5,7 +5,8 @@ terminator : ';' '\n' | ';' | '\n' ;
 uint      : _uint ;
 _uint        : '0' | '1'-'9' {'0'-'9'} ;
 
-char      : 'a'-'z' | 'A'-'Z' ;
+_char      : 'a'-'z' | 'A'-'Z' ;
+letter     : _char ;
 stringLit : '"' { . } '"' ;
 
 rest     : '-' ;
@@ -77,7 +78,7 @@ NoteObject
     ;
 
 NoteSymbol
-    : char
+    : letter
     | rest
     ;
 
@@ -98,7 +99,7 @@ Property
     ;
 
 TopLevelCommand
-    : ":assign" char uint            << ast.NewCmdAssign($T1, $T2) >>
+    : ":assign" letter uint            << ast.NewCmdAssign($T1, $T2) >>
     | ":play" stringLit              << ast.NewCmdName($T1) >>
     | BarBodyCommand
     ;

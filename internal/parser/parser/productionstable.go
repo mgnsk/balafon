@@ -203,7 +203,7 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `NoteSymbol : char	<<  >>`,
+		String: `NoteSymbol : letter	<<  >>`,
 		Id:         "NoteSymbol",
 		NTType:     10,
 		Index:      18,
@@ -323,7 +323,7 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `TopLevelCommand : ":assign" char uint	<< ast.NewCmdAssign(X[1].(*token.Token), X[2].(*token.Token)) >>`,
+		String: `TopLevelCommand : ":assign" letter uint	<< ast.NewCmdAssign(X[1].(*token.Token), X[2].(*token.Token)) >>`,
 		Id:         "TopLevelCommand",
 		NTType:     13,
 		Index:      30,
