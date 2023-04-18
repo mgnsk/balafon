@@ -1,6 +1,7 @@
 package ast
 
 import (
+	"bytes"
 	"io"
 	"math"
 
@@ -252,9 +253,9 @@ type CmdPlay struct {
 	Token *token.Token
 }
 
-func NewCmdName(t *token.Token) (CmdPlay, error) {
+func NewCmdPlay(t *token.Token) (CmdPlay, error) {
 	return CmdPlay{
-		Name:  t.StringValue(),
+		Name:  string(bytes.TrimPrefix(t.Lit, []byte(":play "))),
 		Token: t,
 	}, nil
 }
@@ -263,9 +264,8 @@ func (c CmdPlay) WriteTo(w io.Writer) (int64, error) {
 	ew := newErrWriter(w)
 	var n int
 
-	n += ew.WriteString(":play \"")
+	n += ew.WriteString(":play ")
 	n += ew.WriteString(c.Name)
-	n += ew.WriteString("\"")
 
 	return int64(n), ew.Flush()
 }

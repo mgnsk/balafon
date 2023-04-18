@@ -23,12 +23,12 @@ func TestBar(t *testing.T) {
 :control 1 1
 :assign c 60
 :assign d 62
-:bar "Bar 1"
+:bar bar1
 	:start
 	c
 	:stop
 :end
-:play "Bar 1"
+:play bar1
 
 `
 
@@ -36,9 +36,11 @@ func TestBar(t *testing.T) {
 :tempo 120; :timesig 1 4; :channel 1; :velocity 20;
 :program 1; :control 1 1
 :assign c 60; :assign d 62
-:bar "Bar 1" :start; c; :stop; :end
-:play "Bar 1"
+:bar bar1 :start; c; :stop; :end
+:play bar1
 `
+
+	input1Clean := strings.Trim(input1, " \n")
 
 	res1, err := parse(input1)
 	g.Expect(err).NotTo(HaveOccurred())
@@ -46,26 +48,26 @@ func TestBar(t *testing.T) {
 
 	var buf1 bytes.Buffer
 	res1.(ast.NodeList).WriteTo(&buf1)
-	g.Expect(buf1.String()).To(Equal(strings.Trim(input1, " \n")))
+	g.Expect(buf1.String()).To(Equal(input1Clean))
 
 	res2, err := parse(input2)
 	g.Expect(err).NotTo(HaveOccurred())
 
 	var buf2 bytes.Buffer
 	res2.(ast.NodeList).WriteTo(&buf2)
-	g.Expect(buf2.String()).To(Equal(strings.Trim(input1, " \n")))
+	g.Expect(buf2.String()).To(Equal(input1Clean))
 }
 
 func TestCommandsForbiddenInBar(t *testing.T) {
 	for _, input := range []string{
 		":assign c 60",
-		`:bar "Inner" :start :end`,
-		`:play "test"`,
+		`:bar inner :start :end`,
+		`:play test`,
 	} {
 		t.Run(input, func(t *testing.T) {
 			g := NewGomegaWithT(t)
 
-			_, err := parse(fmt.Sprintf(`:bar "Outer" %s; :end`, input))
+			_, err := parse(fmt.Sprintf(`:bar outer %s; :end`, input))
 			g.Expect(err).To(HaveOccurred())
 			g.Expect(err.Error()).To(ContainSubstring(`got:`))
 		})

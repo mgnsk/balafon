@@ -79,7 +79,7 @@ func TestCommands(t *testing.T) {
 			},
 		},
 		{
-			`:assign c 60; :bar "bar" :timesig 1 4; c :end; :play "bar"`,
+			`:assign c 60; :bar bar :timesig 1 4; c :end; :play bar`,
 			[2]uint8{1, 4},
 			[][]byte{
 				midi.NoteOn(0, 60, constants.DefaultVelocity),
@@ -282,16 +282,16 @@ func TestNotEmptyBar(t *testing.T) {
 	err := it.Eval(`
 :timesig 1 4
 
-:bar "one"
+:bar one
 	-
 :end
 
-:bar "two"
+:bar two
 	:program 1
 :end
 
-:play "one"
-:play "two"
+:play one
+:play two
 -
 `)
 	g.Expect(err).NotTo(HaveOccurred())
@@ -379,12 +379,12 @@ func TestTimeSignature(t *testing.T) {
 
 :timesig 3 4
 
-:bar "bar"
+:bar bar
 	:timesig 1 4
     c
 :end
 
-:play "bar"
+:play bar
 
 // Expect time signature to be restored to 3 4 in next bar.
 c
@@ -465,13 +465,13 @@ func TestMultiTrackNotesAreSortedPairs(t *testing.T) {
 :tempo 60
 :timesig 4 4
 
-:bar "test"
+:bar test
 	:channel 1
 	abcd
 	:channel 2
 	abcd
 :end
-:play "test"
+:play test
 `
 
 	g.Expect(it.Eval(input)).To(Succeed())
@@ -510,7 +510,7 @@ func TestPendingGlobalCommands(t *testing.T) {
 :program 1
 :control 1 1
 
-:bar "one"
+:bar one
 	:tempo 120
 	:timesig 2 8
 	:velocity 25
@@ -526,13 +526,13 @@ func TestPendingGlobalCommands(t *testing.T) {
 :end
 
 // timesig 1 4
-:bar "two"
+:bar two
 	:tempo 120
 	c
 :end
 
-:play "one"
-:play "two"
+:play one
+:play two
 
 // Channel is 1, timesig 1 4, velocity 50 but tempo is 120.
 // Only timesig, velocity and channel are local to bars.
@@ -625,19 +625,19 @@ func TestTempoIsGlobal(t *testing.T) {
 // Tempo 60 4th rest == 1s.
 -
 
-:bar "two"
+:bar two
 	:timesig 2 8
 	c
 :end
 
-:bar "one"
+:bar one
 	:tempo 120
 	:timesig 2 8
 	c
 :end
 
-:play "one"
-:play "two"
+:play one
+:play two
 c
 `)
 	g.Expect(err).NotTo(HaveOccurred())
@@ -732,11 +732,11 @@ func TestSyntaxNotAmbigous(t *testing.T) {
 :assign m 2
 :assign p 3
 :assign o 4
-:bar "bar"
+:bar bar
 	:timesig 5 4
 	tempo
 :end
-:play "bar"
+:play bar
 	`)).To(Succeed())
 
 	bars := it.Flush()

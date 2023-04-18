@@ -18,8 +18,7 @@ var actionTab = actionTable{
 			nil,       // ␚
 			nil,       // empty
 			shift(3),  // terminator
-			reduce(2), // :bar, reduce: RepeatTerminator
-			nil,       // stringLit
+			reduce(2), // cmdBar, reduce: RepeatTerminator
 			nil,       // :end
 			reduce(2), // [, reduce: RepeatTerminator
 			nil,       // ]
@@ -34,7 +33,7 @@ var actionTab = actionTable{
 			nil,       // tuplet
 			nil,       // letRing
 			reduce(2), // :assign, reduce: RepeatTerminator
-			reduce(2), // :play, reduce: RepeatTerminator
+			reduce(2), // cmdPlay, reduce: RepeatTerminator
 			reduce(2), // :tempo, reduce: RepeatTerminator
 			reduce(2), // :timesig, reduce: RepeatTerminator
 			reduce(2), // :velocity, reduce: RepeatTerminator
@@ -52,8 +51,7 @@ var actionTab = actionTable{
 			accept(true), // ␚
 			nil,          // empty
 			nil,          // terminator
-			nil,          // :bar
-			nil,          // stringLit
+			nil,          // cmdBar
 			nil,          // :end
 			nil,          // [
 			nil,          // ]
@@ -68,7 +66,7 @@ var actionTab = actionTable{
 			nil,          // tuplet
 			nil,          // letRing
 			nil,          // :assign
-			nil,          // :play
+			nil,          // cmdPlay
 			nil,          // :tempo
 			nil,          // :timesig
 			nil,          // :velocity
@@ -86,8 +84,7 @@ var actionTab = actionTable{
 			nil,       // ␚
 			nil,       // empty
 			nil,       // terminator
-			shift(10), // :bar
-			nil,       // stringLit
+			shift(10), // cmdBar
 			nil,       // :end
 			shift(13), // [
 			nil,       // ]
@@ -102,7 +99,7 @@ var actionTab = actionTable{
 			nil,       // tuplet
 			nil,       // letRing
 			shift(16), // :assign
-			shift(17), // :play
+			shift(17), // cmdPlay
 			shift(18), // :tempo
 			shift(19), // :timesig
 			shift(20), // :velocity
@@ -120,8 +117,7 @@ var actionTab = actionTable{
 			nil,       // ␚
 			nil,       // empty
 			shift(3),  // terminator
-			reduce(2), // :bar, reduce: RepeatTerminator
-			nil,       // stringLit
+			reduce(2), // cmdBar, reduce: RepeatTerminator
 			nil,       // :end
 			reduce(2), // [, reduce: RepeatTerminator
 			nil,       // ]
@@ -136,7 +132,7 @@ var actionTab = actionTable{
 			nil,       // tuplet
 			nil,       // letRing
 			reduce(2), // :assign, reduce: RepeatTerminator
-			reduce(2), // :play, reduce: RepeatTerminator
+			reduce(2), // cmdPlay, reduce: RepeatTerminator
 			reduce(2), // :tempo, reduce: RepeatTerminator
 			reduce(2), // :timesig, reduce: RepeatTerminator
 			reduce(2), // :velocity, reduce: RepeatTerminator
@@ -154,8 +150,7 @@ var actionTab = actionTable{
 			reduce(1), // ␚, reduce: SourceFile
 			nil,       // empty
 			nil,       // terminator
-			nil,       // :bar
-			nil,       // stringLit
+			nil,       // cmdBar
 			nil,       // :end
 			nil,       // [
 			nil,       // ]
@@ -170,7 +165,7 @@ var actionTab = actionTable{
 			nil,       // tuplet
 			nil,       // letRing
 			nil,       // :assign
-			nil,       // :play
+			nil,       // cmdPlay
 			nil,       // :tempo
 			nil,       // :timesig
 			nil,       // :velocity
@@ -188,8 +183,7 @@ var actionTab = actionTable{
 			reduce(2), // ␚, reduce: RepeatTerminator
 			nil,       // empty
 			shift(28), // terminator
-			nil,       // :bar
-			nil,       // stringLit
+			nil,       // cmdBar
 			nil,       // :end
 			nil,       // [
 			nil,       // ]
@@ -204,7 +198,7 @@ var actionTab = actionTable{
 			nil,       // tuplet
 			nil,       // letRing
 			nil,       // :assign
-			nil,       // :play
+			nil,       // cmdPlay
 			nil,       // :tempo
 			nil,       // :timesig
 			nil,       // :velocity
@@ -222,8 +216,7 @@ var actionTab = actionTable{
 			reduce(8), // ␚, reduce: TopLevelDecl
 			nil,       // empty
 			reduce(8), // terminator, reduce: TopLevelDecl
-			nil,       // :bar
-			nil,       // stringLit
+			nil,       // cmdBar
 			nil,       // :end
 			nil,       // [
 			nil,       // ]
@@ -238,7 +231,7 @@ var actionTab = actionTable{
 			nil,       // tuplet
 			nil,       // letRing
 			nil,       // :assign
-			nil,       // :play
+			nil,       // cmdPlay
 			nil,       // :tempo
 			nil,       // :timesig
 			nil,       // :velocity
@@ -256,8 +249,7 @@ var actionTab = actionTable{
 			reduce(9), // ␚, reduce: TopLevelDecl
 			nil,       // empty
 			reduce(9), // terminator, reduce: TopLevelDecl
-			nil,       // :bar
-			nil,       // stringLit
+			nil,       // cmdBar
 			nil,       // :end
 			nil,       // [
 			nil,       // ]
@@ -272,7 +264,7 @@ var actionTab = actionTable{
 			nil,       // tuplet
 			nil,       // letRing
 			nil,       // :assign
-			nil,       // :play
+			nil,       // cmdPlay
 			nil,       // :tempo
 			nil,       // :timesig
 			nil,       // :velocity
@@ -290,8 +282,7 @@ var actionTab = actionTable{
 			reduce(10), // ␚, reduce: TopLevelDecl
 			nil,        // empty
 			reduce(10), // terminator, reduce: TopLevelDecl
-			nil,        // :bar
-			nil,        // stringLit
+			nil,        // cmdBar
 			nil,        // :end
 			nil,        // [
 			nil,        // ]
@@ -306,7 +297,7 @@ var actionTab = actionTable{
 			nil,        // tuplet
 			nil,        // letRing
 			nil,        // :assign
-			nil,        // :play
+			nil,        // cmdPlay
 			nil,        // :tempo
 			nil,        // :timesig
 			nil,        // :velocity
@@ -324,8 +315,7 @@ var actionTab = actionTable{
 			reduce(32), // ␚, reduce: TopLevelCommand
 			nil,        // empty
 			reduce(32), // terminator, reduce: TopLevelCommand
-			nil,        // :bar
-			nil,        // stringLit
+			nil,        // cmdBar
 			nil,        // :end
 			nil,        // [
 			nil,        // ]
@@ -340,7 +330,7 @@ var actionTab = actionTable{
 			nil,        // tuplet
 			nil,        // letRing
 			nil,        // :assign
-			nil,        // :play
+			nil,        // cmdPlay
 			nil,        // :tempo
 			nil,        // :timesig
 			nil,        // :velocity
@@ -357,14 +347,13 @@ var actionTab = actionTable{
 			nil,       // INVALID
 			nil,       // ␚
 			nil,       // empty
-			nil,       // terminator
-			nil,       // :bar
-			shift(29), // stringLit
+			shift(30), // terminator
+			nil,       // cmdBar
 			nil,       // :end
-			nil,       // [
+			reduce(2), // [, reduce: RepeatTerminator
 			nil,       // ]
-			nil,       // letter
-			nil,       // rest
+			reduce(2), // letter, reduce: RepeatTerminator
+			reduce(2), // rest, reduce: RepeatTerminator
 			nil,       // sharp
 			nil,       // flat
 			nil,       // accent
@@ -374,15 +363,15 @@ var actionTab = actionTable{
 			nil,       // tuplet
 			nil,       // letRing
 			nil,       // :assign
-			nil,       // :play
-			nil,       // :tempo
-			nil,       // :timesig
-			nil,       // :velocity
-			nil,       // :channel
-			nil,       // :program
-			nil,       // :control
-			nil,       // :start
-			nil,       // :stop
+			nil,       // cmdPlay
+			reduce(2), // :tempo, reduce: RepeatTerminator
+			reduce(2), // :timesig, reduce: RepeatTerminator
+			reduce(2), // :velocity, reduce: RepeatTerminator
+			reduce(2), // :channel, reduce: RepeatTerminator
+			reduce(2), // :program, reduce: RepeatTerminator
+			reduce(2), // :control, reduce: RepeatTerminator
+			reduce(2), // :start, reduce: RepeatTerminator
+			reduce(2), // :stop, reduce: RepeatTerminator
 		},
 	},
 	actionRow{ // S11
@@ -392,8 +381,7 @@ var actionTab = actionTable{
 			reduce(14), // ␚, reduce: NoteList
 			nil,        // empty
 			reduce(14), // terminator, reduce: NoteList
-			nil,        // :bar
-			nil,        // stringLit
+			nil,        // cmdBar
 			nil,        // :end
 			shift(13),  // [
 			nil,        // ]
@@ -408,7 +396,7 @@ var actionTab = actionTable{
 			nil,        // tuplet
 			nil,        // letRing
 			nil,        // :assign
-			nil,        // :play
+			nil,        // cmdPlay
 			nil,        // :tempo
 			nil,        // :timesig
 			nil,        // :velocity
@@ -426,23 +414,22 @@ var actionTab = actionTable{
 			reduce(20), // ␚, reduce: PropertyList
 			nil,        // empty
 			reduce(20), // terminator, reduce: PropertyList
-			nil,        // :bar
-			nil,        // stringLit
+			nil,        // cmdBar
 			nil,        // :end
 			reduce(20), // [, reduce: PropertyList
 			nil,        // ]
 			reduce(20), // letter, reduce: PropertyList
 			reduce(20), // rest, reduce: PropertyList
-			shift(33),  // sharp
-			shift(34),  // flat
-			shift(35),  // accent
-			shift(36),  // ghost
-			shift(37),  // uint
-			shift(38),  // dot
-			shift(39),  // tuplet
-			shift(40),  // letRing
+			shift(34),  // sharp
+			shift(35),  // flat
+			shift(36),  // accent
+			shift(37),  // ghost
+			shift(38),  // uint
+			shift(39),  // dot
+			shift(40),  // tuplet
+			shift(41),  // letRing
 			nil,        // :assign
-			nil,        // :play
+			nil,        // cmdPlay
 			nil,        // :tempo
 			nil,        // :timesig
 			nil,        // :velocity
@@ -460,13 +447,12 @@ var actionTab = actionTable{
 			nil,       // ␚
 			nil,       // empty
 			nil,       // terminator
-			nil,       // :bar
-			nil,       // stringLit
+			nil,       // cmdBar
 			nil,       // :end
-			shift(44), // [
+			shift(45), // [
 			nil,       // ]
-			shift(45), // letter
-			shift(46), // rest
+			shift(46), // letter
+			shift(47), // rest
 			nil,       // sharp
 			nil,       // flat
 			nil,       // accent
@@ -476,7 +462,7 @@ var actionTab = actionTable{
 			nil,       // tuplet
 			nil,       // letRing
 			nil,       // :assign
-			nil,       // :play
+			nil,       // cmdPlay
 			nil,       // :tempo
 			nil,       // :timesig
 			nil,       // :velocity
@@ -494,8 +480,7 @@ var actionTab = actionTable{
 			reduce(18), // ␚, reduce: NoteSymbol
 			nil,        // empty
 			reduce(18), // terminator, reduce: NoteSymbol
-			nil,        // :bar
-			nil,        // stringLit
+			nil,        // cmdBar
 			nil,        // :end
 			reduce(18), // [, reduce: NoteSymbol
 			nil,        // ]
@@ -510,7 +495,7 @@ var actionTab = actionTable{
 			reduce(18), // tuplet, reduce: NoteSymbol
 			reduce(18), // letRing, reduce: NoteSymbol
 			nil,        // :assign
-			nil,        // :play
+			nil,        // cmdPlay
 			nil,        // :tempo
 			nil,        // :timesig
 			nil,        // :velocity
@@ -528,8 +513,7 @@ var actionTab = actionTable{
 			reduce(19), // ␚, reduce: NoteSymbol
 			nil,        // empty
 			reduce(19), // terminator, reduce: NoteSymbol
-			nil,        // :bar
-			nil,        // stringLit
+			nil,        // cmdBar
 			nil,        // :end
 			reduce(19), // [, reduce: NoteSymbol
 			nil,        // ]
@@ -544,7 +528,7 @@ var actionTab = actionTable{
 			reduce(19), // tuplet, reduce: NoteSymbol
 			reduce(19), // letRing, reduce: NoteSymbol
 			nil,        // :assign
-			nil,        // :play
+			nil,        // cmdPlay
 			nil,        // :tempo
 			nil,        // :timesig
 			nil,        // :velocity
@@ -562,12 +546,11 @@ var actionTab = actionTable{
 			nil,       // ␚
 			nil,       // empty
 			nil,       // terminator
-			nil,       // :bar
-			nil,       // stringLit
+			nil,       // cmdBar
 			nil,       // :end
 			nil,       // [
 			nil,       // ]
-			shift(47), // letter
+			shift(48), // letter
 			nil,       // rest
 			nil,       // sharp
 			nil,       // flat
@@ -578,7 +561,7 @@ var actionTab = actionTable{
 			nil,       // tuplet
 			nil,       // letRing
 			nil,       // :assign
-			nil,       // :play
+			nil,       // cmdPlay
 			nil,       // :tempo
 			nil,       // :timesig
 			nil,       // :velocity
@@ -592,35 +575,34 @@ var actionTab = actionTable{
 	actionRow{ // S17
 		canRecover: false,
 		actions: [numSymbols]action{
-			nil,       // INVALID
-			nil,       // ␚
-			nil,       // empty
-			nil,       // terminator
-			nil,       // :bar
-			shift(48), // stringLit
-			nil,       // :end
-			nil,       // [
-			nil,       // ]
-			nil,       // letter
-			nil,       // rest
-			nil,       // sharp
-			nil,       // flat
-			nil,       // accent
-			nil,       // ghost
-			nil,       // uint
-			nil,       // dot
-			nil,       // tuplet
-			nil,       // letRing
-			nil,       // :assign
-			nil,       // :play
-			nil,       // :tempo
-			nil,       // :timesig
-			nil,       // :velocity
-			nil,       // :channel
-			nil,       // :program
-			nil,       // :control
-			nil,       // :start
-			nil,       // :stop
+			nil,        // INVALID
+			reduce(31), // ␚, reduce: TopLevelCommand
+			nil,        // empty
+			reduce(31), // terminator, reduce: TopLevelCommand
+			nil,        // cmdBar
+			nil,        // :end
+			nil,        // [
+			nil,        // ]
+			nil,        // letter
+			nil,        // rest
+			nil,        // sharp
+			nil,        // flat
+			nil,        // accent
+			nil,        // ghost
+			nil,        // uint
+			nil,        // dot
+			nil,        // tuplet
+			nil,        // letRing
+			nil,        // :assign
+			nil,        // cmdPlay
+			nil,        // :tempo
+			nil,        // :timesig
+			nil,        // :velocity
+			nil,        // :channel
+			nil,        // :program
+			nil,        // :control
+			nil,        // :start
+			nil,        // :stop
 		},
 	},
 	actionRow{ // S18
@@ -630,8 +612,7 @@ var actionTab = actionTable{
 			nil,       // ␚
 			nil,       // empty
 			nil,       // terminator
-			nil,       // :bar
-			nil,       // stringLit
+			nil,       // cmdBar
 			nil,       // :end
 			nil,       // [
 			nil,       // ]
@@ -646,7 +627,7 @@ var actionTab = actionTable{
 			nil,       // tuplet
 			nil,       // letRing
 			nil,       // :assign
-			nil,       // :play
+			nil,       // cmdPlay
 			nil,       // :tempo
 			nil,       // :timesig
 			nil,       // :velocity
@@ -664,8 +645,7 @@ var actionTab = actionTable{
 			nil,       // ␚
 			nil,       // empty
 			nil,       // terminator
-			nil,       // :bar
-			nil,       // stringLit
+			nil,       // cmdBar
 			nil,       // :end
 			nil,       // [
 			nil,       // ]
@@ -680,7 +660,7 @@ var actionTab = actionTable{
 			nil,       // tuplet
 			nil,       // letRing
 			nil,       // :assign
-			nil,       // :play
+			nil,       // cmdPlay
 			nil,       // :tempo
 			nil,       // :timesig
 			nil,       // :velocity
@@ -698,8 +678,7 @@ var actionTab = actionTable{
 			nil,       // ␚
 			nil,       // empty
 			nil,       // terminator
-			nil,       // :bar
-			nil,       // stringLit
+			nil,       // cmdBar
 			nil,       // :end
 			nil,       // [
 			nil,       // ]
@@ -714,7 +693,7 @@ var actionTab = actionTable{
 			nil,       // tuplet
 			nil,       // letRing
 			nil,       // :assign
-			nil,       // :play
+			nil,       // cmdPlay
 			nil,       // :tempo
 			nil,       // :timesig
 			nil,       // :velocity
@@ -732,8 +711,7 @@ var actionTab = actionTable{
 			nil,       // ␚
 			nil,       // empty
 			nil,       // terminator
-			nil,       // :bar
-			nil,       // stringLit
+			nil,       // cmdBar
 			nil,       // :end
 			nil,       // [
 			nil,       // ]
@@ -748,7 +726,7 @@ var actionTab = actionTable{
 			nil,       // tuplet
 			nil,       // letRing
 			nil,       // :assign
-			nil,       // :play
+			nil,       // cmdPlay
 			nil,       // :tempo
 			nil,       // :timesig
 			nil,       // :velocity
@@ -766,8 +744,7 @@ var actionTab = actionTable{
 			nil,       // ␚
 			nil,       // empty
 			nil,       // terminator
-			nil,       // :bar
-			nil,       // stringLit
+			nil,       // cmdBar
 			nil,       // :end
 			nil,       // [
 			nil,       // ]
@@ -782,7 +759,7 @@ var actionTab = actionTable{
 			nil,       // tuplet
 			nil,       // letRing
 			nil,       // :assign
-			nil,       // :play
+			nil,       // cmdPlay
 			nil,       // :tempo
 			nil,       // :timesig
 			nil,       // :velocity
@@ -800,8 +777,7 @@ var actionTab = actionTable{
 			nil,       // ␚
 			nil,       // empty
 			nil,       // terminator
-			nil,       // :bar
-			nil,       // stringLit
+			nil,       // cmdBar
 			nil,       // :end
 			nil,       // [
 			nil,       // ]
@@ -816,7 +792,7 @@ var actionTab = actionTable{
 			nil,       // tuplet
 			nil,       // letRing
 			nil,       // :assign
-			nil,       // :play
+			nil,       // cmdPlay
 			nil,       // :tempo
 			nil,       // :timesig
 			nil,       // :velocity
@@ -834,8 +810,7 @@ var actionTab = actionTable{
 			reduce(39), // ␚, reduce: BarBodyCommand
 			nil,        // empty
 			reduce(39), // terminator, reduce: BarBodyCommand
-			nil,        // :bar
-			nil,        // stringLit
+			nil,        // cmdBar
 			nil,        // :end
 			nil,        // [
 			nil,        // ]
@@ -850,7 +825,7 @@ var actionTab = actionTable{
 			nil,        // tuplet
 			nil,        // letRing
 			nil,        // :assign
-			nil,        // :play
+			nil,        // cmdPlay
 			nil,        // :tempo
 			nil,        // :timesig
 			nil,        // :velocity
@@ -868,8 +843,7 @@ var actionTab = actionTable{
 			reduce(40), // ␚, reduce: BarBodyCommand
 			nil,        // empty
 			reduce(40), // terminator, reduce: BarBodyCommand
-			nil,        // :bar
-			nil,        // stringLit
+			nil,        // cmdBar
 			nil,        // :end
 			nil,        // [
 			nil,        // ]
@@ -884,7 +858,7 @@ var actionTab = actionTable{
 			nil,        // tuplet
 			nil,        // letRing
 			nil,        // :assign
-			nil,        // :play
+			nil,        // cmdPlay
 			nil,        // :tempo
 			nil,        // :timesig
 			nil,        // :velocity
@@ -902,8 +876,7 @@ var actionTab = actionTable{
 			nil,       // ␚
 			nil,       // empty
 			nil,       // terminator
-			reduce(3), // :bar, reduce: RepeatTerminator
-			nil,       // stringLit
+			reduce(3), // cmdBar, reduce: RepeatTerminator
 			nil,       // :end
 			reduce(3), // [, reduce: RepeatTerminator
 			nil,       // ]
@@ -918,7 +891,7 @@ var actionTab = actionTable{
 			nil,       // tuplet
 			nil,       // letRing
 			reduce(3), // :assign, reduce: RepeatTerminator
-			reduce(3), // :play, reduce: RepeatTerminator
+			reduce(3), // cmdPlay, reduce: RepeatTerminator
 			reduce(3), // :tempo, reduce: RepeatTerminator
 			reduce(3), // :timesig, reduce: RepeatTerminator
 			reduce(3), // :velocity, reduce: RepeatTerminator
@@ -936,8 +909,7 @@ var actionTab = actionTable{
 			reduce(5), // ␚, reduce: TopLevelDeclList
 			nil,       // empty
 			nil,       // terminator
-			nil,       // :bar
-			nil,       // stringLit
+			nil,       // cmdBar
 			nil,       // :end
 			nil,       // [
 			nil,       // ]
@@ -952,7 +924,7 @@ var actionTab = actionTable{
 			nil,       // tuplet
 			nil,       // letRing
 			nil,       // :assign
-			nil,       // :play
+			nil,       // cmdPlay
 			nil,       // :tempo
 			nil,       // :timesig
 			nil,       // :velocity
@@ -970,8 +942,7 @@ var actionTab = actionTable{
 			reduce(2), // ␚, reduce: RepeatTerminator
 			nil,       // empty
 			shift(56), // terminator
-			reduce(2), // :bar, reduce: RepeatTerminator
-			nil,       // stringLit
+			reduce(2), // cmdBar, reduce: RepeatTerminator
 			nil,       // :end
 			reduce(2), // [, reduce: RepeatTerminator
 			nil,       // ]
@@ -986,7 +957,7 @@ var actionTab = actionTable{
 			nil,       // tuplet
 			nil,       // letRing
 			reduce(2), // :assign, reduce: RepeatTerminator
-			reduce(2), // :play, reduce: RepeatTerminator
+			reduce(2), // cmdPlay, reduce: RepeatTerminator
 			reduce(2), // :tempo, reduce: RepeatTerminator
 			reduce(2), // :timesig, reduce: RepeatTerminator
 			reduce(2), // :velocity, reduce: RepeatTerminator
@@ -1003,9 +974,41 @@ var actionTab = actionTable{
 			nil,       // INVALID
 			nil,       // ␚
 			nil,       // empty
-			shift(58), // terminator
-			nil,       // :bar
-			nil,       // stringLit
+			nil,       // terminator
+			nil,       // cmdBar
+			nil,       // :end
+			shift(63), // [
+			nil,       // ]
+			shift(64), // letter
+			shift(65), // rest
+			nil,       // sharp
+			nil,       // flat
+			nil,       // accent
+			nil,       // ghost
+			nil,       // uint
+			nil,       // dot
+			nil,       // tuplet
+			nil,       // letRing
+			nil,       // :assign
+			nil,       // cmdPlay
+			shift(66), // :tempo
+			shift(67), // :timesig
+			shift(68), // :velocity
+			shift(69), // :channel
+			shift(70), // :program
+			shift(71), // :control
+			shift(72), // :start
+			shift(73), // :stop
+		},
+	},
+	actionRow{ // S30
+		canRecover: false,
+		actions: [numSymbols]action{
+			nil,       // INVALID
+			nil,       // ␚
+			nil,       // empty
+			shift(30), // terminator
+			nil,       // cmdBar
 			nil,       // :end
 			reduce(2), // [, reduce: RepeatTerminator
 			nil,       // ]
@@ -1020,7 +1023,7 @@ var actionTab = actionTable{
 			nil,       // tuplet
 			nil,       // letRing
 			nil,       // :assign
-			nil,       // :play
+			nil,       // cmdPlay
 			reduce(2), // :tempo, reduce: RepeatTerminator
 			reduce(2), // :timesig, reduce: RepeatTerminator
 			reduce(2), // :velocity, reduce: RepeatTerminator
@@ -1031,15 +1034,14 @@ var actionTab = actionTable{
 			reduce(2), // :stop, reduce: RepeatTerminator
 		},
 	},
-	actionRow{ // S30
+	actionRow{ // S31
 		canRecover: false,
 		actions: [numSymbols]action{
 			nil,        // INVALID
 			reduce(15), // ␚, reduce: NoteList
 			nil,        // empty
 			reduce(15), // terminator, reduce: NoteList
-			nil,        // :bar
-			nil,        // stringLit
+			nil,        // cmdBar
 			nil,        // :end
 			nil,        // [
 			nil,        // ]
@@ -1054,41 +1056,7 @@ var actionTab = actionTable{
 			nil,        // tuplet
 			nil,        // letRing
 			nil,        // :assign
-			nil,        // :play
-			nil,        // :tempo
-			nil,        // :timesig
-			nil,        // :velocity
-			nil,        // :channel
-			nil,        // :program
-			nil,        // :control
-			nil,        // :start
-			nil,        // :stop
-		},
-	},
-	actionRow{ // S31
-		canRecover: false,
-		actions: [numSymbols]action{
-			nil,        // INVALID
-			reduce(16), // ␚, reduce: NoteObject
-			nil,        // empty
-			reduce(16), // terminator, reduce: NoteObject
-			nil,        // :bar
-			nil,        // stringLit
-			nil,        // :end
-			reduce(16), // [, reduce: NoteObject
-			nil,        // ]
-			reduce(16), // letter, reduce: NoteObject
-			reduce(16), // rest, reduce: NoteObject
-			nil,        // sharp
-			nil,        // flat
-			nil,        // accent
-			nil,        // ghost
-			nil,        // uint
-			nil,        // dot
-			nil,        // tuplet
-			nil,        // letRing
-			nil,        // :assign
-			nil,        // :play
+			nil,        // cmdPlay
 			nil,        // :tempo
 			nil,        // :timesig
 			nil,        // :velocity
@@ -1103,26 +1071,25 @@ var actionTab = actionTable{
 		canRecover: false,
 		actions: [numSymbols]action{
 			nil,        // INVALID
-			reduce(20), // ␚, reduce: PropertyList
+			reduce(16), // ␚, reduce: NoteObject
 			nil,        // empty
-			reduce(20), // terminator, reduce: PropertyList
-			nil,        // :bar
-			nil,        // stringLit
+			reduce(16), // terminator, reduce: NoteObject
+			nil,        // cmdBar
 			nil,        // :end
-			reduce(20), // [, reduce: PropertyList
+			reduce(16), // [, reduce: NoteObject
 			nil,        // ]
-			reduce(20), // letter, reduce: PropertyList
-			reduce(20), // rest, reduce: PropertyList
-			shift(33),  // sharp
-			shift(34),  // flat
-			shift(35),  // accent
-			shift(36),  // ghost
-			shift(37),  // uint
-			shift(38),  // dot
-			shift(39),  // tuplet
-			shift(40),  // letRing
+			reduce(16), // letter, reduce: NoteObject
+			reduce(16), // rest, reduce: NoteObject
+			nil,        // sharp
+			nil,        // flat
+			nil,        // accent
+			nil,        // ghost
+			nil,        // uint
+			nil,        // dot
+			nil,        // tuplet
+			nil,        // letRing
 			nil,        // :assign
-			nil,        // :play
+			nil,        // cmdPlay
 			nil,        // :tempo
 			nil,        // :timesig
 			nil,        // :velocity
@@ -1137,26 +1104,25 @@ var actionTab = actionTable{
 		canRecover: false,
 		actions: [numSymbols]action{
 			nil,        // INVALID
-			reduce(22), // ␚, reduce: Property
+			reduce(20), // ␚, reduce: PropertyList
 			nil,        // empty
-			reduce(22), // terminator, reduce: Property
-			nil,        // :bar
-			nil,        // stringLit
+			reduce(20), // terminator, reduce: PropertyList
+			nil,        // cmdBar
 			nil,        // :end
-			reduce(22), // [, reduce: Property
+			reduce(20), // [, reduce: PropertyList
 			nil,        // ]
-			reduce(22), // letter, reduce: Property
-			reduce(22), // rest, reduce: Property
-			reduce(22), // sharp, reduce: Property
-			reduce(22), // flat, reduce: Property
-			reduce(22), // accent, reduce: Property
-			reduce(22), // ghost, reduce: Property
-			reduce(22), // uint, reduce: Property
-			reduce(22), // dot, reduce: Property
-			reduce(22), // tuplet, reduce: Property
-			reduce(22), // letRing, reduce: Property
+			reduce(20), // letter, reduce: PropertyList
+			reduce(20), // rest, reduce: PropertyList
+			shift(34),  // sharp
+			shift(35),  // flat
+			shift(36),  // accent
+			shift(37),  // ghost
+			shift(38),  // uint
+			shift(39),  // dot
+			shift(40),  // tuplet
+			shift(41),  // letRing
 			nil,        // :assign
-			nil,        // :play
+			nil,        // cmdPlay
 			nil,        // :tempo
 			nil,        // :timesig
 			nil,        // :velocity
@@ -1171,26 +1137,25 @@ var actionTab = actionTable{
 		canRecover: false,
 		actions: [numSymbols]action{
 			nil,        // INVALID
-			reduce(23), // ␚, reduce: Property
+			reduce(22), // ␚, reduce: Property
 			nil,        // empty
-			reduce(23), // terminator, reduce: Property
-			nil,        // :bar
-			nil,        // stringLit
+			reduce(22), // terminator, reduce: Property
+			nil,        // cmdBar
 			nil,        // :end
-			reduce(23), // [, reduce: Property
+			reduce(22), // [, reduce: Property
 			nil,        // ]
-			reduce(23), // letter, reduce: Property
-			reduce(23), // rest, reduce: Property
-			reduce(23), // sharp, reduce: Property
-			reduce(23), // flat, reduce: Property
-			reduce(23), // accent, reduce: Property
-			reduce(23), // ghost, reduce: Property
-			reduce(23), // uint, reduce: Property
-			reduce(23), // dot, reduce: Property
-			reduce(23), // tuplet, reduce: Property
-			reduce(23), // letRing, reduce: Property
+			reduce(22), // letter, reduce: Property
+			reduce(22), // rest, reduce: Property
+			reduce(22), // sharp, reduce: Property
+			reduce(22), // flat, reduce: Property
+			reduce(22), // accent, reduce: Property
+			reduce(22), // ghost, reduce: Property
+			reduce(22), // uint, reduce: Property
+			reduce(22), // dot, reduce: Property
+			reduce(22), // tuplet, reduce: Property
+			reduce(22), // letRing, reduce: Property
 			nil,        // :assign
-			nil,        // :play
+			nil,        // cmdPlay
 			nil,        // :tempo
 			nil,        // :timesig
 			nil,        // :velocity
@@ -1205,26 +1170,25 @@ var actionTab = actionTable{
 		canRecover: false,
 		actions: [numSymbols]action{
 			nil,        // INVALID
-			reduce(24), // ␚, reduce: Property
+			reduce(23), // ␚, reduce: Property
 			nil,        // empty
-			reduce(24), // terminator, reduce: Property
-			nil,        // :bar
-			nil,        // stringLit
+			reduce(23), // terminator, reduce: Property
+			nil,        // cmdBar
 			nil,        // :end
-			reduce(24), // [, reduce: Property
+			reduce(23), // [, reduce: Property
 			nil,        // ]
-			reduce(24), // letter, reduce: Property
-			reduce(24), // rest, reduce: Property
-			reduce(24), // sharp, reduce: Property
-			reduce(24), // flat, reduce: Property
-			reduce(24), // accent, reduce: Property
-			reduce(24), // ghost, reduce: Property
-			reduce(24), // uint, reduce: Property
-			reduce(24), // dot, reduce: Property
-			reduce(24), // tuplet, reduce: Property
-			reduce(24), // letRing, reduce: Property
+			reduce(23), // letter, reduce: Property
+			reduce(23), // rest, reduce: Property
+			reduce(23), // sharp, reduce: Property
+			reduce(23), // flat, reduce: Property
+			reduce(23), // accent, reduce: Property
+			reduce(23), // ghost, reduce: Property
+			reduce(23), // uint, reduce: Property
+			reduce(23), // dot, reduce: Property
+			reduce(23), // tuplet, reduce: Property
+			reduce(23), // letRing, reduce: Property
 			nil,        // :assign
-			nil,        // :play
+			nil,        // cmdPlay
 			nil,        // :tempo
 			nil,        // :timesig
 			nil,        // :velocity
@@ -1239,26 +1203,25 @@ var actionTab = actionTable{
 		canRecover: false,
 		actions: [numSymbols]action{
 			nil,        // INVALID
-			reduce(25), // ␚, reduce: Property
+			reduce(24), // ␚, reduce: Property
 			nil,        // empty
-			reduce(25), // terminator, reduce: Property
-			nil,        // :bar
-			nil,        // stringLit
+			reduce(24), // terminator, reduce: Property
+			nil,        // cmdBar
 			nil,        // :end
-			reduce(25), // [, reduce: Property
+			reduce(24), // [, reduce: Property
 			nil,        // ]
-			reduce(25), // letter, reduce: Property
-			reduce(25), // rest, reduce: Property
-			reduce(25), // sharp, reduce: Property
-			reduce(25), // flat, reduce: Property
-			reduce(25), // accent, reduce: Property
-			reduce(25), // ghost, reduce: Property
-			reduce(25), // uint, reduce: Property
-			reduce(25), // dot, reduce: Property
-			reduce(25), // tuplet, reduce: Property
-			reduce(25), // letRing, reduce: Property
+			reduce(24), // letter, reduce: Property
+			reduce(24), // rest, reduce: Property
+			reduce(24), // sharp, reduce: Property
+			reduce(24), // flat, reduce: Property
+			reduce(24), // accent, reduce: Property
+			reduce(24), // ghost, reduce: Property
+			reduce(24), // uint, reduce: Property
+			reduce(24), // dot, reduce: Property
+			reduce(24), // tuplet, reduce: Property
+			reduce(24), // letRing, reduce: Property
 			nil,        // :assign
-			nil,        // :play
+			nil,        // cmdPlay
 			nil,        // :tempo
 			nil,        // :timesig
 			nil,        // :velocity
@@ -1273,26 +1236,25 @@ var actionTab = actionTable{
 		canRecover: false,
 		actions: [numSymbols]action{
 			nil,        // INVALID
-			reduce(26), // ␚, reduce: Property
+			reduce(25), // ␚, reduce: Property
 			nil,        // empty
-			reduce(26), // terminator, reduce: Property
-			nil,        // :bar
-			nil,        // stringLit
+			reduce(25), // terminator, reduce: Property
+			nil,        // cmdBar
 			nil,        // :end
-			reduce(26), // [, reduce: Property
+			reduce(25), // [, reduce: Property
 			nil,        // ]
-			reduce(26), // letter, reduce: Property
-			reduce(26), // rest, reduce: Property
-			reduce(26), // sharp, reduce: Property
-			reduce(26), // flat, reduce: Property
-			reduce(26), // accent, reduce: Property
-			reduce(26), // ghost, reduce: Property
-			reduce(26), // uint, reduce: Property
-			reduce(26), // dot, reduce: Property
-			reduce(26), // tuplet, reduce: Property
-			reduce(26), // letRing, reduce: Property
+			reduce(25), // letter, reduce: Property
+			reduce(25), // rest, reduce: Property
+			reduce(25), // sharp, reduce: Property
+			reduce(25), // flat, reduce: Property
+			reduce(25), // accent, reduce: Property
+			reduce(25), // ghost, reduce: Property
+			reduce(25), // uint, reduce: Property
+			reduce(25), // dot, reduce: Property
+			reduce(25), // tuplet, reduce: Property
+			reduce(25), // letRing, reduce: Property
 			nil,        // :assign
-			nil,        // :play
+			nil,        // cmdPlay
 			nil,        // :tempo
 			nil,        // :timesig
 			nil,        // :velocity
@@ -1307,26 +1269,25 @@ var actionTab = actionTable{
 		canRecover: false,
 		actions: [numSymbols]action{
 			nil,        // INVALID
-			reduce(27), // ␚, reduce: Property
+			reduce(26), // ␚, reduce: Property
 			nil,        // empty
-			reduce(27), // terminator, reduce: Property
-			nil,        // :bar
-			nil,        // stringLit
+			reduce(26), // terminator, reduce: Property
+			nil,        // cmdBar
 			nil,        // :end
-			reduce(27), // [, reduce: Property
+			reduce(26), // [, reduce: Property
 			nil,        // ]
-			reduce(27), // letter, reduce: Property
-			reduce(27), // rest, reduce: Property
-			reduce(27), // sharp, reduce: Property
-			reduce(27), // flat, reduce: Property
-			reduce(27), // accent, reduce: Property
-			reduce(27), // ghost, reduce: Property
-			reduce(27), // uint, reduce: Property
-			reduce(27), // dot, reduce: Property
-			reduce(27), // tuplet, reduce: Property
-			reduce(27), // letRing, reduce: Property
+			reduce(26), // letter, reduce: Property
+			reduce(26), // rest, reduce: Property
+			reduce(26), // sharp, reduce: Property
+			reduce(26), // flat, reduce: Property
+			reduce(26), // accent, reduce: Property
+			reduce(26), // ghost, reduce: Property
+			reduce(26), // uint, reduce: Property
+			reduce(26), // dot, reduce: Property
+			reduce(26), // tuplet, reduce: Property
+			reduce(26), // letRing, reduce: Property
 			nil,        // :assign
-			nil,        // :play
+			nil,        // cmdPlay
 			nil,        // :tempo
 			nil,        // :timesig
 			nil,        // :velocity
@@ -1341,26 +1302,25 @@ var actionTab = actionTable{
 		canRecover: false,
 		actions: [numSymbols]action{
 			nil,        // INVALID
-			reduce(28), // ␚, reduce: Property
+			reduce(27), // ␚, reduce: Property
 			nil,        // empty
-			reduce(28), // terminator, reduce: Property
-			nil,        // :bar
-			nil,        // stringLit
+			reduce(27), // terminator, reduce: Property
+			nil,        // cmdBar
 			nil,        // :end
-			reduce(28), // [, reduce: Property
+			reduce(27), // [, reduce: Property
 			nil,        // ]
-			reduce(28), // letter, reduce: Property
-			reduce(28), // rest, reduce: Property
-			reduce(28), // sharp, reduce: Property
-			reduce(28), // flat, reduce: Property
-			reduce(28), // accent, reduce: Property
-			reduce(28), // ghost, reduce: Property
-			reduce(28), // uint, reduce: Property
-			reduce(28), // dot, reduce: Property
-			reduce(28), // tuplet, reduce: Property
-			reduce(28), // letRing, reduce: Property
+			reduce(27), // letter, reduce: Property
+			reduce(27), // rest, reduce: Property
+			reduce(27), // sharp, reduce: Property
+			reduce(27), // flat, reduce: Property
+			reduce(27), // accent, reduce: Property
+			reduce(27), // ghost, reduce: Property
+			reduce(27), // uint, reduce: Property
+			reduce(27), // dot, reduce: Property
+			reduce(27), // tuplet, reduce: Property
+			reduce(27), // letRing, reduce: Property
 			nil,        // :assign
-			nil,        // :play
+			nil,        // cmdPlay
 			nil,        // :tempo
 			nil,        // :timesig
 			nil,        // :velocity
@@ -1375,11 +1335,43 @@ var actionTab = actionTable{
 		canRecover: false,
 		actions: [numSymbols]action{
 			nil,        // INVALID
+			reduce(28), // ␚, reduce: Property
+			nil,        // empty
+			reduce(28), // terminator, reduce: Property
+			nil,        // cmdBar
+			nil,        // :end
+			reduce(28), // [, reduce: Property
+			nil,        // ]
+			reduce(28), // letter, reduce: Property
+			reduce(28), // rest, reduce: Property
+			reduce(28), // sharp, reduce: Property
+			reduce(28), // flat, reduce: Property
+			reduce(28), // accent, reduce: Property
+			reduce(28), // ghost, reduce: Property
+			reduce(28), // uint, reduce: Property
+			reduce(28), // dot, reduce: Property
+			reduce(28), // tuplet, reduce: Property
+			reduce(28), // letRing, reduce: Property
+			nil,        // :assign
+			nil,        // cmdPlay
+			nil,        // :tempo
+			nil,        // :timesig
+			nil,        // :velocity
+			nil,        // :channel
+			nil,        // :program
+			nil,        // :control
+			nil,        // :start
+			nil,        // :stop
+		},
+	},
+	actionRow{ // S41
+		canRecover: false,
+		actions: [numSymbols]action{
+			nil,        // INVALID
 			reduce(29), // ␚, reduce: Property
 			nil,        // empty
 			reduce(29), // terminator, reduce: Property
-			nil,        // :bar
-			nil,        // stringLit
+			nil,        // cmdBar
 			nil,        // :end
 			reduce(29), // [, reduce: Property
 			nil,        // ]
@@ -1394,7 +1386,7 @@ var actionTab = actionTable{
 			reduce(29), // tuplet, reduce: Property
 			reduce(29), // letRing, reduce: Property
 			nil,        // :assign
-			nil,        // :play
+			nil,        // cmdPlay
 			nil,        // :tempo
 			nil,        // :timesig
 			nil,        // :velocity
@@ -1405,18 +1397,17 @@ var actionTab = actionTable{
 			nil,        // :stop
 		},
 	},
-	actionRow{ // S41
+	actionRow{ // S42
 		canRecover: false,
 		actions: [numSymbols]action{
 			nil,       // INVALID
 			nil,       // ␚
 			nil,       // empty
 			nil,       // terminator
-			nil,       // :bar
-			nil,       // stringLit
+			nil,       // cmdBar
 			nil,       // :end
 			nil,       // [
-			shift(60), // ]
+			shift(76), // ]
 			nil,       // letter
 			nil,       // rest
 			nil,       // sharp
@@ -1428,7 +1419,7 @@ var actionTab = actionTable{
 			nil,       // tuplet
 			nil,       // letRing
 			nil,       // :assign
-			nil,       // :play
+			nil,       // cmdPlay
 			nil,       // :tempo
 			nil,       // :timesig
 			nil,       // :velocity
@@ -1439,20 +1430,19 @@ var actionTab = actionTable{
 			nil,       // :stop
 		},
 	},
-	actionRow{ // S42
+	actionRow{ // S43
 		canRecover: false,
 		actions: [numSymbols]action{
 			nil,        // INVALID
 			nil,        // ␚
 			nil,        // empty
 			nil,        // terminator
-			nil,        // :bar
-			nil,        // stringLit
+			nil,        // cmdBar
 			nil,        // :end
-			shift(44),  // [
+			shift(45),  // [
 			reduce(14), // ], reduce: NoteList
-			shift(45),  // letter
-			shift(46),  // rest
+			shift(46),  // letter
+			shift(47),  // rest
 			nil,        // sharp
 			nil,        // flat
 			nil,        // accent
@@ -1462,41 +1452,7 @@ var actionTab = actionTable{
 			nil,        // tuplet
 			nil,        // letRing
 			nil,        // :assign
-			nil,        // :play
-			nil,        // :tempo
-			nil,        // :timesig
-			nil,        // :velocity
-			nil,        // :channel
-			nil,        // :program
-			nil,        // :control
-			nil,        // :start
-			nil,        // :stop
-		},
-	},
-	actionRow{ // S43
-		canRecover: false,
-		actions: [numSymbols]action{
-			nil,        // INVALID
-			nil,        // ␚
-			nil,        // empty
-			nil,        // terminator
-			nil,        // :bar
-			nil,        // stringLit
-			nil,        // :end
-			reduce(20), // [, reduce: PropertyList
-			reduce(20), // ], reduce: PropertyList
-			reduce(20), // letter, reduce: PropertyList
-			reduce(20), // rest, reduce: PropertyList
-			shift(64),  // sharp
-			shift(65),  // flat
-			shift(66),  // accent
-			shift(67),  // ghost
-			shift(68),  // uint
-			shift(69),  // dot
-			shift(70),  // tuplet
-			shift(71),  // letRing
-			nil,        // :assign
-			nil,        // :play
+			nil,        // cmdPlay
 			nil,        // :tempo
 			nil,        // :timesig
 			nil,        // :velocity
@@ -1510,17 +1466,49 @@ var actionTab = actionTable{
 	actionRow{ // S44
 		canRecover: false,
 		actions: [numSymbols]action{
+			nil,        // INVALID
+			nil,        // ␚
+			nil,        // empty
+			nil,        // terminator
+			nil,        // cmdBar
+			nil,        // :end
+			reduce(20), // [, reduce: PropertyList
+			reduce(20), // ], reduce: PropertyList
+			reduce(20), // letter, reduce: PropertyList
+			reduce(20), // rest, reduce: PropertyList
+			shift(80),  // sharp
+			shift(81),  // flat
+			shift(82),  // accent
+			shift(83),  // ghost
+			shift(84),  // uint
+			shift(85),  // dot
+			shift(86),  // tuplet
+			shift(87),  // letRing
+			nil,        // :assign
+			nil,        // cmdPlay
+			nil,        // :tempo
+			nil,        // :timesig
+			nil,        // :velocity
+			nil,        // :channel
+			nil,        // :program
+			nil,        // :control
+			nil,        // :start
+			nil,        // :stop
+		},
+	},
+	actionRow{ // S45
+		canRecover: false,
+		actions: [numSymbols]action{
 			nil,       // INVALID
 			nil,       // ␚
 			nil,       // empty
 			nil,       // terminator
-			nil,       // :bar
-			nil,       // stringLit
+			nil,       // cmdBar
 			nil,       // :end
-			shift(44), // [
+			shift(45), // [
 			nil,       // ]
-			shift(45), // letter
-			shift(46), // rest
+			shift(46), // letter
+			shift(47), // rest
 			nil,       // sharp
 			nil,       // flat
 			nil,       // accent
@@ -1530,7 +1518,7 @@ var actionTab = actionTable{
 			nil,       // tuplet
 			nil,       // letRing
 			nil,       // :assign
-			nil,       // :play
+			nil,       // cmdPlay
 			nil,       // :tempo
 			nil,       // :timesig
 			nil,       // :velocity
@@ -1541,15 +1529,14 @@ var actionTab = actionTable{
 			nil,       // :stop
 		},
 	},
-	actionRow{ // S45
+	actionRow{ // S46
 		canRecover: false,
 		actions: [numSymbols]action{
 			nil,        // INVALID
 			nil,        // ␚
 			nil,        // empty
 			nil,        // terminator
-			nil,        // :bar
-			nil,        // stringLit
+			nil,        // cmdBar
 			nil,        // :end
 			reduce(18), // [, reduce: NoteSymbol
 			reduce(18), // ], reduce: NoteSymbol
@@ -1564,7 +1551,7 @@ var actionTab = actionTable{
 			reduce(18), // tuplet, reduce: NoteSymbol
 			reduce(18), // letRing, reduce: NoteSymbol
 			nil,        // :assign
-			nil,        // :play
+			nil,        // cmdPlay
 			nil,        // :tempo
 			nil,        // :timesig
 			nil,        // :velocity
@@ -1575,15 +1562,14 @@ var actionTab = actionTable{
 			nil,        // :stop
 		},
 	},
-	actionRow{ // S46
+	actionRow{ // S47
 		canRecover: false,
 		actions: [numSymbols]action{
 			nil,        // INVALID
 			nil,        // ␚
 			nil,        // empty
 			nil,        // terminator
-			nil,        // :bar
-			nil,        // stringLit
+			nil,        // cmdBar
 			nil,        // :end
 			reduce(19), // [, reduce: NoteSymbol
 			reduce(19), // ], reduce: NoteSymbol
@@ -1598,7 +1584,7 @@ var actionTab = actionTable{
 			reduce(19), // tuplet, reduce: NoteSymbol
 			reduce(19), // letRing, reduce: NoteSymbol
 			nil,        // :assign
-			nil,        // :play
+			nil,        // cmdPlay
 			nil,        // :tempo
 			nil,        // :timesig
 			nil,        // :velocity
@@ -1609,15 +1595,14 @@ var actionTab = actionTable{
 			nil,        // :stop
 		},
 	},
-	actionRow{ // S47
+	actionRow{ // S48
 		canRecover: false,
 		actions: [numSymbols]action{
 			nil,       // INVALID
 			nil,       // ␚
 			nil,       // empty
 			nil,       // terminator
-			nil,       // :bar
-			nil,       // stringLit
+			nil,       // cmdBar
 			nil,       // :end
 			nil,       // [
 			nil,       // ]
@@ -1627,12 +1612,12 @@ var actionTab = actionTable{
 			nil,       // flat
 			nil,       // accent
 			nil,       // ghost
-			shift(73), // uint
+			shift(89), // uint
 			nil,       // dot
 			nil,       // tuplet
 			nil,       // letRing
 			nil,       // :assign
-			nil,       // :play
+			nil,       // cmdPlay
 			nil,       // :tempo
 			nil,       // :timesig
 			nil,       // :velocity
@@ -1643,40 +1628,6 @@ var actionTab = actionTable{
 			nil,       // :stop
 		},
 	},
-	actionRow{ // S48
-		canRecover: false,
-		actions: [numSymbols]action{
-			nil,        // INVALID
-			reduce(31), // ␚, reduce: TopLevelCommand
-			nil,        // empty
-			reduce(31), // terminator, reduce: TopLevelCommand
-			nil,        // :bar
-			nil,        // stringLit
-			nil,        // :end
-			nil,        // [
-			nil,        // ]
-			nil,        // letter
-			nil,        // rest
-			nil,        // sharp
-			nil,        // flat
-			nil,        // accent
-			nil,        // ghost
-			nil,        // uint
-			nil,        // dot
-			nil,        // tuplet
-			nil,        // letRing
-			nil,        // :assign
-			nil,        // :play
-			nil,        // :tempo
-			nil,        // :timesig
-			nil,        // :velocity
-			nil,        // :channel
-			nil,        // :program
-			nil,        // :control
-			nil,        // :start
-			nil,        // :stop
-		},
-	},
 	actionRow{ // S49
 		canRecover: false,
 		actions: [numSymbols]action{
@@ -1684,8 +1635,7 @@ var actionTab = actionTable{
 			reduce(33), // ␚, reduce: BarBodyCommand
 			nil,        // empty
 			reduce(33), // terminator, reduce: BarBodyCommand
-			nil,        // :bar
-			nil,        // stringLit
+			nil,        // cmdBar
 			nil,        // :end
 			nil,        // [
 			nil,        // ]
@@ -1700,7 +1650,7 @@ var actionTab = actionTable{
 			nil,        // tuplet
 			nil,        // letRing
 			nil,        // :assign
-			nil,        // :play
+			nil,        // cmdPlay
 			nil,        // :tempo
 			nil,        // :timesig
 			nil,        // :velocity
@@ -1718,8 +1668,7 @@ var actionTab = actionTable{
 			nil,       // ␚
 			nil,       // empty
 			nil,       // terminator
-			nil,       // :bar
-			nil,       // stringLit
+			nil,       // cmdBar
 			nil,       // :end
 			nil,       // [
 			nil,       // ]
@@ -1729,12 +1678,12 @@ var actionTab = actionTable{
 			nil,       // flat
 			nil,       // accent
 			nil,       // ghost
-			shift(74), // uint
+			shift(90), // uint
 			nil,       // dot
 			nil,       // tuplet
 			nil,       // letRing
 			nil,       // :assign
-			nil,       // :play
+			nil,       // cmdPlay
 			nil,       // :tempo
 			nil,       // :timesig
 			nil,       // :velocity
@@ -1752,8 +1701,7 @@ var actionTab = actionTable{
 			reduce(35), // ␚, reduce: BarBodyCommand
 			nil,        // empty
 			reduce(35), // terminator, reduce: BarBodyCommand
-			nil,        // :bar
-			nil,        // stringLit
+			nil,        // cmdBar
 			nil,        // :end
 			nil,        // [
 			nil,        // ]
@@ -1768,7 +1716,7 @@ var actionTab = actionTable{
 			nil,        // tuplet
 			nil,        // letRing
 			nil,        // :assign
-			nil,        // :play
+			nil,        // cmdPlay
 			nil,        // :tempo
 			nil,        // :timesig
 			nil,        // :velocity
@@ -1786,8 +1734,7 @@ var actionTab = actionTable{
 			reduce(36), // ␚, reduce: BarBodyCommand
 			nil,        // empty
 			reduce(36), // terminator, reduce: BarBodyCommand
-			nil,        // :bar
-			nil,        // stringLit
+			nil,        // cmdBar
 			nil,        // :end
 			nil,        // [
 			nil,        // ]
@@ -1802,7 +1749,7 @@ var actionTab = actionTable{
 			nil,        // tuplet
 			nil,        // letRing
 			nil,        // :assign
-			nil,        // :play
+			nil,        // cmdPlay
 			nil,        // :tempo
 			nil,        // :timesig
 			nil,        // :velocity
@@ -1820,8 +1767,7 @@ var actionTab = actionTable{
 			reduce(37), // ␚, reduce: BarBodyCommand
 			nil,        // empty
 			reduce(37), // terminator, reduce: BarBodyCommand
-			nil,        // :bar
-			nil,        // stringLit
+			nil,        // cmdBar
 			nil,        // :end
 			nil,        // [
 			nil,        // ]
@@ -1836,7 +1782,7 @@ var actionTab = actionTable{
 			nil,        // tuplet
 			nil,        // letRing
 			nil,        // :assign
-			nil,        // :play
+			nil,        // cmdPlay
 			nil,        // :tempo
 			nil,        // :timesig
 			nil,        // :velocity
@@ -1854,8 +1800,7 @@ var actionTab = actionTable{
 			nil,       // ␚
 			nil,       // empty
 			nil,       // terminator
-			nil,       // :bar
-			nil,       // stringLit
+			nil,       // cmdBar
 			nil,       // :end
 			nil,       // [
 			nil,       // ]
@@ -1865,12 +1810,12 @@ var actionTab = actionTable{
 			nil,       // flat
 			nil,       // accent
 			nil,       // ghost
-			shift(75), // uint
+			shift(91), // uint
 			nil,       // dot
 			nil,       // tuplet
 			nil,       // letRing
 			nil,       // :assign
-			nil,       // :play
+			nil,       // cmdPlay
 			nil,       // :tempo
 			nil,       // :timesig
 			nil,       // :velocity
@@ -1888,8 +1833,7 @@ var actionTab = actionTable{
 			reduce(3), // ␚, reduce: RepeatTerminator
 			nil,       // empty
 			nil,       // terminator
-			shift(10), // :bar
-			nil,       // stringLit
+			shift(10), // cmdBar
 			nil,       // :end
 			shift(13), // [
 			nil,       // ]
@@ -1904,7 +1848,7 @@ var actionTab = actionTable{
 			nil,       // tuplet
 			nil,       // letRing
 			shift(16), // :assign
-			shift(17), // :play
+			shift(17), // cmdPlay
 			shift(18), // :tempo
 			shift(19), // :timesig
 			shift(20), // :velocity
@@ -1922,8 +1866,7 @@ var actionTab = actionTable{
 			reduce(2), // ␚, reduce: RepeatTerminator
 			nil,       // empty
 			shift(56), // terminator
-			reduce(2), // :bar, reduce: RepeatTerminator
-			nil,       // stringLit
+			reduce(2), // cmdBar, reduce: RepeatTerminator
 			nil,       // :end
 			reduce(2), // [, reduce: RepeatTerminator
 			nil,       // ]
@@ -1938,7 +1881,7 @@ var actionTab = actionTable{
 			nil,       // tuplet
 			nil,       // letRing
 			reduce(2), // :assign, reduce: RepeatTerminator
-			reduce(2), // :play, reduce: RepeatTerminator
+			reduce(2), // cmdPlay, reduce: RepeatTerminator
 			reduce(2), // :tempo, reduce: RepeatTerminator
 			reduce(2), // :timesig, reduce: RepeatTerminator
 			reduce(2), // :velocity, reduce: RepeatTerminator
@@ -1956,13 +1899,12 @@ var actionTab = actionTable{
 			nil,       // ␚
 			nil,       // empty
 			nil,       // terminator
-			nil,       // :bar
-			nil,       // stringLit
-			nil,       // :end
-			shift(84), // [
+			nil,       // cmdBar
+			shift(94), // :end
+			nil,       // [
 			nil,       // ]
-			shift(85), // letter
-			shift(86), // rest
+			nil,       // letter
+			nil,       // rest
 			nil,       // sharp
 			nil,       // flat
 			nil,       // accent
@@ -1972,15 +1914,15 @@ var actionTab = actionTable{
 			nil,       // tuplet
 			nil,       // letRing
 			nil,       // :assign
-			nil,       // :play
-			shift(87), // :tempo
-			shift(88), // :timesig
-			shift(89), // :velocity
-			shift(90), // :channel
-			shift(91), // :program
-			shift(92), // :control
-			shift(93), // :start
-			shift(94), // :stop
+			nil,       // cmdPlay
+			nil,       // :tempo
+			nil,       // :timesig
+			nil,       // :velocity
+			nil,       // :channel
+			nil,       // :program
+			nil,       // :control
+			nil,       // :start
+			nil,       // :stop
 		},
 	},
 	actionRow{ // S58
@@ -1989,14 +1931,13 @@ var actionTab = actionTable{
 			nil,       // INVALID
 			nil,       // ␚
 			nil,       // empty
-			shift(58), // terminator
-			nil,       // :bar
-			nil,       // stringLit
-			nil,       // :end
-			reduce(2), // [, reduce: RepeatTerminator
+			shift(96), // terminator
+			nil,       // cmdBar
+			reduce(2), // :end, reduce: RepeatTerminator
+			nil,       // [
 			nil,       // ]
-			reduce(2), // letter, reduce: RepeatTerminator
-			reduce(2), // rest, reduce: RepeatTerminator
+			nil,       // letter
+			nil,       // rest
 			nil,       // sharp
 			nil,       // flat
 			nil,       // accent
@@ -2006,31 +1947,30 @@ var actionTab = actionTable{
 			nil,       // tuplet
 			nil,       // letRing
 			nil,       // :assign
-			nil,       // :play
-			reduce(2), // :tempo, reduce: RepeatTerminator
-			reduce(2), // :timesig, reduce: RepeatTerminator
-			reduce(2), // :velocity, reduce: RepeatTerminator
-			reduce(2), // :channel, reduce: RepeatTerminator
-			reduce(2), // :program, reduce: RepeatTerminator
-			reduce(2), // :control, reduce: RepeatTerminator
-			reduce(2), // :start, reduce: RepeatTerminator
-			reduce(2), // :stop, reduce: RepeatTerminator
+			nil,       // cmdPlay
+			nil,       // :tempo
+			nil,       // :timesig
+			nil,       // :velocity
+			nil,       // :channel
+			nil,       // :program
+			nil,       // :control
+			nil,       // :start
+			nil,       // :stop
 		},
 	},
 	actionRow{ // S59
 		canRecover: false,
 		actions: [numSymbols]action{
 			nil,        // INVALID
-			reduce(21), // ␚, reduce: PropertyList
+			nil,        // ␚
 			nil,        // empty
-			reduce(21), // terminator, reduce: PropertyList
-			nil,        // :bar
-			nil,        // stringLit
-			nil,        // :end
-			reduce(21), // [, reduce: PropertyList
+			reduce(12), // terminator, reduce: BarBodyDecl
+			nil,        // cmdBar
+			reduce(12), // :end, reduce: BarBodyDecl
+			nil,        // [
 			nil,        // ]
-			reduce(21), // letter, reduce: PropertyList
-			reduce(21), // rest, reduce: PropertyList
+			nil,        // letter
+			nil,        // rest
 			nil,        // sharp
 			nil,        // flat
 			nil,        // accent
@@ -2040,7 +1980,7 @@ var actionTab = actionTable{
 			nil,        // tuplet
 			nil,        // letRing
 			nil,        // :assign
-			nil,        // :play
+			nil,        // cmdPlay
 			nil,        // :tempo
 			nil,        // :timesig
 			nil,        // :velocity
@@ -2055,26 +1995,25 @@ var actionTab = actionTable{
 		canRecover: false,
 		actions: [numSymbols]action{
 			nil,        // INVALID
-			reduce(20), // ␚, reduce: PropertyList
+			nil,        // ␚
 			nil,        // empty
-			reduce(20), // terminator, reduce: PropertyList
-			nil,        // :bar
-			nil,        // stringLit
-			nil,        // :end
-			reduce(20), // [, reduce: PropertyList
+			reduce(11), // terminator, reduce: BarBodyDecl
+			nil,        // cmdBar
+			reduce(11), // :end, reduce: BarBodyDecl
+			nil,        // [
 			nil,        // ]
-			reduce(20), // letter, reduce: PropertyList
-			reduce(20), // rest, reduce: PropertyList
-			shift(33),  // sharp
-			shift(34),  // flat
-			shift(35),  // accent
-			shift(36),  // ghost
-			shift(37),  // uint
-			shift(38),  // dot
-			shift(39),  // tuplet
-			shift(40),  // letRing
+			nil,        // letter
+			nil,        // rest
+			nil,        // sharp
+			nil,        // flat
+			nil,        // accent
+			nil,        // ghost
+			nil,        // uint
+			nil,        // dot
+			nil,        // tuplet
+			nil,        // letRing
 			nil,        // :assign
-			nil,        // :play
+			nil,        // cmdPlay
 			nil,        // :tempo
 			nil,        // :timesig
 			nil,        // :velocity
@@ -2091,14 +2030,13 @@ var actionTab = actionTable{
 			nil,        // INVALID
 			nil,        // ␚
 			nil,        // empty
-			nil,        // terminator
-			nil,        // :bar
-			nil,        // stringLit
-			nil,        // :end
-			nil,        // [
-			reduce(15), // ], reduce: NoteList
-			nil,        // letter
-			nil,        // rest
+			reduce(14), // terminator, reduce: NoteList
+			nil,        // cmdBar
+			reduce(14), // :end, reduce: NoteList
+			shift(63),  // [
+			nil,        // ]
+			shift(64),  // letter
+			shift(65),  // rest
 			nil,        // sharp
 			nil,        // flat
 			nil,        // accent
@@ -2108,7 +2046,7 @@ var actionTab = actionTable{
 			nil,        // tuplet
 			nil,        // letRing
 			nil,        // :assign
-			nil,        // :play
+			nil,        // cmdPlay
 			nil,        // :tempo
 			nil,        // :timesig
 			nil,        // :velocity
@@ -2125,24 +2063,23 @@ var actionTab = actionTable{
 			nil,        // INVALID
 			nil,        // ␚
 			nil,        // empty
-			nil,        // terminator
-			nil,        // :bar
-			nil,        // stringLit
-			nil,        // :end
-			reduce(16), // [, reduce: NoteObject
-			reduce(16), // ], reduce: NoteObject
-			reduce(16), // letter, reduce: NoteObject
-			reduce(16), // rest, reduce: NoteObject
-			nil,        // sharp
-			nil,        // flat
-			nil,        // accent
-			nil,        // ghost
-			nil,        // uint
-			nil,        // dot
-			nil,        // tuplet
-			nil,        // letRing
+			reduce(20), // terminator, reduce: PropertyList
+			nil,        // cmdBar
+			reduce(20), // :end, reduce: PropertyList
+			reduce(20), // [, reduce: PropertyList
+			nil,        // ]
+			reduce(20), // letter, reduce: PropertyList
+			reduce(20), // rest, reduce: PropertyList
+			shift(100), // sharp
+			shift(101), // flat
+			shift(102), // accent
+			shift(103), // ghost
+			shift(104), // uint
+			shift(105), // dot
+			shift(106), // tuplet
+			shift(107), // letRing
 			nil,        // :assign
-			nil,        // :play
+			nil,        // cmdPlay
 			nil,        // :tempo
 			nil,        // :timesig
 			nil,        // :velocity
@@ -2156,35 +2093,34 @@ var actionTab = actionTable{
 	actionRow{ // S63
 		canRecover: false,
 		actions: [numSymbols]action{
-			nil,        // INVALID
-			nil,        // ␚
-			nil,        // empty
-			nil,        // terminator
-			nil,        // :bar
-			nil,        // stringLit
-			nil,        // :end
-			reduce(20), // [, reduce: PropertyList
-			reduce(20), // ], reduce: PropertyList
-			reduce(20), // letter, reduce: PropertyList
-			reduce(20), // rest, reduce: PropertyList
-			shift(64),  // sharp
-			shift(65),  // flat
-			shift(66),  // accent
-			shift(67),  // ghost
-			shift(68),  // uint
-			shift(69),  // dot
-			shift(70),  // tuplet
-			shift(71),  // letRing
-			nil,        // :assign
-			nil,        // :play
-			nil,        // :tempo
-			nil,        // :timesig
-			nil,        // :velocity
-			nil,        // :channel
-			nil,        // :program
-			nil,        // :control
-			nil,        // :start
-			nil,        // :stop
+			nil,       // INVALID
+			nil,       // ␚
+			nil,       // empty
+			nil,       // terminator
+			nil,       // cmdBar
+			nil,       // :end
+			shift(45), // [
+			nil,       // ]
+			shift(46), // letter
+			shift(47), // rest
+			nil,       // sharp
+			nil,       // flat
+			nil,       // accent
+			nil,       // ghost
+			nil,       // uint
+			nil,       // dot
+			nil,       // tuplet
+			nil,       // letRing
+			nil,       // :assign
+			nil,       // cmdPlay
+			nil,       // :tempo
+			nil,       // :timesig
+			nil,       // :velocity
+			nil,       // :channel
+			nil,       // :program
+			nil,       // :control
+			nil,       // :start
+			nil,       // :stop
 		},
 	},
 	actionRow{ // S64
@@ -2193,24 +2129,23 @@ var actionTab = actionTable{
 			nil,        // INVALID
 			nil,        // ␚
 			nil,        // empty
-			nil,        // terminator
-			nil,        // :bar
-			nil,        // stringLit
-			nil,        // :end
-			reduce(22), // [, reduce: Property
-			reduce(22), // ], reduce: Property
-			reduce(22), // letter, reduce: Property
-			reduce(22), // rest, reduce: Property
-			reduce(22), // sharp, reduce: Property
-			reduce(22), // flat, reduce: Property
-			reduce(22), // accent, reduce: Property
-			reduce(22), // ghost, reduce: Property
-			reduce(22), // uint, reduce: Property
-			reduce(22), // dot, reduce: Property
-			reduce(22), // tuplet, reduce: Property
-			reduce(22), // letRing, reduce: Property
+			reduce(18), // terminator, reduce: NoteSymbol
+			nil,        // cmdBar
+			reduce(18), // :end, reduce: NoteSymbol
+			reduce(18), // [, reduce: NoteSymbol
+			nil,        // ]
+			reduce(18), // letter, reduce: NoteSymbol
+			reduce(18), // rest, reduce: NoteSymbol
+			reduce(18), // sharp, reduce: NoteSymbol
+			reduce(18), // flat, reduce: NoteSymbol
+			reduce(18), // accent, reduce: NoteSymbol
+			reduce(18), // ghost, reduce: NoteSymbol
+			reduce(18), // uint, reduce: NoteSymbol
+			reduce(18), // dot, reduce: NoteSymbol
+			reduce(18), // tuplet, reduce: NoteSymbol
+			reduce(18), // letRing, reduce: NoteSymbol
 			nil,        // :assign
-			nil,        // :play
+			nil,        // cmdPlay
 			nil,        // :tempo
 			nil,        // :timesig
 			nil,        // :velocity
@@ -2227,24 +2162,23 @@ var actionTab = actionTable{
 			nil,        // INVALID
 			nil,        // ␚
 			nil,        // empty
-			nil,        // terminator
-			nil,        // :bar
-			nil,        // stringLit
-			nil,        // :end
-			reduce(23), // [, reduce: Property
-			reduce(23), // ], reduce: Property
-			reduce(23), // letter, reduce: Property
-			reduce(23), // rest, reduce: Property
-			reduce(23), // sharp, reduce: Property
-			reduce(23), // flat, reduce: Property
-			reduce(23), // accent, reduce: Property
-			reduce(23), // ghost, reduce: Property
-			reduce(23), // uint, reduce: Property
-			reduce(23), // dot, reduce: Property
-			reduce(23), // tuplet, reduce: Property
-			reduce(23), // letRing, reduce: Property
+			reduce(19), // terminator, reduce: NoteSymbol
+			nil,        // cmdBar
+			reduce(19), // :end, reduce: NoteSymbol
+			reduce(19), // [, reduce: NoteSymbol
+			nil,        // ]
+			reduce(19), // letter, reduce: NoteSymbol
+			reduce(19), // rest, reduce: NoteSymbol
+			reduce(19), // sharp, reduce: NoteSymbol
+			reduce(19), // flat, reduce: NoteSymbol
+			reduce(19), // accent, reduce: NoteSymbol
+			reduce(19), // ghost, reduce: NoteSymbol
+			reduce(19), // uint, reduce: NoteSymbol
+			reduce(19), // dot, reduce: NoteSymbol
+			reduce(19), // tuplet, reduce: NoteSymbol
+			reduce(19), // letRing, reduce: NoteSymbol
 			nil,        // :assign
-			nil,        // :play
+			nil,        // cmdPlay
 			nil,        // :tempo
 			nil,        // :timesig
 			nil,        // :velocity
@@ -2262,23 +2196,22 @@ var actionTab = actionTable{
 			nil,        // ␚
 			nil,        // empty
 			nil,        // terminator
-			nil,        // :bar
-			nil,        // stringLit
+			nil,        // cmdBar
 			nil,        // :end
-			reduce(24), // [, reduce: Property
-			reduce(24), // ], reduce: Property
-			reduce(24), // letter, reduce: Property
-			reduce(24), // rest, reduce: Property
-			reduce(24), // sharp, reduce: Property
-			reduce(24), // flat, reduce: Property
-			reduce(24), // accent, reduce: Property
-			reduce(24), // ghost, reduce: Property
-			reduce(24), // uint, reduce: Property
-			reduce(24), // dot, reduce: Property
-			reduce(24), // tuplet, reduce: Property
-			reduce(24), // letRing, reduce: Property
+			nil,        // [
+			nil,        // ]
+			nil,        // letter
+			nil,        // rest
+			nil,        // sharp
+			nil,        // flat
+			nil,        // accent
+			nil,        // ghost
+			shift(109), // uint
+			nil,        // dot
+			nil,        // tuplet
+			nil,        // letRing
 			nil,        // :assign
-			nil,        // :play
+			nil,        // cmdPlay
 			nil,        // :tempo
 			nil,        // :timesig
 			nil,        // :velocity
@@ -2296,23 +2229,22 @@ var actionTab = actionTable{
 			nil,        // ␚
 			nil,        // empty
 			nil,        // terminator
-			nil,        // :bar
-			nil,        // stringLit
+			nil,        // cmdBar
 			nil,        // :end
-			reduce(25), // [, reduce: Property
-			reduce(25), // ], reduce: Property
-			reduce(25), // letter, reduce: Property
-			reduce(25), // rest, reduce: Property
-			reduce(25), // sharp, reduce: Property
-			reduce(25), // flat, reduce: Property
-			reduce(25), // accent, reduce: Property
-			reduce(25), // ghost, reduce: Property
-			reduce(25), // uint, reduce: Property
-			reduce(25), // dot, reduce: Property
-			reduce(25), // tuplet, reduce: Property
-			reduce(25), // letRing, reduce: Property
+			nil,        // [
+			nil,        // ]
+			nil,        // letter
+			nil,        // rest
+			nil,        // sharp
+			nil,        // flat
+			nil,        // accent
+			nil,        // ghost
+			shift(110), // uint
+			nil,        // dot
+			nil,        // tuplet
+			nil,        // letRing
 			nil,        // :assign
-			nil,        // :play
+			nil,        // cmdPlay
 			nil,        // :tempo
 			nil,        // :timesig
 			nil,        // :velocity
@@ -2330,23 +2262,22 @@ var actionTab = actionTable{
 			nil,        // ␚
 			nil,        // empty
 			nil,        // terminator
-			nil,        // :bar
-			nil,        // stringLit
+			nil,        // cmdBar
 			nil,        // :end
-			reduce(26), // [, reduce: Property
-			reduce(26), // ], reduce: Property
-			reduce(26), // letter, reduce: Property
-			reduce(26), // rest, reduce: Property
-			reduce(26), // sharp, reduce: Property
-			reduce(26), // flat, reduce: Property
-			reduce(26), // accent, reduce: Property
-			reduce(26), // ghost, reduce: Property
-			reduce(26), // uint, reduce: Property
-			reduce(26), // dot, reduce: Property
-			reduce(26), // tuplet, reduce: Property
-			reduce(26), // letRing, reduce: Property
+			nil,        // [
+			nil,        // ]
+			nil,        // letter
+			nil,        // rest
+			nil,        // sharp
+			nil,        // flat
+			nil,        // accent
+			nil,        // ghost
+			shift(111), // uint
+			nil,        // dot
+			nil,        // tuplet
+			nil,        // letRing
 			nil,        // :assign
-			nil,        // :play
+			nil,        // cmdPlay
 			nil,        // :tempo
 			nil,        // :timesig
 			nil,        // :velocity
@@ -2364,23 +2295,22 @@ var actionTab = actionTable{
 			nil,        // ␚
 			nil,        // empty
 			nil,        // terminator
-			nil,        // :bar
-			nil,        // stringLit
+			nil,        // cmdBar
 			nil,        // :end
-			reduce(27), // [, reduce: Property
-			reduce(27), // ], reduce: Property
-			reduce(27), // letter, reduce: Property
-			reduce(27), // rest, reduce: Property
-			reduce(27), // sharp, reduce: Property
-			reduce(27), // flat, reduce: Property
-			reduce(27), // accent, reduce: Property
-			reduce(27), // ghost, reduce: Property
-			reduce(27), // uint, reduce: Property
-			reduce(27), // dot, reduce: Property
-			reduce(27), // tuplet, reduce: Property
-			reduce(27), // letRing, reduce: Property
+			nil,        // [
+			nil,        // ]
+			nil,        // letter
+			nil,        // rest
+			nil,        // sharp
+			nil,        // flat
+			nil,        // accent
+			nil,        // ghost
+			shift(112), // uint
+			nil,        // dot
+			nil,        // tuplet
+			nil,        // letRing
 			nil,        // :assign
-			nil,        // :play
+			nil,        // cmdPlay
 			nil,        // :tempo
 			nil,        // :timesig
 			nil,        // :velocity
@@ -2398,23 +2328,22 @@ var actionTab = actionTable{
 			nil,        // ␚
 			nil,        // empty
 			nil,        // terminator
-			nil,        // :bar
-			nil,        // stringLit
+			nil,        // cmdBar
 			nil,        // :end
-			reduce(28), // [, reduce: Property
-			reduce(28), // ], reduce: Property
-			reduce(28), // letter, reduce: Property
-			reduce(28), // rest, reduce: Property
-			reduce(28), // sharp, reduce: Property
-			reduce(28), // flat, reduce: Property
-			reduce(28), // accent, reduce: Property
-			reduce(28), // ghost, reduce: Property
-			reduce(28), // uint, reduce: Property
-			reduce(28), // dot, reduce: Property
-			reduce(28), // tuplet, reduce: Property
-			reduce(28), // letRing, reduce: Property
+			nil,        // [
+			nil,        // ]
+			nil,        // letter
+			nil,        // rest
+			nil,        // sharp
+			nil,        // flat
+			nil,        // accent
+			nil,        // ghost
+			shift(113), // uint
+			nil,        // dot
+			nil,        // tuplet
+			nil,        // letRing
 			nil,        // :assign
-			nil,        // :play
+			nil,        // cmdPlay
 			nil,        // :tempo
 			nil,        // :timesig
 			nil,        // :velocity
@@ -2432,23 +2361,22 @@ var actionTab = actionTable{
 			nil,        // ␚
 			nil,        // empty
 			nil,        // terminator
-			nil,        // :bar
-			nil,        // stringLit
+			nil,        // cmdBar
 			nil,        // :end
-			reduce(29), // [, reduce: Property
-			reduce(29), // ], reduce: Property
-			reduce(29), // letter, reduce: Property
-			reduce(29), // rest, reduce: Property
-			reduce(29), // sharp, reduce: Property
-			reduce(29), // flat, reduce: Property
-			reduce(29), // accent, reduce: Property
-			reduce(29), // ghost, reduce: Property
-			reduce(29), // uint, reduce: Property
-			reduce(29), // dot, reduce: Property
-			reduce(29), // tuplet, reduce: Property
-			reduce(29), // letRing, reduce: Property
+			nil,        // [
+			nil,        // ]
+			nil,        // letter
+			nil,        // rest
+			nil,        // sharp
+			nil,        // flat
+			nil,        // accent
+			nil,        // ghost
+			shift(114), // uint
+			nil,        // dot
+			nil,        // tuplet
+			nil,        // letRing
 			nil,        // :assign
-			nil,        // :play
+			nil,        // cmdPlay
 			nil,        // :tempo
 			nil,        // :timesig
 			nil,        // :velocity
@@ -2462,47 +2390,12 @@ var actionTab = actionTable{
 	actionRow{ // S72
 		canRecover: false,
 		actions: [numSymbols]action{
-			nil,       // INVALID
-			nil,       // ␚
-			nil,       // empty
-			nil,       // terminator
-			nil,       // :bar
-			nil,       // stringLit
-			nil,       // :end
-			nil,       // [
-			shift(98), // ]
-			nil,       // letter
-			nil,       // rest
-			nil,       // sharp
-			nil,       // flat
-			nil,       // accent
-			nil,       // ghost
-			nil,       // uint
-			nil,       // dot
-			nil,       // tuplet
-			nil,       // letRing
-			nil,       // :assign
-			nil,       // :play
-			nil,       // :tempo
-			nil,       // :timesig
-			nil,       // :velocity
-			nil,       // :channel
-			nil,       // :program
-			nil,       // :control
-			nil,       // :start
-			nil,       // :stop
-		},
-	},
-	actionRow{ // S73
-		canRecover: false,
-		actions: [numSymbols]action{
 			nil,        // INVALID
-			reduce(30), // ␚, reduce: TopLevelCommand
+			nil,        // ␚
 			nil,        // empty
-			reduce(30), // terminator, reduce: TopLevelCommand
-			nil,        // :bar
-			nil,        // stringLit
-			nil,        // :end
+			reduce(39), // terminator, reduce: BarBodyCommand
+			nil,        // cmdBar
+			reduce(39), // :end, reduce: BarBodyCommand
 			nil,        // [
 			nil,        // ]
 			nil,        // letter
@@ -2516,7 +2409,40 @@ var actionTab = actionTable{
 			nil,        // tuplet
 			nil,        // letRing
 			nil,        // :assign
-			nil,        // :play
+			nil,        // cmdPlay
+			nil,        // :tempo
+			nil,        // :timesig
+			nil,        // :velocity
+			nil,        // :channel
+			nil,        // :program
+			nil,        // :control
+			nil,        // :start
+			nil,        // :stop
+		},
+	},
+	actionRow{ // S73
+		canRecover: false,
+		actions: [numSymbols]action{
+			nil,        // INVALID
+			nil,        // ␚
+			nil,        // empty
+			reduce(40), // terminator, reduce: BarBodyCommand
+			nil,        // cmdBar
+			reduce(40), // :end, reduce: BarBodyCommand
+			nil,        // [
+			nil,        // ]
+			nil,        // letter
+			nil,        // rest
+			nil,        // sharp
+			nil,        // flat
+			nil,        // accent
+			nil,        // ghost
+			nil,        // uint
+			nil,        // dot
+			nil,        // tuplet
+			nil,        // letRing
+			nil,        // :assign
+			nil,        // cmdPlay
 			nil,        // :tempo
 			nil,        // :timesig
 			nil,        // :velocity
@@ -2530,114 +2456,11 @@ var actionTab = actionTable{
 	actionRow{ // S74
 		canRecover: false,
 		actions: [numSymbols]action{
-			nil,        // INVALID
-			reduce(34), // ␚, reduce: BarBodyCommand
-			nil,        // empty
-			reduce(34), // terminator, reduce: BarBodyCommand
-			nil,        // :bar
-			nil,        // stringLit
-			nil,        // :end
-			nil,        // [
-			nil,        // ]
-			nil,        // letter
-			nil,        // rest
-			nil,        // sharp
-			nil,        // flat
-			nil,        // accent
-			nil,        // ghost
-			nil,        // uint
-			nil,        // dot
-			nil,        // tuplet
-			nil,        // letRing
-			nil,        // :assign
-			nil,        // :play
-			nil,        // :tempo
-			nil,        // :timesig
-			nil,        // :velocity
-			nil,        // :channel
-			nil,        // :program
-			nil,        // :control
-			nil,        // :start
-			nil,        // :stop
-		},
-	},
-	actionRow{ // S75
-		canRecover: false,
-		actions: [numSymbols]action{
-			nil,        // INVALID
-			reduce(38), // ␚, reduce: BarBodyCommand
-			nil,        // empty
-			reduce(38), // terminator, reduce: BarBodyCommand
-			nil,        // :bar
-			nil,        // stringLit
-			nil,        // :end
-			nil,        // [
-			nil,        // ]
-			nil,        // letter
-			nil,        // rest
-			nil,        // sharp
-			nil,        // flat
-			nil,        // accent
-			nil,        // ghost
-			nil,        // uint
-			nil,        // dot
-			nil,        // tuplet
-			nil,        // letRing
-			nil,        // :assign
-			nil,        // :play
-			nil,        // :tempo
-			nil,        // :timesig
-			nil,        // :velocity
-			nil,        // :channel
-			nil,        // :program
-			nil,        // :control
-			nil,        // :start
-			nil,        // :stop
-		},
-	},
-	actionRow{ // S76
-		canRecover: false,
-		actions: [numSymbols]action{
 			nil,       // INVALID
-			reduce(4), // ␚, reduce: TopLevelDeclList
+			nil,       // ␚
 			nil,       // empty
 			nil,       // terminator
-			nil,       // :bar
-			nil,       // stringLit
-			nil,       // :end
-			nil,       // [
-			nil,       // ]
-			nil,       // letter
-			nil,       // rest
-			nil,       // sharp
-			nil,       // flat
-			nil,       // accent
-			nil,       // ghost
-			nil,       // uint
-			nil,       // dot
-			nil,       // tuplet
-			nil,       // letRing
-			nil,       // :assign
-			nil,       // :play
-			nil,       // :tempo
-			nil,       // :timesig
-			nil,       // :velocity
-			nil,       // :channel
-			nil,       // :program
-			nil,       // :control
-			nil,       // :start
-			nil,       // :stop
-		},
-	},
-	actionRow{ // S77
-		canRecover: false,
-		actions: [numSymbols]action{
-			nil,       // INVALID
-			reduce(3), // ␚, reduce: RepeatTerminator
-			nil,       // empty
-			nil,       // terminator
-			reduce(3), // :bar, reduce: RepeatTerminator
-			nil,       // stringLit
+			nil,       // cmdBar
 			nil,       // :end
 			reduce(3), // [, reduce: RepeatTerminator
 			nil,       // ]
@@ -2651,8 +2474,8 @@ var actionTab = actionTable{
 			nil,       // dot
 			nil,       // tuplet
 			nil,       // letRing
-			reduce(3), // :assign, reduce: RepeatTerminator
-			reduce(3), // :play, reduce: RepeatTerminator
+			nil,       // :assign
+			nil,       // cmdPlay
 			reduce(3), // :tempo, reduce: RepeatTerminator
 			reduce(3), // :timesig, reduce: RepeatTerminator
 			reduce(3), // :velocity, reduce: RepeatTerminator
@@ -2663,52 +2486,83 @@ var actionTab = actionTable{
 			reduce(3), // :stop, reduce: RepeatTerminator
 		},
 	},
-	actionRow{ // S78
+	actionRow{ // S75
 		canRecover: false,
 		actions: [numSymbols]action{
-			nil,       // INVALID
-			nil,       // ␚
-			nil,       // empty
-			nil,       // terminator
-			nil,       // :bar
-			nil,       // stringLit
-			shift(99), // :end
-			nil,       // [
-			nil,       // ]
-			nil,       // letter
-			nil,       // rest
-			nil,       // sharp
-			nil,       // flat
-			nil,       // accent
-			nil,       // ghost
-			nil,       // uint
-			nil,       // dot
-			nil,       // tuplet
-			nil,       // letRing
-			nil,       // :assign
-			nil,       // :play
-			nil,       // :tempo
-			nil,       // :timesig
-			nil,       // :velocity
-			nil,       // :channel
-			nil,       // :program
-			nil,       // :control
-			nil,       // :start
-			nil,       // :stop
+			nil,        // INVALID
+			reduce(21), // ␚, reduce: PropertyList
+			nil,        // empty
+			reduce(21), // terminator, reduce: PropertyList
+			nil,        // cmdBar
+			nil,        // :end
+			reduce(21), // [, reduce: PropertyList
+			nil,        // ]
+			reduce(21), // letter, reduce: PropertyList
+			reduce(21), // rest, reduce: PropertyList
+			nil,        // sharp
+			nil,        // flat
+			nil,        // accent
+			nil,        // ghost
+			nil,        // uint
+			nil,        // dot
+			nil,        // tuplet
+			nil,        // letRing
+			nil,        // :assign
+			nil,        // cmdPlay
+			nil,        // :tempo
+			nil,        // :timesig
+			nil,        // :velocity
+			nil,        // :channel
+			nil,        // :program
+			nil,        // :control
+			nil,        // :start
+			nil,        // :stop
 		},
 	},
-	actionRow{ // S79
+	actionRow{ // S76
+		canRecover: false,
+		actions: [numSymbols]action{
+			nil,        // INVALID
+			reduce(20), // ␚, reduce: PropertyList
+			nil,        // empty
+			reduce(20), // terminator, reduce: PropertyList
+			nil,        // cmdBar
+			nil,        // :end
+			reduce(20), // [, reduce: PropertyList
+			nil,        // ]
+			reduce(20), // letter, reduce: PropertyList
+			reduce(20), // rest, reduce: PropertyList
+			shift(34),  // sharp
+			shift(35),  // flat
+			shift(36),  // accent
+			shift(37),  // ghost
+			shift(38),  // uint
+			shift(39),  // dot
+			shift(40),  // tuplet
+			shift(41),  // letRing
+			nil,        // :assign
+			nil,        // cmdPlay
+			nil,        // :tempo
+			nil,        // :timesig
+			nil,        // :velocity
+			nil,        // :channel
+			nil,        // :program
+			nil,        // :control
+			nil,        // :start
+			nil,        // :stop
+		},
+	},
+	actionRow{ // S77
 		canRecover: false,
 		actions: [numSymbols]action{
 			nil,        // INVALID
 			nil,        // ␚
 			nil,        // empty
-			shift(101), // terminator
-			nil,        // :bar
-			nil,        // stringLit
-			reduce(2),  // :end, reduce: RepeatTerminator
+			nil,        // terminator
+			nil,        // cmdBar
+			nil,        // :end
 			nil,        // [
-			nil,        // ]
+			reduce(15), // ], reduce: NoteList
 			nil,        // letter
 			nil,        // rest
 			nil,        // sharp
@@ -2720,7 +2574,73 @@ var actionTab = actionTable{
 			nil,        // tuplet
 			nil,        // letRing
 			nil,        // :assign
-			nil,        // :play
+			nil,        // cmdPlay
+			nil,        // :tempo
+			nil,        // :timesig
+			nil,        // :velocity
+			nil,        // :channel
+			nil,        // :program
+			nil,        // :control
+			nil,        // :start
+			nil,        // :stop
+		},
+	},
+	actionRow{ // S78
+		canRecover: false,
+		actions: [numSymbols]action{
+			nil,        // INVALID
+			nil,        // ␚
+			nil,        // empty
+			nil,        // terminator
+			nil,        // cmdBar
+			nil,        // :end
+			reduce(16), // [, reduce: NoteObject
+			reduce(16), // ], reduce: NoteObject
+			reduce(16), // letter, reduce: NoteObject
+			reduce(16), // rest, reduce: NoteObject
+			nil,        // sharp
+			nil,        // flat
+			nil,        // accent
+			nil,        // ghost
+			nil,        // uint
+			nil,        // dot
+			nil,        // tuplet
+			nil,        // letRing
+			nil,        // :assign
+			nil,        // cmdPlay
+			nil,        // :tempo
+			nil,        // :timesig
+			nil,        // :velocity
+			nil,        // :channel
+			nil,        // :program
+			nil,        // :control
+			nil,        // :start
+			nil,        // :stop
+		},
+	},
+	actionRow{ // S79
+		canRecover: false,
+		actions: [numSymbols]action{
+			nil,        // INVALID
+			nil,        // ␚
+			nil,        // empty
+			nil,        // terminator
+			nil,        // cmdBar
+			nil,        // :end
+			reduce(20), // [, reduce: PropertyList
+			reduce(20), // ], reduce: PropertyList
+			reduce(20), // letter, reduce: PropertyList
+			reduce(20), // rest, reduce: PropertyList
+			shift(80),  // sharp
+			shift(81),  // flat
+			shift(82),  // accent
+			shift(83),  // ghost
+			shift(84),  // uint
+			shift(85),  // dot
+			shift(86),  // tuplet
+			shift(87),  // letRing
+			nil,        // :assign
+			nil,        // cmdPlay
 			nil,        // :tempo
 			nil,        // :timesig
 			nil,        // :velocity
@@ -2737,24 +2657,23 @@ var actionTab = actionTable{
 			nil,        // INVALID
 			nil,        // ␚
 			nil,        // empty
-			reduce(12), // terminator, reduce: BarBodyDecl
-			nil,        // :bar
-			nil,        // stringLit
-			reduce(12), // :end, reduce: BarBodyDecl
-			nil,        // [
-			nil,        // ]
-			nil,        // letter
-			nil,        // rest
-			nil,        // sharp
-			nil,        // flat
-			nil,        // accent
-			nil,        // ghost
-			nil,        // uint
-			nil,        // dot
-			nil,        // tuplet
-			nil,        // letRing
+			nil,        // terminator
+			nil,        // cmdBar
+			nil,        // :end
+			reduce(22), // [, reduce: Property
+			reduce(22), // ], reduce: Property
+			reduce(22), // letter, reduce: Property
+			reduce(22), // rest, reduce: Property
+			reduce(22), // sharp, reduce: Property
+			reduce(22), // flat, reduce: Property
+			reduce(22), // accent, reduce: Property
+			reduce(22), // ghost, reduce: Property
+			reduce(22), // uint, reduce: Property
+			reduce(22), // dot, reduce: Property
+			reduce(22), // tuplet, reduce: Property
+			reduce(22), // letRing, reduce: Property
 			nil,        // :assign
-			nil,        // :play
+			nil,        // cmdPlay
 			nil,        // :tempo
 			nil,        // :timesig
 			nil,        // :velocity
@@ -2771,24 +2690,23 @@ var actionTab = actionTable{
 			nil,        // INVALID
 			nil,        // ␚
 			nil,        // empty
-			reduce(11), // terminator, reduce: BarBodyDecl
-			nil,        // :bar
-			nil,        // stringLit
-			reduce(11), // :end, reduce: BarBodyDecl
-			nil,        // [
-			nil,        // ]
-			nil,        // letter
-			nil,        // rest
-			nil,        // sharp
-			nil,        // flat
-			nil,        // accent
-			nil,        // ghost
-			nil,        // uint
-			nil,        // dot
-			nil,        // tuplet
-			nil,        // letRing
+			nil,        // terminator
+			nil,        // cmdBar
+			nil,        // :end
+			reduce(23), // [, reduce: Property
+			reduce(23), // ], reduce: Property
+			reduce(23), // letter, reduce: Property
+			reduce(23), // rest, reduce: Property
+			reduce(23), // sharp, reduce: Property
+			reduce(23), // flat, reduce: Property
+			reduce(23), // accent, reduce: Property
+			reduce(23), // ghost, reduce: Property
+			reduce(23), // uint, reduce: Property
+			reduce(23), // dot, reduce: Property
+			reduce(23), // tuplet, reduce: Property
+			reduce(23), // letRing, reduce: Property
 			nil,        // :assign
-			nil,        // :play
+			nil,        // cmdPlay
 			nil,        // :tempo
 			nil,        // :timesig
 			nil,        // :velocity
@@ -2805,24 +2723,23 @@ var actionTab = actionTable{
 			nil,        // INVALID
 			nil,        // ␚
 			nil,        // empty
-			reduce(14), // terminator, reduce: NoteList
-			nil,        // :bar
-			nil,        // stringLit
-			reduce(14), // :end, reduce: NoteList
-			shift(84),  // [
-			nil,        // ]
-			shift(85),  // letter
-			shift(86),  // rest
-			nil,        // sharp
-			nil,        // flat
-			nil,        // accent
-			nil,        // ghost
-			nil,        // uint
-			nil,        // dot
-			nil,        // tuplet
-			nil,        // letRing
+			nil,        // terminator
+			nil,        // cmdBar
+			nil,        // :end
+			reduce(24), // [, reduce: Property
+			reduce(24), // ], reduce: Property
+			reduce(24), // letter, reduce: Property
+			reduce(24), // rest, reduce: Property
+			reduce(24), // sharp, reduce: Property
+			reduce(24), // flat, reduce: Property
+			reduce(24), // accent, reduce: Property
+			reduce(24), // ghost, reduce: Property
+			reduce(24), // uint, reduce: Property
+			reduce(24), // dot, reduce: Property
+			reduce(24), // tuplet, reduce: Property
+			reduce(24), // letRing, reduce: Property
 			nil,        // :assign
-			nil,        // :play
+			nil,        // cmdPlay
 			nil,        // :tempo
 			nil,        // :timesig
 			nil,        // :velocity
@@ -2839,24 +2756,23 @@ var actionTab = actionTable{
 			nil,        // INVALID
 			nil,        // ␚
 			nil,        // empty
-			reduce(20), // terminator, reduce: PropertyList
-			nil,        // :bar
-			nil,        // stringLit
-			reduce(20), // :end, reduce: PropertyList
-			reduce(20), // [, reduce: PropertyList
-			nil,        // ]
-			reduce(20), // letter, reduce: PropertyList
-			reduce(20), // rest, reduce: PropertyList
-			shift(105), // sharp
-			shift(106), // flat
-			shift(107), // accent
-			shift(108), // ghost
-			shift(109), // uint
-			shift(110), // dot
-			shift(111), // tuplet
-			shift(112), // letRing
+			nil,        // terminator
+			nil,        // cmdBar
+			nil,        // :end
+			reduce(25), // [, reduce: Property
+			reduce(25), // ], reduce: Property
+			reduce(25), // letter, reduce: Property
+			reduce(25), // rest, reduce: Property
+			reduce(25), // sharp, reduce: Property
+			reduce(25), // flat, reduce: Property
+			reduce(25), // accent, reduce: Property
+			reduce(25), // ghost, reduce: Property
+			reduce(25), // uint, reduce: Property
+			reduce(25), // dot, reduce: Property
+			reduce(25), // tuplet, reduce: Property
+			reduce(25), // letRing, reduce: Property
 			nil,        // :assign
-			nil,        // :play
+			nil,        // cmdPlay
 			nil,        // :tempo
 			nil,        // :timesig
 			nil,        // :velocity
@@ -2870,35 +2786,34 @@ var actionTab = actionTable{
 	actionRow{ // S84
 		canRecover: false,
 		actions: [numSymbols]action{
-			nil,       // INVALID
-			nil,       // ␚
-			nil,       // empty
-			nil,       // terminator
-			nil,       // :bar
-			nil,       // stringLit
-			nil,       // :end
-			shift(44), // [
-			nil,       // ]
-			shift(45), // letter
-			shift(46), // rest
-			nil,       // sharp
-			nil,       // flat
-			nil,       // accent
-			nil,       // ghost
-			nil,       // uint
-			nil,       // dot
-			nil,       // tuplet
-			nil,       // letRing
-			nil,       // :assign
-			nil,       // :play
-			nil,       // :tempo
-			nil,       // :timesig
-			nil,       // :velocity
-			nil,       // :channel
-			nil,       // :program
-			nil,       // :control
-			nil,       // :start
-			nil,       // :stop
+			nil,        // INVALID
+			nil,        // ␚
+			nil,        // empty
+			nil,        // terminator
+			nil,        // cmdBar
+			nil,        // :end
+			reduce(26), // [, reduce: Property
+			reduce(26), // ], reduce: Property
+			reduce(26), // letter, reduce: Property
+			reduce(26), // rest, reduce: Property
+			reduce(26), // sharp, reduce: Property
+			reduce(26), // flat, reduce: Property
+			reduce(26), // accent, reduce: Property
+			reduce(26), // ghost, reduce: Property
+			reduce(26), // uint, reduce: Property
+			reduce(26), // dot, reduce: Property
+			reduce(26), // tuplet, reduce: Property
+			reduce(26), // letRing, reduce: Property
+			nil,        // :assign
+			nil,        // cmdPlay
+			nil,        // :tempo
+			nil,        // :timesig
+			nil,        // :velocity
+			nil,        // :channel
+			nil,        // :program
+			nil,        // :control
+			nil,        // :start
+			nil,        // :stop
 		},
 	},
 	actionRow{ // S85
@@ -2907,24 +2822,23 @@ var actionTab = actionTable{
 			nil,        // INVALID
 			nil,        // ␚
 			nil,        // empty
-			reduce(18), // terminator, reduce: NoteSymbol
-			nil,        // :bar
-			nil,        // stringLit
-			reduce(18), // :end, reduce: NoteSymbol
-			reduce(18), // [, reduce: NoteSymbol
-			nil,        // ]
-			reduce(18), // letter, reduce: NoteSymbol
-			reduce(18), // rest, reduce: NoteSymbol
-			reduce(18), // sharp, reduce: NoteSymbol
-			reduce(18), // flat, reduce: NoteSymbol
-			reduce(18), // accent, reduce: NoteSymbol
-			reduce(18), // ghost, reduce: NoteSymbol
-			reduce(18), // uint, reduce: NoteSymbol
-			reduce(18), // dot, reduce: NoteSymbol
-			reduce(18), // tuplet, reduce: NoteSymbol
-			reduce(18), // letRing, reduce: NoteSymbol
+			nil,        // terminator
+			nil,        // cmdBar
+			nil,        // :end
+			reduce(27), // [, reduce: Property
+			reduce(27), // ], reduce: Property
+			reduce(27), // letter, reduce: Property
+			reduce(27), // rest, reduce: Property
+			reduce(27), // sharp, reduce: Property
+			reduce(27), // flat, reduce: Property
+			reduce(27), // accent, reduce: Property
+			reduce(27), // ghost, reduce: Property
+			reduce(27), // uint, reduce: Property
+			reduce(27), // dot, reduce: Property
+			reduce(27), // tuplet, reduce: Property
+			reduce(27), // letRing, reduce: Property
 			nil,        // :assign
-			nil,        // :play
+			nil,        // cmdPlay
 			nil,        // :tempo
 			nil,        // :timesig
 			nil,        // :velocity
@@ -2941,24 +2855,23 @@ var actionTab = actionTable{
 			nil,        // INVALID
 			nil,        // ␚
 			nil,        // empty
-			reduce(19), // terminator, reduce: NoteSymbol
-			nil,        // :bar
-			nil,        // stringLit
-			reduce(19), // :end, reduce: NoteSymbol
-			reduce(19), // [, reduce: NoteSymbol
-			nil,        // ]
-			reduce(19), // letter, reduce: NoteSymbol
-			reduce(19), // rest, reduce: NoteSymbol
-			reduce(19), // sharp, reduce: NoteSymbol
-			reduce(19), // flat, reduce: NoteSymbol
-			reduce(19), // accent, reduce: NoteSymbol
-			reduce(19), // ghost, reduce: NoteSymbol
-			reduce(19), // uint, reduce: NoteSymbol
-			reduce(19), // dot, reduce: NoteSymbol
-			reduce(19), // tuplet, reduce: NoteSymbol
-			reduce(19), // letRing, reduce: NoteSymbol
+			nil,        // terminator
+			nil,        // cmdBar
+			nil,        // :end
+			reduce(28), // [, reduce: Property
+			reduce(28), // ], reduce: Property
+			reduce(28), // letter, reduce: Property
+			reduce(28), // rest, reduce: Property
+			reduce(28), // sharp, reduce: Property
+			reduce(28), // flat, reduce: Property
+			reduce(28), // accent, reduce: Property
+			reduce(28), // ghost, reduce: Property
+			reduce(28), // uint, reduce: Property
+			reduce(28), // dot, reduce: Property
+			reduce(28), // tuplet, reduce: Property
+			reduce(28), // letRing, reduce: Property
 			nil,        // :assign
-			nil,        // :play
+			nil,        // cmdPlay
 			nil,        // :tempo
 			nil,        // :timesig
 			nil,        // :velocity
@@ -2976,23 +2889,22 @@ var actionTab = actionTable{
 			nil,        // ␚
 			nil,        // empty
 			nil,        // terminator
-			nil,        // :bar
-			nil,        // stringLit
+			nil,        // cmdBar
 			nil,        // :end
-			nil,        // [
-			nil,        // ]
-			nil,        // letter
-			nil,        // rest
-			nil,        // sharp
-			nil,        // flat
-			nil,        // accent
-			nil,        // ghost
-			shift(114), // uint
-			nil,        // dot
-			nil,        // tuplet
-			nil,        // letRing
+			reduce(29), // [, reduce: Property
+			reduce(29), // ], reduce: Property
+			reduce(29), // letter, reduce: Property
+			reduce(29), // rest, reduce: Property
+			reduce(29), // sharp, reduce: Property
+			reduce(29), // flat, reduce: Property
+			reduce(29), // accent, reduce: Property
+			reduce(29), // ghost, reduce: Property
+			reduce(29), // uint, reduce: Property
+			reduce(29), // dot, reduce: Property
+			reduce(29), // tuplet, reduce: Property
+			reduce(29), // letRing, reduce: Property
 			nil,        // :assign
-			nil,        // :play
+			nil,        // cmdPlay
 			nil,        // :tempo
 			nil,        // :timesig
 			nil,        // :velocity
@@ -3010,23 +2922,22 @@ var actionTab = actionTable{
 			nil,        // ␚
 			nil,        // empty
 			nil,        // terminator
-			nil,        // :bar
-			nil,        // stringLit
+			nil,        // cmdBar
 			nil,        // :end
 			nil,        // [
-			nil,        // ]
+			shift(117), // ]
 			nil,        // letter
 			nil,        // rest
 			nil,        // sharp
 			nil,        // flat
 			nil,        // accent
 			nil,        // ghost
-			shift(115), // uint
+			nil,        // uint
 			nil,        // dot
 			nil,        // tuplet
 			nil,        // letRing
 			nil,        // :assign
-			nil,        // :play
+			nil,        // cmdPlay
 			nil,        // :tempo
 			nil,        // :timesig
 			nil,        // :velocity
@@ -3041,11 +2952,10 @@ var actionTab = actionTable{
 		canRecover: false,
 		actions: [numSymbols]action{
 			nil,        // INVALID
-			nil,        // ␚
+			reduce(30), // ␚, reduce: TopLevelCommand
 			nil,        // empty
-			nil,        // terminator
-			nil,        // :bar
-			nil,        // stringLit
+			reduce(30), // terminator, reduce: TopLevelCommand
+			nil,        // cmdBar
 			nil,        // :end
 			nil,        // [
 			nil,        // ]
@@ -3055,12 +2965,12 @@ var actionTab = actionTable{
 			nil,        // flat
 			nil,        // accent
 			nil,        // ghost
-			shift(116), // uint
+			nil,        // uint
 			nil,        // dot
 			nil,        // tuplet
 			nil,        // letRing
 			nil,        // :assign
-			nil,        // :play
+			nil,        // cmdPlay
 			nil,        // :tempo
 			nil,        // :timesig
 			nil,        // :velocity
@@ -3075,11 +2985,10 @@ var actionTab = actionTable{
 		canRecover: false,
 		actions: [numSymbols]action{
 			nil,        // INVALID
-			nil,        // ␚
+			reduce(34), // ␚, reduce: BarBodyCommand
 			nil,        // empty
-			nil,        // terminator
-			nil,        // :bar
-			nil,        // stringLit
+			reduce(34), // terminator, reduce: BarBodyCommand
+			nil,        // cmdBar
 			nil,        // :end
 			nil,        // [
 			nil,        // ]
@@ -3089,12 +2998,12 @@ var actionTab = actionTable{
 			nil,        // flat
 			nil,        // accent
 			nil,        // ghost
-			shift(117), // uint
+			nil,        // uint
 			nil,        // dot
 			nil,        // tuplet
 			nil,        // letRing
 			nil,        // :assign
-			nil,        // :play
+			nil,        // cmdPlay
 			nil,        // :tempo
 			nil,        // :timesig
 			nil,        // :velocity
@@ -3109,11 +3018,10 @@ var actionTab = actionTable{
 		canRecover: false,
 		actions: [numSymbols]action{
 			nil,        // INVALID
-			nil,        // ␚
+			reduce(38), // ␚, reduce: BarBodyCommand
 			nil,        // empty
-			nil,        // terminator
-			nil,        // :bar
-			nil,        // stringLit
+			reduce(38), // terminator, reduce: BarBodyCommand
+			nil,        // cmdBar
 			nil,        // :end
 			nil,        // [
 			nil,        // ]
@@ -3123,12 +3031,12 @@ var actionTab = actionTable{
 			nil,        // flat
 			nil,        // accent
 			nil,        // ghost
-			shift(118), // uint
+			nil,        // uint
 			nil,        // dot
 			nil,        // tuplet
 			nil,        // letRing
 			nil,        // :assign
-			nil,        // :play
+			nil,        // cmdPlay
 			nil,        // :tempo
 			nil,        // :timesig
 			nil,        // :velocity
@@ -3142,12 +3050,77 @@ var actionTab = actionTable{
 	actionRow{ // S92
 		canRecover: false,
 		actions: [numSymbols]action{
+			nil,       // INVALID
+			reduce(4), // ␚, reduce: TopLevelDeclList
+			nil,       // empty
+			nil,       // terminator
+			nil,       // cmdBar
+			nil,       // :end
+			nil,       // [
+			nil,       // ]
+			nil,       // letter
+			nil,       // rest
+			nil,       // sharp
+			nil,       // flat
+			nil,       // accent
+			nil,       // ghost
+			nil,       // uint
+			nil,       // dot
+			nil,       // tuplet
+			nil,       // letRing
+			nil,       // :assign
+			nil,       // cmdPlay
+			nil,       // :tempo
+			nil,       // :timesig
+			nil,       // :velocity
+			nil,       // :channel
+			nil,       // :program
+			nil,       // :control
+			nil,       // :start
+			nil,       // :stop
+		},
+	},
+	actionRow{ // S93
+		canRecover: false,
+		actions: [numSymbols]action{
+			nil,       // INVALID
+			reduce(3), // ␚, reduce: RepeatTerminator
+			nil,       // empty
+			nil,       // terminator
+			reduce(3), // cmdBar, reduce: RepeatTerminator
+			nil,       // :end
+			reduce(3), // [, reduce: RepeatTerminator
+			nil,       // ]
+			reduce(3), // letter, reduce: RepeatTerminator
+			reduce(3), // rest, reduce: RepeatTerminator
+			nil,       // sharp
+			nil,       // flat
+			nil,       // accent
+			nil,       // ghost
+			nil,       // uint
+			nil,       // dot
+			nil,       // tuplet
+			nil,       // letRing
+			reduce(3), // :assign, reduce: RepeatTerminator
+			reduce(3), // cmdPlay, reduce: RepeatTerminator
+			reduce(3), // :tempo, reduce: RepeatTerminator
+			reduce(3), // :timesig, reduce: RepeatTerminator
+			reduce(3), // :velocity, reduce: RepeatTerminator
+			reduce(3), // :channel, reduce: RepeatTerminator
+			reduce(3), // :program, reduce: RepeatTerminator
+			reduce(3), // :control, reduce: RepeatTerminator
+			reduce(3), // :start, reduce: RepeatTerminator
+			reduce(3), // :stop, reduce: RepeatTerminator
+		},
+	},
+	actionRow{ // S94
+		canRecover: false,
+		actions: [numSymbols]action{
 			nil,        // INVALID
-			nil,        // ␚
+			reduce(13), // ␚, reduce: Bar
 			nil,        // empty
-			nil,        // terminator
-			nil,        // :bar
-			nil,        // stringLit
+			reduce(13), // terminator, reduce: Bar
+			nil,        // cmdBar
 			nil,        // :end
 			nil,        // [
 			nil,        // ]
@@ -3157,80 +3130,12 @@ var actionTab = actionTable{
 			nil,        // flat
 			nil,        // accent
 			nil,        // ghost
-			shift(119), // uint
-			nil,        // dot
-			nil,        // tuplet
-			nil,        // letRing
-			nil,        // :assign
-			nil,        // :play
-			nil,        // :tempo
-			nil,        // :timesig
-			nil,        // :velocity
-			nil,        // :channel
-			nil,        // :program
-			nil,        // :control
-			nil,        // :start
-			nil,        // :stop
-		},
-	},
-	actionRow{ // S93
-		canRecover: false,
-		actions: [numSymbols]action{
-			nil,        // INVALID
-			nil,        // ␚
-			nil,        // empty
-			reduce(39), // terminator, reduce: BarBodyCommand
-			nil,        // :bar
-			nil,        // stringLit
-			reduce(39), // :end, reduce: BarBodyCommand
-			nil,        // [
-			nil,        // ]
-			nil,        // letter
-			nil,        // rest
-			nil,        // sharp
-			nil,        // flat
-			nil,        // accent
-			nil,        // ghost
 			nil,        // uint
 			nil,        // dot
 			nil,        // tuplet
 			nil,        // letRing
 			nil,        // :assign
-			nil,        // :play
-			nil,        // :tempo
-			nil,        // :timesig
-			nil,        // :velocity
-			nil,        // :channel
-			nil,        // :program
-			nil,        // :control
-			nil,        // :start
-			nil,        // :stop
-		},
-	},
-	actionRow{ // S94
-		canRecover: false,
-		actions: [numSymbols]action{
-			nil,        // INVALID
-			nil,        // ␚
-			nil,        // empty
-			reduce(40), // terminator, reduce: BarBodyCommand
-			nil,        // :bar
-			nil,        // stringLit
-			reduce(40), // :end, reduce: BarBodyCommand
-			nil,        // [
-			nil,        // ]
-			nil,        // letter
-			nil,        // rest
-			nil,        // sharp
-			nil,        // flat
-			nil,        // accent
-			nil,        // ghost
-			nil,        // uint
-			nil,        // dot
-			nil,        // tuplet
-			nil,        // letRing
-			nil,        // :assign
-			nil,        // :play
+			nil,        // cmdPlay
 			nil,        // :tempo
 			nil,        // :timesig
 			nil,        // :velocity
@@ -3248,13 +3153,12 @@ var actionTab = actionTable{
 			nil,       // ␚
 			nil,       // empty
 			nil,       // terminator
-			nil,       // :bar
-			nil,       // stringLit
-			nil,       // :end
-			reduce(3), // [, reduce: RepeatTerminator
+			nil,       // cmdBar
+			reduce(7), // :end, reduce: BarBodyDeclList
+			nil,       // [
 			nil,       // ]
-			reduce(3), // letter, reduce: RepeatTerminator
-			reduce(3), // rest, reduce: RepeatTerminator
+			nil,       // letter
+			nil,       // rest
 			nil,       // sharp
 			nil,       // flat
 			nil,       // accent
@@ -3264,31 +3168,30 @@ var actionTab = actionTable{
 			nil,       // tuplet
 			nil,       // letRing
 			nil,       // :assign
-			nil,       // :play
-			reduce(3), // :tempo, reduce: RepeatTerminator
-			reduce(3), // :timesig, reduce: RepeatTerminator
-			reduce(3), // :velocity, reduce: RepeatTerminator
-			reduce(3), // :channel, reduce: RepeatTerminator
-			reduce(3), // :program, reduce: RepeatTerminator
-			reduce(3), // :control, reduce: RepeatTerminator
-			reduce(3), // :start, reduce: RepeatTerminator
-			reduce(3), // :stop, reduce: RepeatTerminator
+			nil,       // cmdPlay
+			nil,       // :tempo
+			nil,       // :timesig
+			nil,       // :velocity
+			nil,       // :channel
+			nil,       // :program
+			nil,       // :control
+			nil,       // :start
+			nil,       // :stop
 		},
 	},
 	actionRow{ // S96
 		canRecover: false,
 		actions: [numSymbols]action{
 			nil,        // INVALID
-			reduce(17), // ␚, reduce: NoteObject
+			nil,        // ␚
 			nil,        // empty
-			reduce(17), // terminator, reduce: NoteObject
-			nil,        // :bar
-			nil,        // stringLit
-			nil,        // :end
-			reduce(17), // [, reduce: NoteObject
+			shift(119), // terminator
+			nil,        // cmdBar
+			reduce(2),  // :end, reduce: RepeatTerminator
+			reduce(2),  // [, reduce: RepeatTerminator
 			nil,        // ]
-			reduce(17), // letter, reduce: NoteObject
-			reduce(17), // rest, reduce: NoteObject
+			reduce(2),  // letter, reduce: RepeatTerminator
+			reduce(2),  // rest, reduce: RepeatTerminator
 			nil,        // sharp
 			nil,        // flat
 			nil,        // accent
@@ -3298,15 +3201,15 @@ var actionTab = actionTable{
 			nil,        // tuplet
 			nil,        // letRing
 			nil,        // :assign
-			nil,        // :play
-			nil,        // :tempo
-			nil,        // :timesig
-			nil,        // :velocity
-			nil,        // :channel
-			nil,        // :program
-			nil,        // :control
-			nil,        // :start
-			nil,        // :stop
+			nil,        // cmdPlay
+			reduce(2),  // :tempo, reduce: RepeatTerminator
+			reduce(2),  // :timesig, reduce: RepeatTerminator
+			reduce(2),  // :velocity, reduce: RepeatTerminator
+			reduce(2),  // :channel, reduce: RepeatTerminator
+			reduce(2),  // :program, reduce: RepeatTerminator
+			reduce(2),  // :control, reduce: RepeatTerminator
+			reduce(2),  // :start, reduce: RepeatTerminator
+			reduce(2),  // :stop, reduce: RepeatTerminator
 		},
 	},
 	actionRow{ // S97
@@ -3315,14 +3218,13 @@ var actionTab = actionTable{
 			nil,        // INVALID
 			nil,        // ␚
 			nil,        // empty
-			nil,        // terminator
-			nil,        // :bar
-			nil,        // stringLit
-			nil,        // :end
-			reduce(21), // [, reduce: PropertyList
-			reduce(21), // ], reduce: PropertyList
-			reduce(21), // letter, reduce: PropertyList
-			reduce(21), // rest, reduce: PropertyList
+			reduce(15), // terminator, reduce: NoteList
+			nil,        // cmdBar
+			reduce(15), // :end, reduce: NoteList
+			nil,        // [
+			nil,        // ]
+			nil,        // letter
+			nil,        // rest
 			nil,        // sharp
 			nil,        // flat
 			nil,        // accent
@@ -3332,7 +3234,7 @@ var actionTab = actionTable{
 			nil,        // tuplet
 			nil,        // letRing
 			nil,        // :assign
-			nil,        // :play
+			nil,        // cmdPlay
 			nil,        // :tempo
 			nil,        // :timesig
 			nil,        // :velocity
@@ -3349,24 +3251,23 @@ var actionTab = actionTable{
 			nil,        // INVALID
 			nil,        // ␚
 			nil,        // empty
-			nil,        // terminator
-			nil,        // :bar
-			nil,        // stringLit
-			nil,        // :end
-			reduce(20), // [, reduce: PropertyList
-			reduce(20), // ], reduce: PropertyList
-			reduce(20), // letter, reduce: PropertyList
-			reduce(20), // rest, reduce: PropertyList
-			shift(64),  // sharp
-			shift(65),  // flat
-			shift(66),  // accent
-			shift(67),  // ghost
-			shift(68),  // uint
-			shift(69),  // dot
-			shift(70),  // tuplet
-			shift(71),  // letRing
+			reduce(16), // terminator, reduce: NoteObject
+			nil,        // cmdBar
+			reduce(16), // :end, reduce: NoteObject
+			reduce(16), // [, reduce: NoteObject
+			nil,        // ]
+			reduce(16), // letter, reduce: NoteObject
+			reduce(16), // rest, reduce: NoteObject
+			nil,        // sharp
+			nil,        // flat
+			nil,        // accent
+			nil,        // ghost
+			nil,        // uint
+			nil,        // dot
+			nil,        // tuplet
+			nil,        // letRing
 			nil,        // :assign
-			nil,        // :play
+			nil,        // cmdPlay
 			nil,        // :tempo
 			nil,        // :timesig
 			nil,        // :velocity
@@ -3381,26 +3282,25 @@ var actionTab = actionTable{
 		canRecover: false,
 		actions: [numSymbols]action{
 			nil,        // INVALID
-			reduce(13), // ␚, reduce: Bar
+			nil,        // ␚
 			nil,        // empty
-			reduce(13), // terminator, reduce: Bar
-			nil,        // :bar
-			nil,        // stringLit
-			nil,        // :end
-			nil,        // [
+			reduce(20), // terminator, reduce: PropertyList
+			nil,        // cmdBar
+			reduce(20), // :end, reduce: PropertyList
+			reduce(20), // [, reduce: PropertyList
 			nil,        // ]
-			nil,        // letter
-			nil,        // rest
-			nil,        // sharp
-			nil,        // flat
-			nil,        // accent
-			nil,        // ghost
-			nil,        // uint
-			nil,        // dot
-			nil,        // tuplet
-			nil,        // letRing
+			reduce(20), // letter, reduce: PropertyList
+			reduce(20), // rest, reduce: PropertyList
+			shift(100), // sharp
+			shift(101), // flat
+			shift(102), // accent
+			shift(103), // ghost
+			shift(104), // uint
+			shift(105), // dot
+			shift(106), // tuplet
+			shift(107), // letRing
 			nil,        // :assign
-			nil,        // :play
+			nil,        // cmdPlay
 			nil,        // :tempo
 			nil,        // :timesig
 			nil,        // :velocity
@@ -3414,35 +3314,34 @@ var actionTab = actionTable{
 	actionRow{ // S100
 		canRecover: false,
 		actions: [numSymbols]action{
-			nil,       // INVALID
-			nil,       // ␚
-			nil,       // empty
-			nil,       // terminator
-			nil,       // :bar
-			nil,       // stringLit
-			reduce(7), // :end, reduce: BarBodyDeclList
-			nil,       // [
-			nil,       // ]
-			nil,       // letter
-			nil,       // rest
-			nil,       // sharp
-			nil,       // flat
-			nil,       // accent
-			nil,       // ghost
-			nil,       // uint
-			nil,       // dot
-			nil,       // tuplet
-			nil,       // letRing
-			nil,       // :assign
-			nil,       // :play
-			nil,       // :tempo
-			nil,       // :timesig
-			nil,       // :velocity
-			nil,       // :channel
-			nil,       // :program
-			nil,       // :control
-			nil,       // :start
-			nil,       // :stop
+			nil,        // INVALID
+			nil,        // ␚
+			nil,        // empty
+			reduce(22), // terminator, reduce: Property
+			nil,        // cmdBar
+			reduce(22), // :end, reduce: Property
+			reduce(22), // [, reduce: Property
+			nil,        // ]
+			reduce(22), // letter, reduce: Property
+			reduce(22), // rest, reduce: Property
+			reduce(22), // sharp, reduce: Property
+			reduce(22), // flat, reduce: Property
+			reduce(22), // accent, reduce: Property
+			reduce(22), // ghost, reduce: Property
+			reduce(22), // uint, reduce: Property
+			reduce(22), // dot, reduce: Property
+			reduce(22), // tuplet, reduce: Property
+			reduce(22), // letRing, reduce: Property
+			nil,        // :assign
+			nil,        // cmdPlay
+			nil,        // :tempo
+			nil,        // :timesig
+			nil,        // :velocity
+			nil,        // :channel
+			nil,        // :program
+			nil,        // :control
+			nil,        // :start
+			nil,        // :stop
 		},
 	},
 	actionRow{ // S101
@@ -3451,32 +3350,31 @@ var actionTab = actionTable{
 			nil,        // INVALID
 			nil,        // ␚
 			nil,        // empty
-			shift(122), // terminator
-			nil,        // :bar
-			nil,        // stringLit
-			reduce(2),  // :end, reduce: RepeatTerminator
-			reduce(2),  // [, reduce: RepeatTerminator
+			reduce(23), // terminator, reduce: Property
+			nil,        // cmdBar
+			reduce(23), // :end, reduce: Property
+			reduce(23), // [, reduce: Property
 			nil,        // ]
-			reduce(2),  // letter, reduce: RepeatTerminator
-			reduce(2),  // rest, reduce: RepeatTerminator
-			nil,        // sharp
-			nil,        // flat
-			nil,        // accent
-			nil,        // ghost
-			nil,        // uint
-			nil,        // dot
-			nil,        // tuplet
-			nil,        // letRing
+			reduce(23), // letter, reduce: Property
+			reduce(23), // rest, reduce: Property
+			reduce(23), // sharp, reduce: Property
+			reduce(23), // flat, reduce: Property
+			reduce(23), // accent, reduce: Property
+			reduce(23), // ghost, reduce: Property
+			reduce(23), // uint, reduce: Property
+			reduce(23), // dot, reduce: Property
+			reduce(23), // tuplet, reduce: Property
+			reduce(23), // letRing, reduce: Property
 			nil,        // :assign
-			nil,        // :play
-			reduce(2),  // :tempo, reduce: RepeatTerminator
-			reduce(2),  // :timesig, reduce: RepeatTerminator
-			reduce(2),  // :velocity, reduce: RepeatTerminator
-			reduce(2),  // :channel, reduce: RepeatTerminator
-			reduce(2),  // :program, reduce: RepeatTerminator
-			reduce(2),  // :control, reduce: RepeatTerminator
-			reduce(2),  // :start, reduce: RepeatTerminator
-			reduce(2),  // :stop, reduce: RepeatTerminator
+			nil,        // cmdPlay
+			nil,        // :tempo
+			nil,        // :timesig
+			nil,        // :velocity
+			nil,        // :channel
+			nil,        // :program
+			nil,        // :control
+			nil,        // :start
+			nil,        // :stop
 		},
 	},
 	actionRow{ // S102
@@ -3485,24 +3383,23 @@ var actionTab = actionTable{
 			nil,        // INVALID
 			nil,        // ␚
 			nil,        // empty
-			reduce(15), // terminator, reduce: NoteList
-			nil,        // :bar
-			nil,        // stringLit
-			reduce(15), // :end, reduce: NoteList
-			nil,        // [
+			reduce(24), // terminator, reduce: Property
+			nil,        // cmdBar
+			reduce(24), // :end, reduce: Property
+			reduce(24), // [, reduce: Property
 			nil,        // ]
-			nil,        // letter
-			nil,        // rest
-			nil,        // sharp
-			nil,        // flat
-			nil,        // accent
-			nil,        // ghost
-			nil,        // uint
-			nil,        // dot
-			nil,        // tuplet
-			nil,        // letRing
+			reduce(24), // letter, reduce: Property
+			reduce(24), // rest, reduce: Property
+			reduce(24), // sharp, reduce: Property
+			reduce(24), // flat, reduce: Property
+			reduce(24), // accent, reduce: Property
+			reduce(24), // ghost, reduce: Property
+			reduce(24), // uint, reduce: Property
+			reduce(24), // dot, reduce: Property
+			reduce(24), // tuplet, reduce: Property
+			reduce(24), // letRing, reduce: Property
 			nil,        // :assign
-			nil,        // :play
+			nil,        // cmdPlay
 			nil,        // :tempo
 			nil,        // :timesig
 			nil,        // :velocity
@@ -3519,24 +3416,23 @@ var actionTab = actionTable{
 			nil,        // INVALID
 			nil,        // ␚
 			nil,        // empty
-			reduce(16), // terminator, reduce: NoteObject
-			nil,        // :bar
-			nil,        // stringLit
-			reduce(16), // :end, reduce: NoteObject
-			reduce(16), // [, reduce: NoteObject
+			reduce(25), // terminator, reduce: Property
+			nil,        // cmdBar
+			reduce(25), // :end, reduce: Property
+			reduce(25), // [, reduce: Property
 			nil,        // ]
-			reduce(16), // letter, reduce: NoteObject
-			reduce(16), // rest, reduce: NoteObject
-			nil,        // sharp
-			nil,        // flat
-			nil,        // accent
-			nil,        // ghost
-			nil,        // uint
-			nil,        // dot
-			nil,        // tuplet
-			nil,        // letRing
+			reduce(25), // letter, reduce: Property
+			reduce(25), // rest, reduce: Property
+			reduce(25), // sharp, reduce: Property
+			reduce(25), // flat, reduce: Property
+			reduce(25), // accent, reduce: Property
+			reduce(25), // ghost, reduce: Property
+			reduce(25), // uint, reduce: Property
+			reduce(25), // dot, reduce: Property
+			reduce(25), // tuplet, reduce: Property
+			reduce(25), // letRing, reduce: Property
 			nil,        // :assign
-			nil,        // :play
+			nil,        // cmdPlay
 			nil,        // :tempo
 			nil,        // :timesig
 			nil,        // :velocity
@@ -3553,24 +3449,23 @@ var actionTab = actionTable{
 			nil,        // INVALID
 			nil,        // ␚
 			nil,        // empty
-			reduce(20), // terminator, reduce: PropertyList
-			nil,        // :bar
-			nil,        // stringLit
-			reduce(20), // :end, reduce: PropertyList
-			reduce(20), // [, reduce: PropertyList
+			reduce(26), // terminator, reduce: Property
+			nil,        // cmdBar
+			reduce(26), // :end, reduce: Property
+			reduce(26), // [, reduce: Property
 			nil,        // ]
-			reduce(20), // letter, reduce: PropertyList
-			reduce(20), // rest, reduce: PropertyList
-			shift(105), // sharp
-			shift(106), // flat
-			shift(107), // accent
-			shift(108), // ghost
-			shift(109), // uint
-			shift(110), // dot
-			shift(111), // tuplet
-			shift(112), // letRing
+			reduce(26), // letter, reduce: Property
+			reduce(26), // rest, reduce: Property
+			reduce(26), // sharp, reduce: Property
+			reduce(26), // flat, reduce: Property
+			reduce(26), // accent, reduce: Property
+			reduce(26), // ghost, reduce: Property
+			reduce(26), // uint, reduce: Property
+			reduce(26), // dot, reduce: Property
+			reduce(26), // tuplet, reduce: Property
+			reduce(26), // letRing, reduce: Property
 			nil,        // :assign
-			nil,        // :play
+			nil,        // cmdPlay
 			nil,        // :tempo
 			nil,        // :timesig
 			nil,        // :velocity
@@ -3587,24 +3482,23 @@ var actionTab = actionTable{
 			nil,        // INVALID
 			nil,        // ␚
 			nil,        // empty
-			reduce(22), // terminator, reduce: Property
-			nil,        // :bar
-			nil,        // stringLit
-			reduce(22), // :end, reduce: Property
-			reduce(22), // [, reduce: Property
+			reduce(27), // terminator, reduce: Property
+			nil,        // cmdBar
+			reduce(27), // :end, reduce: Property
+			reduce(27), // [, reduce: Property
 			nil,        // ]
-			reduce(22), // letter, reduce: Property
-			reduce(22), // rest, reduce: Property
-			reduce(22), // sharp, reduce: Property
-			reduce(22), // flat, reduce: Property
-			reduce(22), // accent, reduce: Property
-			reduce(22), // ghost, reduce: Property
-			reduce(22), // uint, reduce: Property
-			reduce(22), // dot, reduce: Property
-			reduce(22), // tuplet, reduce: Property
-			reduce(22), // letRing, reduce: Property
+			reduce(27), // letter, reduce: Property
+			reduce(27), // rest, reduce: Property
+			reduce(27), // sharp, reduce: Property
+			reduce(27), // flat, reduce: Property
+			reduce(27), // accent, reduce: Property
+			reduce(27), // ghost, reduce: Property
+			reduce(27), // uint, reduce: Property
+			reduce(27), // dot, reduce: Property
+			reduce(27), // tuplet, reduce: Property
+			reduce(27), // letRing, reduce: Property
 			nil,        // :assign
-			nil,        // :play
+			nil,        // cmdPlay
 			nil,        // :tempo
 			nil,        // :timesig
 			nil,        // :velocity
@@ -3621,24 +3515,23 @@ var actionTab = actionTable{
 			nil,        // INVALID
 			nil,        // ␚
 			nil,        // empty
-			reduce(23), // terminator, reduce: Property
-			nil,        // :bar
-			nil,        // stringLit
-			reduce(23), // :end, reduce: Property
-			reduce(23), // [, reduce: Property
+			reduce(28), // terminator, reduce: Property
+			nil,        // cmdBar
+			reduce(28), // :end, reduce: Property
+			reduce(28), // [, reduce: Property
 			nil,        // ]
-			reduce(23), // letter, reduce: Property
-			reduce(23), // rest, reduce: Property
-			reduce(23), // sharp, reduce: Property
-			reduce(23), // flat, reduce: Property
-			reduce(23), // accent, reduce: Property
-			reduce(23), // ghost, reduce: Property
-			reduce(23), // uint, reduce: Property
-			reduce(23), // dot, reduce: Property
-			reduce(23), // tuplet, reduce: Property
-			reduce(23), // letRing, reduce: Property
+			reduce(28), // letter, reduce: Property
+			reduce(28), // rest, reduce: Property
+			reduce(28), // sharp, reduce: Property
+			reduce(28), // flat, reduce: Property
+			reduce(28), // accent, reduce: Property
+			reduce(28), // ghost, reduce: Property
+			reduce(28), // uint, reduce: Property
+			reduce(28), // dot, reduce: Property
+			reduce(28), // tuplet, reduce: Property
+			reduce(28), // letRing, reduce: Property
 			nil,        // :assign
-			nil,        // :play
+			nil,        // cmdPlay
 			nil,        // :tempo
 			nil,        // :timesig
 			nil,        // :velocity
@@ -3655,24 +3548,23 @@ var actionTab = actionTable{
 			nil,        // INVALID
 			nil,        // ␚
 			nil,        // empty
-			reduce(24), // terminator, reduce: Property
-			nil,        // :bar
-			nil,        // stringLit
-			reduce(24), // :end, reduce: Property
-			reduce(24), // [, reduce: Property
+			reduce(29), // terminator, reduce: Property
+			nil,        // cmdBar
+			reduce(29), // :end, reduce: Property
+			reduce(29), // [, reduce: Property
 			nil,        // ]
-			reduce(24), // letter, reduce: Property
-			reduce(24), // rest, reduce: Property
-			reduce(24), // sharp, reduce: Property
-			reduce(24), // flat, reduce: Property
-			reduce(24), // accent, reduce: Property
-			reduce(24), // ghost, reduce: Property
-			reduce(24), // uint, reduce: Property
-			reduce(24), // dot, reduce: Property
-			reduce(24), // tuplet, reduce: Property
-			reduce(24), // letRing, reduce: Property
+			reduce(29), // letter, reduce: Property
+			reduce(29), // rest, reduce: Property
+			reduce(29), // sharp, reduce: Property
+			reduce(29), // flat, reduce: Property
+			reduce(29), // accent, reduce: Property
+			reduce(29), // ghost, reduce: Property
+			reduce(29), // uint, reduce: Property
+			reduce(29), // dot, reduce: Property
+			reduce(29), // tuplet, reduce: Property
+			reduce(29), // letRing, reduce: Property
 			nil,        // :assign
-			nil,        // :play
+			nil,        // cmdPlay
 			nil,        // :tempo
 			nil,        // :timesig
 			nil,        // :velocity
@@ -3689,24 +3581,23 @@ var actionTab = actionTable{
 			nil,        // INVALID
 			nil,        // ␚
 			nil,        // empty
-			reduce(25), // terminator, reduce: Property
-			nil,        // :bar
-			nil,        // stringLit
-			reduce(25), // :end, reduce: Property
-			reduce(25), // [, reduce: Property
-			nil,        // ]
-			reduce(25), // letter, reduce: Property
-			reduce(25), // rest, reduce: Property
-			reduce(25), // sharp, reduce: Property
-			reduce(25), // flat, reduce: Property
-			reduce(25), // accent, reduce: Property
-			reduce(25), // ghost, reduce: Property
-			reduce(25), // uint, reduce: Property
-			reduce(25), // dot, reduce: Property
-			reduce(25), // tuplet, reduce: Property
-			reduce(25), // letRing, reduce: Property
+			nil,        // terminator
+			nil,        // cmdBar
+			nil,        // :end
+			nil,        // [
+			shift(121), // ]
+			nil,        // letter
+			nil,        // rest
+			nil,        // sharp
+			nil,        // flat
+			nil,        // accent
+			nil,        // ghost
+			nil,        // uint
+			nil,        // dot
+			nil,        // tuplet
+			nil,        // letRing
 			nil,        // :assign
-			nil,        // :play
+			nil,        // cmdPlay
 			nil,        // :tempo
 			nil,        // :timesig
 			nil,        // :velocity
@@ -3723,24 +3614,23 @@ var actionTab = actionTable{
 			nil,        // INVALID
 			nil,        // ␚
 			nil,        // empty
-			reduce(26), // terminator, reduce: Property
-			nil,        // :bar
-			nil,        // stringLit
-			reduce(26), // :end, reduce: Property
-			reduce(26), // [, reduce: Property
+			reduce(33), // terminator, reduce: BarBodyCommand
+			nil,        // cmdBar
+			reduce(33), // :end, reduce: BarBodyCommand
+			nil,        // [
 			nil,        // ]
-			reduce(26), // letter, reduce: Property
-			reduce(26), // rest, reduce: Property
-			reduce(26), // sharp, reduce: Property
-			reduce(26), // flat, reduce: Property
-			reduce(26), // accent, reduce: Property
-			reduce(26), // ghost, reduce: Property
-			reduce(26), // uint, reduce: Property
-			reduce(26), // dot, reduce: Property
-			reduce(26), // tuplet, reduce: Property
-			reduce(26), // letRing, reduce: Property
+			nil,        // letter
+			nil,        // rest
+			nil,        // sharp
+			nil,        // flat
+			nil,        // accent
+			nil,        // ghost
+			nil,        // uint
+			nil,        // dot
+			nil,        // tuplet
+			nil,        // letRing
 			nil,        // :assign
-			nil,        // :play
+			nil,        // cmdPlay
 			nil,        // :tempo
 			nil,        // :timesig
 			nil,        // :velocity
@@ -3757,24 +3647,23 @@ var actionTab = actionTable{
 			nil,        // INVALID
 			nil,        // ␚
 			nil,        // empty
-			reduce(27), // terminator, reduce: Property
-			nil,        // :bar
-			nil,        // stringLit
-			reduce(27), // :end, reduce: Property
-			reduce(27), // [, reduce: Property
+			nil,        // terminator
+			nil,        // cmdBar
+			nil,        // :end
+			nil,        // [
 			nil,        // ]
-			reduce(27), // letter, reduce: Property
-			reduce(27), // rest, reduce: Property
-			reduce(27), // sharp, reduce: Property
-			reduce(27), // flat, reduce: Property
-			reduce(27), // accent, reduce: Property
-			reduce(27), // ghost, reduce: Property
-			reduce(27), // uint, reduce: Property
-			reduce(27), // dot, reduce: Property
-			reduce(27), // tuplet, reduce: Property
-			reduce(27), // letRing, reduce: Property
+			nil,        // letter
+			nil,        // rest
+			nil,        // sharp
+			nil,        // flat
+			nil,        // accent
+			nil,        // ghost
+			shift(122), // uint
+			nil,        // dot
+			nil,        // tuplet
+			nil,        // letRing
 			nil,        // :assign
-			nil,        // :play
+			nil,        // cmdPlay
 			nil,        // :tempo
 			nil,        // :timesig
 			nil,        // :velocity
@@ -3791,24 +3680,23 @@ var actionTab = actionTable{
 			nil,        // INVALID
 			nil,        // ␚
 			nil,        // empty
-			reduce(28), // terminator, reduce: Property
-			nil,        // :bar
-			nil,        // stringLit
-			reduce(28), // :end, reduce: Property
-			reduce(28), // [, reduce: Property
+			reduce(35), // terminator, reduce: BarBodyCommand
+			nil,        // cmdBar
+			reduce(35), // :end, reduce: BarBodyCommand
+			nil,        // [
 			nil,        // ]
-			reduce(28), // letter, reduce: Property
-			reduce(28), // rest, reduce: Property
-			reduce(28), // sharp, reduce: Property
-			reduce(28), // flat, reduce: Property
-			reduce(28), // accent, reduce: Property
-			reduce(28), // ghost, reduce: Property
-			reduce(28), // uint, reduce: Property
-			reduce(28), // dot, reduce: Property
-			reduce(28), // tuplet, reduce: Property
-			reduce(28), // letRing, reduce: Property
+			nil,        // letter
+			nil,        // rest
+			nil,        // sharp
+			nil,        // flat
+			nil,        // accent
+			nil,        // ghost
+			nil,        // uint
+			nil,        // dot
+			nil,        // tuplet
+			nil,        // letRing
 			nil,        // :assign
-			nil,        // :play
+			nil,        // cmdPlay
 			nil,        // :tempo
 			nil,        // :timesig
 			nil,        // :velocity
@@ -3825,24 +3713,23 @@ var actionTab = actionTable{
 			nil,        // INVALID
 			nil,        // ␚
 			nil,        // empty
-			reduce(29), // terminator, reduce: Property
-			nil,        // :bar
-			nil,        // stringLit
-			reduce(29), // :end, reduce: Property
-			reduce(29), // [, reduce: Property
+			reduce(36), // terminator, reduce: BarBodyCommand
+			nil,        // cmdBar
+			reduce(36), // :end, reduce: BarBodyCommand
+			nil,        // [
 			nil,        // ]
-			reduce(29), // letter, reduce: Property
-			reduce(29), // rest, reduce: Property
-			reduce(29), // sharp, reduce: Property
-			reduce(29), // flat, reduce: Property
-			reduce(29), // accent, reduce: Property
-			reduce(29), // ghost, reduce: Property
-			reduce(29), // uint, reduce: Property
-			reduce(29), // dot, reduce: Property
-			reduce(29), // tuplet, reduce: Property
-			reduce(29), // letRing, reduce: Property
+			nil,        // letter
+			nil,        // rest
+			nil,        // sharp
+			nil,        // flat
+			nil,        // accent
+			nil,        // ghost
+			nil,        // uint
+			nil,        // dot
+			nil,        // tuplet
+			nil,        // letRing
 			nil,        // :assign
-			nil,        // :play
+			nil,        // cmdPlay
 			nil,        // :tempo
 			nil,        // :timesig
 			nil,        // :velocity
@@ -3859,12 +3746,11 @@ var actionTab = actionTable{
 			nil,        // INVALID
 			nil,        // ␚
 			nil,        // empty
-			nil,        // terminator
-			nil,        // :bar
-			nil,        // stringLit
-			nil,        // :end
+			reduce(37), // terminator, reduce: BarBodyCommand
+			nil,        // cmdBar
+			reduce(37), // :end, reduce: BarBodyCommand
 			nil,        // [
-			shift(124), // ]
+			nil,        // ]
 			nil,        // letter
 			nil,        // rest
 			nil,        // sharp
@@ -3876,7 +3762,7 @@ var actionTab = actionTable{
 			nil,        // tuplet
 			nil,        // letRing
 			nil,        // :assign
-			nil,        // :play
+			nil,        // cmdPlay
 			nil,        // :tempo
 			nil,        // :timesig
 			nil,        // :velocity
@@ -3893,10 +3779,9 @@ var actionTab = actionTable{
 			nil,        // INVALID
 			nil,        // ␚
 			nil,        // empty
-			reduce(33), // terminator, reduce: BarBodyCommand
-			nil,        // :bar
-			nil,        // stringLit
-			reduce(33), // :end, reduce: BarBodyCommand
+			nil,        // terminator
+			nil,        // cmdBar
+			nil,        // :end
 			nil,        // [
 			nil,        // ]
 			nil,        // letter
@@ -3905,12 +3790,12 @@ var actionTab = actionTable{
 			nil,        // flat
 			nil,        // accent
 			nil,        // ghost
-			nil,        // uint
+			shift(123), // uint
 			nil,        // dot
 			nil,        // tuplet
 			nil,        // letRing
 			nil,        // :assign
-			nil,        // :play
+			nil,        // cmdPlay
 			nil,        // :tempo
 			nil,        // :timesig
 			nil,        // :velocity
@@ -3925,26 +3810,25 @@ var actionTab = actionTable{
 		canRecover: false,
 		actions: [numSymbols]action{
 			nil,        // INVALID
-			nil,        // ␚
+			reduce(17), // ␚, reduce: NoteObject
 			nil,        // empty
-			nil,        // terminator
-			nil,        // :bar
-			nil,        // stringLit
+			reduce(17), // terminator, reduce: NoteObject
+			nil,        // cmdBar
 			nil,        // :end
-			nil,        // [
+			reduce(17), // [, reduce: NoteObject
 			nil,        // ]
-			nil,        // letter
-			nil,        // rest
+			reduce(17), // letter, reduce: NoteObject
+			reduce(17), // rest, reduce: NoteObject
 			nil,        // sharp
 			nil,        // flat
 			nil,        // accent
 			nil,        // ghost
-			shift(125), // uint
+			nil,        // uint
 			nil,        // dot
 			nil,        // tuplet
 			nil,        // letRing
 			nil,        // :assign
-			nil,        // :play
+			nil,        // cmdPlay
 			nil,        // :tempo
 			nil,        // :timesig
 			nil,        // :velocity
@@ -3961,14 +3845,13 @@ var actionTab = actionTable{
 			nil,        // INVALID
 			nil,        // ␚
 			nil,        // empty
-			reduce(35), // terminator, reduce: BarBodyCommand
-			nil,        // :bar
-			nil,        // stringLit
-			reduce(35), // :end, reduce: BarBodyCommand
-			nil,        // [
-			nil,        // ]
-			nil,        // letter
-			nil,        // rest
+			nil,        // terminator
+			nil,        // cmdBar
+			nil,        // :end
+			reduce(21), // [, reduce: PropertyList
+			reduce(21), // ], reduce: PropertyList
+			reduce(21), // letter, reduce: PropertyList
+			reduce(21), // rest, reduce: PropertyList
 			nil,        // sharp
 			nil,        // flat
 			nil,        // accent
@@ -3978,7 +3861,7 @@ var actionTab = actionTable{
 			nil,        // tuplet
 			nil,        // letRing
 			nil,        // :assign
-			nil,        // :play
+			nil,        // cmdPlay
 			nil,        // :tempo
 			nil,        // :timesig
 			nil,        // :velocity
@@ -3995,24 +3878,23 @@ var actionTab = actionTable{
 			nil,        // INVALID
 			nil,        // ␚
 			nil,        // empty
-			reduce(36), // terminator, reduce: BarBodyCommand
-			nil,        // :bar
-			nil,        // stringLit
-			reduce(36), // :end, reduce: BarBodyCommand
-			nil,        // [
-			nil,        // ]
-			nil,        // letter
-			nil,        // rest
-			nil,        // sharp
-			nil,        // flat
-			nil,        // accent
-			nil,        // ghost
-			nil,        // uint
-			nil,        // dot
-			nil,        // tuplet
-			nil,        // letRing
+			nil,        // terminator
+			nil,        // cmdBar
+			nil,        // :end
+			reduce(20), // [, reduce: PropertyList
+			reduce(20), // ], reduce: PropertyList
+			reduce(20), // letter, reduce: PropertyList
+			reduce(20), // rest, reduce: PropertyList
+			shift(80),  // sharp
+			shift(81),  // flat
+			shift(82),  // accent
+			shift(83),  // ghost
+			shift(84),  // uint
+			shift(85),  // dot
+			shift(86),  // tuplet
+			shift(87),  // letRing
 			nil,        // :assign
-			nil,        // :play
+			nil,        // cmdPlay
 			nil,        // :tempo
 			nil,        // :timesig
 			nil,        // :velocity
@@ -4026,119 +3908,16 @@ var actionTab = actionTable{
 	actionRow{ // S118
 		canRecover: false,
 		actions: [numSymbols]action{
-			nil,        // INVALID
-			nil,        // ␚
-			nil,        // empty
-			reduce(37), // terminator, reduce: BarBodyCommand
-			nil,        // :bar
-			nil,        // stringLit
-			reduce(37), // :end, reduce: BarBodyCommand
-			nil,        // [
-			nil,        // ]
-			nil,        // letter
-			nil,        // rest
-			nil,        // sharp
-			nil,        // flat
-			nil,        // accent
-			nil,        // ghost
-			nil,        // uint
-			nil,        // dot
-			nil,        // tuplet
-			nil,        // letRing
-			nil,        // :assign
-			nil,        // :play
-			nil,        // :tempo
-			nil,        // :timesig
-			nil,        // :velocity
-			nil,        // :channel
-			nil,        // :program
-			nil,        // :control
-			nil,        // :start
-			nil,        // :stop
-		},
-	},
-	actionRow{ // S119
-		canRecover: false,
-		actions: [numSymbols]action{
-			nil,        // INVALID
-			nil,        // ␚
-			nil,        // empty
-			nil,        // terminator
-			nil,        // :bar
-			nil,        // stringLit
-			nil,        // :end
-			nil,        // [
-			nil,        // ]
-			nil,        // letter
-			nil,        // rest
-			nil,        // sharp
-			nil,        // flat
-			nil,        // accent
-			nil,        // ghost
-			shift(126), // uint
-			nil,        // dot
-			nil,        // tuplet
-			nil,        // letRing
-			nil,        // :assign
-			nil,        // :play
-			nil,        // :tempo
-			nil,        // :timesig
-			nil,        // :velocity
-			nil,        // :channel
-			nil,        // :program
-			nil,        // :control
-			nil,        // :start
-			nil,        // :stop
-		},
-	},
-	actionRow{ // S120
-		canRecover: false,
-		actions: [numSymbols]action{
-			nil,        // INVALID
-			nil,        // ␚
-			nil,        // empty
-			nil,        // terminator
-			nil,        // :bar
-			nil,        // stringLit
-			nil,        // :end
-			reduce(17), // [, reduce: NoteObject
-			reduce(17), // ], reduce: NoteObject
-			reduce(17), // letter, reduce: NoteObject
-			reduce(17), // rest, reduce: NoteObject
-			nil,        // sharp
-			nil,        // flat
-			nil,        // accent
-			nil,        // ghost
-			nil,        // uint
-			nil,        // dot
-			nil,        // tuplet
-			nil,        // letRing
-			nil,        // :assign
-			nil,        // :play
-			nil,        // :tempo
-			nil,        // :timesig
-			nil,        // :velocity
-			nil,        // :channel
-			nil,        // :program
-			nil,        // :control
-			nil,        // :start
-			nil,        // :stop
-		},
-	},
-	actionRow{ // S121
-		canRecover: false,
-		actions: [numSymbols]action{
 			nil,       // INVALID
 			nil,       // ␚
 			nil,       // empty
 			nil,       // terminator
-			nil,       // :bar
-			nil,       // stringLit
+			nil,       // cmdBar
 			reduce(3), // :end, reduce: RepeatTerminator
-			shift(84), // [
+			shift(63), // [
 			nil,       // ]
-			shift(85), // letter
-			shift(86), // rest
+			shift(64), // letter
+			shift(65), // rest
 			nil,       // sharp
 			nil,       // flat
 			nil,       // accent
@@ -4148,26 +3927,25 @@ var actionTab = actionTable{
 			nil,       // tuplet
 			nil,       // letRing
 			nil,       // :assign
-			nil,       // :play
-			shift(87), // :tempo
-			shift(88), // :timesig
-			shift(89), // :velocity
-			shift(90), // :channel
-			shift(91), // :program
-			shift(92), // :control
-			shift(93), // :start
-			shift(94), // :stop
+			nil,       // cmdPlay
+			shift(66), // :tempo
+			shift(67), // :timesig
+			shift(68), // :velocity
+			shift(69), // :channel
+			shift(70), // :program
+			shift(71), // :control
+			shift(72), // :start
+			shift(73), // :stop
 		},
 	},
-	actionRow{ // S122
+	actionRow{ // S119
 		canRecover: false,
 		actions: [numSymbols]action{
 			nil,        // INVALID
 			nil,        // ␚
 			nil,        // empty
-			shift(122), // terminator
-			nil,        // :bar
-			nil,        // stringLit
+			shift(119), // terminator
+			nil,        // cmdBar
 			reduce(2),  // :end, reduce: RepeatTerminator
 			reduce(2),  // [, reduce: RepeatTerminator
 			nil,        // ]
@@ -4182,7 +3960,7 @@ var actionTab = actionTable{
 			nil,        // tuplet
 			nil,        // letRing
 			nil,        // :assign
-			nil,        // :play
+			nil,        // cmdPlay
 			reduce(2),  // :tempo, reduce: RepeatTerminator
 			reduce(2),  // :timesig, reduce: RepeatTerminator
 			reduce(2),  // :velocity, reduce: RepeatTerminator
@@ -4193,15 +3971,14 @@ var actionTab = actionTable{
 			reduce(2),  // :stop, reduce: RepeatTerminator
 		},
 	},
-	actionRow{ // S123
+	actionRow{ // S120
 		canRecover: false,
 		actions: [numSymbols]action{
 			nil,        // INVALID
 			nil,        // ␚
 			nil,        // empty
 			reduce(21), // terminator, reduce: PropertyList
-			nil,        // :bar
-			nil,        // stringLit
+			nil,        // cmdBar
 			reduce(21), // :end, reduce: PropertyList
 			reduce(21), // [, reduce: PropertyList
 			nil,        // ]
@@ -4216,7 +3993,106 @@ var actionTab = actionTable{
 			nil,        // tuplet
 			nil,        // letRing
 			nil,        // :assign
-			nil,        // :play
+			nil,        // cmdPlay
+			nil,        // :tempo
+			nil,        // :timesig
+			nil,        // :velocity
+			nil,        // :channel
+			nil,        // :program
+			nil,        // :control
+			nil,        // :start
+			nil,        // :stop
+		},
+	},
+	actionRow{ // S121
+		canRecover: false,
+		actions: [numSymbols]action{
+			nil,        // INVALID
+			nil,        // ␚
+			nil,        // empty
+			reduce(20), // terminator, reduce: PropertyList
+			nil,        // cmdBar
+			reduce(20), // :end, reduce: PropertyList
+			reduce(20), // [, reduce: PropertyList
+			nil,        // ]
+			reduce(20), // letter, reduce: PropertyList
+			reduce(20), // rest, reduce: PropertyList
+			shift(100), // sharp
+			shift(101), // flat
+			shift(102), // accent
+			shift(103), // ghost
+			shift(104), // uint
+			shift(105), // dot
+			shift(106), // tuplet
+			shift(107), // letRing
+			nil,        // :assign
+			nil,        // cmdPlay
+			nil,        // :tempo
+			nil,        // :timesig
+			nil,        // :velocity
+			nil,        // :channel
+			nil,        // :program
+			nil,        // :control
+			nil,        // :start
+			nil,        // :stop
+		},
+	},
+	actionRow{ // S122
+		canRecover: false,
+		actions: [numSymbols]action{
+			nil,        // INVALID
+			nil,        // ␚
+			nil,        // empty
+			reduce(34), // terminator, reduce: BarBodyCommand
+			nil,        // cmdBar
+			reduce(34), // :end, reduce: BarBodyCommand
+			nil,        // [
+			nil,        // ]
+			nil,        // letter
+			nil,        // rest
+			nil,        // sharp
+			nil,        // flat
+			nil,        // accent
+			nil,        // ghost
+			nil,        // uint
+			nil,        // dot
+			nil,        // tuplet
+			nil,        // letRing
+			nil,        // :assign
+			nil,        // cmdPlay
+			nil,        // :tempo
+			nil,        // :timesig
+			nil,        // :velocity
+			nil,        // :channel
+			nil,        // :program
+			nil,        // :control
+			nil,        // :start
+			nil,        // :stop
+		},
+	},
+	actionRow{ // S123
+		canRecover: false,
+		actions: [numSymbols]action{
+			nil,        // INVALID
+			nil,        // ␚
+			nil,        // empty
+			reduce(38), // terminator, reduce: BarBodyCommand
+			nil,        // cmdBar
+			reduce(38), // :end, reduce: BarBodyCommand
+			nil,        // [
+			nil,        // ]
+			nil,        // letter
+			nil,        // rest
+			nil,        // sharp
+			nil,        // flat
+			nil,        // accent
+			nil,        // ghost
+			nil,        // uint
+			nil,        // dot
+			nil,        // tuplet
+			nil,        // letRing
+			nil,        // :assign
+			nil,        // cmdPlay
 			nil,        // :tempo
 			nil,        // :timesig
 			nil,        // :velocity
@@ -4233,24 +4109,23 @@ var actionTab = actionTable{
 			nil,        // INVALID
 			nil,        // ␚
 			nil,        // empty
-			reduce(20), // terminator, reduce: PropertyList
-			nil,        // :bar
-			nil,        // stringLit
-			reduce(20), // :end, reduce: PropertyList
-			reduce(20), // [, reduce: PropertyList
-			nil,        // ]
-			reduce(20), // letter, reduce: PropertyList
-			reduce(20), // rest, reduce: PropertyList
-			shift(105), // sharp
-			shift(106), // flat
-			shift(107), // accent
-			shift(108), // ghost
-			shift(109), // uint
-			shift(110), // dot
-			shift(111), // tuplet
-			shift(112), // letRing
+			nil,        // terminator
+			nil,        // cmdBar
+			nil,        // :end
+			reduce(17), // [, reduce: NoteObject
+			reduce(17), // ], reduce: NoteObject
+			reduce(17), // letter, reduce: NoteObject
+			reduce(17), // rest, reduce: NoteObject
+			nil,        // sharp
+			nil,        // flat
+			nil,        // accent
+			nil,        // ghost
+			nil,        // uint
+			nil,        // dot
+			nil,        // tuplet
+			nil,        // letRing
 			nil,        // :assign
-			nil,        // :play
+			nil,        // cmdPlay
 			nil,        // :tempo
 			nil,        // :timesig
 			nil,        // :velocity
@@ -4264,80 +4139,11 @@ var actionTab = actionTable{
 	actionRow{ // S125
 		canRecover: false,
 		actions: [numSymbols]action{
-			nil,        // INVALID
-			nil,        // ␚
-			nil,        // empty
-			reduce(34), // terminator, reduce: BarBodyCommand
-			nil,        // :bar
-			nil,        // stringLit
-			reduce(34), // :end, reduce: BarBodyCommand
-			nil,        // [
-			nil,        // ]
-			nil,        // letter
-			nil,        // rest
-			nil,        // sharp
-			nil,        // flat
-			nil,        // accent
-			nil,        // ghost
-			nil,        // uint
-			nil,        // dot
-			nil,        // tuplet
-			nil,        // letRing
-			nil,        // :assign
-			nil,        // :play
-			nil,        // :tempo
-			nil,        // :timesig
-			nil,        // :velocity
-			nil,        // :channel
-			nil,        // :program
-			nil,        // :control
-			nil,        // :start
-			nil,        // :stop
-		},
-	},
-	actionRow{ // S126
-		canRecover: false,
-		actions: [numSymbols]action{
-			nil,        // INVALID
-			nil,        // ␚
-			nil,        // empty
-			reduce(38), // terminator, reduce: BarBodyCommand
-			nil,        // :bar
-			nil,        // stringLit
-			reduce(38), // :end, reduce: BarBodyCommand
-			nil,        // [
-			nil,        // ]
-			nil,        // letter
-			nil,        // rest
-			nil,        // sharp
-			nil,        // flat
-			nil,        // accent
-			nil,        // ghost
-			nil,        // uint
-			nil,        // dot
-			nil,        // tuplet
-			nil,        // letRing
-			nil,        // :assign
-			nil,        // :play
-			nil,        // :tempo
-			nil,        // :timesig
-			nil,        // :velocity
-			nil,        // :channel
-			nil,        // :program
-			nil,        // :control
-			nil,        // :start
-			nil,        // :stop
-		},
-	},
-	actionRow{ // S127
-		canRecover: false,
-		actions: [numSymbols]action{
 			nil,       // INVALID
 			nil,       // ␚
 			nil,       // empty
 			nil,       // terminator
-			nil,       // :bar
-			nil,       // stringLit
+			nil,       // cmdBar
 			reduce(6), // :end, reduce: BarBodyDeclList
 			nil,       // [
 			nil,       // ]
@@ -4352,7 +4158,7 @@ var actionTab = actionTable{
 			nil,       // tuplet
 			nil,       // letRing
 			nil,       // :assign
-			nil,       // :play
+			nil,       // cmdPlay
 			nil,       // :tempo
 			nil,       // :timesig
 			nil,       // :velocity
@@ -4363,15 +4169,14 @@ var actionTab = actionTable{
 			nil,       // :stop
 		},
 	},
-	actionRow{ // S128
+	actionRow{ // S126
 		canRecover: false,
 		actions: [numSymbols]action{
 			nil,       // INVALID
 			nil,       // ␚
 			nil,       // empty
 			nil,       // terminator
-			nil,       // :bar
-			nil,       // stringLit
+			nil,       // cmdBar
 			reduce(3), // :end, reduce: RepeatTerminator
 			reduce(3), // [, reduce: RepeatTerminator
 			nil,       // ]
@@ -4386,7 +4191,7 @@ var actionTab = actionTable{
 			nil,       // tuplet
 			nil,       // letRing
 			nil,       // :assign
-			nil,       // :play
+			nil,       // cmdPlay
 			reduce(3), // :tempo, reduce: RepeatTerminator
 			reduce(3), // :timesig, reduce: RepeatTerminator
 			reduce(3), // :velocity, reduce: RepeatTerminator
@@ -4397,15 +4202,14 @@ var actionTab = actionTable{
 			reduce(3), // :stop, reduce: RepeatTerminator
 		},
 	},
-	actionRow{ // S129
+	actionRow{ // S127
 		canRecover: false,
 		actions: [numSymbols]action{
 			nil,        // INVALID
 			nil,        // ␚
 			nil,        // empty
 			reduce(17), // terminator, reduce: NoteObject
-			nil,        // :bar
-			nil,        // stringLit
+			nil,        // cmdBar
 			reduce(17), // :end, reduce: NoteObject
 			reduce(17), // [, reduce: NoteObject
 			nil,        // ]
@@ -4420,7 +4224,7 @@ var actionTab = actionTable{
 			nil,        // tuplet
 			nil,        // letRing
 			nil,        // :assign
-			nil,        // :play
+			nil,        // cmdPlay
 			nil,        // :tempo
 			nil,        // :timesig
 			nil,        // :velocity

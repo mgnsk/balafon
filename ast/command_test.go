@@ -43,7 +43,7 @@ func TestValidCommands(t *testing.T) {
 			Equal(ast.CmdControl{127, 127}),
 		},
 		{
-			`:play "chorus"`,
+			`:play chorus`,
 			Equal(ast.CmdPlay{Name: "chorus"}),
 		},
 		{

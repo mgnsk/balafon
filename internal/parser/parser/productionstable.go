@@ -153,13 +153,13 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `Bar : ":bar" stringLit RepeatTerminator BarBodyDeclList ":end"	<< ast.NewBar(X[1].(*token.Token), X[3].(ast.NodeList)), nil >>`,
+		String: `Bar : cmdBar RepeatTerminator BarBodyDeclList ":end"	<< ast.NewBar(X[0].(*token.Token), X[2].(ast.NodeList)), nil >>`,
 		Id:         "Bar",
 		NTType:     7,
 		Index:      13,
-		NumSymbols: 5,
+		NumSymbols: 4,
 		ReduceFunc: func(X []Attrib, C interface{}) (Attrib, error) {
-			return ast.NewBar(X[1].(*token.Token), X[3].(ast.NodeList)), nil
+			return ast.NewBar(X[0].(*token.Token), X[2].(ast.NodeList)), nil
 		},
 	},
 	ProdTabEntry{
@@ -333,13 +333,13 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `TopLevelCommand : ":play" stringLit	<< ast.NewCmdName(X[1].(*token.Token)) >>`,
+		String: `TopLevelCommand : cmdPlay	<< ast.NewCmdPlay(X[0].(*token.Token)) >>`,
 		Id:         "TopLevelCommand",
 		NTType:     13,
 		Index:      31,
-		NumSymbols: 2,
+		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib, C interface{}) (Attrib, error) {
-			return ast.NewCmdName(X[1].(*token.Token))
+			return ast.NewCmdPlay(X[0].(*token.Token))
 		},
 	},
 	ProdTabEntry{

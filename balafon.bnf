@@ -7,7 +7,10 @@ _uint        : '0' | '1'-'9' {'0'-'9'} ;
 
 _char      : 'a'-'z' | 'A'-'Z' ;
 letter     : _char ;
-stringLit : '"' { . } '"' ;
+
+// Note: can't have identifier standalone due to letter notes in normal mode.
+cmdBar        : ':' 'b' 'a' 'r' ' ' _char { _char | _uint } ;
+cmdPlay       : ':' 'p' 'l' 'a' 'y' ' ' _char { _char | _uint } ;
 
 rest     : '-' ;
 sharp   : '#' ;
@@ -64,7 +67,7 @@ BarBodyDecl
     ;
 
 Bar
-    : ":bar" stringLit RepeatTerminator BarBodyDeclList ":end" << ast.NewBar($T1, $3.(ast.NodeList)), nil >>
+    : cmdBar RepeatTerminator BarBodyDeclList ":end" << ast.NewBar($T0, $2.(ast.NodeList)), nil >>
     ;
 
 NoteList
@@ -100,7 +103,7 @@ Property
 
 TopLevelCommand
     : ":assign" letter uint            << ast.NewCmdAssign($T1, $T2) >>
-    | ":play" stringLit              << ast.NewCmdName($T1) >>
+    | cmdPlay                          << ast.NewCmdPlay($T0) >>
     | BarBodyCommand
     ;
 

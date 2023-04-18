@@ -8,8 +8,6 @@ import (
 
 // Property types.
 var (
-	// typeLetter    = mustGetType("letter")
-	// typeStringLit = mustGetType("stringLit")
 	typeSharp   = mustGetType("sharp")
 	typeFlat    = mustGetType("flat")
 	typeAccent  = mustGetType("accent")
