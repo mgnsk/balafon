@@ -1,10 +1,5 @@
 package interpreter
 
-// ReadKeyMap is a read-only keymap.
-type ReadKeyMap interface {
-	Get(channel uint8, note rune) (key uint8, exists bool)
-}
-
 type midiKey struct {
 	channel uint8
 	note    rune
