@@ -14,7 +14,7 @@ To install the `balafon` command from source, `go` and `rtmidi` are required.
 Not tested on platforms other than Linux.
 
 ```sh
-go install github.com/mgnsk/balafon/cmd/balafon@latest # Requires rtmidi development package.
+go install github.com/mgnsk/balafon/cmd/balafon@latest
 ```
 
 ## Running
@@ -22,7 +22,7 @@ go install github.com/mgnsk/balafon/cmd/balafon@latest # Requires rtmidi develop
 - The default command lists the available MIDI ports. The default port is the 0 port.
 
 ```sh
-$ balafon
+balafon
 0: Midi Through:Midi Through Port-0 14:0
 1: Hydrogen:Hydrogen Midi-In 135:0
 2: VMPK Input:in 128:0
@@ -109,8 +109,6 @@ Use " [command] --help" for more information about a command.
 ## Syntax
 
 The language consists of commands and note lists.
-The commands tempo, program, control, start and stop are global commands.
-The commands timesig, velocity and channel, when used in a bar, are scoped to that bar only.
 
 - ### Comments
 
@@ -255,12 +253,13 @@ Commands begin with a `:`.
 - ### Bars
 
   Bars are used to specify multiple tracks playing at once.
-  Only `timesig`, `velocity` and `channel` are scoped to the bar.
+  Only `timesig`, `velocity` and `channel` commands are scoped to the bar.
+  Other commands, when used inside a bar, have global effect when the bar is played back.
   The bar is executed with the `play` command.
 
   ```
   // Define a bar.
-  :bar "Rock beat"
+  :bar RockBeat
   // Setting timesig makes the interpreter validate the bar length.
   // Incomplete bars are filled with silence.
   :timesig 4 4
@@ -270,13 +269,13 @@ Commands begin with a `:`.
   :end
 
   // You can also write the same bar as:
-  :bar "The same beat"
+  :bar SameBeat
       [xxxxxxxx]8
       ksks
   :end
 
   // Play the bar.
-  :play "Rock beat"
+  :play RockBeat
   ```
 
 ## Examples
