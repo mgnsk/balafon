@@ -11,6 +11,7 @@ import (
 
 	"github.com/c-bata/go-prompt"
 	"github.com/mgnsk/balafon/interpreter"
+	"github.com/mgnsk/balafon/lint"
 	"github.com/mgnsk/balafon/player"
 	"github.com/mgnsk/balafon/sequencer"
 	"github.com/spf13/cobra"
@@ -192,14 +193,7 @@ func createCmdLint() *cobra.Command {
 				return err
 			}
 
-			it := interpreter.New()
-
-			if err := it.Eval(string(input)); err != nil {
-				// TODO: lint error format
-				fmt.Println(err)
-			}
-
-			return nil
+			return lint.Lint(input)
 		},
 	}
 	return cmd
