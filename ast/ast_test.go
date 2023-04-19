@@ -5,12 +5,33 @@ import (
 
 	"github.com/mgnsk/balafon/internal/parser/lexer"
 	"github.com/mgnsk/balafon/internal/parser/parser"
+	. "github.com/onsi/gomega"
 )
 
 func parse(input string) (interface{}, error) {
 	lex := lexer.NewLexer([]byte(input))
 	p := parser.NewParser()
 	return p.Parse(lex)
+}
+
+func TestSyntaxNotAmbigous(t *testing.T) {
+	g := NewWithT(t)
+
+	input := `
+:assign t 0
+:assign e 1
+:assign m 2
+:assign p 3
+:assign o 4
+:bar bar
+	:timesig 5 4
+	tempo
+:end
+:play bar
+`
+
+	_, err := parse(input)
+	g.Expect(err).NotTo(HaveOccurred())
 }
 
 func BenchmarkParser(b *testing.B) {

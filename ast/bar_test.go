@@ -58,6 +58,23 @@ func TestBar(t *testing.T) {
 	g.Expect(buf2.String()).To(Equal(input1Clean))
 }
 
+func TestBarIdentifierAllowedNumeric(t *testing.T) {
+	for _, input := range []string{
+		`:bar bar c :end`,
+		`:bar 1 c :end`,
+		`:play 1`,
+		`:bar 1a c :end`,
+		`:play 1a`,
+	} {
+		t.Run(input, func(t *testing.T) {
+			g := NewGomegaWithT(t)
+
+			_, err := parse(input)
+			g.Expect(err).NotTo(HaveOccurred())
+		})
+	}
+}
+
 func TestCommandsForbiddenInBar(t *testing.T) {
 	for _, input := range []string{
 		":assign c 60",
@@ -72,24 +89,4 @@ func TestCommandsForbiddenInBar(t *testing.T) {
 			g.Expect(err.Error()).To(ContainSubstring(`got:`))
 		})
 	}
-}
-
-func TestSyntaxNotAmbigous(t *testing.T) {
-	g := NewWithT(t)
-
-	input := `
-:assign t 0
-:assign e 1
-:assign m 2
-:assign p 3
-:assign o 4
-:bar bar
-	:timesig 5 4
-	tempo
-:end
-:play bar
-`
-
-	_, err := parse(input)
-	g.Expect(err).NotTo(HaveOccurred())
 }

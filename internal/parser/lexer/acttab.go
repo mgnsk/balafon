@@ -293,11 +293,11 @@ var ActTab = ActionTable{
 		Ignore: "",
 	},
 	ActionRow{ // S68
-		Accept: 0,
+		Accept: 4,
 		Ignore: "",
 	},
 	ActionRow{ // S69
-		Accept: 0,
+		Accept: 4,
 		Ignore: "",
 	},
 	ActionRow{ // S70
@@ -309,35 +309,35 @@ var ActTab = ActionTable{
 		Ignore: "",
 	},
 	ActionRow{ // S72
-		Accept: 26,
+		Accept: 0,
 		Ignore: "",
 	},
 	ActionRow{ // S73
-		Accept: 20,
+		Accept: 0,
 		Ignore: "",
 	},
 	ActionRow{ // S74
-		Accept: 0,
+		Accept: 26,
 		Ignore: "",
 	},
 	ActionRow{ // S75
-		Accept: 0,
+		Accept: 20,
 		Ignore: "",
 	},
 	ActionRow{ // S76
-		Accept: 18,
+		Accept: 0,
 		Ignore: "",
 	},
 	ActionRow{ // S77
-		Accept: 4,
+		Accept: 0,
 		Ignore: "",
 	},
 	ActionRow{ // S78
-		Accept: 4,
+		Accept: 18,
 		Ignore: "",
 	},
 	ActionRow{ // S79
-		Accept: 0,
+		Accept: 4,
 		Ignore: "",
 	},
 	ActionRow{ // S80
@@ -345,50 +345,58 @@ var ActTab = ActionTable{
 		Ignore: "",
 	},
 	ActionRow{ // S81
-		Accept: 19,
+		Accept: 0,
 		Ignore: "",
 	},
 	ActionRow{ // S82
-		Accept: 0,
+		Accept: 19,
 		Ignore: "",
 	},
 	ActionRow{ // S83
-		Accept: 0,
+		Accept: 19,
 		Ignore: "",
 	},
 	ActionRow{ // S84
-		Accept: 0,
+		Accept: 19,
 		Ignore: "",
 	},
 	ActionRow{ // S85
-		Accept: 23,
-		Ignore: "",
-	},
-	ActionRow{ // S86
-		Accept: 25,
-		Ignore: "",
-	},
-	ActionRow{ // S87
-		Accept: 19,
-		Ignore: "",
-	},
-	ActionRow{ // S88
-		Accept: 19,
-		Ignore: "",
-	},
-	ActionRow{ // S89
-		Accept: 24,
-		Ignore: "",
-	},
-	ActionRow{ // S90
-		Accept: 21,
-		Ignore: "",
-	},
-	ActionRow{ // S91
 		Accept: 0,
 		Ignore: "",
 	},
+	ActionRow{ // S86
+		Accept: 0,
+		Ignore: "",
+	},
+	ActionRow{ // S87
+		Accept: 0,
+		Ignore: "",
+	},
+	ActionRow{ // S88
+		Accept: 23,
+		Ignore: "",
+	},
+	ActionRow{ // S89
+		Accept: 25,
+		Ignore: "",
+	},
+	ActionRow{ // S90
+		Accept: 19,
+		Ignore: "",
+	},
+	ActionRow{ // S91
+		Accept: 24,
+		Ignore: "",
+	},
 	ActionRow{ // S92
+		Accept: 21,
+		Ignore: "",
+	},
+	ActionRow{ // S93
+		Accept: 0,
+		Ignore: "",
+	},
+	ActionRow{ // S94
 		Accept: 22,
 		Ignore: "",
 	},

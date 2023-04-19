@@ -9,8 +9,8 @@ _char      : 'a'-'z' | 'A'-'Z' ;
 letter     : _char ;
 
 // Note: can't have identifier standalone due to letter notes in normal mode.
-cmdBar        : ':' 'b' 'a' 'r' ' ' _char { _char | _uint } ;
-cmdPlay       : ':' 'p' 'l' 'a' 'y' ' ' _char { _char | _uint } ;
+cmdBar        : ':' 'b' 'a' 'r' ' ' ( _char | _uint ) { _char | _uint } ;
+cmdPlay       : ':' 'p' 'l' 'a' 'y' ' ' ( _char | _uint ) { _char | _uint } ;
 
 rest     : '-' ;
 sharp   : '#' ;
