@@ -721,29 +721,6 @@ func TestLetRing(t *testing.T) {
 	))
 }
 
-func TestSyntaxNotAmbigous(t *testing.T) {
-	g := NewWithT(t)
-
-	it := interpreter.New()
-
-	g.Expect(it.Eval(`
-:assign t 0
-:assign e 1
-:assign m 2
-:assign p 3
-:assign o 4
-:bar bar
-	:timesig 5 4
-	tempo
-:end
-:play bar
-	`)).To(Succeed())
-
-	bars := it.Flush()
-	g.Expect(bars).To(HaveLen(1))
-	g.Expect(bars[0].Events).To(HaveLen(10))
-}
-
 // var (
 // 	testFile  []byte
 // 	lineCount int

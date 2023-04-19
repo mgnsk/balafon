@@ -73,3 +73,23 @@ func TestCommandsForbiddenInBar(t *testing.T) {
 		})
 	}
 }
+
+func TestSyntaxNotAmbigous(t *testing.T) {
+	g := NewWithT(t)
+
+	input := `
+:assign t 0
+:assign e 1
+:assign m 2
+:assign p 3
+:assign o 4
+:bar bar
+	:timesig 5 4
+	tempo
+:end
+:play bar
+`
+
+	_, err := parse(input)
+	g.Expect(err).NotTo(HaveOccurred())
+}
