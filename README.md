@@ -1,6 +1,5 @@
 # Balafon
 
-
 > The balafon is a gourd-resonated xylophone, a type of struck idiophone. It is closely associated with the neighbouring Mandé, Senoufo and Gur peoples of West Africa, particularly the Guinean branch of the Mandinka ethnic group, but is now found across West Africa from Guinea to Mali. Its common name, balafon, is likely a European coinage combining its Mandinka name ߓߟߊ bala with the word ߝߐ߲ fôn 'to speak' or the Greek root phono.
 >
 > [Balafon](https://en.wikipedia.org/wiki/Balafon) - From Wikipedia, the free encyclopedia
@@ -284,145 +283,32 @@ Commands begin with a `:`.
 
 ### The Bonham Half Time Shuffle
 
-The file is included in the `examples` directory. To play into the default port, run
+[examples/bonham](examples/bonham)
+
+To play into the default port, run
 
 ```sh
 balafon play examples/bonham
 ```
 
-```
-// A simplified Bonham half time shuffle
-
-// Percussion channel.
-:channel 10
-
-// Kick drum.
-:assign k 36
-// Acoustic snare drum.
-:assign s 38
-// Hi-Hat closed.
-:assign x 42
-// Hi-Hat open.
-:assign o 46
-// Hi-Hat foot.
-:assign X 44
-// Crash cymbal.
-:assign c 49
-// Low tom.
-:assign q 45
-// Floor tom 2.
-:assign g 41
-
-:tempo 132
-:timesig 4 4
-:velocity 100
-
-// Start the first :bar with a crash cymbal and let it ring.
-:bar "bonham 1"
-	[[c*-o]   [x^-x]    [x^-x] [x^-x]]8/3
-	-         [-s)-]8/3 s^     [-s)-]8/3
-	[k-k]^8/3 [--k]8/3  -      [--k]8/3
-	-         X         -2
-:end
-
-:bar "bonham 2"
-	[[x^-o]   [x^-x]    [x^-x] [x^-x]]8/3
-	-         [-s)-]8/3 s^     [-s)-]8/3
-	[k-k]^8/3 [--k]8/3  -      [--k]8/3
-	-         X         -2
-:end
-
-:bar "fill"
-	[[x^-s] [sss] [ssq] [qgg]]8/3
-	[[k-k]^ [--k]]8/3   -2
-	-       X     X     X
-:end
-
-// Count in.
-xxxo
-
-// Play 8 :bars of the Bonham groove.
-:play "bonham 1"
-:play "bonham 2"
-:play "bonham 2"
-:play "fill"
-:play "bonham 1"
-:play "bonham 2"
-:play "bonham 2"
-:play "fill"
-```
-
 ### J.S. Bach - Musikalisches Opfer - 6. Canon A 2 Per Tonos
 
-The file is included in the `examples` directory. To play into the default port, run
+[examples/bach](examples/bach)
+
+To play into the default port, run
 
 ```sh
 balafon play examples/bach
 ```
 
-It is possible to write melodies using balafon in a limited way. Here's 2 bars of Bach:
-
-```
-// J.S. Bach - Musikalisches Opfer - 6. Canon A 2 Per Tonos
-
-// C3
-:assign C 48
-:assign D 50
-:assign E 52
-:assign F 53
-:assign G 55
-:assign A 57
-:assign B 59
-
-// C4 (middle C)
-:assign c 60
-:assign d 62
-:assign e 64
-:assign f 65
-:assign g 67
-:assign a 69
-:assign b 71
-
-:velocity 100
-
-:bar "bar 1"
-	:timesig 4 4
-	c.            d8 [e$ e f f#]8
-	[-CE$G]16 c2          [B$A]8
-:end
-
-// 16th rests instead of ties (unimplemented).
-:bar "bar 2"
-	:timesig 4 4
-	g2                  a$      [-fd$c]16
-	[-GB$d]16  g2               [f e]8
-	B$        [-EDE]16 [FCFG]16  A$
-:end
-
-:tempo 73
-
-:play "bar 1"
-:play "bar 2"
-```
-
 ### Multichannel
 
-The file is included in the `examples` directory.
+[examples/multichannel](examples/multichannel)
 
-```
-:channel 1
-:assign x 42
-:channel 2
-:assign k 36
-:tempo 60
-:timesig 4 4
-:bar "test"
-	:channel 1
-	xxxx
-	:channel 2
-	kkkk
-:end
-:play "test"
+To play into the default port, run
+
+```sh
+balafon play examples/bach
 ```
 
 ## Possible features in the future

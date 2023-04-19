@@ -1,37 +1,37 @@
-channel 10
+:channel 10
 
 // Kick drum.
-assign a 36
-assign s 36
+:assign a 36
+:assign s 36
 // Acoustic snare drum.
-assign d 38
+:assign d 38
 
 // Hi-Hat open.
-assign j 46
+:assign j 46
 // Hi-Hat closed.
-assign k 42
+:assign k 42
 // Hi-Hat foot.
-assign l 44
+:assign l 44
 
 // Ride 1.
-assign u 51
+:assign u 51
 // Ride 2.
-assign y 59
+:assign y 59
 // Ride bell.
-assign t 53
+:assign t 53
 
 // Crash 1.
-assign i 49
+:assign i 49
 // Crash 2.
-assign o 57
+:assign o 57
 // China.
-assign p 52
+:assign p 52
 
 // Toms.
-assign m 50
-assign n 48
-assign b 47
-assign v 43
-assign c 41
+:assign m 50
+:assign n 48
+:assign b 47
+:assign v 43
+:assign c 41
 
-velocity 100
+:velocity 100

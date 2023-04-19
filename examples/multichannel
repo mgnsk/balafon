@@ -4,10 +4,10 @@
 :assign k 36
 :tempo 60
 :timesig 4 4
-:bar "test"
+:bar test
 	:channel 1
 	xxxx
 	:channel 2
 	kkkk
 :end
-:play "test"
+:play test

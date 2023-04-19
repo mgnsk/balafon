@@ -20,14 +20,14 @@
 
 :velocity 100
 
-:bar "bar 1"
+:bar bar1
 	:timesig 4 4
 	c.            d8 [e$ e f f#]8
 	[-CE$G]16 c2          [B$A]8
 :end
 
 // 16th rests instead of ties (unimplemented).
-:bar "bar 2"
+:bar bar2
 	:timesig 4 4
 	g2                  a$      [-fd$c]16
 	[-GB$d]16  g2               [f e]8
@@ -36,5 +36,5 @@
 
 :tempo 73
 
-:play "bar 1"
-:play "bar 2"
+:play bar1
+:play bar2
