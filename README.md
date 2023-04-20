@@ -66,7 +66,7 @@ balafon shell --port "Hydrogen"
 balafon load --port "Hydrogen" examples/bonham
 ```
 
-- Enter live mode by entering the `live` command (TODO):
+- Enter live mode by entering the `live` command:
 
 ```sh
 balafon live --port "Hydrogen" examples/live_drumset
@@ -110,13 +110,13 @@ Use " [command] --help" for more information about a command.
 
 The language consists of commands and note lists.
 
-- ### Comments
+### Comments
 
-  ```
-  // This is a line comment.
-  ```
+```
+// This is a line comment.
+```
 
-- ### Commands
+### Commands
 
 Commands begin with a `:`.
 
@@ -149,134 +149,134 @@ Commands begin with a `:`.
 :control 1 127
 ```
 
-- ### Note assignment
+### Note assignment
 
-  Assign a MIDI note number to a note letter.
+Assign a MIDI note number to a note letter.
 
-  ```
-  // Kick drum (on the drum channel).
-  :assign k 36
-  // Middle C (on other channels).
-  :assign c 60
-  ```
+```
+// Kick drum (on the drum channel).
+:assign k 36
+// Middle C (on other channels).
+:assign c 60
+```
 
-- ### Notes
+### Notes
 
-  Notes are written as a letter symbol (must be assigned first) plus properties.
-  The available properties are
+Notes are written as a letter symbol (must be assigned first) plus properties.
+The available properties are
 
-  - sharp (`#`)
-  - flat (`$`)
-  - accentuated (`^`)
-  - ghost (`)`)
-  - numeric note value (`1`, `2`, `4`, `8` and so on)
-  - dot (`.`)
-  - tuplet (`/3`) (The number in the tuplet specifies the divison, for example a quintuplet `/5`)
-  - let ring (`*`)
+- sharp (`#`)
+- flat (`$`)
+- accentuated (`^`)
+- ghost (`)`)
+- numeric note value (`1`, `2`, `4`, `8` and so on)
+- dot (`.`)
+- tuplet (`/3`) (The number in the tuplet specifies the divison, for example a quintuplet `/5`)
+- let ring (`*`)
 
-- ### Note values
+### Note values
 
-  ```
-  // Whole note.
-  x1
-  // Half note.
-  x2
-  // Quarter note (same as x4).
-  x
-  // 8th note.
-  x8
-  // 16th note.
-  x16
-  // 32th note.
-  x32
-  // And so on...
-  ```
+```
+// Whole note.
+x1
+// Half note.
+x2
+// Quarter note (same as x4).
+x
+// 8th note.
+x8
+// 16th note.
+x16
+// 32th note.
+x32
+// And so on...
+```
 
-- ### Rests
+### Rests
 
-  ```
-  // A quarter rest.
-  -
-  // An 8th rest.
-  -8
-  ```
+```
+// A quarter rest.
+-
+// An 8th rest.
+-8
+```
 
-- ### Dotted notes and tuplets
+### Dotted notes and tuplets
 
-  ```
-  // Dotted quarter note.
-  x.
-  // Double-dotted note.
-  x..
-  // Triple-dotted note.
-  x...
-  // Dotted 8th note.
-  x8.
-  // Quarter triplet note.
-  x/3
-  // Dotted 8th quintuplet note.
-  x8./5
-  ```
+```
+// Dotted quarter note.
+x.
+// Double-dotted note.
+x..
+// Triple-dotted note.
+x...
+// Dotted 8th note.
+x8.
+// Quarter triplet note.
+x/3
+// Dotted 8th quintuplet note.
+x8./5
+```
 
-- ### Flat and sharp notes
+### Flat and sharp notes
 
-  ```
-  // A note.
-  c
-  // A sharp note (MIDI note number + 1).
-  c#
-  // A flat note (MIDI note number - 1).
-  c$
-  ```
+```
+// A note.
+c
+// A sharp note (MIDI note number + 1).
+c#
+// A flat note (MIDI note number - 1).
+c$
+```
 
-- ### Note grouping
+### Note grouping
 
-  Notes can be arbitrarily grouped and properties applied to multiple notes at once.
+Notes can be arbitrarily grouped and properties applied to multiple notes at once.
 
-  ```
-  // Ti-Tiri.
-  x8 x16 x16
-  // Can be written as:
-  x8[xx]16
+```
+// Ti-Tiri.
+x8 x16 x16
+// Can be written as:
+x8[xx]16
 
-  // Three 8th triplet notes.
-  [xxx]8/3
-  // Expands to
-  x8/3 x8/3 x8/3
+// Three 8th triplet notes.
+[xxx]8/3
+// Expands to
+x8/3 x8/3 x8/3
 
-  // Nested groups are also supported:
-  [[fcg] [fcg]#]8
-  // Expands to
-  f8 c8 g8 f#8 c#8 g#8
-  ```
+// Nested groups are also supported:
+[[fcg] [fcg]#]8
+// Expands to
+f8 c8 g8 f#8 c#8 g#8
+```
 
-- ### Bars
+### Bars
 
-  Bars are used to specify multiple tracks playing at once.
-  Only `timesig`, `velocity` and `channel` commands are scoped to the bar.
-  Other commands, when used inside a bar, have global effect when the bar is played back.
-  The bar is executed with the `play` command.
+Bars are used to specify multiple tracks playing at once.
+Only `timesig`, `velocity` and `channel` commands are scoped to the bar.
+Other commands, when used inside a bar, have global effect when the bar is played back.
+The bar is executed with the `play` command.
 
-  ```
-  // Define a bar.
-  :bar RockBeat
-  // Setting timesig makes the interpreter validate the bar length.
-  // Incomplete bars are filled with silence.
-  :timesig 4 4
-      [xx xx xx xx]8
-      // Using braces for nice alignment.
-      [k  s  k  s]
-  :end
+```
+// Define a bar.
+:bar RockBeat
+// Setting timesig makes the interpreter validate the bar length.
+// Incomplete bars are filled with silence.
+:timesig 4 4
+  [xx xx xx xx]8
+  // Using braces for nice alignment.
+  [k  s  k  s]
+:end
 
-  // You can also write the same bar as:
-  :bar SameBeat
-      [xxxxxxxx]8
-      ksks
-  :end
+// You can also write the same bar as:
+:bar SameBeat
+  [xxxxxxxx]8
+  ksks
+:end
 
-  // Play the bar.
-  :play RockBeat
-  ```
+// Play the bar.
+:play RockBeat
+```
 
 ## Examples
 
