@@ -21,7 +21,7 @@ func (l NoteList) WriteTo(w io.Writer) (int64, error) {
 	var n int
 
 	for _, note := range l {
-		n += ew.CopyFrom(note)
+		n += ew.WriteFrom(note)
 	}
 
 	return int64(n), ew.Flush()
@@ -175,7 +175,7 @@ func (note *Note) WriteTo(w io.Writer) (int64, error) {
 	var n int
 
 	n += ew.WriteRune(note.Name)
-	n += ew.CopyFrom(note.Props)
+	n += ew.WriteFrom(note.Props)
 
 	return int64(n), ew.Flush()
 }

@@ -14,7 +14,7 @@ func (list NodeList) WriteTo(w io.Writer) (n int64, err error) {
 	ew := newErrWriter(w)
 
 	for i, decl := range list {
-		n += int64(ew.CopyFrom(decl))
+		n += int64(ew.WriteFrom(decl))
 
 		if i < len(list)-1 {
 			n += int64(ew.Write([]byte("\n")))

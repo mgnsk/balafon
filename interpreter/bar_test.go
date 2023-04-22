@@ -67,3 +67,18 @@ func TestBarDurationTimeSignatures(t *testing.T) {
 		})
 	}
 }
+
+func TestEmptyBarIsInvalid(t *testing.T) {
+	g := NewWithT(t)
+
+	input := `
+:bar mybar
+:timesig 1 1
+:velocity 1
+:channel 1
+:end
+	`
+
+	it := interpreter.New()
+	g.Expect(it.Eval(input)).NotTo(Succeed())
+}

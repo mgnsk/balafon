@@ -128,7 +128,7 @@ func (it *Interpreter) parse(declList ast.NodeList) ([]*Bar, error) {
 				return nil, err
 			}
 			if newBar == nil {
-				panic("TODO: nil bar")
+				return nil, fmt.Errorf("invalid empty bar '%s'", decl.Name)
 			}
 			it.bars[decl.Name] = newBar
 
@@ -206,6 +206,7 @@ func (it *Interpreter) parseBar(declList ast.NodeList) (*Bar, error) {
 	}
 
 	if it.pos == 0 && len(bar.Events) == 0 {
+		// Bar that consists of only timesig, velocity or channel commands and no events.
 		return nil, nil
 	}
 

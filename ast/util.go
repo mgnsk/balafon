@@ -35,17 +35,6 @@ func (w *errWriter) Write(b []byte) int {
 	return n
 }
 
-func (w *errWriter) WriteByte(b byte) int {
-	if w.err != nil {
-		return 0
-	}
-	err := w.w.WriteByte(b)
-	if err != nil {
-		w.err = err
-	}
-	return 1
-}
-
 func (w *errWriter) WriteRune(r rune) int {
 	if w.err != nil {
 		return 0
@@ -72,7 +61,7 @@ func (w *errWriter) WriteInt(i int) int {
 	return w.WriteString(strconv.Itoa(i))
 }
 
-func (w *errWriter) CopyFrom(wt io.WriterTo) int {
+func (w *errWriter) WriteFrom(wt io.WriterTo) int {
 	if w.err != nil {
 		return 0
 	}

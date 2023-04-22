@@ -10,6 +10,7 @@ import (
 	. "github.com/onsi/gomega"
 	"gitlab.com/gomidi/midi/v2"
 	"gitlab.com/gomidi/midi/v2/smf"
+	"golang.org/x/exp/slices"
 )
 
 func TestCommands(t *testing.T) {
@@ -481,18 +482,15 @@ func TestMultiTrackNotesAreSortedPairs(t *testing.T) {
 	g.Expect(bars[0].Duration(60)).To(Equal(4 * time.Second))
 	g.Expect(bars[0].Events).To(HaveLen(1 + 16)) // 1 tempo, 8 note on, 8 note off
 
-	keyPositions := map[uint8][]uint32{}
-	for _, ev := range bars[0].Events[1:] { // skip first tempo msg
-		var ch, key, vel uint8
-		if ev.Message.GetNoteOn(&ch, &key, &vel) {
-			keyPositions[key] = append(keyPositions[key], ev.Pos)
-		}
+	pos := make([]uint32, 16)
+	for i, ev := range bars[0].Events[1:] { // skip first tempo msg
+		pos[i] = ev.Pos
 	}
 
-	g.Expect(keyPositions).To(HaveLen(4))
-	for _, pos := range keyPositions {
-		g.Expect(pos).To(HaveLen(2))
-		g.Expect(pos[0]).To(Equal(pos[1]))
+	g.Expect(slices.IsSorted(pos)).To(BeTrue())
+
+	for i := 0; i < len(pos)-1; i += 2 {
+		g.Expect(pos[i]).To(Equal(pos[i+1]))
 	}
 }
 
@@ -720,43 +718,3 @@ func TestLetRing(t *testing.T) {
 		// No note off event.
 	))
 }
-
-// var (
-// 	testFile  []byte
-// 	lineCount int
-// )
-
-// func init() {
-// 	b, err := ioutil.ReadFile("../../examples/bonham")
-// 	if err != nil {
-// 		panic(err)
-// 	}
-// 	testFile = b
-// 	lineCount = bytes.Count(testFile, []byte{'\n'})
-// }
-
-// // func BenchmarkInterpreter(b *testing.B) {
-// // 	start := time.Now()
-
-// // 	b.ReportAllocs()
-// // 	b.ResetTimer()
-
-// // 	var err error
-
-// // 	for i := 0; i < b.N; i++ {
-// // 		it := interpreter.New()
-// // 		_, err = it.EvalAll(bytes.NewReader(testFile))
-// // 	}
-
-// // 	b.StopTimer()
-
-// // 	if err != nil {
-// // 		panic(err)
-// // 	}
-
-// // 	elapsed := time.Since(start)
-
-// // 	linesPerNano := float64(b.N*lineCount) / float64(elapsed)
-
-// // 	fmt.Printf("lines per second: %f\n", linesPerNano*float64(time.Second))
-// // }
