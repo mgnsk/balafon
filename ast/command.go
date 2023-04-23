@@ -27,10 +27,6 @@ func (c CmdAssign) WriteTo(w io.Writer) (int64, error) {
 	return int64(n), ew.Flush()
 }
 
-// func (c CmdAssign) String() string {
-// 	return fmt.Sprintf("assign %c %d", c.Note, c.Key)
-// }
-
 // NewCmdAssign creates a note assignment command.
 func NewCmdAssign(note, key *token.Token) (CmdAssign, error) {
 	v, err := key.Int32Value()
@@ -59,10 +55,6 @@ func (c CmdTempo) WriteTo(w io.Writer) (int64, error) {
 	return int64(n), ew.Flush()
 }
 
-// func (c CmdTempo) String() string {
-// 	return fmt.Sprintf("tempo %d", c)
-// }
-
 // NewCmdTempo creates a tempo command.
 func NewCmdTempo(bpm *token.Token) (CmdTempo, error) {
 	v, err := bpm.Int32Value()
@@ -89,10 +81,6 @@ func (c CmdTimeSig) WriteTo(w io.Writer) (int64, error) {
 
 	return int64(n), ew.Flush()
 }
-
-// func (c CmdTimeSig) String() string {
-// 	return fmt.Sprintf("timesig %d %d", c.Num, c.Denom)
-// }
 
 // NewCmdTimeSig creates a time signature change command.
 func NewCmdTimeSig(num, denom *token.Token) (CmdTimeSig, error) {
@@ -129,10 +117,6 @@ func (c CmdChannel) WriteTo(w io.Writer) (int64, error) {
 	return int64(n), ew.Flush()
 }
 
-// func (c CmdChannel) String() string {
-// 	return fmt.Sprintf("channel %d", c)
-// }
-
 // NewCmdChannel creates a channel change command.
 func NewCmdChannel(value *token.Token) (CmdChannel, error) {
 	v, err := value.Int32Value()
@@ -158,10 +142,6 @@ func (c CmdVelocity) WriteTo(w io.Writer) (int64, error) {
 	return int64(n), ew.Flush()
 }
 
-// func (c CmdVelocity) String() string {
-// 	return fmt.Sprintf("velocity %d", c)
-// }
-
 // NewCmdVelocity creates a velocity change command.
 func NewCmdVelocity(value *token.Token) (CmdVelocity, error) {
 	v, err := value.Int32Value()
@@ -186,10 +166,6 @@ func (c CmdProgram) WriteTo(w io.Writer) (int64, error) {
 
 	return int64(n), ew.Flush()
 }
-
-// func (c CmdProgram) String() string {
-// 	return fmt.Sprintf("program %d", c)
-// }
 
 // NewCmdProgram creates a program change command.
 func NewCmdProgram(value *token.Token) (CmdProgram, error) {
@@ -220,10 +196,6 @@ func (c CmdControl) WriteTo(w io.Writer) (int64, error) {
 
 	return int64(n), ew.Flush()
 }
-
-// func (c CmdControl) String() string {
-// 	return fmt.Sprintf("control %d %d", c.Control, c.Parameter)
-// }
 
 // NewCmdControl creates a control change command.
 func NewCmdControl(control, value *token.Token) (CmdControl, error) {
@@ -270,10 +242,6 @@ func (c CmdPlay) WriteTo(w io.Writer) (int64, error) {
 	return int64(n), ew.Flush()
 }
 
-// func (c CmdPlay) String() string {
-// 	return fmt.Sprintf(`play "%s"`, string(c))
-// }
-
 // CmdStart is a start commad.
 type CmdStart struct{}
 
@@ -286,10 +254,6 @@ func (c CmdStart) WriteTo(w io.Writer) (int64, error) {
 	return int64(n), ew.Flush()
 }
 
-// func (c CmdStart) String() string {
-// 	return "start"
-// }
-
 // CmdStop is a stop command.
 type CmdStop struct{}
 
@@ -301,7 +265,3 @@ func (c CmdStop) WriteTo(w io.Writer) (int64, error) {
 
 	return int64(n), ew.Flush()
 }
-
-// func (c CmdStop) String() string {
-// 	return "stop"
-// }

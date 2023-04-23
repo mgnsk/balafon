@@ -27,14 +27,6 @@ func (l NoteList) WriteTo(w io.Writer) (int64, error) {
 	return int64(n), ew.Flush()
 }
 
-// func (l NoteList) String() string {
-// 	notes := make([]string, len(l))
-// 	for i, note := range l {
-// 		notes[i] = note.String()
-// 	}
-// 	return strings.Join(notes, " ")
-// }
-
 // NewNoteList creates a list of notes.
 func NewNoteList(note Node, inner NoteList) (list NoteList) {
 	switch n := note.(type) {
@@ -59,22 +51,17 @@ func NewNoteListFromGroup(notes NoteList, props PropertyList) (NoteList, error) 
 	// property types if needed.
 	for _, note := range notes {
 		for _, p := range props {
+			// Allow some duplicate properties
 			switch p.Type {
 			case typeAccent, typeGhost, typeDot:
 			default:
-				// must be overwritten
-				// error if exists??
 				if _, ok := note.Props.Find(p.Type); ok {
-					// TODO: similar error in property.go
+					// TODO: similar logic in property.go
 					return nil, fmt.Errorf("duplicate note property '%s': '%c'", token.TokMap.Id(p.Type), p.Lit)
 				}
-				// if idx, ok := note.Props.Find(p.Type); ok {
-				// 	note.Props[idx] = p
-				// }
 			}
 			note.Props = append(note.Props, p)
 		}
-		// TODO
 		sort.Sort(note.Props)
 	}
 
@@ -83,8 +70,8 @@ func NewNoteListFromGroup(notes NoteList, props PropertyList) (NoteList, error) 
 
 // Note is a single note with sorted properties.
 type Note struct {
-	Props PropertyList
 	Token *token.Token
+	Props PropertyList
 	Name  rune
 }
 
@@ -153,8 +140,7 @@ func (note *Note) NumDots() uint {
 // Tuplet returns the irregular division value if the note is a tuplet.
 func (note *Note) Tuplet() uint8 {
 	if i, ok := note.Props.Find(typeTuplet); ok {
-		// Extract the division number.
-		// For example "3" for a triplet denoted by "/3".
+		// Trim the "/" prefix from tuplet token to get division number.
 		v, err := strconv.Atoi(string(note.Props[i].Lit[1:]))
 		if err != nil {
 			panic(err)
@@ -179,10 +165,6 @@ func (note *Note) WriteTo(w io.Writer) (int64, error) {
 
 	return int64(n), ew.Flush()
 }
-
-// func (note *Note) String() string {
-// 	return fmt.Sprintf("%c%s", note.Name, note.Props)
-// }
 
 func (note *Note) countProps(targetType token.Type) uint {
 	num := uint(0)

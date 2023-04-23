@@ -44,14 +44,6 @@ func (p PropertyList) WriteTo(w io.Writer) (int64, error) {
 	return int64(n), ew.Flush()
 }
 
-// func (p PropertyList) String() string {
-// 	var format strings.Builder
-// 	for _, t := range p {
-// 		format.Write(t.Lit)
-// 	}
-// 	return format.String()
-// }
-
 // NewPropertyList creates a note property list.
 func NewPropertyList(t *token.Token, inner interface{}) (PropertyList, error) {
 	switch t.Type {

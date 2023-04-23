@@ -17,8 +17,8 @@ func validateNoteValue(v int) error {
 }
 
 func validateTuplet(v int) error {
-	if v == 1 || v%2 == 0 {
-		return fmt.Errorf("invalid tuplet value, got: %d", v)
+	if v == 3 || v == 5 {
+		return nil
 	}
-	return nil
+	return fmt.Errorf("invalid tuplet value, got: %d", v)
 }
