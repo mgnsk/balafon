@@ -1,13 +1,21 @@
 package lint
 
 import (
+	"errors"
+
 	"github.com/mgnsk/balafon/interpreter"
 )
 
-// Lint the input script.
-// TODO: implement lint error that can format itself
-func Lint(script []byte) error {
+// Lint the input file. TODO: proper API.
+func Lint(filename, script string) error {
 	it := interpreter.New()
 
-	return it.Eval(string(script))
+	err := it.Eval(script)
+	var perr *interpreter.ParseError
+	if errors.As(err, &perr) {
+		perr.Filename = filename
+		return perr
+	}
+
+	return err
 }

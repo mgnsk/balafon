@@ -1,10 +1,12 @@
 package interpreter
 
 import (
+	"errors"
 	"fmt"
 
 	"github.com/mgnsk/balafon/ast"
 	"github.com/mgnsk/balafon/constants"
+	parseErrors "github.com/mgnsk/balafon/internal/parser/errors"
 	"github.com/mgnsk/balafon/internal/parser/lexer"
 	"github.com/mgnsk/balafon/internal/parser/parser"
 	"gitlab.com/gomidi/midi/v2"
@@ -29,8 +31,18 @@ type Interpreter struct {
 
 // Eval the input.
 func (it *Interpreter) Eval(input string) error {
-	res, err := it.parser.Parse(lexer.NewLexer([]byte(input)))
+	scanner := lexer.NewLexer([]byte(input))
+
+	res, err := it.parser.Parse(scanner)
 	if err != nil {
+		var e *parseErrors.Error
+		if errors.As(err, &e) {
+			return &ParseError{
+				Msg:            err.Error(),
+				ErrorToken:     e.ErrorToken,
+				ExpectedTokens: e.ExpectedTokens,
+			}
+		}
 		return err
 	}
 

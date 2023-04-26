@@ -27,7 +27,7 @@ func TestExamples(t *testing.T) {
 			return err
 		}
 
-		if err := lint.Lint(script); err != nil {
+		if err := lint.Lint(path, string(script)); err != nil {
 			return fmt.Errorf("error in file '%s': %w", path, err)
 		}
 
