@@ -1,7 +1,6 @@
 package ast
 
 import (
-	"fmt"
 	"io"
 	"sort"
 	"strconv"
@@ -66,25 +65,11 @@ func NewPropertyList(t *token.Token, inner interface{}) (PropertyList, error) {
 	}
 
 	if props, ok := inner.(PropertyList); ok {
-		for _, p := range props {
-			switch {
-			case p.Type == t.Type && p.Type != typeDot && p.Type != typeAccent && p.Type != typeGhost:
-				return nil, fmt.Errorf("duplicate note property '%s': '%c'", token.TokMap.Id(p.Type), p.Lit)
-			case t.Type == typeAccent && p.Type == typeGhost:
-				return nil, fmt.Errorf("cannot add ghost property, note already has accentuated property")
-			case t.Type == typeGhost && p.Type == typeAccent:
-				return nil, fmt.Errorf("cannot add accentuated property, note already has ghost property")
-			case t.Type == typeSharp && p.Type == typeFlat:
-				return nil, fmt.Errorf("cannot add flat property, note already has sharp property")
-			case t.Type == typeFlat && p.Type == typeSharp:
-				return nil, fmt.Errorf("cannot add sharp property, note already has flat property")
-			}
-		}
-
 		p := make(PropertyList, len(props)+1)
 		p[0] = Property{&token.Token{Type: t.Type, Lit: t.Lit}}
 		copy(p[1:], props)
 		sort.Sort(p)
+
 		return p, nil
 	}
 

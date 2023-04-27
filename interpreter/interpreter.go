@@ -3,6 +3,7 @@ package interpreter
 import (
 	"errors"
 	"fmt"
+	"math"
 
 	"github.com/mgnsk/balafon/ast"
 	"github.com/mgnsk/balafon/constants"
@@ -19,7 +20,7 @@ type Interpreter struct {
 	parser    *parser.Parser
 	barBuffer []*Bar
 
-	velocity uint8
+	velocity int
 	channel  uint8
 
 	pos     uint32
@@ -182,10 +183,10 @@ func (it *Interpreter) parseBar(declList ast.NodeList) (*Bar, error) {
 			bar.TimeSig = decl
 
 		case ast.CmdVelocity:
-			it.velocity = uint8(decl)
+			it.velocity = decl.Value()
 
 		case ast.CmdChannel:
-			it.channel = uint8(decl)
+			it.channel = decl.Value()
 
 		case ast.CmdProgram:
 			bar.Events = append(bar.Events, Event{
@@ -242,48 +243,32 @@ func (it *Interpreter) parseNoteList(bar *Bar, noteList ast.NoteList) error {
 			return fmt.Errorf("note '%c' undefined", note.Name)
 		}
 
-		if note.IsSharp() {
-			if key == constants.MaxValue {
-				return fmt.Errorf("sharp note '%c' out of MIDI range", note.Name)
-			}
-			key++
-		} else if note.IsFlat() {
-			if key == constants.MinValue {
-				return fmt.Errorf("flat note '%c' out of MIDI range", note.Name)
-			}
-			key--
+		key += note.NumSharp()
+		key -= note.NumFlat()
+		if key < 0 || key > constants.MaxValue {
+			return fmt.Errorf("note key must be in range [%d, %d], got: %d", 0, constants.MaxValue, key)
 		}
 
-		velocity := it.velocity
-		for i := uint(0); i < note.NumAccents(); i++ {
-			if velocity > constants.MaxValue {
-				velocity = constants.MaxValue
-				break
-			}
-			// TODO: find the optimal value
-			velocity += 10
-		}
-
-		for i := uint(0); i < note.NumGhosts(); i++ {
-			// TODO: find the optimal value
-			if velocity <= 10 {
-				velocity = 1
-				break
-			}
-			velocity -= 10
+		v := it.velocity
+		v += note.NumAccents() * 10
+		v -= note.NumGhosts() * 10
+		if v < 0 {
+			v = 0
+		} else if v > constants.MaxValue {
+			v = math.MaxUint8
 		}
 
 		bar.Events = append(bar.Events, Event{
 			Pos:      it.pos,
 			Duration: noteLen,
-			Message:  smf.Message(midi.NoteOn(it.channel, key, velocity)),
+			Message:  smf.Message(midi.NoteOn(it.channel, uint8(key), uint8(v))),
 		})
 
 		if !note.IsLetRing() {
 			bar.Events = append(bar.Events, Event{
 				Pos:      it.pos + noteLen,
 				Duration: 0,
-				Message:  smf.Message(midi.NoteOff(it.channel, key)),
+				Message:  smf.Message(midi.NoteOff(it.channel, uint8(key))),
 			})
 		}
 

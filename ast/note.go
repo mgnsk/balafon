@@ -80,7 +80,7 @@ func (note *Note) Len() uint32 {
 	length := uint32(constants.TicksPerWhole) / uint32(note.Value())
 	newLength := length
 	dots := note.NumDots()
-	for i := uint(0); i < dots; i++ {
+	for i := 0; i < dots; i++ {
 		length /= 2
 		newLength += length
 	}
@@ -95,25 +95,23 @@ func (note *Note) IsPause() bool {
 	return note.Name == '-'
 }
 
-// IsSharp reports whether the note is sharp.
-func (note *Note) IsSharp() bool {
-	_, ok := note.Props.Find(typeSharp)
-	return ok
+// NumSharp returns the number of sharp signs.
+func (note *Note) NumSharp() int {
+	return note.countProps(typeSharp)
 }
 
-// IsFlat reports whether the note is flat.
-func (note *Note) IsFlat() bool {
-	_, ok := note.Props.Find(typeFlat)
-	return ok
+// NumFlat reports the number of flat signs.
+func (note *Note) NumFlat() int {
+	return note.countProps(typeFlat)
 }
 
 // NumAccents reports the number of accent properties in the note.
-func (note *Note) NumAccents() uint {
+func (note *Note) NumAccents() int {
 	return note.countProps(typeAccent)
 }
 
 // NumGhosts reports the number of ghost properties in the note.
-func (note *Note) NumGhosts() uint {
+func (note *Note) NumGhosts() int {
 	return note.countProps(typeGhost)
 }
 
@@ -133,19 +131,19 @@ func (note *Note) Value() uint8 {
 }
 
 // NumDots reports the number of dot properties in the note.
-func (note *Note) NumDots() uint {
+func (note *Note) NumDots() int {
 	return note.countProps(typeDot)
 }
 
 // Tuplet returns the irregular division value if the note is a tuplet.
-func (note *Note) Tuplet() uint8 {
+func (note *Note) Tuplet() int {
 	if i, ok := note.Props.Find(typeTuplet); ok {
 		// Trim the "/" prefix from tuplet token to get division number.
 		v, err := strconv.Atoi(string(note.Props[i].Lit[1:]))
 		if err != nil {
 			panic(err)
 		}
-		return uint8(v)
+		return v
 	}
 	return 0
 }
@@ -166,14 +164,14 @@ func (note *Note) WriteTo(w io.Writer) (int64, error) {
 	return int64(n), ew.Flush()
 }
 
-func (note *Note) countProps(targetType token.Type) uint {
-	num := uint(0)
+func (note *Note) countProps(targetType token.Type) int {
+	var count int
 	for _, t := range note.Props {
 		if t.Type == targetType {
-			num++
+			count++
 		}
 	}
-	return num
+	return count
 }
 
 // NewNote creates a note with properties.

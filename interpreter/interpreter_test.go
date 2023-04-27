@@ -144,42 +144,50 @@ func TestNoteAlreadyAssigned(t *testing.T) {
 }
 
 func TestSharpFlatNote(t *testing.T) {
-	for _, tc := range []struct {
-		input string
-		key   uint8
-	}{
-		{":assign c 60; c#", 61},
-		{":assign c 60; c$", 59},
-	} {
-		t.Run(tc.input, func(t *testing.T) {
-			g := NewWithT(t)
+	t.Run("success cases", func(t *testing.T) {
+		for _, tc := range []struct {
+			input string
+			key   uint8
+		}{
+			{":assign c 125; c#", 126},
+			{":assign c 125; c##", 127},
+			{":assign c 125; c#$", 125},
+			{":assign c 2; c$", 1},
+			{":assign c 2; c$$", 0},
+			{":assign c 2; c$#", 2},
+		} {
+			t.Run(tc.input, func(t *testing.T) {
+				g := NewWithT(t)
 
-			it := interpreter.New()
+				it := interpreter.New()
 
-			g.Expect(it.Eval(tc.input)).To(Succeed())
+				g.Expect(it.Eval(tc.input)).To(Succeed())
 
-			bars := it.Flush()
-			g.Expect(bars).To(HaveLen(1))
-			g.Expect(bars[0].Events).To(HaveLen(2))
-			g.Expect(bars[0].Events[0].Message).To(BeEquivalentTo(midi.NoteOn(0, tc.key, constants.DefaultVelocity)))
-			g.Expect(bars[0].Events[1].Message).To(BeEquivalentTo(midi.NoteOff(0, tc.key)))
-		})
-	}
-}
+				bars := it.Flush()
+				g.Expect(bars).To(HaveLen(1))
+				g.Expect(bars[0].Events).To(HaveLen(2))
+				g.Expect(bars[0].Events[0].Message).To(BeEquivalentTo(midi.NoteOn(0, tc.key, constants.DefaultVelocity)))
+				g.Expect(bars[0].Events[1].Message).To(BeEquivalentTo(midi.NoteOff(0, tc.key)))
+			})
+		}
+	})
 
-func TestSharpFlatNoteRange(t *testing.T) {
-	for _, input := range []string{
-		":assign c 127; c#",
-		":assign c 0; c$",
-	} {
-		t.Run(input, func(t *testing.T) {
-			g := NewWithT(t)
+	t.Run("error cases", func(t *testing.T) {
+		for _, tc := range []struct {
+			input string
+		}{
+			{":assign c 125; c###"},
+			{":assign c 2; c$$$"},
+		} {
+			t.Run(tc.input, func(t *testing.T) {
+				g := NewWithT(t)
 
-			it := interpreter.New()
+				it := interpreter.New()
 
-			g.Expect(it.Eval(input)).NotTo(Succeed())
-		})
-	}
+				g.Expect(it.Eval(tc.input)).NotTo(Succeed())
+			})
+		}
+	})
 }
 
 func TestAccentuatedAndGhostNote(t *testing.T) {
@@ -187,11 +195,14 @@ func TestAccentuatedAndGhostNote(t *testing.T) {
 		input    string
 		velocity uint8
 	}{
-		{":velocity 100; :assign c 60; c^", 110},
-		{":velocity 100; :assign c 60; c^^", 120},
-		{":velocity 100; :assign c 60; c^^^", constants.MaxValue},
+		{":velocity 110; :assign c 60; c", 110},
+		{":velocity 110; :assign c 60; c^", 120},
+		{":velocity 110; :assign c 60; c^^", constants.MaxValue},
+		{":velocity 110; :assign c 60; c^^^", constants.MaxValue},
+		{":velocity 20; :assign c 60; c", 20},
 		{":velocity 20; :assign c 60; c)", 10},
-		{":velocity 20; :assign c 60; c))", 1},
+		{":velocity 20; :assign c 60; c))", 0},
+		{":velocity 20; :assign c 60; c)))", 0},
 	} {
 		t.Run(tc.input, func(t *testing.T) {
 			g := NewWithT(t)

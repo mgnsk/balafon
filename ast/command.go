@@ -12,7 +12,7 @@ import (
 // CmdAssign is a note assignment command.
 type CmdAssign struct {
 	Note rune
-	Key  uint8
+	Key  int
 }
 
 func (c CmdAssign) WriteTo(w io.Writer) (int64, error) {
@@ -38,7 +38,7 @@ func NewCmdAssign(note, key *token.Token) (CmdAssign, error) {
 	}
 	return CmdAssign{
 		Note: []rune(note.IDValue())[0],
-		Key:  uint8(v),
+		Key:  int(v),
 	}, nil
 }
 
@@ -107,6 +107,11 @@ func NewCmdTimeSig(num, denom *token.Token) (CmdTimeSig, error) {
 // CmdChannel is a channel change command.
 type CmdChannel uint8
 
+// Value returns the channel's value.
+func (c CmdChannel) Value() uint8 {
+	return uint8(c)
+}
+
 func (c CmdChannel) WriteTo(w io.Writer) (int64, error) {
 	ew := newErrWriter(w)
 	var n int
@@ -130,7 +135,12 @@ func NewCmdChannel(value *token.Token) (CmdChannel, error) {
 }
 
 // CmdVelocity is a velocity change command.
-type CmdVelocity uint8
+type CmdVelocity int
+
+// Value returns the velocity value.
+func (c CmdVelocity) Value() int {
+	return int(c)
+}
 
 func (c CmdVelocity) WriteTo(w io.Writer) (int64, error) {
 	ew := newErrWriter(w)

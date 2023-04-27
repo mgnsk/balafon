@@ -109,46 +109,12 @@ func TestNoteList(t *testing.T) {
 	}
 }
 
-func TestInvalidProperties(t *testing.T) {
-	for _, input := range []string{
-		"k#$", // Sharp flat note.
-		"k$#",
-		"k^)", // Accentuated ghost note.
-		"k)^",
-	} {
-		t.Run(input, func(t *testing.T) {
-			g := NewGomegaWithT(t)
-
-			_, err := parse(input)
-			g.Expect(err).To(HaveOccurred())
-		})
-	}
-}
-
 func TestInvalidNoteValue(t *testing.T) {
 	for _, input := range []string{
 		"k3",
 		"k22",
 		"k0",
 		"k129",
-	} {
-		t.Run(input, func(t *testing.T) {
-			g := NewGomegaWithT(t)
-
-			_, err := parse(input)
-			g.Expect(err).To(HaveOccurred())
-		})
-	}
-}
-
-func TestForbiddenDuplicateProperty(t *testing.T) {
-	for _, input := range []string{
-		// TODO: allow double sharp and flat?
-		"k44",
-		"k##",
-		"k$$",
-		"k/3/3",
-		"k**",
 	} {
 		t.Run(input, func(t *testing.T) {
 			g := NewGomegaWithT(t)
