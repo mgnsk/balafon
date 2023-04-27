@@ -45,6 +45,11 @@ func NewCmdAssign(note, key *token.Token) (CmdAssign, error) {
 // CmdTempo is a tempo command.
 type CmdTempo uint16
 
+// Value returns the tempo value.
+func (c CmdTempo) Value() float64 {
+	return float64(c)
+}
+
 func (c CmdTempo) WriteTo(w io.Writer) (int64, error) {
 	ew := newErrWriter(w)
 	var n int
@@ -166,6 +171,11 @@ func NewCmdVelocity(value *token.Token) (CmdVelocity, error) {
 
 // CmdProgram is a program change command.
 type CmdProgram uint8
+
+// Value returns the program value.
+func (c CmdProgram) Value() uint8 {
+	return uint8(c)
+}
 
 func (c CmdProgram) WriteTo(w io.Writer) (int64, error) {
 	ew := newErrWriter(w)

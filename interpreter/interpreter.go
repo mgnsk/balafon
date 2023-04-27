@@ -175,7 +175,7 @@ func (it *Interpreter) parseBar(declList ast.NodeList) (*Bar, error) {
 		switch decl := decl.(type) {
 		case ast.CmdTempo:
 			bar.Events = append(bar.Events, Event{
-				Message: smf.MetaTempo(float64(decl)),
+				Message: smf.MetaTempo(decl.Value()),
 			})
 
 		case ast.CmdTimeSig:
@@ -190,7 +190,7 @@ func (it *Interpreter) parseBar(declList ast.NodeList) (*Bar, error) {
 
 		case ast.CmdProgram:
 			bar.Events = append(bar.Events, Event{
-				Message: smf.Message(midi.ProgramChange(it.channel, uint8(decl))),
+				Message: smf.Message(midi.ProgramChange(it.channel, decl.Value())),
 			})
 
 		case ast.CmdControl:
