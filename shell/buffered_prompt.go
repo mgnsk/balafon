@@ -1,4 +1,4 @@
-package main
+package shell
 
 import (
 	"bytes"
@@ -10,30 +10,20 @@ import (
 	"github.com/c-bata/go-prompt"
 )
 
-const (
-	// Keycode for Ctrl+D.
-	eot = 4
+// func printGrid(buf *bytes.Buffer, reso, current uint) {
+// 	for i := uint(0); i < reso; i++ {
+// 		if i == current {
+// 			buf.WriteString(currentBG)
+// 		} else if i%4 == 0 {
+// 			buf.WriteString(beatBG)
+// 		} else {
+// 			buf.WriteString(gridBG)
+// 		}
+// 	}
+// }
 
-	defaultReso = 16
-
-	gridBG    = "🟦"
-	beatBG    = "⭕"
-	currentBG = "🔴"
-)
-
-func printGrid(buf *bytes.Buffer, reso, current uint) {
-	for i := uint(0); i < reso; i++ {
-		if i == current {
-			buf.WriteString(currentBG)
-		} else if i%4 == 0 {
-			buf.WriteString(beatBG)
-		} else {
-			buf.WriteString(gridBG)
-		}
-	}
-}
-
-type bufferedPrompt struct {
+// BufferedPrompt is a buffered prompt.
+type BufferedPrompt struct {
 	pt *prompt.Prompt
 
 	livePrefix        string
@@ -41,12 +31,13 @@ type bufferedPrompt struct {
 	buffer            bytes.Buffer
 }
 
-func newBufferedPrompt(execute prompt.Executor, complete prompt.Completer) *bufferedPrompt {
-	p := &bufferedPrompt{}
+// NewBufferedPrompt creates a buffered prompt.
+func NewBufferedPrompt(parser prompt.ConsoleParser, writer prompt.ConsoleWriter, execute prompt.Executor, complete prompt.Completer) *BufferedPrompt {
+	p := &BufferedPrompt{}
 
 	p.pt = prompt.New(
 		func(in string) {
-			if strings.HasPrefix(in, "bar") {
+			if strings.HasPrefix(in, ":bar") {
 				p.buffer.WriteString(in)
 				p.buffer.WriteString("; ")
 
@@ -56,7 +47,7 @@ func newBufferedPrompt(execute prompt.Executor, complete prompt.Completer) *buff
 				return
 			}
 
-			if strings.HasSuffix(in, "end") {
+			if strings.HasSuffix(in, ":end") {
 				p.buffer.WriteString(in)
 
 				p.livePrefix = in
@@ -115,6 +106,8 @@ func newBufferedPrompt(execute prompt.Executor, complete prompt.Completer) *buff
 
 		// 	return string(s)
 		// }()),
+		prompt.OptionParser(parser),
+		prompt.OptionWriter(writer),
 		prompt.OptionPrefix(">>> "),
 		prompt.OptionLivePrefix(func() (string, bool) {
 			return p.livePrefix, p.livePrefixEnabled
@@ -128,12 +121,13 @@ func newBufferedPrompt(execute prompt.Executor, complete prompt.Completer) *buff
 	return p
 }
 
-func (p *bufferedPrompt) Run() {
-	defer restoreTerminal()
+// Run the buffered prompt.
+func (p *BufferedPrompt) Run() {
 	p.pt.Run()
 }
 
-func restoreTerminal() {
+// RestoreTerminal restores terminal after exit.
+func RestoreTerminal() {
 	if strings.Contains(runtime.GOOS, "linux") {
 		// TODO: eventually remove this when the bugs get fixed.
 		// Fix Ctrl+C not working after exit (https://github.com/c-bata/go-prompt/issues/228)

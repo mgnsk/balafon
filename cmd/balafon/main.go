@@ -7,18 +7,30 @@ import (
 	"log"
 	"os"
 	"strconv"
-	"unicode/utf8"
 
 	"github.com/c-bata/go-prompt"
 	"github.com/mgnsk/balafon/interpreter"
 	"github.com/mgnsk/balafon/lint"
 	"github.com/mgnsk/balafon/player"
 	"github.com/mgnsk/balafon/sequencer"
+	"github.com/mgnsk/balafon/shell"
 	"github.com/spf13/cobra"
 	"gitlab.com/gomidi/midi/v2"
 	"gitlab.com/gomidi/midi/v2/drivers"
 	_ "gitlab.com/gomidi/midi/v2/drivers/rtmididrv"
+	"gitlab.com/gomidi/midi/v2/smf"
 	"golang.org/x/term"
+)
+
+const (
+	// Keycode for Ctrl+D.
+	eot = 4
+
+	defaultReso = 16
+
+	gridBG    = "🟦"
+	beatBG    = "⭕"
+	currentBG = "🔴"
 )
 
 func addPortFlag(cmd *cobra.Command) {
@@ -131,10 +143,24 @@ func createCmdLive() *cobra.Command {
 			}
 
 			it.Flush()
-
 			fmt.Println(string(file))
 
-			return runLive(out, it)
+			s := shell.NewLiveShell(os.Stdin, it, func(msg smf.Message) error {
+				if msg.Is(midi.NoteOnMsg) {
+					if err := out.Send(msg); err != nil {
+						return err
+					}
+				}
+				return nil
+			})
+
+			oldState, err := term.MakeRaw(int(os.Stdin.Fd()))
+			if err != nil {
+				return err
+			}
+			defer term.Restore(int(os.Stdin.Fd()), oldState)
+
+			return s.Run()
 		},
 	}
 	addPortFlag(cmd)
@@ -200,47 +226,12 @@ func createCmdLint() *cobra.Command {
 	return cmd
 }
 
-func runLive(out drivers.Out, it *interpreter.Interpreter) error {
-	oldState, err := term.MakeRaw(int(os.Stdin.Fd()))
-	if err != nil {
-		return err
-	}
-	defer term.Restore(int(os.Stdin.Fd()), oldState)
-
-	input := make([]byte, 1)
-
-	for {
-		_, err := os.Stdin.Read(input)
-		if err != nil {
-			return err
-		}
-
-		r, _ := utf8.DecodeRune(input)
-		if r == eot {
-			return nil
-		}
-
-		if err := it.Eval(string(r)); err != nil {
-			fmt.Println(err)
-			continue
-		}
-
-		for _, bar := range it.Flush() {
-			for _, ev := range bar.Events {
-				if ev.Message.Is(midi.NoteOnMsg) {
-					if err := out.Send(ev.Message); err != nil {
-						return err
-					}
-				}
-			}
-		}
-	}
-}
-
 func runPrompt(out drivers.Out, it *interpreter.Interpreter, seq *sequencer.Sequencer) {
 	p := player.New(out)
 
-	pt := newBufferedPrompt(
+	pt := shell.NewBufferedPrompt(
+		prompt.NewStandardInputParser(),
+		prompt.NewStdoutWriter(),
 		func(in string) {
 			if err := it.Eval(in); err != nil {
 				fmt.Println(err)
@@ -261,6 +252,7 @@ func runPrompt(out drivers.Out, it *interpreter.Interpreter, seq *sequencer.Sequ
 		},
 	)
 
+	defer shell.RestoreTerminal()
 	pt.Run()
 }
 

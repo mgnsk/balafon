@@ -4,6 +4,8 @@ go 1.19
 
 require (
 	github.com/c-bata/go-prompt v0.2.6
+	github.com/davecgh/go-spew v1.1.1
+	github.com/golang/mock v1.6.0
 	github.com/onsi/gomega v1.27.6
 	github.com/spf13/cobra v1.7.0
 	gitlab.com/gomidi/midi/v2 v2.0.30
