@@ -141,9 +141,9 @@ func (it *Interpreter) parse(declList ast.NodeList) ([]*Bar, error) {
 			it.bars[decl.Name] = newBar
 
 		case ast.CmdPlay:
-			savedBar, ok := it.bars[decl.Name]
+			savedBar, ok := it.bars[decl.BarName]
 			if !ok {
-				return nil, fmt.Errorf("unknown bar '%s'", decl.Name)
+				return nil, fmt.Errorf("unknown bar '%s'", decl.BarName)
 			}
 			bars = append(bars, savedBar)
 

@@ -1,7 +1,6 @@
 package ast
 
 import (
-	"fmt"
 	"io"
 	"sort"
 	"strconv"
@@ -13,7 +12,6 @@ import (
 // Note: some list operations may be implemented with side effects.
 
 // NoteList is a list of notes.
-// TODO why pointer note?
 type NoteList []*Note
 
 func (l NoteList) WriteTo(w io.Writer) (int64, error) {
@@ -47,19 +45,9 @@ func NewNoteListFromGroup(notes NoteList, props PropertyList) (NoteList, error) 
 		return notes, nil
 	}
 
-	// Apply the properties to all notes, replacing duplicate
-	// property types if needed.
+	// Apply the properties to all notes.
 	for _, note := range notes {
 		for _, p := range props {
-			// Allow some duplicate properties
-			switch p.Type {
-			case typeAccent, typeGhost, typeDot:
-			default:
-				if _, ok := note.Props.Find(p.Type); ok {
-					// TODO: similar logic in property.go
-					return nil, fmt.Errorf("duplicate note property '%s': '%c'", token.TokMap.Id(p.Type), p.Lit)
-				}
-			}
 			note.Props = append(note.Props, p)
 		}
 		sort.Sort(note.Props)
@@ -70,7 +58,6 @@ func NewNoteListFromGroup(notes NoteList, props PropertyList) (NoteList, error) 
 
 // Note is a single note with sorted properties.
 type Note struct {
-	Token *token.Token
 	Props PropertyList
 	Name  rune
 }
@@ -126,7 +113,6 @@ func (note *Note) Value() uint8 {
 	if err != nil {
 		panic(err)
 	}
-	// TODO range validation.
 	return uint8(v)
 }
 
@@ -175,10 +161,9 @@ func (note *Note) countProps(targetType token.Type) int {
 }
 
 // NewNote creates a note with properties.
-func NewNote(symbol *token.Token, propList PropertyList) *Note {
+func NewNote(name rune, propList PropertyList) *Note {
 	return &Note{
 		Props: propList,
-		Token: symbol,
-		Name:  []rune(symbol.IDValue())[0],
+		Name:  name,
 	}
 }

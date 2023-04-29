@@ -67,7 +67,7 @@ BarBodyDecl
     ;
 
 Bar
-    : cmdBar RepeatTerminator BarBodyDeclList ":end" << ast.NewBar($T0, $2.(ast.NodeList)), nil >>
+    : cmdBar RepeatTerminator BarBodyDeclList ":end" << ast.NewBar(string($T0.Lit[len(":bar "):]), $2.(ast.NodeList)), nil >>
     ;
 
 NoteList
@@ -76,7 +76,7 @@ NoteList
     ;
 
 NoteObject
-    : NoteSymbol PropertyList       << ast.NewNote($T0, $1.(ast.PropertyList)), nil >>
+    : NoteSymbol PropertyList       << ast.NewNote([]rune(string($T0.Lit))[0], $1.(ast.PropertyList)), nil >>
     | "[" NoteList "]" PropertyList << ast.NewNoteListFromGroup($1.(ast.NoteList), $3.(ast.PropertyList)) >>
     ;
 
@@ -102,18 +102,18 @@ Property
     ;
 
 TopLevelCommand
-    : ":assign" letter uint            << ast.NewCmdAssign($T1, $T2) >>
-    | cmdPlay                          << ast.NewCmdPlay($T0) >>
+    : ":assign" letter uint            << ast.NewCmdAssign([]rune(string($T1.Lit))[0], ast.Must($T2.Int64Value())) >>
+    | cmdPlay                          << ast.NewCmdPlay(string($T0.Lit[len(":play "):])) >>
     | BarBodyCommand
     ;
 
 BarBodyCommand
-    : ":tempo" uint                  << ast.NewCmdTempo($T1) >>
-    | ":timesig" uint uint           << ast.NewCmdTimeSig($T1, $T2) >>
-    | ":velocity" uint               << ast.NewCmdVelocity($T1) >>
-    | ":channel" uint                << ast.NewCmdChannel($T1) >>
-    | ":program" uint                << ast.NewCmdProgram($T1) >>
-    | ":control" uint uint           << ast.NewCmdControl($T1, $T2) >>
+    : ":tempo" uint                  << ast.NewCmdTempo(ast.Must($T1.Int64Value())) >>
+    | ":timesig" uint uint           << ast.NewCmdTimeSig(ast.Must($T1.Int64Value()), ast.Must($T2.Int64Value())) >>
+    | ":velocity" uint               << ast.NewCmdVelocity(ast.Must($T1.Int64Value())) >>
+    | ":channel" uint                << ast.NewCmdChannel(ast.Must($T1.Int64Value())) >>
+    | ":program" uint                << ast.NewCmdProgram(ast.Must($T1.Int64Value())) >>
+    | ":control" uint uint           << ast.NewCmdControl(ast.Must($T1.Int64Value()), ast.Must($T2.Int64Value())) >>
     | ":start"                       << ast.CmdStart{}, nil >>
     | ":stop"                        << ast.CmdStop{}, nil >>
     ;

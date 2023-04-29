@@ -1,8 +1,12 @@
 package ast
 
-import "fmt"
+import (
+	"fmt"
 
-func validateRange(v, minIncl, maxIncl int32) error {
+	"golang.org/x/exp/constraints"
+)
+
+func validateRange[T constraints.Integer](v, minIncl, maxIncl T) error {
 	if v < minIncl || v > maxIncl {
 		return fmt.Errorf("value must be in range [%d, %d], got: %d", minIncl, maxIncl, v)
 	}

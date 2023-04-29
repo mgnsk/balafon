@@ -27,3 +27,11 @@ func (list NodeList) WriteTo(w io.Writer) (n int64, err error) {
 func NewNodeList(stmt Node, inner NodeList) (song NodeList) {
 	return append(NodeList{stmt}, inner...)
 }
+
+// Must returns the result or panics if err is not nil.
+func Must[T any](result T, err error) T {
+	if err != nil {
+		panic(err)
+	}
+	return result
+}

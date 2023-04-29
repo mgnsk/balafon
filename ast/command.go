@@ -1,12 +1,10 @@
 package ast
 
 import (
-	"bytes"
 	"io"
 	"math"
 
 	"github.com/mgnsk/balafon/constants"
-	"github.com/mgnsk/balafon/internal/parser/token"
 )
 
 // CmdAssign is a note assignment command.
@@ -28,17 +26,13 @@ func (c CmdAssign) WriteTo(w io.Writer) (int64, error) {
 }
 
 // NewCmdAssign creates a note assignment command.
-func NewCmdAssign(note, key *token.Token) (CmdAssign, error) {
-	v, err := key.Int32Value()
-	if err != nil {
-		return CmdAssign{}, err
-	}
-	if err := validateRange(v, 0, constants.MaxValue); err != nil {
+func NewCmdAssign(note rune, key int64) (CmdAssign, error) {
+	if err := validateRange(key, 0, constants.MaxValue); err != nil {
 		return CmdAssign{}, err
 	}
 	return CmdAssign{
-		Note: []rune(note.IDValue())[0],
-		Key:  int(v),
+		Note: note,
+		Key:  int(key),
 	}, nil
 }
 
@@ -61,51 +55,49 @@ func (c CmdTempo) WriteTo(w io.Writer) (int64, error) {
 }
 
 // NewCmdTempo creates a tempo command.
-func NewCmdTempo(bpm *token.Token) (CmdTempo, error) {
-	v, err := bpm.Int32Value()
-	if err != nil {
+func NewCmdTempo(bpm int64) (CmdTempo, error) {
+	if err := validateRange(bpm, 1, math.MaxUint16); err != nil {
 		return 0, err
 	}
-	if err := validateRange(v, 1, math.MaxUint16); err != nil {
-		return 0, err
-	}
-	return CmdTempo(v), nil
+	return CmdTempo(bpm), nil
 }
 
 // CmdTimeSig is a time signature change command.
 type CmdTimeSig [2]uint8
+
+// Num returns the timesig's numerator.
+func (c CmdTimeSig) Num() uint8 {
+	return c[0]
+}
+
+// Denom returns the timesig's denominator.
+func (c CmdTimeSig) Denom() uint8 {
+	return c[1]
+}
 
 func (c CmdTimeSig) WriteTo(w io.Writer) (int64, error) {
 	ew := newErrWriter(w)
 	var n int
 
 	n += ew.WriteString(":timesig ")
-	n += ew.WriteInt(int(c[0]))
+	n += ew.WriteInt(int(c.Num()))
 	n += ew.WriteString(" ")
-	n += ew.WriteInt(int(c[1]))
+	n += ew.WriteInt(int(c.Denom()))
 
 	return int64(n), ew.Flush()
 }
 
 // NewCmdTimeSig creates a time signature change command.
-func NewCmdTimeSig(num, denom *token.Token) (CmdTimeSig, error) {
-	b, err := num.Int32Value()
-	if err != nil {
+func NewCmdTimeSig(num, denom int64) (CmdTimeSig, error) {
+	if err := validateRange(num, 1, constants.MaxBeatsPerBar); err != nil {
 		return CmdTimeSig{}, err
 	}
-	v, err := denom.Int32Value()
-	if err != nil {
-		return CmdTimeSig{}, err
-	}
-	if err := validateRange(b, 1, constants.MaxBeatsPerBar); err != nil {
-		return CmdTimeSig{}, err
-	}
-	if err := validateNoteValue(int(v)); err != nil {
+	if err := validateNoteValue(int(denom)); err != nil {
 		return CmdTimeSig{}, err
 	}
 	return CmdTimeSig{
-		uint8(b),
-		uint8(v),
+		uint8(num),
+		uint8(denom),
 	}, nil
 }
 
@@ -128,15 +120,11 @@ func (c CmdChannel) WriteTo(w io.Writer) (int64, error) {
 }
 
 // NewCmdChannel creates a channel change command.
-func NewCmdChannel(value *token.Token) (CmdChannel, error) {
-	v, err := value.Int32Value()
-	if err != nil {
+func NewCmdChannel(value int64) (CmdChannel, error) {
+	if err := validateRange(value, 0, constants.MaxChannel); err != nil {
 		return 0, err
 	}
-	if err := validateRange(v, 0, constants.MaxChannel); err != nil {
-		return 0, err
-	}
-	return CmdChannel(v), nil
+	return CmdChannel(value), nil
 }
 
 // CmdVelocity is a velocity change command.
@@ -158,15 +146,11 @@ func (c CmdVelocity) WriteTo(w io.Writer) (int64, error) {
 }
 
 // NewCmdVelocity creates a velocity change command.
-func NewCmdVelocity(value *token.Token) (CmdVelocity, error) {
-	v, err := value.Int32Value()
-	if err != nil {
+func NewCmdVelocity(value int64) (CmdVelocity, error) {
+	if err := validateRange(value, 0, constants.MaxValue); err != nil {
 		return 0, err
 	}
-	if err := validateRange(v, 0, constants.MaxValue); err != nil {
-		return 0, err
-	}
-	return CmdVelocity(v), nil
+	return CmdVelocity(value), nil
 }
 
 // CmdProgram is a program change command.
@@ -188,15 +172,11 @@ func (c CmdProgram) WriteTo(w io.Writer) (int64, error) {
 }
 
 // NewCmdProgram creates a program change command.
-func NewCmdProgram(value *token.Token) (CmdProgram, error) {
-	v, err := value.Int32Value()
-	if err != nil {
+func NewCmdProgram(value int64) (CmdProgram, error) {
+	if err := validateRange(value, 0, constants.MaxValue); err != nil {
 		return 0, err
 	}
-	if err := validateRange(v, 0, constants.MaxValue); err != nil {
-		return 0, err
-	}
-	return CmdProgram(v), nil
+	return CmdProgram(value), nil
 }
 
 // CmdControl is a control change command.
@@ -218,37 +198,27 @@ func (c CmdControl) WriteTo(w io.Writer) (int64, error) {
 }
 
 // NewCmdControl creates a control change command.
-func NewCmdControl(control, value *token.Token) (CmdControl, error) {
-	c, err := control.Int32Value()
-	if err != nil {
+func NewCmdControl(control, value int64) (CmdControl, error) {
+	if err := validateRange(control, 0, constants.MaxValue); err != nil {
 		return CmdControl{}, err
 	}
-	if err := validateRange(c, 0, constants.MaxValue); err != nil {
-		return CmdControl{}, err
-	}
-	v, err := value.Int32Value()
-	if err != nil {
-		return CmdControl{}, err
-	}
-	if err := validateRange(v, 0, constants.MaxValue); err != nil {
+	if err := validateRange(value, 0, constants.MaxValue); err != nil {
 		return CmdControl{}, err
 	}
 	return CmdControl{
-		Control:   uint8(c),
-		Parameter: uint8(v),
+		Control:   uint8(control),
+		Parameter: uint8(value),
 	}, nil
 }
 
 // CmdPlay is a bar play command.
 type CmdPlay struct {
-	Name  string
-	Token *token.Token
+	BarName string
 }
 
-func NewCmdPlay(t *token.Token) (CmdPlay, error) {
+func NewCmdPlay(barName string) (CmdPlay, error) {
 	return CmdPlay{
-		Name:  string(bytes.TrimPrefix(t.Lit, []byte(":play "))),
-		Token: t,
+		BarName: barName,
 	}, nil
 }
 
@@ -257,7 +227,7 @@ func (c CmdPlay) WriteTo(w io.Writer) (int64, error) {
 	var n int
 
 	n += ew.WriteString(":play ")
-	n += ew.WriteString(c.Name)
+	n += ew.WriteString(c.BarName)
 
 	return int64(n), ew.Flush()
 }
