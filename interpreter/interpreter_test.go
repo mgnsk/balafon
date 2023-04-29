@@ -107,7 +107,7 @@ func TestCommands(t *testing.T) {
 
 			it := interpreter.New()
 
-			g.Expect(it.Eval(tc.input)).To(Succeed())
+			g.Expect(it.EvalString(tc.input)).To(Succeed())
 
 			bars := it.Flush()
 
@@ -131,7 +131,7 @@ func TestUndefinedKey(t *testing.T) {
 
 	it := interpreter.New()
 
-	g.Expect(it.Eval("k")).NotTo(Succeed())
+	g.Expect(it.EvalString("k")).NotTo(Succeed())
 }
 
 func TestNoteAlreadyAssigned(t *testing.T) {
@@ -139,8 +139,8 @@ func TestNoteAlreadyAssigned(t *testing.T) {
 
 	it := interpreter.New()
 
-	g.Expect(it.Eval(":assign c 60")).To(Succeed())
-	g.Expect(it.Eval(":assign c 61")).NotTo(Succeed())
+	g.Expect(it.EvalString(":assign c 60")).To(Succeed())
+	g.Expect(it.EvalString(":assign c 61")).NotTo(Succeed())
 }
 
 func TestSharpFlatNote(t *testing.T) {
@@ -161,7 +161,7 @@ func TestSharpFlatNote(t *testing.T) {
 
 				it := interpreter.New()
 
-				g.Expect(it.Eval(tc.input)).To(Succeed())
+				g.Expect(it.EvalString(tc.input)).To(Succeed())
 
 				bars := it.Flush()
 				g.Expect(bars).To(HaveLen(1))
@@ -184,7 +184,7 @@ func TestSharpFlatNote(t *testing.T) {
 
 				it := interpreter.New()
 
-				g.Expect(it.Eval(tc.input)).NotTo(Succeed())
+				g.Expect(it.EvalString(tc.input)).NotTo(Succeed())
 			})
 		}
 	})
@@ -209,7 +209,7 @@ func TestAccentuatedAndGhostNote(t *testing.T) {
 
 			it := interpreter.New()
 
-			g.Expect(it.Eval(tc.input)).To(Succeed())
+			g.Expect(it.EvalString(tc.input)).To(Succeed())
 
 			bars := it.Flush()
 			g.Expect(bars).To(HaveLen(1))
@@ -257,10 +257,10 @@ func TestNoteLengths(t *testing.T) {
 
 			tempo := 60
 
-			g.Expect(it.Eval(fmt.Sprintf(":tempo %d", tempo))).To(Succeed())
-			g.Expect(it.Eval(":timesig 4 4")).To(Succeed())
-			g.Expect(it.Eval(":assign k 36")).To(Succeed())
-			g.Expect(it.Eval(tc.input)).To(Succeed())
+			g.Expect(it.EvalString(fmt.Sprintf(":tempo %d", tempo))).To(Succeed())
+			g.Expect(it.EvalString(":timesig 4 4")).To(Succeed())
+			g.Expect(it.EvalString(":assign k 36")).To(Succeed())
+			g.Expect(it.EvalString(tc.input)).To(Succeed())
 
 			bars := it.Flush()
 			g.Expect(bars).To(HaveLen(1))
@@ -291,7 +291,7 @@ func TestNotEmptyBar(t *testing.T) {
 
 	it := interpreter.New()
 
-	err := it.Eval(`
+	err := it.EvalString(`
 :timesig 1 4
 
 :bar one
@@ -325,7 +325,7 @@ func TestSilence(t *testing.T) {
 
 		it := interpreter.New()
 
-		err := it.Eval(`
+		err := it.EvalString(`
 :timesig 4 4
 :assign c 60
 c
@@ -355,7 +355,7 @@ c
 
 		it := interpreter.New()
 
-		err := it.Eval(`
+		err := it.EvalString(`
 :timesig 4 4
 :assign c 60
 ---c
@@ -386,7 +386,7 @@ func TestTimeSignature(t *testing.T) {
 
 	it := interpreter.New()
 
-	err := it.Eval(`
+	err := it.EvalString(`
 :assign c 60
 
 :timesig 3 4
@@ -417,7 +417,7 @@ func TestBarTooLong(t *testing.T) {
 
 	it := interpreter.New()
 
-	err := it.Eval(`
+	err := it.EvalString(`
 :assign c 60
 :tempo 60
 // Default timesig 4 4.
@@ -432,10 +432,10 @@ func TestFlushSkipsTooLongBar(t *testing.T) {
 
 	it := interpreter.New()
 
-	g.Expect(it.Eval(":assign c 60")).To(Succeed())
-	g.Expect(it.Eval(":timesig 4 4")).To(Succeed())
-	g.Expect(it.Eval(":ccccc")).NotTo(Succeed())
-	g.Expect(it.Eval("c")).To(Succeed())
+	g.Expect(it.EvalString(":assign c 60")).To(Succeed())
+	g.Expect(it.EvalString(":timesig 4 4")).To(Succeed())
+	g.Expect(it.EvalString(":ccccc")).NotTo(Succeed())
+	g.Expect(it.EvalString("c")).To(Succeed())
 
 	bars := it.Flush()
 
@@ -486,7 +486,7 @@ func TestMultiTrackNotesAreSortedPairs(t *testing.T) {
 :play test
 `
 
-	g.Expect(it.Eval(input)).To(Succeed())
+	g.Expect(it.EvalString(input)).To(Succeed())
 
 	bars := it.Flush()
 	g.Expect(bars).To(HaveLen(1))
@@ -510,7 +510,7 @@ func TestPendingGlobalCommands(t *testing.T) {
 
 	it := interpreter.New()
 
-	err := it.Eval(`
+	err := it.EvalString(`
 :channel 2; :assign d 62
 :channel 1; :assign c 60
 :tempo 60
@@ -625,7 +625,7 @@ func TestTempoIsGlobal(t *testing.T) {
 
 	it := interpreter.New()
 
-	err := it.Eval(`
+	err := it.EvalString(`
 :channel 1; :assign c 60
 :tempo 120
 :tempo 60
@@ -715,8 +715,8 @@ func TestLetRing(t *testing.T) {
 
 	it := interpreter.New()
 
-	g.Expect(it.Eval(":assign k 36")).To(Succeed())
-	g.Expect(it.Eval("k*")).To(Succeed())
+	g.Expect(it.EvalString(":assign k 36")).To(Succeed())
+	g.Expect(it.EvalString("k*")).To(Succeed())
 
 	bars := it.Flush()
 	g.Expect(bars).To(HaveLen(1))

@@ -20,7 +20,7 @@ func TestLintErrorFormat(t *testing.T) {
 		t.Run(tc.script, func(t *testing.T) {
 			g := NewGomegaWithT(t)
 
-			err := lint.Lint("/myfile", tc.script)
+			err := lint.Lint("/myfile", []byte(tc.script))
 			g.Expect(err.Error()).To(HavePrefix(tc.expectedPrefix))
 		})
 	}

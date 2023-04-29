@@ -103,7 +103,7 @@ func createCmdLoad() *cobra.Command {
 			it := interpreter.New()
 			seq := sequencer.New()
 
-			if err := it.Eval(string(file)); err != nil {
+			if err := it.Eval(file); err != nil {
 				return err
 			}
 
@@ -138,7 +138,7 @@ func createCmdLive() *cobra.Command {
 			}
 
 			it := interpreter.New()
-			if err := it.Eval(string(file)); err != nil {
+			if err := it.Eval(file); err != nil {
 				return err
 			}
 
@@ -184,7 +184,7 @@ func createCmdPlay() *cobra.Command {
 			}
 
 			it := interpreter.New()
-			if err := it.Eval(string(file)); err != nil {
+			if err := it.Eval(file); err != nil {
 				return err
 			}
 
@@ -233,7 +233,7 @@ func runPrompt(out drivers.Out, it *interpreter.Interpreter, seq *sequencer.Sequ
 		prompt.NewStandardInputParser(),
 		prompt.NewStdoutWriter(),
 		func(in string) {
-			if err := it.Eval(in); err != nil {
+			if err := it.EvalString(in); err != nil {
 				fmt.Println(err)
 				return
 			}

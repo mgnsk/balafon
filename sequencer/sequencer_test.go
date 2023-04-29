@@ -35,7 +35,7 @@ func TestSequencerTiming(t *testing.T) {
 			g := NewWithT(t)
 
 			it := interpreter.New()
-			g.Expect(it.Eval(tc.input)).To(Succeed())
+			g.Expect(it.EvalString(tc.input)).To(Succeed())
 
 			s := sequencer.New()
 			s.AddBars(it.Flush()...)
@@ -79,7 +79,7 @@ func TestSequencerMultiTrackTiming(t *testing.T) {
 :play test
 `
 
-	g.Expect(it.Eval(input)).To(Succeed())
+	g.Expect(it.EvalString(input)).To(Succeed())
 
 	s := sequencer.New()
 	s.AddBars(it.Flush()...)
@@ -118,7 +118,7 @@ func TestSilenceBetweenBars(t *testing.T) {
 :play two
 `
 
-	g.Expect(it.Eval(input)).To(Succeed())
+	g.Expect(it.EvalString(input)).To(Succeed())
 
 	s := sequencer.New()
 	s.AddBars(it.Flush()...)
@@ -167,7 +167,7 @@ func TestTempoChange(t *testing.T) {
 :play two
 `
 
-	g.Expect(it.Eval(input)).To(Succeed())
+	g.Expect(it.EvalString(input)).To(Succeed())
 
 	s := sequencer.New()
 	s.AddBars(it.Flush()...)

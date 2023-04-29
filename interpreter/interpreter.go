@@ -30,9 +30,14 @@ type Interpreter struct {
 	bars   map[string]*Bar
 }
 
-// Eval the input.
-func (it *Interpreter) Eval(input string) error {
-	scanner := lexer.NewLexer([]byte(input))
+// EvalString evaluates the string input.
+func (it *Interpreter) EvalString(input string) error {
+	return it.Eval([]byte(input))
+}
+
+// Evaluate the input.
+func (it *Interpreter) Eval(input []byte) error {
+	scanner := lexer.NewLexer(input)
 
 	res, err := it.parser.Parse(scanner)
 	if err != nil {

@@ -3,7 +3,6 @@ package shell
 import (
 	"fmt"
 	"io"
-	"os"
 	"unicode/utf8"
 
 	"github.com/mgnsk/balafon/interpreter"
@@ -45,7 +44,7 @@ func (s *LiveShell) Run() error {
 	input := make([]byte, 1)
 
 	for {
-		_, err := os.Stdin.Read(input)
+		_, err := s.r.Read(input)
 		if err != nil {
 			return fmt.Errorf("error reading from stdin: %w", err)
 		}
@@ -55,7 +54,7 @@ func (s *LiveShell) Run() error {
 			return nil
 		}
 
-		if err := s.it.Eval(string(r)); err != nil {
+		if err := s.it.EvalString(string(r)); err != nil {
 			fmt.Println(err)
 			continue
 		}

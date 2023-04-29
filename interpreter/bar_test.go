@@ -57,9 +57,9 @@ func TestBarDurationTimeSignatures(t *testing.T) {
 
 			it := interpreter.New()
 
-			g.Expect(it.Eval(fmt.Sprintf(":timesig %s", tc.timesig))).To(Succeed())
-			g.Expect(it.Eval(":assign c 60")).To(Succeed())
-			g.Expect(it.Eval(tc.input)).To(Succeed())
+			g.Expect(it.EvalString(fmt.Sprintf(":timesig %s", tc.timesig))).To(Succeed())
+			g.Expect(it.EvalString(":assign c 60")).To(Succeed())
+			g.Expect(it.EvalString(tc.input)).To(Succeed())
 
 			bars := it.Flush()
 			g.Expect(bars).To(HaveLen(1))
@@ -80,5 +80,5 @@ func TestEmptyBarIsInvalid(t *testing.T) {
 	`
 
 	it := interpreter.New()
-	g.Expect(it.Eval(input)).NotTo(Succeed())
+	g.Expect(it.EvalString(input)).NotTo(Succeed())
 }

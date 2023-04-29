@@ -7,7 +7,7 @@ import (
 )
 
 // Lint the input file. TODO: proper API.
-func Lint(filename, script string) error {
+func Lint(filename string, script []byte) error {
 	it := interpreter.New()
 
 	err := it.Eval(script)
