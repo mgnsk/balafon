@@ -1,13 +1,11 @@
 package interpreter
 
 import (
-	"errors"
 	"fmt"
 	"math"
 
 	"github.com/mgnsk/balafon/ast"
 	"github.com/mgnsk/balafon/constants"
-	parseErrors "github.com/mgnsk/balafon/internal/parser/errors"
 	"github.com/mgnsk/balafon/internal/parser/lexer"
 	"github.com/mgnsk/balafon/internal/parser/parser"
 	"gitlab.com/gomidi/midi/v2"
@@ -35,20 +33,12 @@ func (it *Interpreter) EvalString(input string) error {
 	return it.Eval([]byte(input))
 }
 
-// Evaluate the input.
+// Eval evaluates the input.
 func (it *Interpreter) Eval(input []byte) error {
 	scanner := lexer.NewLexer(input)
 
 	res, err := it.parser.Parse(scanner)
 	if err != nil {
-		var e *parseErrors.Error
-		if errors.As(err, &e) {
-			return &ParseError{
-				Msg:            err.Error(),
-				ErrorToken:     e.ErrorToken,
-				ExpectedTokens: e.ExpectedTokens,
-			}
-		}
 		return err
 	}
 

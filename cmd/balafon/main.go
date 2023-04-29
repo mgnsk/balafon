@@ -220,7 +220,7 @@ func createCmdLint() *cobra.Command {
 			}
 
 			// TODO: stdin filename argument for error formatting
-			return lint.Lint(args[0], string(input))
+			return lint.Lint(args[0], input)
 		},
 	}
 	return cmd
