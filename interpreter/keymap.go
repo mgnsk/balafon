@@ -17,6 +17,13 @@ func NewKeyMap() *KeyMap {
 	}
 }
 
+// Range loops over the mapped keys.
+func (m *KeyMap) Range(f func(channel uint8, note rune, key int)) {
+	for k, v := range m.m {
+		f(k.channel, k.note, v)
+	}
+}
+
 // Get a note key on channel.
 func (m *KeyMap) Get(channel uint8, note rune) (key int, exists bool) {
 	key, ok := m.m[midiKey{channel, note}]

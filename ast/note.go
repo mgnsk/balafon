@@ -6,7 +6,7 @@ import (
 	"strconv"
 
 	"github.com/mgnsk/balafon/constants"
-	"github.com/mgnsk/balafon/internal/parser/token"
+	"github.com/mgnsk/balafon/internal/tokentype"
 )
 
 // Note: some list operations may be implemented with side effects.
@@ -84,32 +84,32 @@ func (note *Note) IsPause() bool {
 
 // NumSharp returns the number of sharp signs.
 func (note *Note) NumSharp() int {
-	return note.countProps(typeSharp)
+	return note.countProps(tokentype.Sharp)
 }
 
 // NumFlat reports the number of flat signs.
 func (note *Note) NumFlat() int {
-	return note.countProps(typeFlat)
+	return note.countProps(tokentype.Flat)
 }
 
 // NumAccents reports the number of accent properties in the note.
 func (note *Note) NumAccents() int {
-	return note.countProps(typeAccent)
+	return note.countProps(tokentype.Accent)
 }
 
 // NumGhosts reports the number of ghost properties in the note.
 func (note *Note) NumGhosts() int {
-	return note.countProps(typeGhost)
+	return note.countProps(tokentype.Ghost)
 }
 
 // Value returns the note value (1th, 2th, 4th, 8th, 16th, 32th and so on).
 func (note *Note) Value() uint8 {
-	i, ok := note.Props.Find(typeUint)
-	if !ok {
+	tok := note.Props.Find(tokentype.Uint)
+	if tok == nil {
 		// Implicit quarter note.
 		return 4
 	}
-	v, err := strconv.Atoi(string(note.Props[i].Lit))
+	v, err := strconv.Atoi(string(tok.Lit))
 	if err != nil {
 		panic(err)
 	}
@@ -118,26 +118,26 @@ func (note *Note) Value() uint8 {
 
 // NumDots reports the number of dot properties in the note.
 func (note *Note) NumDots() int {
-	return note.countProps(typeDot)
+	return note.countProps(tokentype.Dot)
 }
 
 // Tuplet returns the irregular division value if the note is a tuplet.
 func (note *Note) Tuplet() int {
-	if i, ok := note.Props.Find(typeTuplet); ok {
-		// Trim the "/" prefix from tuplet token to get division number.
-		v, err := strconv.Atoi(string(note.Props[i].Lit[1:]))
-		if err != nil {
-			panic(err)
-		}
-		return v
+	tok := note.Props.Find(tokentype.Tuplet)
+	if tok == nil {
+		return 0
 	}
-	return 0
+	// Trim the "/" prefix from tuplet token to get division number.
+	v, err := strconv.Atoi(string(tok.Lit[1:]))
+	if err != nil {
+		panic(err)
+	}
+	return v
 }
 
 // IsLetRing reports whether the note must ring.
 func (note *Note) IsLetRing() bool {
-	_, ok := note.Props.Find(typeLetRing)
-	return ok
+	return note.Props.Find(tokentype.LetRing) != nil
 }
 
 func (note *Note) WriteTo(w io.Writer) (int64, error) {
@@ -150,10 +150,10 @@ func (note *Note) WriteTo(w io.Writer) (int64, error) {
 	return int64(n), ew.Flush()
 }
 
-func (note *Note) countProps(targetType token.Type) int {
+func (note *Note) countProps(targetType tokentype.Type) int {
 	var count int
 	for _, t := range note.Props {
-		if t.Type == targetType {
+		if t.Type == targetType.Type {
 			count++
 		}
 	}

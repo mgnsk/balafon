@@ -6,7 +6,7 @@ uint      : _uint ;
 _uint        : '0' | '1'-'9' {'0'-'9'} ;
 
 _char      : 'a'-'z' | 'A'-'Z' ;
-letter     : _char ;
+symbol     : _char ;
 
 // Note: can't have identifier standalone due to letter notes in normal mode.
 cmdBar        : ':' 'b' 'a' 'r' ' ' ( _char | _uint ) { _char | _uint } ;
@@ -81,7 +81,7 @@ NoteObject
     ;
 
 NoteSymbol
-    : letter
+    : symbol
     | rest
     ;
 
@@ -102,7 +102,7 @@ Property
     ;
 
 TopLevelCommand
-    : ":assign" letter uint            << ast.NewCmdAssign([]rune(string($T1.Lit))[0], ast.Must($T2.Int64Value())) >>
+    : ":assign" symbol uint            << ast.NewCmdAssign([]rune(string($T1.Lit))[0], ast.Must($T2.Int64Value())) >>
     | cmdPlay                          << ast.NewCmdPlay(string($T0.Lit[len(":play "):])) >>
     | BarBodyCommand
     ;

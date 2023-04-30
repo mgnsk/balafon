@@ -6,15 +6,11 @@ import (
 	"strconv"
 
 	"github.com/mgnsk/balafon/internal/parser/token"
+	"github.com/mgnsk/balafon/internal/tokentype"
 )
 
-// Property is a note property.
-type Property struct {
-	*token.Token
-}
-
 // PropertyList is a list of note properties.
-type PropertyList []Property
+type PropertyList []*token.Token
 
 func (p PropertyList) Len() int      { return len(p) }
 func (p PropertyList) Swap(i, j int) { p[i], p[j] = p[j], p[i] }
@@ -23,13 +19,13 @@ func (p PropertyList) Less(i, j int) bool {
 }
 
 // Find the property with specified type.
-func (p PropertyList) Find(typ token.Type) (int, bool) {
-	for i, t := range p {
-		if t.Type == typ {
-			return i, true
+func (p PropertyList) Find(typ tokentype.Type) *token.Token {
+	for _, tok := range p {
+		if tok.Type == typ.Type {
+			return tok
 		}
 	}
-	return 0, false
+	return nil
 }
 
 func (p PropertyList) WriteTo(w io.Writer) (int64, error) {
@@ -46,7 +42,7 @@ func (p PropertyList) WriteTo(w io.Writer) (int64, error) {
 // NewPropertyList creates a note property list.
 func NewPropertyList(t *token.Token, inner interface{}) (PropertyList, error) {
 	switch t.Type {
-	case typeUint:
+	case tokentype.Uint.Type:
 		v, err := strconv.Atoi(string(t.Lit))
 		if err != nil {
 			return nil, err
@@ -54,7 +50,7 @@ func NewPropertyList(t *token.Token, inner interface{}) (PropertyList, error) {
 		if err := validateNoteValue(v); err != nil {
 			return nil, err
 		}
-	case typeTuplet:
+	case tokentype.Tuplet.Type:
 		v, err := strconv.Atoi(string(t.Lit[1:]))
 		if err != nil {
 			return nil, err
@@ -66,12 +62,12 @@ func NewPropertyList(t *token.Token, inner interface{}) (PropertyList, error) {
 
 	if props, ok := inner.(PropertyList); ok {
 		p := make(PropertyList, len(props)+1)
-		p[0] = Property{&token.Token{Type: t.Type, Lit: t.Lit}}
+		p[0] = &token.Token{Type: t.Type, Lit: t.Lit}
 		copy(p[1:], props)
 		sort.Sort(p)
 
 		return p, nil
 	}
 
-	return PropertyList{Property{&token.Token{Type: t.Type, Lit: t.Lit}}}, nil
+	return PropertyList{&token.Token{Type: t.Type, Lit: t.Lit}}, nil
 }

@@ -37,7 +37,3 @@ func (b *Bar) Cap() uint32 {
 func (b *Bar) Duration(tempo float64) time.Duration {
 	return constants.TicksPerQuarter.Duration(tempo, b.Cap())
 }
-
-func ticksTo32th(ticks uint32) uint8 {
-	return uint8(ticks / (uint32(constants.TicksPerQuarter) / 8))
-}

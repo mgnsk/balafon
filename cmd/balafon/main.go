@@ -248,7 +248,8 @@ func runPrompt(out drivers.Out, it *interpreter.Interpreter, seq *sequencer.Sequ
 			}
 		},
 		func(in prompt.Document) []prompt.Suggest {
-			return nil
+			// TODO: fix tab key overwrites existing text
+			return it.Suggest(in)
 		},
 	)
 
