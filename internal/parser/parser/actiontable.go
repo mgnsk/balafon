@@ -20,8 +20,8 @@ var actionTab = actionTable{
 			shift(3),  // terminator
 			reduce(2), // cmdBar, reduce: RepeatTerminator
 			nil,       // :end
-			reduce(2), // [, reduce: RepeatTerminator
-			nil,       // ]
+			reduce(2), // bracketBegin, reduce: RepeatTerminator
+			nil,       // bracketEnd
 			reduce(2), // symbol, reduce: RepeatTerminator
 			reduce(2), // rest, reduce: RepeatTerminator
 			nil,       // sharp
@@ -53,8 +53,8 @@ var actionTab = actionTable{
 			nil,          // terminator
 			nil,          // cmdBar
 			nil,          // :end
-			nil,          // [
-			nil,          // ]
+			nil,          // bracketBegin
+			nil,          // bracketEnd
 			nil,          // symbol
 			nil,          // rest
 			nil,          // sharp
@@ -86,8 +86,8 @@ var actionTab = actionTable{
 			nil,       // terminator
 			shift(10), // cmdBar
 			nil,       // :end
-			shift(13), // [
-			nil,       // ]
+			shift(13), // bracketBegin
+			nil,       // bracketEnd
 			shift(14), // symbol
 			shift(15), // rest
 			nil,       // sharp
@@ -119,8 +119,8 @@ var actionTab = actionTable{
 			shift(3),  // terminator
 			reduce(2), // cmdBar, reduce: RepeatTerminator
 			nil,       // :end
-			reduce(2), // [, reduce: RepeatTerminator
-			nil,       // ]
+			reduce(2), // bracketBegin, reduce: RepeatTerminator
+			nil,       // bracketEnd
 			reduce(2), // symbol, reduce: RepeatTerminator
 			reduce(2), // rest, reduce: RepeatTerminator
 			nil,       // sharp
@@ -152,8 +152,8 @@ var actionTab = actionTable{
 			nil,       // terminator
 			nil,       // cmdBar
 			nil,       // :end
-			nil,       // [
-			nil,       // ]
+			nil,       // bracketBegin
+			nil,       // bracketEnd
 			nil,       // symbol
 			nil,       // rest
 			nil,       // sharp
@@ -185,8 +185,8 @@ var actionTab = actionTable{
 			shift(28), // terminator
 			nil,       // cmdBar
 			nil,       // :end
-			nil,       // [
-			nil,       // ]
+			nil,       // bracketBegin
+			nil,       // bracketEnd
 			nil,       // symbol
 			nil,       // rest
 			nil,       // sharp
@@ -218,8 +218,8 @@ var actionTab = actionTable{
 			reduce(8), // terminator, reduce: TopLevelDecl
 			nil,       // cmdBar
 			nil,       // :end
-			nil,       // [
-			nil,       // ]
+			nil,       // bracketBegin
+			nil,       // bracketEnd
 			nil,       // symbol
 			nil,       // rest
 			nil,       // sharp
@@ -251,8 +251,8 @@ var actionTab = actionTable{
 			reduce(9), // terminator, reduce: TopLevelDecl
 			nil,       // cmdBar
 			nil,       // :end
-			nil,       // [
-			nil,       // ]
+			nil,       // bracketBegin
+			nil,       // bracketEnd
 			nil,       // symbol
 			nil,       // rest
 			nil,       // sharp
@@ -284,8 +284,8 @@ var actionTab = actionTable{
 			reduce(10), // terminator, reduce: TopLevelDecl
 			nil,        // cmdBar
 			nil,        // :end
-			nil,        // [
-			nil,        // ]
+			nil,        // bracketBegin
+			nil,        // bracketEnd
 			nil,        // symbol
 			nil,        // rest
 			nil,        // sharp
@@ -317,8 +317,8 @@ var actionTab = actionTable{
 			reduce(32), // terminator, reduce: TopLevelCommand
 			nil,        // cmdBar
 			nil,        // :end
-			nil,        // [
-			nil,        // ]
+			nil,        // bracketBegin
+			nil,        // bracketEnd
 			nil,        // symbol
 			nil,        // rest
 			nil,        // sharp
@@ -350,8 +350,8 @@ var actionTab = actionTable{
 			shift(30), // terminator
 			nil,       // cmdBar
 			nil,       // :end
-			reduce(2), // [, reduce: RepeatTerminator
-			nil,       // ]
+			reduce(2), // bracketBegin, reduce: RepeatTerminator
+			nil,       // bracketEnd
 			reduce(2), // symbol, reduce: RepeatTerminator
 			reduce(2), // rest, reduce: RepeatTerminator
 			nil,       // sharp
@@ -383,8 +383,8 @@ var actionTab = actionTable{
 			reduce(14), // terminator, reduce: NoteList
 			nil,        // cmdBar
 			nil,        // :end
-			shift(13),  // [
-			nil,        // ]
+			shift(13),  // bracketBegin
+			nil,        // bracketEnd
 			shift(14),  // symbol
 			shift(15),  // rest
 			nil,        // sharp
@@ -416,8 +416,8 @@ var actionTab = actionTable{
 			reduce(20), // terminator, reduce: PropertyList
 			nil,        // cmdBar
 			nil,        // :end
-			reduce(20), // [, reduce: PropertyList
-			nil,        // ]
+			reduce(20), // bracketBegin, reduce: PropertyList
+			nil,        // bracketEnd
 			reduce(20), // symbol, reduce: PropertyList
 			reduce(20), // rest, reduce: PropertyList
 			shift(34),  // sharp
@@ -449,8 +449,8 @@ var actionTab = actionTable{
 			nil,       // terminator
 			nil,       // cmdBar
 			nil,       // :end
-			shift(45), // [
-			nil,       // ]
+			shift(45), // bracketBegin
+			nil,       // bracketEnd
 			shift(46), // symbol
 			shift(47), // rest
 			nil,       // sharp
@@ -482,8 +482,8 @@ var actionTab = actionTable{
 			reduce(18), // terminator, reduce: NoteSymbol
 			nil,        // cmdBar
 			nil,        // :end
-			reduce(18), // [, reduce: NoteSymbol
-			nil,        // ]
+			reduce(18), // bracketBegin, reduce: NoteSymbol
+			nil,        // bracketEnd
 			reduce(18), // symbol, reduce: NoteSymbol
 			reduce(18), // rest, reduce: NoteSymbol
 			reduce(18), // sharp, reduce: NoteSymbol
@@ -515,8 +515,8 @@ var actionTab = actionTable{
 			reduce(19), // terminator, reduce: NoteSymbol
 			nil,        // cmdBar
 			nil,        // :end
-			reduce(19), // [, reduce: NoteSymbol
-			nil,        // ]
+			reduce(19), // bracketBegin, reduce: NoteSymbol
+			nil,        // bracketEnd
 			reduce(19), // symbol, reduce: NoteSymbol
 			reduce(19), // rest, reduce: NoteSymbol
 			reduce(19), // sharp, reduce: NoteSymbol
@@ -548,8 +548,8 @@ var actionTab = actionTable{
 			nil,       // terminator
 			nil,       // cmdBar
 			nil,       // :end
-			nil,       // [
-			nil,       // ]
+			nil,       // bracketBegin
+			nil,       // bracketEnd
 			shift(48), // symbol
 			nil,       // rest
 			nil,       // sharp
@@ -581,8 +581,8 @@ var actionTab = actionTable{
 			reduce(31), // terminator, reduce: TopLevelCommand
 			nil,        // cmdBar
 			nil,        // :end
-			nil,        // [
-			nil,        // ]
+			nil,        // bracketBegin
+			nil,        // bracketEnd
 			nil,        // symbol
 			nil,        // rest
 			nil,        // sharp
@@ -614,8 +614,8 @@ var actionTab = actionTable{
 			nil,       // terminator
 			nil,       // cmdBar
 			nil,       // :end
-			nil,       // [
-			nil,       // ]
+			nil,       // bracketBegin
+			nil,       // bracketEnd
 			nil,       // symbol
 			nil,       // rest
 			nil,       // sharp
@@ -647,8 +647,8 @@ var actionTab = actionTable{
 			nil,       // terminator
 			nil,       // cmdBar
 			nil,       // :end
-			nil,       // [
-			nil,       // ]
+			nil,       // bracketBegin
+			nil,       // bracketEnd
 			nil,       // symbol
 			nil,       // rest
 			nil,       // sharp
@@ -680,8 +680,8 @@ var actionTab = actionTable{
 			nil,       // terminator
 			nil,       // cmdBar
 			nil,       // :end
-			nil,       // [
-			nil,       // ]
+			nil,       // bracketBegin
+			nil,       // bracketEnd
 			nil,       // symbol
 			nil,       // rest
 			nil,       // sharp
@@ -713,8 +713,8 @@ var actionTab = actionTable{
 			nil,       // terminator
 			nil,       // cmdBar
 			nil,       // :end
-			nil,       // [
-			nil,       // ]
+			nil,       // bracketBegin
+			nil,       // bracketEnd
 			nil,       // symbol
 			nil,       // rest
 			nil,       // sharp
@@ -746,8 +746,8 @@ var actionTab = actionTable{
 			nil,       // terminator
 			nil,       // cmdBar
 			nil,       // :end
-			nil,       // [
-			nil,       // ]
+			nil,       // bracketBegin
+			nil,       // bracketEnd
 			nil,       // symbol
 			nil,       // rest
 			nil,       // sharp
@@ -779,8 +779,8 @@ var actionTab = actionTable{
 			nil,       // terminator
 			nil,       // cmdBar
 			nil,       // :end
-			nil,       // [
-			nil,       // ]
+			nil,       // bracketBegin
+			nil,       // bracketEnd
 			nil,       // symbol
 			nil,       // rest
 			nil,       // sharp
@@ -812,8 +812,8 @@ var actionTab = actionTable{
 			reduce(39), // terminator, reduce: BarBodyCommand
 			nil,        // cmdBar
 			nil,        // :end
-			nil,        // [
-			nil,        // ]
+			nil,        // bracketBegin
+			nil,        // bracketEnd
 			nil,        // symbol
 			nil,        // rest
 			nil,        // sharp
@@ -845,8 +845,8 @@ var actionTab = actionTable{
 			reduce(40), // terminator, reduce: BarBodyCommand
 			nil,        // cmdBar
 			nil,        // :end
-			nil,        // [
-			nil,        // ]
+			nil,        // bracketBegin
+			nil,        // bracketEnd
 			nil,        // symbol
 			nil,        // rest
 			nil,        // sharp
@@ -878,8 +878,8 @@ var actionTab = actionTable{
 			nil,       // terminator
 			reduce(3), // cmdBar, reduce: RepeatTerminator
 			nil,       // :end
-			reduce(3), // [, reduce: RepeatTerminator
-			nil,       // ]
+			reduce(3), // bracketBegin, reduce: RepeatTerminator
+			nil,       // bracketEnd
 			reduce(3), // symbol, reduce: RepeatTerminator
 			reduce(3), // rest, reduce: RepeatTerminator
 			nil,       // sharp
@@ -911,8 +911,8 @@ var actionTab = actionTable{
 			nil,       // terminator
 			nil,       // cmdBar
 			nil,       // :end
-			nil,       // [
-			nil,       // ]
+			nil,       // bracketBegin
+			nil,       // bracketEnd
 			nil,       // symbol
 			nil,       // rest
 			nil,       // sharp
@@ -944,8 +944,8 @@ var actionTab = actionTable{
 			shift(56), // terminator
 			reduce(2), // cmdBar, reduce: RepeatTerminator
 			nil,       // :end
-			reduce(2), // [, reduce: RepeatTerminator
-			nil,       // ]
+			reduce(2), // bracketBegin, reduce: RepeatTerminator
+			nil,       // bracketEnd
 			reduce(2), // symbol, reduce: RepeatTerminator
 			reduce(2), // rest, reduce: RepeatTerminator
 			nil,       // sharp
@@ -977,8 +977,8 @@ var actionTab = actionTable{
 			nil,       // terminator
 			nil,       // cmdBar
 			nil,       // :end
-			shift(63), // [
-			nil,       // ]
+			shift(63), // bracketBegin
+			nil,       // bracketEnd
 			shift(64), // symbol
 			shift(65), // rest
 			nil,       // sharp
@@ -1010,8 +1010,8 @@ var actionTab = actionTable{
 			shift(30), // terminator
 			nil,       // cmdBar
 			nil,       // :end
-			reduce(2), // [, reduce: RepeatTerminator
-			nil,       // ]
+			reduce(2), // bracketBegin, reduce: RepeatTerminator
+			nil,       // bracketEnd
 			reduce(2), // symbol, reduce: RepeatTerminator
 			reduce(2), // rest, reduce: RepeatTerminator
 			nil,       // sharp
@@ -1043,8 +1043,8 @@ var actionTab = actionTable{
 			reduce(15), // terminator, reduce: NoteList
 			nil,        // cmdBar
 			nil,        // :end
-			nil,        // [
-			nil,        // ]
+			nil,        // bracketBegin
+			nil,        // bracketEnd
 			nil,        // symbol
 			nil,        // rest
 			nil,        // sharp
@@ -1076,8 +1076,8 @@ var actionTab = actionTable{
 			reduce(16), // terminator, reduce: NoteObject
 			nil,        // cmdBar
 			nil,        // :end
-			reduce(16), // [, reduce: NoteObject
-			nil,        // ]
+			reduce(16), // bracketBegin, reduce: NoteObject
+			nil,        // bracketEnd
 			reduce(16), // symbol, reduce: NoteObject
 			reduce(16), // rest, reduce: NoteObject
 			nil,        // sharp
@@ -1109,8 +1109,8 @@ var actionTab = actionTable{
 			reduce(20), // terminator, reduce: PropertyList
 			nil,        // cmdBar
 			nil,        // :end
-			reduce(20), // [, reduce: PropertyList
-			nil,        // ]
+			reduce(20), // bracketBegin, reduce: PropertyList
+			nil,        // bracketEnd
 			reduce(20), // symbol, reduce: PropertyList
 			reduce(20), // rest, reduce: PropertyList
 			shift(34),  // sharp
@@ -1142,8 +1142,8 @@ var actionTab = actionTable{
 			reduce(22), // terminator, reduce: Property
 			nil,        // cmdBar
 			nil,        // :end
-			reduce(22), // [, reduce: Property
-			nil,        // ]
+			reduce(22), // bracketBegin, reduce: Property
+			nil,        // bracketEnd
 			reduce(22), // symbol, reduce: Property
 			reduce(22), // rest, reduce: Property
 			reduce(22), // sharp, reduce: Property
@@ -1175,8 +1175,8 @@ var actionTab = actionTable{
 			reduce(23), // terminator, reduce: Property
 			nil,        // cmdBar
 			nil,        // :end
-			reduce(23), // [, reduce: Property
-			nil,        // ]
+			reduce(23), // bracketBegin, reduce: Property
+			nil,        // bracketEnd
 			reduce(23), // symbol, reduce: Property
 			reduce(23), // rest, reduce: Property
 			reduce(23), // sharp, reduce: Property
@@ -1208,8 +1208,8 @@ var actionTab = actionTable{
 			reduce(24), // terminator, reduce: Property
 			nil,        // cmdBar
 			nil,        // :end
-			reduce(24), // [, reduce: Property
-			nil,        // ]
+			reduce(24), // bracketBegin, reduce: Property
+			nil,        // bracketEnd
 			reduce(24), // symbol, reduce: Property
 			reduce(24), // rest, reduce: Property
 			reduce(24), // sharp, reduce: Property
@@ -1241,8 +1241,8 @@ var actionTab = actionTable{
 			reduce(25), // terminator, reduce: Property
 			nil,        // cmdBar
 			nil,        // :end
-			reduce(25), // [, reduce: Property
-			nil,        // ]
+			reduce(25), // bracketBegin, reduce: Property
+			nil,        // bracketEnd
 			reduce(25), // symbol, reduce: Property
 			reduce(25), // rest, reduce: Property
 			reduce(25), // sharp, reduce: Property
@@ -1274,8 +1274,8 @@ var actionTab = actionTable{
 			reduce(26), // terminator, reduce: Property
 			nil,        // cmdBar
 			nil,        // :end
-			reduce(26), // [, reduce: Property
-			nil,        // ]
+			reduce(26), // bracketBegin, reduce: Property
+			nil,        // bracketEnd
 			reduce(26), // symbol, reduce: Property
 			reduce(26), // rest, reduce: Property
 			reduce(26), // sharp, reduce: Property
@@ -1307,8 +1307,8 @@ var actionTab = actionTable{
 			reduce(27), // terminator, reduce: Property
 			nil,        // cmdBar
 			nil,        // :end
-			reduce(27), // [, reduce: Property
-			nil,        // ]
+			reduce(27), // bracketBegin, reduce: Property
+			nil,        // bracketEnd
 			reduce(27), // symbol, reduce: Property
 			reduce(27), // rest, reduce: Property
 			reduce(27), // sharp, reduce: Property
@@ -1340,8 +1340,8 @@ var actionTab = actionTable{
 			reduce(28), // terminator, reduce: Property
 			nil,        // cmdBar
 			nil,        // :end
-			reduce(28), // [, reduce: Property
-			nil,        // ]
+			reduce(28), // bracketBegin, reduce: Property
+			nil,        // bracketEnd
 			reduce(28), // symbol, reduce: Property
 			reduce(28), // rest, reduce: Property
 			reduce(28), // sharp, reduce: Property
@@ -1373,8 +1373,8 @@ var actionTab = actionTable{
 			reduce(29), // terminator, reduce: Property
 			nil,        // cmdBar
 			nil,        // :end
-			reduce(29), // [, reduce: Property
-			nil,        // ]
+			reduce(29), // bracketBegin, reduce: Property
+			nil,        // bracketEnd
 			reduce(29), // symbol, reduce: Property
 			reduce(29), // rest, reduce: Property
 			reduce(29), // sharp, reduce: Property
@@ -1406,8 +1406,8 @@ var actionTab = actionTable{
 			nil,       // terminator
 			nil,       // cmdBar
 			nil,       // :end
-			nil,       // [
-			shift(76), // ]
+			nil,       // bracketBegin
+			shift(76), // bracketEnd
 			nil,       // symbol
 			nil,       // rest
 			nil,       // sharp
@@ -1439,8 +1439,8 @@ var actionTab = actionTable{
 			nil,        // terminator
 			nil,        // cmdBar
 			nil,        // :end
-			shift(45),  // [
-			reduce(14), // ], reduce: NoteList
+			shift(45),  // bracketBegin
+			reduce(14), // bracketEnd, reduce: NoteList
 			shift(46),  // symbol
 			shift(47),  // rest
 			nil,        // sharp
@@ -1472,8 +1472,8 @@ var actionTab = actionTable{
 			nil,        // terminator
 			nil,        // cmdBar
 			nil,        // :end
-			reduce(20), // [, reduce: PropertyList
-			reduce(20), // ], reduce: PropertyList
+			reduce(20), // bracketBegin, reduce: PropertyList
+			reduce(20), // bracketEnd, reduce: PropertyList
 			reduce(20), // symbol, reduce: PropertyList
 			reduce(20), // rest, reduce: PropertyList
 			shift(80),  // sharp
@@ -1505,8 +1505,8 @@ var actionTab = actionTable{
 			nil,       // terminator
 			nil,       // cmdBar
 			nil,       // :end
-			shift(45), // [
-			nil,       // ]
+			shift(45), // bracketBegin
+			nil,       // bracketEnd
 			shift(46), // symbol
 			shift(47), // rest
 			nil,       // sharp
@@ -1538,8 +1538,8 @@ var actionTab = actionTable{
 			nil,        // terminator
 			nil,        // cmdBar
 			nil,        // :end
-			reduce(18), // [, reduce: NoteSymbol
-			reduce(18), // ], reduce: NoteSymbol
+			reduce(18), // bracketBegin, reduce: NoteSymbol
+			reduce(18), // bracketEnd, reduce: NoteSymbol
 			reduce(18), // symbol, reduce: NoteSymbol
 			reduce(18), // rest, reduce: NoteSymbol
 			reduce(18), // sharp, reduce: NoteSymbol
@@ -1571,8 +1571,8 @@ var actionTab = actionTable{
 			nil,        // terminator
 			nil,        // cmdBar
 			nil,        // :end
-			reduce(19), // [, reduce: NoteSymbol
-			reduce(19), // ], reduce: NoteSymbol
+			reduce(19), // bracketBegin, reduce: NoteSymbol
+			reduce(19), // bracketEnd, reduce: NoteSymbol
 			reduce(19), // symbol, reduce: NoteSymbol
 			reduce(19), // rest, reduce: NoteSymbol
 			reduce(19), // sharp, reduce: NoteSymbol
@@ -1604,8 +1604,8 @@ var actionTab = actionTable{
 			nil,       // terminator
 			nil,       // cmdBar
 			nil,       // :end
-			nil,       // [
-			nil,       // ]
+			nil,       // bracketBegin
+			nil,       // bracketEnd
 			nil,       // symbol
 			nil,       // rest
 			nil,       // sharp
@@ -1637,8 +1637,8 @@ var actionTab = actionTable{
 			reduce(33), // terminator, reduce: BarBodyCommand
 			nil,        // cmdBar
 			nil,        // :end
-			nil,        // [
-			nil,        // ]
+			nil,        // bracketBegin
+			nil,        // bracketEnd
 			nil,        // symbol
 			nil,        // rest
 			nil,        // sharp
@@ -1670,8 +1670,8 @@ var actionTab = actionTable{
 			nil,       // terminator
 			nil,       // cmdBar
 			nil,       // :end
-			nil,       // [
-			nil,       // ]
+			nil,       // bracketBegin
+			nil,       // bracketEnd
 			nil,       // symbol
 			nil,       // rest
 			nil,       // sharp
@@ -1703,8 +1703,8 @@ var actionTab = actionTable{
 			reduce(35), // terminator, reduce: BarBodyCommand
 			nil,        // cmdBar
 			nil,        // :end
-			nil,        // [
-			nil,        // ]
+			nil,        // bracketBegin
+			nil,        // bracketEnd
 			nil,        // symbol
 			nil,        // rest
 			nil,        // sharp
@@ -1736,8 +1736,8 @@ var actionTab = actionTable{
 			reduce(36), // terminator, reduce: BarBodyCommand
 			nil,        // cmdBar
 			nil,        // :end
-			nil,        // [
-			nil,        // ]
+			nil,        // bracketBegin
+			nil,        // bracketEnd
 			nil,        // symbol
 			nil,        // rest
 			nil,        // sharp
@@ -1769,8 +1769,8 @@ var actionTab = actionTable{
 			reduce(37), // terminator, reduce: BarBodyCommand
 			nil,        // cmdBar
 			nil,        // :end
-			nil,        // [
-			nil,        // ]
+			nil,        // bracketBegin
+			nil,        // bracketEnd
 			nil,        // symbol
 			nil,        // rest
 			nil,        // sharp
@@ -1802,8 +1802,8 @@ var actionTab = actionTable{
 			nil,       // terminator
 			nil,       // cmdBar
 			nil,       // :end
-			nil,       // [
-			nil,       // ]
+			nil,       // bracketBegin
+			nil,       // bracketEnd
 			nil,       // symbol
 			nil,       // rest
 			nil,       // sharp
@@ -1835,8 +1835,8 @@ var actionTab = actionTable{
 			nil,       // terminator
 			shift(10), // cmdBar
 			nil,       // :end
-			shift(13), // [
-			nil,       // ]
+			shift(13), // bracketBegin
+			nil,       // bracketEnd
 			shift(14), // symbol
 			shift(15), // rest
 			nil,       // sharp
@@ -1868,8 +1868,8 @@ var actionTab = actionTable{
 			shift(56), // terminator
 			reduce(2), // cmdBar, reduce: RepeatTerminator
 			nil,       // :end
-			reduce(2), // [, reduce: RepeatTerminator
-			nil,       // ]
+			reduce(2), // bracketBegin, reduce: RepeatTerminator
+			nil,       // bracketEnd
 			reduce(2), // symbol, reduce: RepeatTerminator
 			reduce(2), // rest, reduce: RepeatTerminator
 			nil,       // sharp
@@ -1901,8 +1901,8 @@ var actionTab = actionTable{
 			nil,       // terminator
 			nil,       // cmdBar
 			shift(94), // :end
-			nil,       // [
-			nil,       // ]
+			nil,       // bracketBegin
+			nil,       // bracketEnd
 			nil,       // symbol
 			nil,       // rest
 			nil,       // sharp
@@ -1934,8 +1934,8 @@ var actionTab = actionTable{
 			shift(96), // terminator
 			nil,       // cmdBar
 			reduce(2), // :end, reduce: RepeatTerminator
-			nil,       // [
-			nil,       // ]
+			nil,       // bracketBegin
+			nil,       // bracketEnd
 			nil,       // symbol
 			nil,       // rest
 			nil,       // sharp
@@ -1967,8 +1967,8 @@ var actionTab = actionTable{
 			reduce(12), // terminator, reduce: BarBodyDecl
 			nil,        // cmdBar
 			reduce(12), // :end, reduce: BarBodyDecl
-			nil,        // [
-			nil,        // ]
+			nil,        // bracketBegin
+			nil,        // bracketEnd
 			nil,        // symbol
 			nil,        // rest
 			nil,        // sharp
@@ -2000,8 +2000,8 @@ var actionTab = actionTable{
 			reduce(11), // terminator, reduce: BarBodyDecl
 			nil,        // cmdBar
 			reduce(11), // :end, reduce: BarBodyDecl
-			nil,        // [
-			nil,        // ]
+			nil,        // bracketBegin
+			nil,        // bracketEnd
 			nil,        // symbol
 			nil,        // rest
 			nil,        // sharp
@@ -2033,8 +2033,8 @@ var actionTab = actionTable{
 			reduce(14), // terminator, reduce: NoteList
 			nil,        // cmdBar
 			reduce(14), // :end, reduce: NoteList
-			shift(63),  // [
-			nil,        // ]
+			shift(63),  // bracketBegin
+			nil,        // bracketEnd
 			shift(64),  // symbol
 			shift(65),  // rest
 			nil,        // sharp
@@ -2066,8 +2066,8 @@ var actionTab = actionTable{
 			reduce(20), // terminator, reduce: PropertyList
 			nil,        // cmdBar
 			reduce(20), // :end, reduce: PropertyList
-			reduce(20), // [, reduce: PropertyList
-			nil,        // ]
+			reduce(20), // bracketBegin, reduce: PropertyList
+			nil,        // bracketEnd
 			reduce(20), // symbol, reduce: PropertyList
 			reduce(20), // rest, reduce: PropertyList
 			shift(100), // sharp
@@ -2099,8 +2099,8 @@ var actionTab = actionTable{
 			nil,       // terminator
 			nil,       // cmdBar
 			nil,       // :end
-			shift(45), // [
-			nil,       // ]
+			shift(45), // bracketBegin
+			nil,       // bracketEnd
 			shift(46), // symbol
 			shift(47), // rest
 			nil,       // sharp
@@ -2132,8 +2132,8 @@ var actionTab = actionTable{
 			reduce(18), // terminator, reduce: NoteSymbol
 			nil,        // cmdBar
 			reduce(18), // :end, reduce: NoteSymbol
-			reduce(18), // [, reduce: NoteSymbol
-			nil,        // ]
+			reduce(18), // bracketBegin, reduce: NoteSymbol
+			nil,        // bracketEnd
 			reduce(18), // symbol, reduce: NoteSymbol
 			reduce(18), // rest, reduce: NoteSymbol
 			reduce(18), // sharp, reduce: NoteSymbol
@@ -2165,8 +2165,8 @@ var actionTab = actionTable{
 			reduce(19), // terminator, reduce: NoteSymbol
 			nil,        // cmdBar
 			reduce(19), // :end, reduce: NoteSymbol
-			reduce(19), // [, reduce: NoteSymbol
-			nil,        // ]
+			reduce(19), // bracketBegin, reduce: NoteSymbol
+			nil,        // bracketEnd
 			reduce(19), // symbol, reduce: NoteSymbol
 			reduce(19), // rest, reduce: NoteSymbol
 			reduce(19), // sharp, reduce: NoteSymbol
@@ -2198,8 +2198,8 @@ var actionTab = actionTable{
 			nil,        // terminator
 			nil,        // cmdBar
 			nil,        // :end
-			nil,        // [
-			nil,        // ]
+			nil,        // bracketBegin
+			nil,        // bracketEnd
 			nil,        // symbol
 			nil,        // rest
 			nil,        // sharp
@@ -2231,8 +2231,8 @@ var actionTab = actionTable{
 			nil,        // terminator
 			nil,        // cmdBar
 			nil,        // :end
-			nil,        // [
-			nil,        // ]
+			nil,        // bracketBegin
+			nil,        // bracketEnd
 			nil,        // symbol
 			nil,        // rest
 			nil,        // sharp
@@ -2264,8 +2264,8 @@ var actionTab = actionTable{
 			nil,        // terminator
 			nil,        // cmdBar
 			nil,        // :end
-			nil,        // [
-			nil,        // ]
+			nil,        // bracketBegin
+			nil,        // bracketEnd
 			nil,        // symbol
 			nil,        // rest
 			nil,        // sharp
@@ -2297,8 +2297,8 @@ var actionTab = actionTable{
 			nil,        // terminator
 			nil,        // cmdBar
 			nil,        // :end
-			nil,        // [
-			nil,        // ]
+			nil,        // bracketBegin
+			nil,        // bracketEnd
 			nil,        // symbol
 			nil,        // rest
 			nil,        // sharp
@@ -2330,8 +2330,8 @@ var actionTab = actionTable{
 			nil,        // terminator
 			nil,        // cmdBar
 			nil,        // :end
-			nil,        // [
-			nil,        // ]
+			nil,        // bracketBegin
+			nil,        // bracketEnd
 			nil,        // symbol
 			nil,        // rest
 			nil,        // sharp
@@ -2363,8 +2363,8 @@ var actionTab = actionTable{
 			nil,        // terminator
 			nil,        // cmdBar
 			nil,        // :end
-			nil,        // [
-			nil,        // ]
+			nil,        // bracketBegin
+			nil,        // bracketEnd
 			nil,        // symbol
 			nil,        // rest
 			nil,        // sharp
@@ -2396,8 +2396,8 @@ var actionTab = actionTable{
 			reduce(39), // terminator, reduce: BarBodyCommand
 			nil,        // cmdBar
 			reduce(39), // :end, reduce: BarBodyCommand
-			nil,        // [
-			nil,        // ]
+			nil,        // bracketBegin
+			nil,        // bracketEnd
 			nil,        // symbol
 			nil,        // rest
 			nil,        // sharp
@@ -2429,8 +2429,8 @@ var actionTab = actionTable{
 			reduce(40), // terminator, reduce: BarBodyCommand
 			nil,        // cmdBar
 			reduce(40), // :end, reduce: BarBodyCommand
-			nil,        // [
-			nil,        // ]
+			nil,        // bracketBegin
+			nil,        // bracketEnd
 			nil,        // symbol
 			nil,        // rest
 			nil,        // sharp
@@ -2462,8 +2462,8 @@ var actionTab = actionTable{
 			nil,       // terminator
 			nil,       // cmdBar
 			nil,       // :end
-			reduce(3), // [, reduce: RepeatTerminator
-			nil,       // ]
+			reduce(3), // bracketBegin, reduce: RepeatTerminator
+			nil,       // bracketEnd
 			reduce(3), // symbol, reduce: RepeatTerminator
 			reduce(3), // rest, reduce: RepeatTerminator
 			nil,       // sharp
@@ -2495,8 +2495,8 @@ var actionTab = actionTable{
 			reduce(21), // terminator, reduce: PropertyList
 			nil,        // cmdBar
 			nil,        // :end
-			reduce(21), // [, reduce: PropertyList
-			nil,        // ]
+			reduce(21), // bracketBegin, reduce: PropertyList
+			nil,        // bracketEnd
 			reduce(21), // symbol, reduce: PropertyList
 			reduce(21), // rest, reduce: PropertyList
 			nil,        // sharp
@@ -2528,8 +2528,8 @@ var actionTab = actionTable{
 			reduce(20), // terminator, reduce: PropertyList
 			nil,        // cmdBar
 			nil,        // :end
-			reduce(20), // [, reduce: PropertyList
-			nil,        // ]
+			reduce(20), // bracketBegin, reduce: PropertyList
+			nil,        // bracketEnd
 			reduce(20), // symbol, reduce: PropertyList
 			reduce(20), // rest, reduce: PropertyList
 			shift(34),  // sharp
@@ -2561,8 +2561,8 @@ var actionTab = actionTable{
 			nil,        // terminator
 			nil,        // cmdBar
 			nil,        // :end
-			nil,        // [
-			reduce(15), // ], reduce: NoteList
+			nil,        // bracketBegin
+			reduce(15), // bracketEnd, reduce: NoteList
 			nil,        // symbol
 			nil,        // rest
 			nil,        // sharp
@@ -2594,8 +2594,8 @@ var actionTab = actionTable{
 			nil,        // terminator
 			nil,        // cmdBar
 			nil,        // :end
-			reduce(16), // [, reduce: NoteObject
-			reduce(16), // ], reduce: NoteObject
+			reduce(16), // bracketBegin, reduce: NoteObject
+			reduce(16), // bracketEnd, reduce: NoteObject
 			reduce(16), // symbol, reduce: NoteObject
 			reduce(16), // rest, reduce: NoteObject
 			nil,        // sharp
@@ -2627,8 +2627,8 @@ var actionTab = actionTable{
 			nil,        // terminator
 			nil,        // cmdBar
 			nil,        // :end
-			reduce(20), // [, reduce: PropertyList
-			reduce(20), // ], reduce: PropertyList
+			reduce(20), // bracketBegin, reduce: PropertyList
+			reduce(20), // bracketEnd, reduce: PropertyList
 			reduce(20), // symbol, reduce: PropertyList
 			reduce(20), // rest, reduce: PropertyList
 			shift(80),  // sharp
@@ -2660,8 +2660,8 @@ var actionTab = actionTable{
 			nil,        // terminator
 			nil,        // cmdBar
 			nil,        // :end
-			reduce(22), // [, reduce: Property
-			reduce(22), // ], reduce: Property
+			reduce(22), // bracketBegin, reduce: Property
+			reduce(22), // bracketEnd, reduce: Property
 			reduce(22), // symbol, reduce: Property
 			reduce(22), // rest, reduce: Property
 			reduce(22), // sharp, reduce: Property
@@ -2693,8 +2693,8 @@ var actionTab = actionTable{
 			nil,        // terminator
 			nil,        // cmdBar
 			nil,        // :end
-			reduce(23), // [, reduce: Property
-			reduce(23), // ], reduce: Property
+			reduce(23), // bracketBegin, reduce: Property
+			reduce(23), // bracketEnd, reduce: Property
 			reduce(23), // symbol, reduce: Property
 			reduce(23), // rest, reduce: Property
 			reduce(23), // sharp, reduce: Property
@@ -2726,8 +2726,8 @@ var actionTab = actionTable{
 			nil,        // terminator
 			nil,        // cmdBar
 			nil,        // :end
-			reduce(24), // [, reduce: Property
-			reduce(24), // ], reduce: Property
+			reduce(24), // bracketBegin, reduce: Property
+			reduce(24), // bracketEnd, reduce: Property
 			reduce(24), // symbol, reduce: Property
 			reduce(24), // rest, reduce: Property
 			reduce(24), // sharp, reduce: Property
@@ -2759,8 +2759,8 @@ var actionTab = actionTable{
 			nil,        // terminator
 			nil,        // cmdBar
 			nil,        // :end
-			reduce(25), // [, reduce: Property
-			reduce(25), // ], reduce: Property
+			reduce(25), // bracketBegin, reduce: Property
+			reduce(25), // bracketEnd, reduce: Property
 			reduce(25), // symbol, reduce: Property
 			reduce(25), // rest, reduce: Property
 			reduce(25), // sharp, reduce: Property
@@ -2792,8 +2792,8 @@ var actionTab = actionTable{
 			nil,        // terminator
 			nil,        // cmdBar
 			nil,        // :end
-			reduce(26), // [, reduce: Property
-			reduce(26), // ], reduce: Property
+			reduce(26), // bracketBegin, reduce: Property
+			reduce(26), // bracketEnd, reduce: Property
 			reduce(26), // symbol, reduce: Property
 			reduce(26), // rest, reduce: Property
 			reduce(26), // sharp, reduce: Property
@@ -2825,8 +2825,8 @@ var actionTab = actionTable{
 			nil,        // terminator
 			nil,        // cmdBar
 			nil,        // :end
-			reduce(27), // [, reduce: Property
-			reduce(27), // ], reduce: Property
+			reduce(27), // bracketBegin, reduce: Property
+			reduce(27), // bracketEnd, reduce: Property
 			reduce(27), // symbol, reduce: Property
 			reduce(27), // rest, reduce: Property
 			reduce(27), // sharp, reduce: Property
@@ -2858,8 +2858,8 @@ var actionTab = actionTable{
 			nil,        // terminator
 			nil,        // cmdBar
 			nil,        // :end
-			reduce(28), // [, reduce: Property
-			reduce(28), // ], reduce: Property
+			reduce(28), // bracketBegin, reduce: Property
+			reduce(28), // bracketEnd, reduce: Property
 			reduce(28), // symbol, reduce: Property
 			reduce(28), // rest, reduce: Property
 			reduce(28), // sharp, reduce: Property
@@ -2891,8 +2891,8 @@ var actionTab = actionTable{
 			nil,        // terminator
 			nil,        // cmdBar
 			nil,        // :end
-			reduce(29), // [, reduce: Property
-			reduce(29), // ], reduce: Property
+			reduce(29), // bracketBegin, reduce: Property
+			reduce(29), // bracketEnd, reduce: Property
 			reduce(29), // symbol, reduce: Property
 			reduce(29), // rest, reduce: Property
 			reduce(29), // sharp, reduce: Property
@@ -2924,8 +2924,8 @@ var actionTab = actionTable{
 			nil,        // terminator
 			nil,        // cmdBar
 			nil,        // :end
-			nil,        // [
-			shift(117), // ]
+			nil,        // bracketBegin
+			shift(117), // bracketEnd
 			nil,        // symbol
 			nil,        // rest
 			nil,        // sharp
@@ -2957,8 +2957,8 @@ var actionTab = actionTable{
 			reduce(30), // terminator, reduce: TopLevelCommand
 			nil,        // cmdBar
 			nil,        // :end
-			nil,        // [
-			nil,        // ]
+			nil,        // bracketBegin
+			nil,        // bracketEnd
 			nil,        // symbol
 			nil,        // rest
 			nil,        // sharp
@@ -2990,8 +2990,8 @@ var actionTab = actionTable{
 			reduce(34), // terminator, reduce: BarBodyCommand
 			nil,        // cmdBar
 			nil,        // :end
-			nil,        // [
-			nil,        // ]
+			nil,        // bracketBegin
+			nil,        // bracketEnd
 			nil,        // symbol
 			nil,        // rest
 			nil,        // sharp
@@ -3023,8 +3023,8 @@ var actionTab = actionTable{
 			reduce(38), // terminator, reduce: BarBodyCommand
 			nil,        // cmdBar
 			nil,        // :end
-			nil,        // [
-			nil,        // ]
+			nil,        // bracketBegin
+			nil,        // bracketEnd
 			nil,        // symbol
 			nil,        // rest
 			nil,        // sharp
@@ -3056,8 +3056,8 @@ var actionTab = actionTable{
 			nil,       // terminator
 			nil,       // cmdBar
 			nil,       // :end
-			nil,       // [
-			nil,       // ]
+			nil,       // bracketBegin
+			nil,       // bracketEnd
 			nil,       // symbol
 			nil,       // rest
 			nil,       // sharp
@@ -3089,8 +3089,8 @@ var actionTab = actionTable{
 			nil,       // terminator
 			reduce(3), // cmdBar, reduce: RepeatTerminator
 			nil,       // :end
-			reduce(3), // [, reduce: RepeatTerminator
-			nil,       // ]
+			reduce(3), // bracketBegin, reduce: RepeatTerminator
+			nil,       // bracketEnd
 			reduce(3), // symbol, reduce: RepeatTerminator
 			reduce(3), // rest, reduce: RepeatTerminator
 			nil,       // sharp
@@ -3122,8 +3122,8 @@ var actionTab = actionTable{
 			reduce(13), // terminator, reduce: Bar
 			nil,        // cmdBar
 			nil,        // :end
-			nil,        // [
-			nil,        // ]
+			nil,        // bracketBegin
+			nil,        // bracketEnd
 			nil,        // symbol
 			nil,        // rest
 			nil,        // sharp
@@ -3155,8 +3155,8 @@ var actionTab = actionTable{
 			nil,       // terminator
 			nil,       // cmdBar
 			reduce(7), // :end, reduce: BarBodyDeclList
-			nil,       // [
-			nil,       // ]
+			nil,       // bracketBegin
+			nil,       // bracketEnd
 			nil,       // symbol
 			nil,       // rest
 			nil,       // sharp
@@ -3188,8 +3188,8 @@ var actionTab = actionTable{
 			shift(119), // terminator
 			nil,        // cmdBar
 			reduce(2),  // :end, reduce: RepeatTerminator
-			reduce(2),  // [, reduce: RepeatTerminator
-			nil,        // ]
+			reduce(2),  // bracketBegin, reduce: RepeatTerminator
+			nil,        // bracketEnd
 			reduce(2),  // symbol, reduce: RepeatTerminator
 			reduce(2),  // rest, reduce: RepeatTerminator
 			nil,        // sharp
@@ -3221,8 +3221,8 @@ var actionTab = actionTable{
 			reduce(15), // terminator, reduce: NoteList
 			nil,        // cmdBar
 			reduce(15), // :end, reduce: NoteList
-			nil,        // [
-			nil,        // ]
+			nil,        // bracketBegin
+			nil,        // bracketEnd
 			nil,        // symbol
 			nil,        // rest
 			nil,        // sharp
@@ -3254,8 +3254,8 @@ var actionTab = actionTable{
 			reduce(16), // terminator, reduce: NoteObject
 			nil,        // cmdBar
 			reduce(16), // :end, reduce: NoteObject
-			reduce(16), // [, reduce: NoteObject
-			nil,        // ]
+			reduce(16), // bracketBegin, reduce: NoteObject
+			nil,        // bracketEnd
 			reduce(16), // symbol, reduce: NoteObject
 			reduce(16), // rest, reduce: NoteObject
 			nil,        // sharp
@@ -3287,8 +3287,8 @@ var actionTab = actionTable{
 			reduce(20), // terminator, reduce: PropertyList
 			nil,        // cmdBar
 			reduce(20), // :end, reduce: PropertyList
-			reduce(20), // [, reduce: PropertyList
-			nil,        // ]
+			reduce(20), // bracketBegin, reduce: PropertyList
+			nil,        // bracketEnd
 			reduce(20), // symbol, reduce: PropertyList
 			reduce(20), // rest, reduce: PropertyList
 			shift(100), // sharp
@@ -3320,8 +3320,8 @@ var actionTab = actionTable{
 			reduce(22), // terminator, reduce: Property
 			nil,        // cmdBar
 			reduce(22), // :end, reduce: Property
-			reduce(22), // [, reduce: Property
-			nil,        // ]
+			reduce(22), // bracketBegin, reduce: Property
+			nil,        // bracketEnd
 			reduce(22), // symbol, reduce: Property
 			reduce(22), // rest, reduce: Property
 			reduce(22), // sharp, reduce: Property
@@ -3353,8 +3353,8 @@ var actionTab = actionTable{
 			reduce(23), // terminator, reduce: Property
 			nil,        // cmdBar
 			reduce(23), // :end, reduce: Property
-			reduce(23), // [, reduce: Property
-			nil,        // ]
+			reduce(23), // bracketBegin, reduce: Property
+			nil,        // bracketEnd
 			reduce(23), // symbol, reduce: Property
 			reduce(23), // rest, reduce: Property
 			reduce(23), // sharp, reduce: Property
@@ -3386,8 +3386,8 @@ var actionTab = actionTable{
 			reduce(24), // terminator, reduce: Property
 			nil,        // cmdBar
 			reduce(24), // :end, reduce: Property
-			reduce(24), // [, reduce: Property
-			nil,        // ]
+			reduce(24), // bracketBegin, reduce: Property
+			nil,        // bracketEnd
 			reduce(24), // symbol, reduce: Property
 			reduce(24), // rest, reduce: Property
 			reduce(24), // sharp, reduce: Property
@@ -3419,8 +3419,8 @@ var actionTab = actionTable{
 			reduce(25), // terminator, reduce: Property
 			nil,        // cmdBar
 			reduce(25), // :end, reduce: Property
-			reduce(25), // [, reduce: Property
-			nil,        // ]
+			reduce(25), // bracketBegin, reduce: Property
+			nil,        // bracketEnd
 			reduce(25), // symbol, reduce: Property
 			reduce(25), // rest, reduce: Property
 			reduce(25), // sharp, reduce: Property
@@ -3452,8 +3452,8 @@ var actionTab = actionTable{
 			reduce(26), // terminator, reduce: Property
 			nil,        // cmdBar
 			reduce(26), // :end, reduce: Property
-			reduce(26), // [, reduce: Property
-			nil,        // ]
+			reduce(26), // bracketBegin, reduce: Property
+			nil,        // bracketEnd
 			reduce(26), // symbol, reduce: Property
 			reduce(26), // rest, reduce: Property
 			reduce(26), // sharp, reduce: Property
@@ -3485,8 +3485,8 @@ var actionTab = actionTable{
 			reduce(27), // terminator, reduce: Property
 			nil,        // cmdBar
 			reduce(27), // :end, reduce: Property
-			reduce(27), // [, reduce: Property
-			nil,        // ]
+			reduce(27), // bracketBegin, reduce: Property
+			nil,        // bracketEnd
 			reduce(27), // symbol, reduce: Property
 			reduce(27), // rest, reduce: Property
 			reduce(27), // sharp, reduce: Property
@@ -3518,8 +3518,8 @@ var actionTab = actionTable{
 			reduce(28), // terminator, reduce: Property
 			nil,        // cmdBar
 			reduce(28), // :end, reduce: Property
-			reduce(28), // [, reduce: Property
-			nil,        // ]
+			reduce(28), // bracketBegin, reduce: Property
+			nil,        // bracketEnd
 			reduce(28), // symbol, reduce: Property
 			reduce(28), // rest, reduce: Property
 			reduce(28), // sharp, reduce: Property
@@ -3551,8 +3551,8 @@ var actionTab = actionTable{
 			reduce(29), // terminator, reduce: Property
 			nil,        // cmdBar
 			reduce(29), // :end, reduce: Property
-			reduce(29), // [, reduce: Property
-			nil,        // ]
+			reduce(29), // bracketBegin, reduce: Property
+			nil,        // bracketEnd
 			reduce(29), // symbol, reduce: Property
 			reduce(29), // rest, reduce: Property
 			reduce(29), // sharp, reduce: Property
@@ -3584,8 +3584,8 @@ var actionTab = actionTable{
 			nil,        // terminator
 			nil,        // cmdBar
 			nil,        // :end
-			nil,        // [
-			shift(121), // ]
+			nil,        // bracketBegin
+			shift(121), // bracketEnd
 			nil,        // symbol
 			nil,        // rest
 			nil,        // sharp
@@ -3617,8 +3617,8 @@ var actionTab = actionTable{
 			reduce(33), // terminator, reduce: BarBodyCommand
 			nil,        // cmdBar
 			reduce(33), // :end, reduce: BarBodyCommand
-			nil,        // [
-			nil,        // ]
+			nil,        // bracketBegin
+			nil,        // bracketEnd
 			nil,        // symbol
 			nil,        // rest
 			nil,        // sharp
@@ -3650,8 +3650,8 @@ var actionTab = actionTable{
 			nil,        // terminator
 			nil,        // cmdBar
 			nil,        // :end
-			nil,        // [
-			nil,        // ]
+			nil,        // bracketBegin
+			nil,        // bracketEnd
 			nil,        // symbol
 			nil,        // rest
 			nil,        // sharp
@@ -3683,8 +3683,8 @@ var actionTab = actionTable{
 			reduce(35), // terminator, reduce: BarBodyCommand
 			nil,        // cmdBar
 			reduce(35), // :end, reduce: BarBodyCommand
-			nil,        // [
-			nil,        // ]
+			nil,        // bracketBegin
+			nil,        // bracketEnd
 			nil,        // symbol
 			nil,        // rest
 			nil,        // sharp
@@ -3716,8 +3716,8 @@ var actionTab = actionTable{
 			reduce(36), // terminator, reduce: BarBodyCommand
 			nil,        // cmdBar
 			reduce(36), // :end, reduce: BarBodyCommand
-			nil,        // [
-			nil,        // ]
+			nil,        // bracketBegin
+			nil,        // bracketEnd
 			nil,        // symbol
 			nil,        // rest
 			nil,        // sharp
@@ -3749,8 +3749,8 @@ var actionTab = actionTable{
 			reduce(37), // terminator, reduce: BarBodyCommand
 			nil,        // cmdBar
 			reduce(37), // :end, reduce: BarBodyCommand
-			nil,        // [
-			nil,        // ]
+			nil,        // bracketBegin
+			nil,        // bracketEnd
 			nil,        // symbol
 			nil,        // rest
 			nil,        // sharp
@@ -3782,8 +3782,8 @@ var actionTab = actionTable{
 			nil,        // terminator
 			nil,        // cmdBar
 			nil,        // :end
-			nil,        // [
-			nil,        // ]
+			nil,        // bracketBegin
+			nil,        // bracketEnd
 			nil,        // symbol
 			nil,        // rest
 			nil,        // sharp
@@ -3815,8 +3815,8 @@ var actionTab = actionTable{
 			reduce(17), // terminator, reduce: NoteObject
 			nil,        // cmdBar
 			nil,        // :end
-			reduce(17), // [, reduce: NoteObject
-			nil,        // ]
+			reduce(17), // bracketBegin, reduce: NoteObject
+			nil,        // bracketEnd
 			reduce(17), // symbol, reduce: NoteObject
 			reduce(17), // rest, reduce: NoteObject
 			nil,        // sharp
@@ -3848,8 +3848,8 @@ var actionTab = actionTable{
 			nil,        // terminator
 			nil,        // cmdBar
 			nil,        // :end
-			reduce(21), // [, reduce: PropertyList
-			reduce(21), // ], reduce: PropertyList
+			reduce(21), // bracketBegin, reduce: PropertyList
+			reduce(21), // bracketEnd, reduce: PropertyList
 			reduce(21), // symbol, reduce: PropertyList
 			reduce(21), // rest, reduce: PropertyList
 			nil,        // sharp
@@ -3881,8 +3881,8 @@ var actionTab = actionTable{
 			nil,        // terminator
 			nil,        // cmdBar
 			nil,        // :end
-			reduce(20), // [, reduce: PropertyList
-			reduce(20), // ], reduce: PropertyList
+			reduce(20), // bracketBegin, reduce: PropertyList
+			reduce(20), // bracketEnd, reduce: PropertyList
 			reduce(20), // symbol, reduce: PropertyList
 			reduce(20), // rest, reduce: PropertyList
 			shift(80),  // sharp
@@ -3914,8 +3914,8 @@ var actionTab = actionTable{
 			nil,       // terminator
 			nil,       // cmdBar
 			reduce(3), // :end, reduce: RepeatTerminator
-			shift(63), // [
-			nil,       // ]
+			shift(63), // bracketBegin
+			nil,       // bracketEnd
 			shift(64), // symbol
 			shift(65), // rest
 			nil,       // sharp
@@ -3947,8 +3947,8 @@ var actionTab = actionTable{
 			shift(119), // terminator
 			nil,        // cmdBar
 			reduce(2),  // :end, reduce: RepeatTerminator
-			reduce(2),  // [, reduce: RepeatTerminator
-			nil,        // ]
+			reduce(2),  // bracketBegin, reduce: RepeatTerminator
+			nil,        // bracketEnd
 			reduce(2),  // symbol, reduce: RepeatTerminator
 			reduce(2),  // rest, reduce: RepeatTerminator
 			nil,        // sharp
@@ -3980,8 +3980,8 @@ var actionTab = actionTable{
 			reduce(21), // terminator, reduce: PropertyList
 			nil,        // cmdBar
 			reduce(21), // :end, reduce: PropertyList
-			reduce(21), // [, reduce: PropertyList
-			nil,        // ]
+			reduce(21), // bracketBegin, reduce: PropertyList
+			nil,        // bracketEnd
 			reduce(21), // symbol, reduce: PropertyList
 			reduce(21), // rest, reduce: PropertyList
 			nil,        // sharp
@@ -4013,8 +4013,8 @@ var actionTab = actionTable{
 			reduce(20), // terminator, reduce: PropertyList
 			nil,        // cmdBar
 			reduce(20), // :end, reduce: PropertyList
-			reduce(20), // [, reduce: PropertyList
-			nil,        // ]
+			reduce(20), // bracketBegin, reduce: PropertyList
+			nil,        // bracketEnd
 			reduce(20), // symbol, reduce: PropertyList
 			reduce(20), // rest, reduce: PropertyList
 			shift(100), // sharp
@@ -4046,8 +4046,8 @@ var actionTab = actionTable{
 			reduce(34), // terminator, reduce: BarBodyCommand
 			nil,        // cmdBar
 			reduce(34), // :end, reduce: BarBodyCommand
-			nil,        // [
-			nil,        // ]
+			nil,        // bracketBegin
+			nil,        // bracketEnd
 			nil,        // symbol
 			nil,        // rest
 			nil,        // sharp
@@ -4079,8 +4079,8 @@ var actionTab = actionTable{
 			reduce(38), // terminator, reduce: BarBodyCommand
 			nil,        // cmdBar
 			reduce(38), // :end, reduce: BarBodyCommand
-			nil,        // [
-			nil,        // ]
+			nil,        // bracketBegin
+			nil,        // bracketEnd
 			nil,        // symbol
 			nil,        // rest
 			nil,        // sharp
@@ -4112,8 +4112,8 @@ var actionTab = actionTable{
 			nil,        // terminator
 			nil,        // cmdBar
 			nil,        // :end
-			reduce(17), // [, reduce: NoteObject
-			reduce(17), // ], reduce: NoteObject
+			reduce(17), // bracketBegin, reduce: NoteObject
+			reduce(17), // bracketEnd, reduce: NoteObject
 			reduce(17), // symbol, reduce: NoteObject
 			reduce(17), // rest, reduce: NoteObject
 			nil,        // sharp
@@ -4145,8 +4145,8 @@ var actionTab = actionTable{
 			nil,       // terminator
 			nil,       // cmdBar
 			reduce(6), // :end, reduce: BarBodyDeclList
-			nil,       // [
-			nil,       // ]
+			nil,       // bracketBegin
+			nil,       // bracketEnd
 			nil,       // symbol
 			nil,       // rest
 			nil,       // sharp
@@ -4178,8 +4178,8 @@ var actionTab = actionTable{
 			nil,       // terminator
 			nil,       // cmdBar
 			reduce(3), // :end, reduce: RepeatTerminator
-			reduce(3), // [, reduce: RepeatTerminator
-			nil,       // ]
+			reduce(3), // bracketBegin, reduce: RepeatTerminator
+			nil,       // bracketEnd
 			reduce(3), // symbol, reduce: RepeatTerminator
 			reduce(3), // rest, reduce: RepeatTerminator
 			nil,       // sharp
@@ -4211,8 +4211,8 @@ var actionTab = actionTable{
 			reduce(17), // terminator, reduce: NoteObject
 			nil,        // cmdBar
 			reduce(17), // :end, reduce: NoteObject
-			reduce(17), // [, reduce: NoteObject
-			nil,        // ]
+			reduce(17), // bracketBegin, reduce: NoteObject
+			nil,        // bracketEnd
 			reduce(17), // symbol, reduce: NoteObject
 			reduce(17), // rest, reduce: NoteObject
 			nil,        // sharp

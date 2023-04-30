@@ -193,7 +193,7 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `NoteObject : "[" NoteList "]" PropertyList	<< ast.NewNoteListFromGroup(X[1].(ast.NoteList), X[3].(ast.PropertyList)) >>`,
+		String: `NoteObject : bracketBegin NoteList bracketEnd PropertyList	<< ast.NewNoteListFromGroup(X[1].(ast.NoteList), X[3].(ast.PropertyList)) >>`,
 		Id:         "NoteObject",
 		NTType:     9,
 		Index:      17,

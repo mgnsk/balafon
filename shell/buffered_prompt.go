@@ -25,7 +25,9 @@ func NewBufferedPrompt(parser prompt.ConsoleParser, writer prompt.ConsoleWriter,
 
 	p.pt = prompt.New(
 		func(in string) {
-			if strings.HasPrefix(in, ":bar") {
+			// TODO: preserve input when pressing enter
+			// (evaluating code and fails with error) so the user does not have to type everything again
+			if strings.HasPrefix(in, ":bar ") && len(in) > len(":bar ") {
 				p.buffer.WriteString(in)
 				p.buffer.WriteString("; ")
 
@@ -36,6 +38,8 @@ func NewBufferedPrompt(parser prompt.ConsoleParser, writer prompt.ConsoleWriter,
 			}
 
 			if strings.HasSuffix(in, ":end") {
+				in = strings.TrimSpace(in)
+
 				p.buffer.WriteString(in)
 
 				p.livePrefix = in

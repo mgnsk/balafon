@@ -7,10 +7,15 @@ _uint        : '0' | '1'-'9' {'0'-'9'} ;
 
 _char      : 'a'-'z' | 'A'-'Z' ;
 symbol     : _char ;
+// Note: can't have standalone ident due to ambiguity with symbols.
+_ident     : ( _char | _uint ) { _char | _uint } ;
+_space     : ' ' ;
 
-// Note: can't have identifier standalone due to letter notes in normal mode.
-cmdBar        : ':' 'b' 'a' 'r' ' ' ( _char | _uint ) { _char | _uint } ;
-cmdPlay       : ':' 'p' 'l' 'a' 'y' ' ' ( _char | _uint ) { _char | _uint } ;
+cmdBar        : ':' 'b' 'a' 'r' _space _ident ;
+cmdPlay       : ':' 'p' 'l' 'a' 'y' _space _ident ;
+
+bracketBegin : '[' ;
+bracketEnd   : ']' ;
 
 rest     : '-' ;
 sharp   : '#' ;
@@ -77,7 +82,7 @@ NoteList
 
 NoteObject
     : NoteSymbol PropertyList       << ast.NewNote([]rune(string($T0.Lit))[0], $1.(ast.PropertyList)), nil >>
-    | "[" NoteList "]" PropertyList << ast.NewNoteListFromGroup($1.(ast.NoteList), $3.(ast.PropertyList)) >>
+    | bracketBegin NoteList bracketEnd PropertyList << ast.NewNoteListFromGroup($1.(ast.NoteList), $3.(ast.PropertyList)) >>
     ;
 
 NoteSymbol

@@ -6,6 +6,7 @@ import (
 	"strconv"
 
 	"github.com/c-bata/go-prompt"
+	"github.com/davecgh/go-spew/spew"
 	"github.com/mgnsk/balafon/constants"
 	parseErrors "github.com/mgnsk/balafon/internal/parser/errors"
 	"github.com/mgnsk/balafon/internal/parser/lexer"
@@ -74,6 +75,8 @@ func (it *Interpreter) Suggest(in prompt.Document) []prompt.Suggest {
 		panic("expected a parse error")
 	}
 
+	spew.Dump(expectedTokens)
+
 	for _, text := range expectedTokens {
 		switch text {
 		case tokentype.Terminator.ID:
@@ -94,7 +97,7 @@ func (it *Interpreter) Suggest(in prompt.Document) []prompt.Suggest {
 				Description: "command",
 			})
 		case tokentype.End.ID:
-		case tokentype.SquareBraceBegin.ID, tokentype.SquareBraceEnd.ID:
+		case tokentype.BracketBegin.ID, tokentype.BracketEnd.ID:
 			sug = append(sug, prompt.Suggest{
 				Text:        text,
 				Description: "note group",
@@ -282,8 +285,8 @@ func (it *Interpreter) Suggest(in prompt.Document) []prompt.Suggest {
 	if lastTok := tokens.Back(); lastTok != nil {
 		switch lastTok.Value.Type {
 		case
-			tokentype.SquareBraceBegin.Type,
-			tokentype.SquareBraceEnd.Type,
+			tokentype.BracketBegin.Type,
+			tokentype.BracketEnd.Type,
 			tokentype.Symbol.Type,
 			tokentype.Rest.Type,
 			tokentype.Sharp.Type,
