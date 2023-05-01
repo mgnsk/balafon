@@ -20,13 +20,19 @@ type BufferedPrompt struct {
 }
 
 // NewBufferedPrompt creates a buffered prompt.
-func NewBufferedPrompt(parser prompt.ConsoleParser, writer prompt.ConsoleWriter, execute prompt.Executor, complete prompt.Completer) *BufferedPrompt {
+func NewBufferedPrompt(
+	parser prompt.ConsoleParser,
+	writer prompt.ConsoleWriter,
+	execute prompt.Executor,
+	complete prompt.Completer,
+	history []string,
+) *BufferedPrompt {
 	p := &BufferedPrompt{}
 
 	p.pt = prompt.New(
 		func(in string) {
-			// TODO: preserve input when pressing enter
-			// (evaluating code and fails with error) so the user does not have to type everything again
+			in = strings.TrimSpace(in)
+
 			if strings.HasPrefix(in, ":bar ") && len(in) > len(":bar ") {
 				p.buffer.WriteString(in)
 				p.buffer.WriteString("; ")
@@ -38,17 +44,7 @@ func NewBufferedPrompt(parser prompt.ConsoleParser, writer prompt.ConsoleWriter,
 			}
 
 			if strings.HasSuffix(in, ":end") {
-				in = strings.TrimSpace(in)
-
-				p.buffer.WriteString(in)
-
-				p.livePrefix = in
-				p.livePrefixEnabled = false
-
-				execute(p.buffer.String())
-				p.buffer.Reset()
-
-				return
+				goto finish
 			}
 
 			if p.livePrefixEnabled {
@@ -61,16 +57,25 @@ func NewBufferedPrompt(parser prompt.ConsoleParser, writer prompt.ConsoleWriter,
 				return
 			}
 
+		finish:
 			p.buffer.WriteString(in)
+
 			p.livePrefix = in
 			p.livePrefixEnabled = false
 
 			execute(p.buffer.String())
 			p.buffer.Reset()
-
-			return
 		},
 		complete,
+		prompt.OptionHistory(history),
+		prompt.OptionShowCompletionAtStart(),
+		prompt.OptionCompletionWordSeparator(func() string {
+			var s strings.Builder
+
+			s.WriteString(" ")
+
+			return s.String()
+		}()),
 		// prompt.OptionCompletionWordSeparator(func() string {
 		// 	// TODO: build a list of separators
 		// 	s := []rune{' '}

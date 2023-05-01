@@ -234,6 +234,7 @@ func runPrompt(out drivers.Out, it *interpreter.Interpreter, seq *sequencer.Sequ
 		prompt.NewStdoutWriter(),
 		func(in string) {
 			if err := it.EvalString(in); err != nil {
+				// Keep old input
 				fmt.Println(err)
 				return
 			}
@@ -245,11 +246,14 @@ func runPrompt(out drivers.Out, it *interpreter.Interpreter, seq *sequencer.Sequ
 			if err := p.Play(events...); err != nil {
 				fmt.Println(err)
 			}
+
+			return
 		},
 		func(in prompt.Document) []prompt.Suggest {
 			// TODO: fix tab key overwrites existing text
 			return it.Suggest(in)
 		},
+		nil,
 	)
 
 	defer shell.RestoreTerminal()

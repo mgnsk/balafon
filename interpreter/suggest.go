@@ -6,7 +6,6 @@ import (
 	"strconv"
 
 	"github.com/c-bata/go-prompt"
-	"github.com/davecgh/go-spew/spew"
 	"github.com/mgnsk/balafon/constants"
 	parseErrors "github.com/mgnsk/balafon/internal/parser/errors"
 	"github.com/mgnsk/balafon/internal/parser/lexer"
@@ -75,8 +74,6 @@ func (it *Interpreter) Suggest(in prompt.Document) []prompt.Suggest {
 		panic("expected a parse error")
 	}
 
-	spew.Dump(expectedTokens)
-
 	for _, text := range expectedTokens {
 		switch text {
 		case tokentype.Terminator.ID:
@@ -93,7 +90,7 @@ func (it *Interpreter) Suggest(in prompt.Document) []prompt.Suggest {
 			}
 		case tokentype.CmdBar.ID:
 			sug = append(sug, prompt.Suggest{
-				Text:        ":bar ",
+				Text:        ":bar",
 				Description: "command",
 			})
 		case tokentype.End.ID:
@@ -228,7 +225,7 @@ func (it *Interpreter) Suggest(in prompt.Document) []prompt.Suggest {
 			})
 		case tokentype.Assign.ID:
 			sug = append(sug, prompt.Suggest{
-				Text:        ":assign ",
+				Text:        ":assign",
 				Description: "command",
 			})
 		case tokentype.CmdPlay.ID:
@@ -240,42 +237,42 @@ func (it *Interpreter) Suggest(in prompt.Document) []prompt.Suggest {
 			}
 		case tokentype.Tempo.ID:
 			sug = append(sug, prompt.Suggest{
-				Text:        ":tempo ",
+				Text:        ":tempo",
 				Description: "command",
 			})
 		case tokentype.Timesig.ID:
 			sug = append(sug, prompt.Suggest{
-				Text:        ":timesig ",
+				Text:        ":timesig",
 				Description: "command",
 			})
 		case tokentype.Velocity.ID:
 			sug = append(sug, prompt.Suggest{
-				Text:        ":velocity ",
+				Text:        ":velocity",
 				Description: "command",
 			})
 		case tokentype.Channel.ID:
 			sug = append(sug, prompt.Suggest{
-				Text:        ":channel ",
+				Text:        ":channel",
 				Description: "command",
 			})
 		case tokentype.Program.ID:
 			sug = append(sug, prompt.Suggest{
-				Text:        ":program ",
+				Text:        ":program",
 				Description: "command",
 			})
 		case tokentype.Control.ID:
 			sug = append(sug, prompt.Suggest{
-				Text:        ":control ",
+				Text:        ":control",
 				Description: "command",
 			})
 		case tokentype.Start.ID:
 			sug = append(sug, prompt.Suggest{
-				Text:        ":start ",
+				Text:        ":start",
 				Description: "command",
 			})
 		case tokentype.Stop.ID:
 			sug = append(sug, prompt.Suggest{
-				Text:        ":stop ",
+				Text:        ":stop",
 				Description: "command",
 			})
 		}
