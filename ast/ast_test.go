@@ -34,6 +34,41 @@ func TestSyntaxNotAmbigous(t *testing.T) {
 	g.Expect(err).NotTo(HaveOccurred())
 }
 
+func TestBarNotAmbigous(t *testing.T) {
+	g := NewWithT(t)
+
+	input := `
+:assign b 0
+:assign a 1
+:assign r 2
+:bar bar
+	bar
+:end
+:play bar
+`
+
+	_, err := parse(input)
+	g.Expect(err).NotTo(HaveOccurred())
+}
+
+func TestPlayNotAmbigous(t *testing.T) {
+	g := NewWithT(t)
+
+	input := `
+:assign p 0
+:assign l 1
+:assign a 2
+:assign y 3
+:bar play
+	play
+:end
+:play play
+`
+
+	_, err := parse(input)
+	g.Expect(err).NotTo(HaveOccurred())
+}
+
 func BenchmarkParser(b *testing.B) {
 	lex := lexer.NewLexer([]byte(
 		"[[[[[k*]/3].]$].8]))",
