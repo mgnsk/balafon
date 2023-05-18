@@ -213,7 +213,7 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `NoteSymbol : rest	<<  >>`,
+		String: `NoteSymbol : propRest	<<  >>`,
 		Id:         "NoteSymbol",
 		NTType:     10,
 		Index:      19,
@@ -243,7 +243,7 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `Property : sharp	<<  >>`,
+		String: `Property : propSharp	<<  >>`,
 		Id:         "Property",
 		NTType:     12,
 		Index:      22,
@@ -253,7 +253,7 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `Property : flat	<<  >>`,
+		String: `Property : propFlat	<<  >>`,
 		Id:         "Property",
 		NTType:     12,
 		Index:      23,
@@ -263,7 +263,7 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `Property : accent	<<  >>`,
+		String: `Property : propAccent	<<  >>`,
 		Id:         "Property",
 		NTType:     12,
 		Index:      24,
@@ -273,7 +273,7 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `Property : ghost	<<  >>`,
+		String: `Property : propGhost	<<  >>`,
 		Id:         "Property",
 		NTType:     12,
 		Index:      25,
@@ -293,7 +293,7 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `Property : dot	<<  >>`,
+		String: `Property : propDot	<<  >>`,
 		Id:         "Property",
 		NTType:     12,
 		Index:      27,
@@ -303,7 +303,7 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `Property : tuplet	<<  >>`,
+		String: `Property : propTuplet	<<  >>`,
 		Id:         "Property",
 		NTType:     12,
 		Index:      28,
@@ -313,7 +313,7 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `Property : letRing	<<  >>`,
+		String: `Property : propLetRing	<<  >>`,
 		Id:         "Property",
 		NTType:     12,
 		Index:      29,

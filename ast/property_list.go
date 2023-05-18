@@ -50,7 +50,7 @@ func NewPropertyList(t *token.Token, inner interface{}) (PropertyList, error) {
 		if err := validateNoteValue(v); err != nil {
 			return nil, err
 		}
-	case tokentype.Tuplet.Type:
+	case tokentype.PropTuplet.Type:
 		v, err := strconv.Atoi(string(t.Lit[1:]))
 		if err != nil {
 			return nil, err

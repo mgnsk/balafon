@@ -27,14 +27,14 @@ cmdStop       : ':' 's' 't' 'o' 'p' ;
 bracketBegin : '[' ;
 bracketEnd   : ']' ;
 
-rest     : '-' ;
-sharp   : '#' ;
-flat    : '$' ;
-accent  : '^' ;
-ghost   : ')' ;
-dot     : '.' ;
-tuplet  : '/' '3' | '/' '5' ;
-letRing : '*' ;
+propRest    : '-' ;
+propSharp   : '#' ;
+propFlat    : '$' ;
+propAccent  : '^' ;
+propGhost   : ')' ;
+propDot     : '.' ;
+propTuplet  : '/' '3' | '/' '5' ;
+propLetRing : '*' ;
 
 _lineComment  : '/' '/' { . } '\n' ;
 _blockComment : '/' '*' { . | '*' } '*' '/' ;
@@ -97,7 +97,7 @@ NoteObject
 
 NoteSymbol
     : symbol
-    | rest
+    | propRest
     ;
 
 PropertyList
@@ -106,14 +106,14 @@ PropertyList
     ;
 
 Property
-    : sharp
-    | flat
-    | accent
-    | ghost
+    : propSharp
+    | propFlat
+    | propAccent
+    | propGhost
     | uint
-    | dot
-    | tuplet
-    | letRing
+    | propDot
+    | propTuplet
+    | propLetRing
     ;
 
 TopLevelCommand

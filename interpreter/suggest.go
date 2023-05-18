@@ -131,27 +131,27 @@ func (it *Interpreter) Suggest(in prompt.Document) []prompt.Suggest {
 					}
 				})
 			}
-		case tokentype.Rest.ID:
+		case tokentype.PropRest.ID:
 			sug = append(sug, prompt.Suggest{
 				Text:        "-",
 				Description: "rest property",
 			})
-		case tokentype.Sharp.ID:
+		case tokentype.PropSharp.ID:
 			sug = append(sug, prompt.Suggest{
 				Text:        "#",
 				Description: "sharp property",
 			})
-		case tokentype.Flat.ID:
+		case tokentype.PropFlat.ID:
 			sug = append(sug, prompt.Suggest{
 				Text:        "$",
 				Description: "flat property",
 			})
-		case tokentype.Accent.ID:
+		case tokentype.PropAccent.ID:
 			sug = append(sug, prompt.Suggest{
 				Text:        "^",
 				Description: "accent property",
 			})
-		case tokentype.Ghost.ID:
+		case tokentype.PropGhost.ID:
 			sug = append(sug, prompt.Suggest{
 				Text:        ")",
 				Description: "ghost property",
@@ -204,12 +204,12 @@ func (it *Interpreter) Suggest(in prompt.Document) []prompt.Suggest {
 					}
 				}
 			}
-		case tokentype.Dot.ID:
+		case tokentype.PropDot.ID:
 			sug = append(sug, prompt.Suggest{
 				Text:        ".",
 				Description: "dot property",
 			})
-		case tokentype.Tuplet.ID:
+		case tokentype.PropTuplet.ID:
 			sug = append(sug, prompt.Suggest{
 				Text:        "/3",
 				Description: "tuplet property",
@@ -218,7 +218,7 @@ func (it *Interpreter) Suggest(in prompt.Document) []prompt.Suggest {
 				Text:        "/5",
 				Description: "tuplet property",
 			})
-		case tokentype.LetRing.ID:
+		case tokentype.PropLetRing.ID:
 			sug = append(sug, prompt.Suggest{
 				Text:        "*",
 				Description: "let ring property",
@@ -285,15 +285,15 @@ func (it *Interpreter) Suggest(in prompt.Document) []prompt.Suggest {
 			tokentype.BracketBegin.Type,
 			tokentype.BracketEnd.Type,
 			tokentype.Symbol.Type,
-			tokentype.Rest.Type,
-			tokentype.Sharp.Type,
-			tokentype.Flat.Type,
-			tokentype.Accent.Type,
-			tokentype.Ghost.Type,
+			tokentype.PropRest.Type,
+			tokentype.PropSharp.Type,
+			tokentype.PropFlat.Type,
+			tokentype.PropAccent.Type,
+			tokentype.PropGhost.Type,
 			// tokentype.Uint.Type
-			tokentype.Dot.Type,
-			tokentype.Tuplet.Type,
-			tokentype.LetRing.Type:
+			tokentype.PropDot.Type,
+			tokentype.PropTuplet.Type,
+			tokentype.PropLetRing.Type:
 			return sug
 		}
 	}

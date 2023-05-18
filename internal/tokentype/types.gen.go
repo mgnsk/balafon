@@ -4,7 +4,6 @@ package tokentype
 
 // Language tokens.
 var (
-	Accent       = Type{"accent", 12}
 	BracketBegin = Type{"bracketBegin", 6}
 	BracketEnd   = Type{"bracketEnd", 7}
 	CmdAssign    = Type{"cmdAssign", 18}
@@ -19,17 +18,18 @@ var (
 	CmdTempo     = Type{"cmdTempo", 20}
 	CmdTimesig   = Type{"cmdTimesig", 21}
 	CmdVelocity  = Type{"cmdVelocity", 22}
-	Dot          = Type{"dot", 15}
 	EOF          = Type{"EOF", 1}
 	Empty        = Type{"empty", 2}
-	Flat         = Type{"flat", 11}
-	Ghost        = Type{"ghost", 13}
 	INVALID      = Type{"INVALID", 0}
-	LetRing      = Type{"letRing", 17}
-	Rest         = Type{"rest", 9}
-	Sharp        = Type{"sharp", 10}
+	PropAccent   = Type{"propAccent", 12}
+	PropDot      = Type{"propDot", 15}
+	PropFlat     = Type{"propFlat", 11}
+	PropGhost    = Type{"propGhost", 13}
+	PropLetRing  = Type{"propLetRing", 17}
+	PropRest     = Type{"propRest", 9}
+	PropSharp    = Type{"propSharp", 10}
+	PropTuplet   = Type{"propTuplet", 16}
 	Symbol       = Type{"symbol", 8}
 	Terminator   = Type{"terminator", 3}
-	Tuplet       = Type{"tuplet", 16}
 	Uint         = Type{"uint", 14}
 )

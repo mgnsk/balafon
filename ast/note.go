@@ -84,22 +84,22 @@ func (note *Note) IsPause() bool {
 
 // NumSharp returns the number of sharp signs.
 func (note *Note) NumSharp() int {
-	return note.countProps(tokentype.Sharp)
+	return note.countProps(tokentype.PropSharp)
 }
 
 // NumFlat reports the number of flat signs.
 func (note *Note) NumFlat() int {
-	return note.countProps(tokentype.Flat)
+	return note.countProps(tokentype.PropFlat)
 }
 
 // NumAccents reports the number of accent properties in the note.
 func (note *Note) NumAccents() int {
-	return note.countProps(tokentype.Accent)
+	return note.countProps(tokentype.PropAccent)
 }
 
 // NumGhosts reports the number of ghost properties in the note.
 func (note *Note) NumGhosts() int {
-	return note.countProps(tokentype.Ghost)
+	return note.countProps(tokentype.PropGhost)
 }
 
 // Value returns the note value (1th, 2th, 4th, 8th, 16th, 32th and so on).
@@ -118,12 +118,12 @@ func (note *Note) Value() uint8 {
 
 // NumDots reports the number of dot properties in the note.
 func (note *Note) NumDots() int {
-	return note.countProps(tokentype.Dot)
+	return note.countProps(tokentype.PropDot)
 }
 
 // Tuplet returns the irregular division value if the note is a tuplet.
 func (note *Note) Tuplet() int {
-	tok := note.Props.Find(tokentype.Tuplet)
+	tok := note.Props.Find(tokentype.PropTuplet)
 	if tok == nil {
 		return 0
 	}
@@ -137,7 +137,7 @@ func (note *Note) Tuplet() int {
 
 // IsLetRing reports whether the note must ring.
 func (note *Note) IsLetRing() bool {
-	return note.Props.Find(tokentype.LetRing) != nil
+	return note.Props.Find(tokentype.PropLetRing) != nil
 }
 
 func (note *Note) WriteTo(w io.Writer) (int64, error) {
