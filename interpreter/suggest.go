@@ -93,7 +93,7 @@ func (it *Interpreter) Suggest(in prompt.Document) []prompt.Suggest {
 				Text:        ":bar",
 				Description: "command",
 			})
-		case tokentype.End.ID:
+		case tokentype.CmdEnd.ID:
 		case tokentype.BracketBegin.ID, tokentype.BracketEnd.ID:
 			sug = append(sug, prompt.Suggest{
 				Text:        text,

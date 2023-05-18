@@ -153,7 +153,7 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `Bar : cmdBar RepeatTerminator BarBodyDeclList ":end"	<< ast.NewBar(string(X[0].(*token.Token).Lit[len(":bar "):]), X[2].(ast.NodeList)), nil >>`,
+		String: `Bar : cmdBar RepeatTerminator BarBodyDeclList cmdEnd	<< ast.NewBar(string(X[0].(*token.Token).Lit[len(":bar "):]), X[2].(ast.NodeList)), nil >>`,
 		Id:         "Bar",
 		NTType:     7,
 		Index:      13,

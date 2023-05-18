@@ -12,6 +12,7 @@ _ident     : ( _char | _uint ) { _char | _uint } ;
 _space     : ' ' ;
 
 cmdBar        : ':' 'b' 'a' 'r' _space _ident ;
+cmdEnd        : ':' 'e' 'n' 'd' ;
 cmdPlay       : ':' 'p' 'l' 'a' 'y' _space _ident ;
 
 bracketBegin : '[' ;
@@ -72,7 +73,7 @@ BarBodyDecl
     ;
 
 Bar
-    : cmdBar RepeatTerminator BarBodyDeclList ":end" << ast.NewBar(string($T0.Lit[len(":bar "):]), $2.(ast.NodeList)), nil >>
+    : cmdBar RepeatTerminator BarBodyDeclList cmdEnd << ast.NewBar(string($T0.Lit[len(":bar "):]), $2.(ast.NodeList)), nil >>
     ;
 
 NoteList

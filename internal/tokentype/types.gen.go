@@ -10,12 +10,12 @@ var (
 	BracketEnd   = Type{"bracketEnd", 7}
 	Channel      = Type{":channel", 23}
 	CmdBar       = Type{"cmdBar", 4}
+	CmdEnd       = Type{"cmdEnd", 5}
 	CmdPlay      = Type{"cmdPlay", 19}
 	Control      = Type{":control", 25}
 	Dot          = Type{"dot", 15}
 	EOF          = Type{"EOF", 1}
 	Empty        = Type{"empty", 2}
-	End          = Type{":end", 5}
 	Flat         = Type{"flat", 11}
 	Ghost        = Type{"ghost", 13}
 	INVALID      = Type{"INVALID", 0}
