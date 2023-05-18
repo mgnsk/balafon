@@ -34,14 +34,14 @@ var actionTab = actionTable{
 			nil,       // letRing
 			reduce(2), // cmdAssign, reduce: RepeatTerminator
 			reduce(2), // cmdPlay, reduce: RepeatTerminator
-			reduce(2), // :tempo, reduce: RepeatTerminator
-			reduce(2), // :timesig, reduce: RepeatTerminator
-			reduce(2), // :velocity, reduce: RepeatTerminator
-			reduce(2), // :channel, reduce: RepeatTerminator
-			reduce(2), // :program, reduce: RepeatTerminator
-			reduce(2), // :control, reduce: RepeatTerminator
-			reduce(2), // :start, reduce: RepeatTerminator
-			reduce(2), // :stop, reduce: RepeatTerminator
+			reduce(2), // cmdTempo, reduce: RepeatTerminator
+			reduce(2), // cmdTimesig, reduce: RepeatTerminator
+			reduce(2), // cmdVelocity, reduce: RepeatTerminator
+			reduce(2), // cmdChannel, reduce: RepeatTerminator
+			reduce(2), // cmdProgram, reduce: RepeatTerminator
+			reduce(2), // cmdControl, reduce: RepeatTerminator
+			reduce(2), // cmdStart, reduce: RepeatTerminator
+			reduce(2), // cmdStop, reduce: RepeatTerminator
 		},
 	},
 	actionRow{ // S1
@@ -67,14 +67,14 @@ var actionTab = actionTable{
 			nil,          // letRing
 			nil,          // cmdAssign
 			nil,          // cmdPlay
-			nil,          // :tempo
-			nil,          // :timesig
-			nil,          // :velocity
-			nil,          // :channel
-			nil,          // :program
-			nil,          // :control
-			nil,          // :start
-			nil,          // :stop
+			nil,          // cmdTempo
+			nil,          // cmdTimesig
+			nil,          // cmdVelocity
+			nil,          // cmdChannel
+			nil,          // cmdProgram
+			nil,          // cmdControl
+			nil,          // cmdStart
+			nil,          // cmdStop
 		},
 	},
 	actionRow{ // S2
@@ -100,14 +100,14 @@ var actionTab = actionTable{
 			nil,       // letRing
 			shift(16), // cmdAssign
 			shift(17), // cmdPlay
-			shift(18), // :tempo
-			shift(19), // :timesig
-			shift(20), // :velocity
-			shift(21), // :channel
-			shift(22), // :program
-			shift(23), // :control
-			shift(24), // :start
-			shift(25), // :stop
+			shift(18), // cmdTempo
+			shift(19), // cmdTimesig
+			shift(20), // cmdVelocity
+			shift(21), // cmdChannel
+			shift(22), // cmdProgram
+			shift(23), // cmdControl
+			shift(24), // cmdStart
+			shift(25), // cmdStop
 		},
 	},
 	actionRow{ // S3
@@ -133,14 +133,14 @@ var actionTab = actionTable{
 			nil,       // letRing
 			reduce(2), // cmdAssign, reduce: RepeatTerminator
 			reduce(2), // cmdPlay, reduce: RepeatTerminator
-			reduce(2), // :tempo, reduce: RepeatTerminator
-			reduce(2), // :timesig, reduce: RepeatTerminator
-			reduce(2), // :velocity, reduce: RepeatTerminator
-			reduce(2), // :channel, reduce: RepeatTerminator
-			reduce(2), // :program, reduce: RepeatTerminator
-			reduce(2), // :control, reduce: RepeatTerminator
-			reduce(2), // :start, reduce: RepeatTerminator
-			reduce(2), // :stop, reduce: RepeatTerminator
+			reduce(2), // cmdTempo, reduce: RepeatTerminator
+			reduce(2), // cmdTimesig, reduce: RepeatTerminator
+			reduce(2), // cmdVelocity, reduce: RepeatTerminator
+			reduce(2), // cmdChannel, reduce: RepeatTerminator
+			reduce(2), // cmdProgram, reduce: RepeatTerminator
+			reduce(2), // cmdControl, reduce: RepeatTerminator
+			reduce(2), // cmdStart, reduce: RepeatTerminator
+			reduce(2), // cmdStop, reduce: RepeatTerminator
 		},
 	},
 	actionRow{ // S4
@@ -166,14 +166,14 @@ var actionTab = actionTable{
 			nil,       // letRing
 			nil,       // cmdAssign
 			nil,       // cmdPlay
-			nil,       // :tempo
-			nil,       // :timesig
-			nil,       // :velocity
-			nil,       // :channel
-			nil,       // :program
-			nil,       // :control
-			nil,       // :start
-			nil,       // :stop
+			nil,       // cmdTempo
+			nil,       // cmdTimesig
+			nil,       // cmdVelocity
+			nil,       // cmdChannel
+			nil,       // cmdProgram
+			nil,       // cmdControl
+			nil,       // cmdStart
+			nil,       // cmdStop
 		},
 	},
 	actionRow{ // S5
@@ -199,14 +199,14 @@ var actionTab = actionTable{
 			nil,       // letRing
 			nil,       // cmdAssign
 			nil,       // cmdPlay
-			nil,       // :tempo
-			nil,       // :timesig
-			nil,       // :velocity
-			nil,       // :channel
-			nil,       // :program
-			nil,       // :control
-			nil,       // :start
-			nil,       // :stop
+			nil,       // cmdTempo
+			nil,       // cmdTimesig
+			nil,       // cmdVelocity
+			nil,       // cmdChannel
+			nil,       // cmdProgram
+			nil,       // cmdControl
+			nil,       // cmdStart
+			nil,       // cmdStop
 		},
 	},
 	actionRow{ // S6
@@ -232,14 +232,14 @@ var actionTab = actionTable{
 			nil,       // letRing
 			nil,       // cmdAssign
 			nil,       // cmdPlay
-			nil,       // :tempo
-			nil,       // :timesig
-			nil,       // :velocity
-			nil,       // :channel
-			nil,       // :program
-			nil,       // :control
-			nil,       // :start
-			nil,       // :stop
+			nil,       // cmdTempo
+			nil,       // cmdTimesig
+			nil,       // cmdVelocity
+			nil,       // cmdChannel
+			nil,       // cmdProgram
+			nil,       // cmdControl
+			nil,       // cmdStart
+			nil,       // cmdStop
 		},
 	},
 	actionRow{ // S7
@@ -265,14 +265,14 @@ var actionTab = actionTable{
 			nil,       // letRing
 			nil,       // cmdAssign
 			nil,       // cmdPlay
-			nil,       // :tempo
-			nil,       // :timesig
-			nil,       // :velocity
-			nil,       // :channel
-			nil,       // :program
-			nil,       // :control
-			nil,       // :start
-			nil,       // :stop
+			nil,       // cmdTempo
+			nil,       // cmdTimesig
+			nil,       // cmdVelocity
+			nil,       // cmdChannel
+			nil,       // cmdProgram
+			nil,       // cmdControl
+			nil,       // cmdStart
+			nil,       // cmdStop
 		},
 	},
 	actionRow{ // S8
@@ -298,14 +298,14 @@ var actionTab = actionTable{
 			nil,        // letRing
 			nil,        // cmdAssign
 			nil,        // cmdPlay
-			nil,        // :tempo
-			nil,        // :timesig
-			nil,        // :velocity
-			nil,        // :channel
-			nil,        // :program
-			nil,        // :control
-			nil,        // :start
-			nil,        // :stop
+			nil,        // cmdTempo
+			nil,        // cmdTimesig
+			nil,        // cmdVelocity
+			nil,        // cmdChannel
+			nil,        // cmdProgram
+			nil,        // cmdControl
+			nil,        // cmdStart
+			nil,        // cmdStop
 		},
 	},
 	actionRow{ // S9
@@ -331,14 +331,14 @@ var actionTab = actionTable{
 			nil,        // letRing
 			nil,        // cmdAssign
 			nil,        // cmdPlay
-			nil,        // :tempo
-			nil,        // :timesig
-			nil,        // :velocity
-			nil,        // :channel
-			nil,        // :program
-			nil,        // :control
-			nil,        // :start
-			nil,        // :stop
+			nil,        // cmdTempo
+			nil,        // cmdTimesig
+			nil,        // cmdVelocity
+			nil,        // cmdChannel
+			nil,        // cmdProgram
+			nil,        // cmdControl
+			nil,        // cmdStart
+			nil,        // cmdStop
 		},
 	},
 	actionRow{ // S10
@@ -364,14 +364,14 @@ var actionTab = actionTable{
 			nil,       // letRing
 			nil,       // cmdAssign
 			nil,       // cmdPlay
-			reduce(2), // :tempo, reduce: RepeatTerminator
-			reduce(2), // :timesig, reduce: RepeatTerminator
-			reduce(2), // :velocity, reduce: RepeatTerminator
-			reduce(2), // :channel, reduce: RepeatTerminator
-			reduce(2), // :program, reduce: RepeatTerminator
-			reduce(2), // :control, reduce: RepeatTerminator
-			reduce(2), // :start, reduce: RepeatTerminator
-			reduce(2), // :stop, reduce: RepeatTerminator
+			reduce(2), // cmdTempo, reduce: RepeatTerminator
+			reduce(2), // cmdTimesig, reduce: RepeatTerminator
+			reduce(2), // cmdVelocity, reduce: RepeatTerminator
+			reduce(2), // cmdChannel, reduce: RepeatTerminator
+			reduce(2), // cmdProgram, reduce: RepeatTerminator
+			reduce(2), // cmdControl, reduce: RepeatTerminator
+			reduce(2), // cmdStart, reduce: RepeatTerminator
+			reduce(2), // cmdStop, reduce: RepeatTerminator
 		},
 	},
 	actionRow{ // S11
@@ -397,14 +397,14 @@ var actionTab = actionTable{
 			nil,        // letRing
 			nil,        // cmdAssign
 			nil,        // cmdPlay
-			nil,        // :tempo
-			nil,        // :timesig
-			nil,        // :velocity
-			nil,        // :channel
-			nil,        // :program
-			nil,        // :control
-			nil,        // :start
-			nil,        // :stop
+			nil,        // cmdTempo
+			nil,        // cmdTimesig
+			nil,        // cmdVelocity
+			nil,        // cmdChannel
+			nil,        // cmdProgram
+			nil,        // cmdControl
+			nil,        // cmdStart
+			nil,        // cmdStop
 		},
 	},
 	actionRow{ // S12
@@ -430,14 +430,14 @@ var actionTab = actionTable{
 			shift(41),  // letRing
 			nil,        // cmdAssign
 			nil,        // cmdPlay
-			nil,        // :tempo
-			nil,        // :timesig
-			nil,        // :velocity
-			nil,        // :channel
-			nil,        // :program
-			nil,        // :control
-			nil,        // :start
-			nil,        // :stop
+			nil,        // cmdTempo
+			nil,        // cmdTimesig
+			nil,        // cmdVelocity
+			nil,        // cmdChannel
+			nil,        // cmdProgram
+			nil,        // cmdControl
+			nil,        // cmdStart
+			nil,        // cmdStop
 		},
 	},
 	actionRow{ // S13
@@ -463,14 +463,14 @@ var actionTab = actionTable{
 			nil,       // letRing
 			nil,       // cmdAssign
 			nil,       // cmdPlay
-			nil,       // :tempo
-			nil,       // :timesig
-			nil,       // :velocity
-			nil,       // :channel
-			nil,       // :program
-			nil,       // :control
-			nil,       // :start
-			nil,       // :stop
+			nil,       // cmdTempo
+			nil,       // cmdTimesig
+			nil,       // cmdVelocity
+			nil,       // cmdChannel
+			nil,       // cmdProgram
+			nil,       // cmdControl
+			nil,       // cmdStart
+			nil,       // cmdStop
 		},
 	},
 	actionRow{ // S14
@@ -496,14 +496,14 @@ var actionTab = actionTable{
 			reduce(18), // letRing, reduce: NoteSymbol
 			nil,        // cmdAssign
 			nil,        // cmdPlay
-			nil,        // :tempo
-			nil,        // :timesig
-			nil,        // :velocity
-			nil,        // :channel
-			nil,        // :program
-			nil,        // :control
-			nil,        // :start
-			nil,        // :stop
+			nil,        // cmdTempo
+			nil,        // cmdTimesig
+			nil,        // cmdVelocity
+			nil,        // cmdChannel
+			nil,        // cmdProgram
+			nil,        // cmdControl
+			nil,        // cmdStart
+			nil,        // cmdStop
 		},
 	},
 	actionRow{ // S15
@@ -529,14 +529,14 @@ var actionTab = actionTable{
 			reduce(19), // letRing, reduce: NoteSymbol
 			nil,        // cmdAssign
 			nil,        // cmdPlay
-			nil,        // :tempo
-			nil,        // :timesig
-			nil,        // :velocity
-			nil,        // :channel
-			nil,        // :program
-			nil,        // :control
-			nil,        // :start
-			nil,        // :stop
+			nil,        // cmdTempo
+			nil,        // cmdTimesig
+			nil,        // cmdVelocity
+			nil,        // cmdChannel
+			nil,        // cmdProgram
+			nil,        // cmdControl
+			nil,        // cmdStart
+			nil,        // cmdStop
 		},
 	},
 	actionRow{ // S16
@@ -562,14 +562,14 @@ var actionTab = actionTable{
 			nil,       // letRing
 			nil,       // cmdAssign
 			nil,       // cmdPlay
-			nil,       // :tempo
-			nil,       // :timesig
-			nil,       // :velocity
-			nil,       // :channel
-			nil,       // :program
-			nil,       // :control
-			nil,       // :start
-			nil,       // :stop
+			nil,       // cmdTempo
+			nil,       // cmdTimesig
+			nil,       // cmdVelocity
+			nil,       // cmdChannel
+			nil,       // cmdProgram
+			nil,       // cmdControl
+			nil,       // cmdStart
+			nil,       // cmdStop
 		},
 	},
 	actionRow{ // S17
@@ -595,14 +595,14 @@ var actionTab = actionTable{
 			nil,        // letRing
 			nil,        // cmdAssign
 			nil,        // cmdPlay
-			nil,        // :tempo
-			nil,        // :timesig
-			nil,        // :velocity
-			nil,        // :channel
-			nil,        // :program
-			nil,        // :control
-			nil,        // :start
-			nil,        // :stop
+			nil,        // cmdTempo
+			nil,        // cmdTimesig
+			nil,        // cmdVelocity
+			nil,        // cmdChannel
+			nil,        // cmdProgram
+			nil,        // cmdControl
+			nil,        // cmdStart
+			nil,        // cmdStop
 		},
 	},
 	actionRow{ // S18
@@ -628,14 +628,14 @@ var actionTab = actionTable{
 			nil,       // letRing
 			nil,       // cmdAssign
 			nil,       // cmdPlay
-			nil,       // :tempo
-			nil,       // :timesig
-			nil,       // :velocity
-			nil,       // :channel
-			nil,       // :program
-			nil,       // :control
-			nil,       // :start
-			nil,       // :stop
+			nil,       // cmdTempo
+			nil,       // cmdTimesig
+			nil,       // cmdVelocity
+			nil,       // cmdChannel
+			nil,       // cmdProgram
+			nil,       // cmdControl
+			nil,       // cmdStart
+			nil,       // cmdStop
 		},
 	},
 	actionRow{ // S19
@@ -661,14 +661,14 @@ var actionTab = actionTable{
 			nil,       // letRing
 			nil,       // cmdAssign
 			nil,       // cmdPlay
-			nil,       // :tempo
-			nil,       // :timesig
-			nil,       // :velocity
-			nil,       // :channel
-			nil,       // :program
-			nil,       // :control
-			nil,       // :start
-			nil,       // :stop
+			nil,       // cmdTempo
+			nil,       // cmdTimesig
+			nil,       // cmdVelocity
+			nil,       // cmdChannel
+			nil,       // cmdProgram
+			nil,       // cmdControl
+			nil,       // cmdStart
+			nil,       // cmdStop
 		},
 	},
 	actionRow{ // S20
@@ -694,14 +694,14 @@ var actionTab = actionTable{
 			nil,       // letRing
 			nil,       // cmdAssign
 			nil,       // cmdPlay
-			nil,       // :tempo
-			nil,       // :timesig
-			nil,       // :velocity
-			nil,       // :channel
-			nil,       // :program
-			nil,       // :control
-			nil,       // :start
-			nil,       // :stop
+			nil,       // cmdTempo
+			nil,       // cmdTimesig
+			nil,       // cmdVelocity
+			nil,       // cmdChannel
+			nil,       // cmdProgram
+			nil,       // cmdControl
+			nil,       // cmdStart
+			nil,       // cmdStop
 		},
 	},
 	actionRow{ // S21
@@ -727,14 +727,14 @@ var actionTab = actionTable{
 			nil,       // letRing
 			nil,       // cmdAssign
 			nil,       // cmdPlay
-			nil,       // :tempo
-			nil,       // :timesig
-			nil,       // :velocity
-			nil,       // :channel
-			nil,       // :program
-			nil,       // :control
-			nil,       // :start
-			nil,       // :stop
+			nil,       // cmdTempo
+			nil,       // cmdTimesig
+			nil,       // cmdVelocity
+			nil,       // cmdChannel
+			nil,       // cmdProgram
+			nil,       // cmdControl
+			nil,       // cmdStart
+			nil,       // cmdStop
 		},
 	},
 	actionRow{ // S22
@@ -760,14 +760,14 @@ var actionTab = actionTable{
 			nil,       // letRing
 			nil,       // cmdAssign
 			nil,       // cmdPlay
-			nil,       // :tempo
-			nil,       // :timesig
-			nil,       // :velocity
-			nil,       // :channel
-			nil,       // :program
-			nil,       // :control
-			nil,       // :start
-			nil,       // :stop
+			nil,       // cmdTempo
+			nil,       // cmdTimesig
+			nil,       // cmdVelocity
+			nil,       // cmdChannel
+			nil,       // cmdProgram
+			nil,       // cmdControl
+			nil,       // cmdStart
+			nil,       // cmdStop
 		},
 	},
 	actionRow{ // S23
@@ -793,14 +793,14 @@ var actionTab = actionTable{
 			nil,       // letRing
 			nil,       // cmdAssign
 			nil,       // cmdPlay
-			nil,       // :tempo
-			nil,       // :timesig
-			nil,       // :velocity
-			nil,       // :channel
-			nil,       // :program
-			nil,       // :control
-			nil,       // :start
-			nil,       // :stop
+			nil,       // cmdTempo
+			nil,       // cmdTimesig
+			nil,       // cmdVelocity
+			nil,       // cmdChannel
+			nil,       // cmdProgram
+			nil,       // cmdControl
+			nil,       // cmdStart
+			nil,       // cmdStop
 		},
 	},
 	actionRow{ // S24
@@ -826,14 +826,14 @@ var actionTab = actionTable{
 			nil,        // letRing
 			nil,        // cmdAssign
 			nil,        // cmdPlay
-			nil,        // :tempo
-			nil,        // :timesig
-			nil,        // :velocity
-			nil,        // :channel
-			nil,        // :program
-			nil,        // :control
-			nil,        // :start
-			nil,        // :stop
+			nil,        // cmdTempo
+			nil,        // cmdTimesig
+			nil,        // cmdVelocity
+			nil,        // cmdChannel
+			nil,        // cmdProgram
+			nil,        // cmdControl
+			nil,        // cmdStart
+			nil,        // cmdStop
 		},
 	},
 	actionRow{ // S25
@@ -859,14 +859,14 @@ var actionTab = actionTable{
 			nil,        // letRing
 			nil,        // cmdAssign
 			nil,        // cmdPlay
-			nil,        // :tempo
-			nil,        // :timesig
-			nil,        // :velocity
-			nil,        // :channel
-			nil,        // :program
-			nil,        // :control
-			nil,        // :start
-			nil,        // :stop
+			nil,        // cmdTempo
+			nil,        // cmdTimesig
+			nil,        // cmdVelocity
+			nil,        // cmdChannel
+			nil,        // cmdProgram
+			nil,        // cmdControl
+			nil,        // cmdStart
+			nil,        // cmdStop
 		},
 	},
 	actionRow{ // S26
@@ -892,14 +892,14 @@ var actionTab = actionTable{
 			nil,       // letRing
 			reduce(3), // cmdAssign, reduce: RepeatTerminator
 			reduce(3), // cmdPlay, reduce: RepeatTerminator
-			reduce(3), // :tempo, reduce: RepeatTerminator
-			reduce(3), // :timesig, reduce: RepeatTerminator
-			reduce(3), // :velocity, reduce: RepeatTerminator
-			reduce(3), // :channel, reduce: RepeatTerminator
-			reduce(3), // :program, reduce: RepeatTerminator
-			reduce(3), // :control, reduce: RepeatTerminator
-			reduce(3), // :start, reduce: RepeatTerminator
-			reduce(3), // :stop, reduce: RepeatTerminator
+			reduce(3), // cmdTempo, reduce: RepeatTerminator
+			reduce(3), // cmdTimesig, reduce: RepeatTerminator
+			reduce(3), // cmdVelocity, reduce: RepeatTerminator
+			reduce(3), // cmdChannel, reduce: RepeatTerminator
+			reduce(3), // cmdProgram, reduce: RepeatTerminator
+			reduce(3), // cmdControl, reduce: RepeatTerminator
+			reduce(3), // cmdStart, reduce: RepeatTerminator
+			reduce(3), // cmdStop, reduce: RepeatTerminator
 		},
 	},
 	actionRow{ // S27
@@ -925,14 +925,14 @@ var actionTab = actionTable{
 			nil,       // letRing
 			nil,       // cmdAssign
 			nil,       // cmdPlay
-			nil,       // :tempo
-			nil,       // :timesig
-			nil,       // :velocity
-			nil,       // :channel
-			nil,       // :program
-			nil,       // :control
-			nil,       // :start
-			nil,       // :stop
+			nil,       // cmdTempo
+			nil,       // cmdTimesig
+			nil,       // cmdVelocity
+			nil,       // cmdChannel
+			nil,       // cmdProgram
+			nil,       // cmdControl
+			nil,       // cmdStart
+			nil,       // cmdStop
 		},
 	},
 	actionRow{ // S28
@@ -958,14 +958,14 @@ var actionTab = actionTable{
 			nil,       // letRing
 			reduce(2), // cmdAssign, reduce: RepeatTerminator
 			reduce(2), // cmdPlay, reduce: RepeatTerminator
-			reduce(2), // :tempo, reduce: RepeatTerminator
-			reduce(2), // :timesig, reduce: RepeatTerminator
-			reduce(2), // :velocity, reduce: RepeatTerminator
-			reduce(2), // :channel, reduce: RepeatTerminator
-			reduce(2), // :program, reduce: RepeatTerminator
-			reduce(2), // :control, reduce: RepeatTerminator
-			reduce(2), // :start, reduce: RepeatTerminator
-			reduce(2), // :stop, reduce: RepeatTerminator
+			reduce(2), // cmdTempo, reduce: RepeatTerminator
+			reduce(2), // cmdTimesig, reduce: RepeatTerminator
+			reduce(2), // cmdVelocity, reduce: RepeatTerminator
+			reduce(2), // cmdChannel, reduce: RepeatTerminator
+			reduce(2), // cmdProgram, reduce: RepeatTerminator
+			reduce(2), // cmdControl, reduce: RepeatTerminator
+			reduce(2), // cmdStart, reduce: RepeatTerminator
+			reduce(2), // cmdStop, reduce: RepeatTerminator
 		},
 	},
 	actionRow{ // S29
@@ -991,14 +991,14 @@ var actionTab = actionTable{
 			nil,       // letRing
 			nil,       // cmdAssign
 			nil,       // cmdPlay
-			shift(66), // :tempo
-			shift(67), // :timesig
-			shift(68), // :velocity
-			shift(69), // :channel
-			shift(70), // :program
-			shift(71), // :control
-			shift(72), // :start
-			shift(73), // :stop
+			shift(66), // cmdTempo
+			shift(67), // cmdTimesig
+			shift(68), // cmdVelocity
+			shift(69), // cmdChannel
+			shift(70), // cmdProgram
+			shift(71), // cmdControl
+			shift(72), // cmdStart
+			shift(73), // cmdStop
 		},
 	},
 	actionRow{ // S30
@@ -1024,14 +1024,14 @@ var actionTab = actionTable{
 			nil,       // letRing
 			nil,       // cmdAssign
 			nil,       // cmdPlay
-			reduce(2), // :tempo, reduce: RepeatTerminator
-			reduce(2), // :timesig, reduce: RepeatTerminator
-			reduce(2), // :velocity, reduce: RepeatTerminator
-			reduce(2), // :channel, reduce: RepeatTerminator
-			reduce(2), // :program, reduce: RepeatTerminator
-			reduce(2), // :control, reduce: RepeatTerminator
-			reduce(2), // :start, reduce: RepeatTerminator
-			reduce(2), // :stop, reduce: RepeatTerminator
+			reduce(2), // cmdTempo, reduce: RepeatTerminator
+			reduce(2), // cmdTimesig, reduce: RepeatTerminator
+			reduce(2), // cmdVelocity, reduce: RepeatTerminator
+			reduce(2), // cmdChannel, reduce: RepeatTerminator
+			reduce(2), // cmdProgram, reduce: RepeatTerminator
+			reduce(2), // cmdControl, reduce: RepeatTerminator
+			reduce(2), // cmdStart, reduce: RepeatTerminator
+			reduce(2), // cmdStop, reduce: RepeatTerminator
 		},
 	},
 	actionRow{ // S31
@@ -1057,14 +1057,14 @@ var actionTab = actionTable{
 			nil,        // letRing
 			nil,        // cmdAssign
 			nil,        // cmdPlay
-			nil,        // :tempo
-			nil,        // :timesig
-			nil,        // :velocity
-			nil,        // :channel
-			nil,        // :program
-			nil,        // :control
-			nil,        // :start
-			nil,        // :stop
+			nil,        // cmdTempo
+			nil,        // cmdTimesig
+			nil,        // cmdVelocity
+			nil,        // cmdChannel
+			nil,        // cmdProgram
+			nil,        // cmdControl
+			nil,        // cmdStart
+			nil,        // cmdStop
 		},
 	},
 	actionRow{ // S32
@@ -1090,14 +1090,14 @@ var actionTab = actionTable{
 			nil,        // letRing
 			nil,        // cmdAssign
 			nil,        // cmdPlay
-			nil,        // :tempo
-			nil,        // :timesig
-			nil,        // :velocity
-			nil,        // :channel
-			nil,        // :program
-			nil,        // :control
-			nil,        // :start
-			nil,        // :stop
+			nil,        // cmdTempo
+			nil,        // cmdTimesig
+			nil,        // cmdVelocity
+			nil,        // cmdChannel
+			nil,        // cmdProgram
+			nil,        // cmdControl
+			nil,        // cmdStart
+			nil,        // cmdStop
 		},
 	},
 	actionRow{ // S33
@@ -1123,14 +1123,14 @@ var actionTab = actionTable{
 			shift(41),  // letRing
 			nil,        // cmdAssign
 			nil,        // cmdPlay
-			nil,        // :tempo
-			nil,        // :timesig
-			nil,        // :velocity
-			nil,        // :channel
-			nil,        // :program
-			nil,        // :control
-			nil,        // :start
-			nil,        // :stop
+			nil,        // cmdTempo
+			nil,        // cmdTimesig
+			nil,        // cmdVelocity
+			nil,        // cmdChannel
+			nil,        // cmdProgram
+			nil,        // cmdControl
+			nil,        // cmdStart
+			nil,        // cmdStop
 		},
 	},
 	actionRow{ // S34
@@ -1156,14 +1156,14 @@ var actionTab = actionTable{
 			reduce(22), // letRing, reduce: Property
 			nil,        // cmdAssign
 			nil,        // cmdPlay
-			nil,        // :tempo
-			nil,        // :timesig
-			nil,        // :velocity
-			nil,        // :channel
-			nil,        // :program
-			nil,        // :control
-			nil,        // :start
-			nil,        // :stop
+			nil,        // cmdTempo
+			nil,        // cmdTimesig
+			nil,        // cmdVelocity
+			nil,        // cmdChannel
+			nil,        // cmdProgram
+			nil,        // cmdControl
+			nil,        // cmdStart
+			nil,        // cmdStop
 		},
 	},
 	actionRow{ // S35
@@ -1189,14 +1189,14 @@ var actionTab = actionTable{
 			reduce(23), // letRing, reduce: Property
 			nil,        // cmdAssign
 			nil,        // cmdPlay
-			nil,        // :tempo
-			nil,        // :timesig
-			nil,        // :velocity
-			nil,        // :channel
-			nil,        // :program
-			nil,        // :control
-			nil,        // :start
-			nil,        // :stop
+			nil,        // cmdTempo
+			nil,        // cmdTimesig
+			nil,        // cmdVelocity
+			nil,        // cmdChannel
+			nil,        // cmdProgram
+			nil,        // cmdControl
+			nil,        // cmdStart
+			nil,        // cmdStop
 		},
 	},
 	actionRow{ // S36
@@ -1222,14 +1222,14 @@ var actionTab = actionTable{
 			reduce(24), // letRing, reduce: Property
 			nil,        // cmdAssign
 			nil,        // cmdPlay
-			nil,        // :tempo
-			nil,        // :timesig
-			nil,        // :velocity
-			nil,        // :channel
-			nil,        // :program
-			nil,        // :control
-			nil,        // :start
-			nil,        // :stop
+			nil,        // cmdTempo
+			nil,        // cmdTimesig
+			nil,        // cmdVelocity
+			nil,        // cmdChannel
+			nil,        // cmdProgram
+			nil,        // cmdControl
+			nil,        // cmdStart
+			nil,        // cmdStop
 		},
 	},
 	actionRow{ // S37
@@ -1255,14 +1255,14 @@ var actionTab = actionTable{
 			reduce(25), // letRing, reduce: Property
 			nil,        // cmdAssign
 			nil,        // cmdPlay
-			nil,        // :tempo
-			nil,        // :timesig
-			nil,        // :velocity
-			nil,        // :channel
-			nil,        // :program
-			nil,        // :control
-			nil,        // :start
-			nil,        // :stop
+			nil,        // cmdTempo
+			nil,        // cmdTimesig
+			nil,        // cmdVelocity
+			nil,        // cmdChannel
+			nil,        // cmdProgram
+			nil,        // cmdControl
+			nil,        // cmdStart
+			nil,        // cmdStop
 		},
 	},
 	actionRow{ // S38
@@ -1288,14 +1288,14 @@ var actionTab = actionTable{
 			reduce(26), // letRing, reduce: Property
 			nil,        // cmdAssign
 			nil,        // cmdPlay
-			nil,        // :tempo
-			nil,        // :timesig
-			nil,        // :velocity
-			nil,        // :channel
-			nil,        // :program
-			nil,        // :control
-			nil,        // :start
-			nil,        // :stop
+			nil,        // cmdTempo
+			nil,        // cmdTimesig
+			nil,        // cmdVelocity
+			nil,        // cmdChannel
+			nil,        // cmdProgram
+			nil,        // cmdControl
+			nil,        // cmdStart
+			nil,        // cmdStop
 		},
 	},
 	actionRow{ // S39
@@ -1321,14 +1321,14 @@ var actionTab = actionTable{
 			reduce(27), // letRing, reduce: Property
 			nil,        // cmdAssign
 			nil,        // cmdPlay
-			nil,        // :tempo
-			nil,        // :timesig
-			nil,        // :velocity
-			nil,        // :channel
-			nil,        // :program
-			nil,        // :control
-			nil,        // :start
-			nil,        // :stop
+			nil,        // cmdTempo
+			nil,        // cmdTimesig
+			nil,        // cmdVelocity
+			nil,        // cmdChannel
+			nil,        // cmdProgram
+			nil,        // cmdControl
+			nil,        // cmdStart
+			nil,        // cmdStop
 		},
 	},
 	actionRow{ // S40
@@ -1354,14 +1354,14 @@ var actionTab = actionTable{
 			reduce(28), // letRing, reduce: Property
 			nil,        // cmdAssign
 			nil,        // cmdPlay
-			nil,        // :tempo
-			nil,        // :timesig
-			nil,        // :velocity
-			nil,        // :channel
-			nil,        // :program
-			nil,        // :control
-			nil,        // :start
-			nil,        // :stop
+			nil,        // cmdTempo
+			nil,        // cmdTimesig
+			nil,        // cmdVelocity
+			nil,        // cmdChannel
+			nil,        // cmdProgram
+			nil,        // cmdControl
+			nil,        // cmdStart
+			nil,        // cmdStop
 		},
 	},
 	actionRow{ // S41
@@ -1387,14 +1387,14 @@ var actionTab = actionTable{
 			reduce(29), // letRing, reduce: Property
 			nil,        // cmdAssign
 			nil,        // cmdPlay
-			nil,        // :tempo
-			nil,        // :timesig
-			nil,        // :velocity
-			nil,        // :channel
-			nil,        // :program
-			nil,        // :control
-			nil,        // :start
-			nil,        // :stop
+			nil,        // cmdTempo
+			nil,        // cmdTimesig
+			nil,        // cmdVelocity
+			nil,        // cmdChannel
+			nil,        // cmdProgram
+			nil,        // cmdControl
+			nil,        // cmdStart
+			nil,        // cmdStop
 		},
 	},
 	actionRow{ // S42
@@ -1420,14 +1420,14 @@ var actionTab = actionTable{
 			nil,       // letRing
 			nil,       // cmdAssign
 			nil,       // cmdPlay
-			nil,       // :tempo
-			nil,       // :timesig
-			nil,       // :velocity
-			nil,       // :channel
-			nil,       // :program
-			nil,       // :control
-			nil,       // :start
-			nil,       // :stop
+			nil,       // cmdTempo
+			nil,       // cmdTimesig
+			nil,       // cmdVelocity
+			nil,       // cmdChannel
+			nil,       // cmdProgram
+			nil,       // cmdControl
+			nil,       // cmdStart
+			nil,       // cmdStop
 		},
 	},
 	actionRow{ // S43
@@ -1453,14 +1453,14 @@ var actionTab = actionTable{
 			nil,        // letRing
 			nil,        // cmdAssign
 			nil,        // cmdPlay
-			nil,        // :tempo
-			nil,        // :timesig
-			nil,        // :velocity
-			nil,        // :channel
-			nil,        // :program
-			nil,        // :control
-			nil,        // :start
-			nil,        // :stop
+			nil,        // cmdTempo
+			nil,        // cmdTimesig
+			nil,        // cmdVelocity
+			nil,        // cmdChannel
+			nil,        // cmdProgram
+			nil,        // cmdControl
+			nil,        // cmdStart
+			nil,        // cmdStop
 		},
 	},
 	actionRow{ // S44
@@ -1486,14 +1486,14 @@ var actionTab = actionTable{
 			shift(87),  // letRing
 			nil,        // cmdAssign
 			nil,        // cmdPlay
-			nil,        // :tempo
-			nil,        // :timesig
-			nil,        // :velocity
-			nil,        // :channel
-			nil,        // :program
-			nil,        // :control
-			nil,        // :start
-			nil,        // :stop
+			nil,        // cmdTempo
+			nil,        // cmdTimesig
+			nil,        // cmdVelocity
+			nil,        // cmdChannel
+			nil,        // cmdProgram
+			nil,        // cmdControl
+			nil,        // cmdStart
+			nil,        // cmdStop
 		},
 	},
 	actionRow{ // S45
@@ -1519,14 +1519,14 @@ var actionTab = actionTable{
 			nil,       // letRing
 			nil,       // cmdAssign
 			nil,       // cmdPlay
-			nil,       // :tempo
-			nil,       // :timesig
-			nil,       // :velocity
-			nil,       // :channel
-			nil,       // :program
-			nil,       // :control
-			nil,       // :start
-			nil,       // :stop
+			nil,       // cmdTempo
+			nil,       // cmdTimesig
+			nil,       // cmdVelocity
+			nil,       // cmdChannel
+			nil,       // cmdProgram
+			nil,       // cmdControl
+			nil,       // cmdStart
+			nil,       // cmdStop
 		},
 	},
 	actionRow{ // S46
@@ -1552,14 +1552,14 @@ var actionTab = actionTable{
 			reduce(18), // letRing, reduce: NoteSymbol
 			nil,        // cmdAssign
 			nil,        // cmdPlay
-			nil,        // :tempo
-			nil,        // :timesig
-			nil,        // :velocity
-			nil,        // :channel
-			nil,        // :program
-			nil,        // :control
-			nil,        // :start
-			nil,        // :stop
+			nil,        // cmdTempo
+			nil,        // cmdTimesig
+			nil,        // cmdVelocity
+			nil,        // cmdChannel
+			nil,        // cmdProgram
+			nil,        // cmdControl
+			nil,        // cmdStart
+			nil,        // cmdStop
 		},
 	},
 	actionRow{ // S47
@@ -1585,14 +1585,14 @@ var actionTab = actionTable{
 			reduce(19), // letRing, reduce: NoteSymbol
 			nil,        // cmdAssign
 			nil,        // cmdPlay
-			nil,        // :tempo
-			nil,        // :timesig
-			nil,        // :velocity
-			nil,        // :channel
-			nil,        // :program
-			nil,        // :control
-			nil,        // :start
-			nil,        // :stop
+			nil,        // cmdTempo
+			nil,        // cmdTimesig
+			nil,        // cmdVelocity
+			nil,        // cmdChannel
+			nil,        // cmdProgram
+			nil,        // cmdControl
+			nil,        // cmdStart
+			nil,        // cmdStop
 		},
 	},
 	actionRow{ // S48
@@ -1618,14 +1618,14 @@ var actionTab = actionTable{
 			nil,       // letRing
 			nil,       // cmdAssign
 			nil,       // cmdPlay
-			nil,       // :tempo
-			nil,       // :timesig
-			nil,       // :velocity
-			nil,       // :channel
-			nil,       // :program
-			nil,       // :control
-			nil,       // :start
-			nil,       // :stop
+			nil,       // cmdTempo
+			nil,       // cmdTimesig
+			nil,       // cmdVelocity
+			nil,       // cmdChannel
+			nil,       // cmdProgram
+			nil,       // cmdControl
+			nil,       // cmdStart
+			nil,       // cmdStop
 		},
 	},
 	actionRow{ // S49
@@ -1651,14 +1651,14 @@ var actionTab = actionTable{
 			nil,        // letRing
 			nil,        // cmdAssign
 			nil,        // cmdPlay
-			nil,        // :tempo
-			nil,        // :timesig
-			nil,        // :velocity
-			nil,        // :channel
-			nil,        // :program
-			nil,        // :control
-			nil,        // :start
-			nil,        // :stop
+			nil,        // cmdTempo
+			nil,        // cmdTimesig
+			nil,        // cmdVelocity
+			nil,        // cmdChannel
+			nil,        // cmdProgram
+			nil,        // cmdControl
+			nil,        // cmdStart
+			nil,        // cmdStop
 		},
 	},
 	actionRow{ // S50
@@ -1684,14 +1684,14 @@ var actionTab = actionTable{
 			nil,       // letRing
 			nil,       // cmdAssign
 			nil,       // cmdPlay
-			nil,       // :tempo
-			nil,       // :timesig
-			nil,       // :velocity
-			nil,       // :channel
-			nil,       // :program
-			nil,       // :control
-			nil,       // :start
-			nil,       // :stop
+			nil,       // cmdTempo
+			nil,       // cmdTimesig
+			nil,       // cmdVelocity
+			nil,       // cmdChannel
+			nil,       // cmdProgram
+			nil,       // cmdControl
+			nil,       // cmdStart
+			nil,       // cmdStop
 		},
 	},
 	actionRow{ // S51
@@ -1717,14 +1717,14 @@ var actionTab = actionTable{
 			nil,        // letRing
 			nil,        // cmdAssign
 			nil,        // cmdPlay
-			nil,        // :tempo
-			nil,        // :timesig
-			nil,        // :velocity
-			nil,        // :channel
-			nil,        // :program
-			nil,        // :control
-			nil,        // :start
-			nil,        // :stop
+			nil,        // cmdTempo
+			nil,        // cmdTimesig
+			nil,        // cmdVelocity
+			nil,        // cmdChannel
+			nil,        // cmdProgram
+			nil,        // cmdControl
+			nil,        // cmdStart
+			nil,        // cmdStop
 		},
 	},
 	actionRow{ // S52
@@ -1750,14 +1750,14 @@ var actionTab = actionTable{
 			nil,        // letRing
 			nil,        // cmdAssign
 			nil,        // cmdPlay
-			nil,        // :tempo
-			nil,        // :timesig
-			nil,        // :velocity
-			nil,        // :channel
-			nil,        // :program
-			nil,        // :control
-			nil,        // :start
-			nil,        // :stop
+			nil,        // cmdTempo
+			nil,        // cmdTimesig
+			nil,        // cmdVelocity
+			nil,        // cmdChannel
+			nil,        // cmdProgram
+			nil,        // cmdControl
+			nil,        // cmdStart
+			nil,        // cmdStop
 		},
 	},
 	actionRow{ // S53
@@ -1783,14 +1783,14 @@ var actionTab = actionTable{
 			nil,        // letRing
 			nil,        // cmdAssign
 			nil,        // cmdPlay
-			nil,        // :tempo
-			nil,        // :timesig
-			nil,        // :velocity
-			nil,        // :channel
-			nil,        // :program
-			nil,        // :control
-			nil,        // :start
-			nil,        // :stop
+			nil,        // cmdTempo
+			nil,        // cmdTimesig
+			nil,        // cmdVelocity
+			nil,        // cmdChannel
+			nil,        // cmdProgram
+			nil,        // cmdControl
+			nil,        // cmdStart
+			nil,        // cmdStop
 		},
 	},
 	actionRow{ // S54
@@ -1816,14 +1816,14 @@ var actionTab = actionTable{
 			nil,       // letRing
 			nil,       // cmdAssign
 			nil,       // cmdPlay
-			nil,       // :tempo
-			nil,       // :timesig
-			nil,       // :velocity
-			nil,       // :channel
-			nil,       // :program
-			nil,       // :control
-			nil,       // :start
-			nil,       // :stop
+			nil,       // cmdTempo
+			nil,       // cmdTimesig
+			nil,       // cmdVelocity
+			nil,       // cmdChannel
+			nil,       // cmdProgram
+			nil,       // cmdControl
+			nil,       // cmdStart
+			nil,       // cmdStop
 		},
 	},
 	actionRow{ // S55
@@ -1849,14 +1849,14 @@ var actionTab = actionTable{
 			nil,       // letRing
 			shift(16), // cmdAssign
 			shift(17), // cmdPlay
-			shift(18), // :tempo
-			shift(19), // :timesig
-			shift(20), // :velocity
-			shift(21), // :channel
-			shift(22), // :program
-			shift(23), // :control
-			shift(24), // :start
-			shift(25), // :stop
+			shift(18), // cmdTempo
+			shift(19), // cmdTimesig
+			shift(20), // cmdVelocity
+			shift(21), // cmdChannel
+			shift(22), // cmdProgram
+			shift(23), // cmdControl
+			shift(24), // cmdStart
+			shift(25), // cmdStop
 		},
 	},
 	actionRow{ // S56
@@ -1882,14 +1882,14 @@ var actionTab = actionTable{
 			nil,       // letRing
 			reduce(2), // cmdAssign, reduce: RepeatTerminator
 			reduce(2), // cmdPlay, reduce: RepeatTerminator
-			reduce(2), // :tempo, reduce: RepeatTerminator
-			reduce(2), // :timesig, reduce: RepeatTerminator
-			reduce(2), // :velocity, reduce: RepeatTerminator
-			reduce(2), // :channel, reduce: RepeatTerminator
-			reduce(2), // :program, reduce: RepeatTerminator
-			reduce(2), // :control, reduce: RepeatTerminator
-			reduce(2), // :start, reduce: RepeatTerminator
-			reduce(2), // :stop, reduce: RepeatTerminator
+			reduce(2), // cmdTempo, reduce: RepeatTerminator
+			reduce(2), // cmdTimesig, reduce: RepeatTerminator
+			reduce(2), // cmdVelocity, reduce: RepeatTerminator
+			reduce(2), // cmdChannel, reduce: RepeatTerminator
+			reduce(2), // cmdProgram, reduce: RepeatTerminator
+			reduce(2), // cmdControl, reduce: RepeatTerminator
+			reduce(2), // cmdStart, reduce: RepeatTerminator
+			reduce(2), // cmdStop, reduce: RepeatTerminator
 		},
 	},
 	actionRow{ // S57
@@ -1915,14 +1915,14 @@ var actionTab = actionTable{
 			nil,       // letRing
 			nil,       // cmdAssign
 			nil,       // cmdPlay
-			nil,       // :tempo
-			nil,       // :timesig
-			nil,       // :velocity
-			nil,       // :channel
-			nil,       // :program
-			nil,       // :control
-			nil,       // :start
-			nil,       // :stop
+			nil,       // cmdTempo
+			nil,       // cmdTimesig
+			nil,       // cmdVelocity
+			nil,       // cmdChannel
+			nil,       // cmdProgram
+			nil,       // cmdControl
+			nil,       // cmdStart
+			nil,       // cmdStop
 		},
 	},
 	actionRow{ // S58
@@ -1948,14 +1948,14 @@ var actionTab = actionTable{
 			nil,       // letRing
 			nil,       // cmdAssign
 			nil,       // cmdPlay
-			nil,       // :tempo
-			nil,       // :timesig
-			nil,       // :velocity
-			nil,       // :channel
-			nil,       // :program
-			nil,       // :control
-			nil,       // :start
-			nil,       // :stop
+			nil,       // cmdTempo
+			nil,       // cmdTimesig
+			nil,       // cmdVelocity
+			nil,       // cmdChannel
+			nil,       // cmdProgram
+			nil,       // cmdControl
+			nil,       // cmdStart
+			nil,       // cmdStop
 		},
 	},
 	actionRow{ // S59
@@ -1981,14 +1981,14 @@ var actionTab = actionTable{
 			nil,        // letRing
 			nil,        // cmdAssign
 			nil,        // cmdPlay
-			nil,        // :tempo
-			nil,        // :timesig
-			nil,        // :velocity
-			nil,        // :channel
-			nil,        // :program
-			nil,        // :control
-			nil,        // :start
-			nil,        // :stop
+			nil,        // cmdTempo
+			nil,        // cmdTimesig
+			nil,        // cmdVelocity
+			nil,        // cmdChannel
+			nil,        // cmdProgram
+			nil,        // cmdControl
+			nil,        // cmdStart
+			nil,        // cmdStop
 		},
 	},
 	actionRow{ // S60
@@ -2014,14 +2014,14 @@ var actionTab = actionTable{
 			nil,        // letRing
 			nil,        // cmdAssign
 			nil,        // cmdPlay
-			nil,        // :tempo
-			nil,        // :timesig
-			nil,        // :velocity
-			nil,        // :channel
-			nil,        // :program
-			nil,        // :control
-			nil,        // :start
-			nil,        // :stop
+			nil,        // cmdTempo
+			nil,        // cmdTimesig
+			nil,        // cmdVelocity
+			nil,        // cmdChannel
+			nil,        // cmdProgram
+			nil,        // cmdControl
+			nil,        // cmdStart
+			nil,        // cmdStop
 		},
 	},
 	actionRow{ // S61
@@ -2047,14 +2047,14 @@ var actionTab = actionTable{
 			nil,        // letRing
 			nil,        // cmdAssign
 			nil,        // cmdPlay
-			nil,        // :tempo
-			nil,        // :timesig
-			nil,        // :velocity
-			nil,        // :channel
-			nil,        // :program
-			nil,        // :control
-			nil,        // :start
-			nil,        // :stop
+			nil,        // cmdTempo
+			nil,        // cmdTimesig
+			nil,        // cmdVelocity
+			nil,        // cmdChannel
+			nil,        // cmdProgram
+			nil,        // cmdControl
+			nil,        // cmdStart
+			nil,        // cmdStop
 		},
 	},
 	actionRow{ // S62
@@ -2080,14 +2080,14 @@ var actionTab = actionTable{
 			shift(107), // letRing
 			nil,        // cmdAssign
 			nil,        // cmdPlay
-			nil,        // :tempo
-			nil,        // :timesig
-			nil,        // :velocity
-			nil,        // :channel
-			nil,        // :program
-			nil,        // :control
-			nil,        // :start
-			nil,        // :stop
+			nil,        // cmdTempo
+			nil,        // cmdTimesig
+			nil,        // cmdVelocity
+			nil,        // cmdChannel
+			nil,        // cmdProgram
+			nil,        // cmdControl
+			nil,        // cmdStart
+			nil,        // cmdStop
 		},
 	},
 	actionRow{ // S63
@@ -2113,14 +2113,14 @@ var actionTab = actionTable{
 			nil,       // letRing
 			nil,       // cmdAssign
 			nil,       // cmdPlay
-			nil,       // :tempo
-			nil,       // :timesig
-			nil,       // :velocity
-			nil,       // :channel
-			nil,       // :program
-			nil,       // :control
-			nil,       // :start
-			nil,       // :stop
+			nil,       // cmdTempo
+			nil,       // cmdTimesig
+			nil,       // cmdVelocity
+			nil,       // cmdChannel
+			nil,       // cmdProgram
+			nil,       // cmdControl
+			nil,       // cmdStart
+			nil,       // cmdStop
 		},
 	},
 	actionRow{ // S64
@@ -2146,14 +2146,14 @@ var actionTab = actionTable{
 			reduce(18), // letRing, reduce: NoteSymbol
 			nil,        // cmdAssign
 			nil,        // cmdPlay
-			nil,        // :tempo
-			nil,        // :timesig
-			nil,        // :velocity
-			nil,        // :channel
-			nil,        // :program
-			nil,        // :control
-			nil,        // :start
-			nil,        // :stop
+			nil,        // cmdTempo
+			nil,        // cmdTimesig
+			nil,        // cmdVelocity
+			nil,        // cmdChannel
+			nil,        // cmdProgram
+			nil,        // cmdControl
+			nil,        // cmdStart
+			nil,        // cmdStop
 		},
 	},
 	actionRow{ // S65
@@ -2179,14 +2179,14 @@ var actionTab = actionTable{
 			reduce(19), // letRing, reduce: NoteSymbol
 			nil,        // cmdAssign
 			nil,        // cmdPlay
-			nil,        // :tempo
-			nil,        // :timesig
-			nil,        // :velocity
-			nil,        // :channel
-			nil,        // :program
-			nil,        // :control
-			nil,        // :start
-			nil,        // :stop
+			nil,        // cmdTempo
+			nil,        // cmdTimesig
+			nil,        // cmdVelocity
+			nil,        // cmdChannel
+			nil,        // cmdProgram
+			nil,        // cmdControl
+			nil,        // cmdStart
+			nil,        // cmdStop
 		},
 	},
 	actionRow{ // S66
@@ -2212,14 +2212,14 @@ var actionTab = actionTable{
 			nil,        // letRing
 			nil,        // cmdAssign
 			nil,        // cmdPlay
-			nil,        // :tempo
-			nil,        // :timesig
-			nil,        // :velocity
-			nil,        // :channel
-			nil,        // :program
-			nil,        // :control
-			nil,        // :start
-			nil,        // :stop
+			nil,        // cmdTempo
+			nil,        // cmdTimesig
+			nil,        // cmdVelocity
+			nil,        // cmdChannel
+			nil,        // cmdProgram
+			nil,        // cmdControl
+			nil,        // cmdStart
+			nil,        // cmdStop
 		},
 	},
 	actionRow{ // S67
@@ -2245,14 +2245,14 @@ var actionTab = actionTable{
 			nil,        // letRing
 			nil,        // cmdAssign
 			nil,        // cmdPlay
-			nil,        // :tempo
-			nil,        // :timesig
-			nil,        // :velocity
-			nil,        // :channel
-			nil,        // :program
-			nil,        // :control
-			nil,        // :start
-			nil,        // :stop
+			nil,        // cmdTempo
+			nil,        // cmdTimesig
+			nil,        // cmdVelocity
+			nil,        // cmdChannel
+			nil,        // cmdProgram
+			nil,        // cmdControl
+			nil,        // cmdStart
+			nil,        // cmdStop
 		},
 	},
 	actionRow{ // S68
@@ -2278,14 +2278,14 @@ var actionTab = actionTable{
 			nil,        // letRing
 			nil,        // cmdAssign
 			nil,        // cmdPlay
-			nil,        // :tempo
-			nil,        // :timesig
-			nil,        // :velocity
-			nil,        // :channel
-			nil,        // :program
-			nil,        // :control
-			nil,        // :start
-			nil,        // :stop
+			nil,        // cmdTempo
+			nil,        // cmdTimesig
+			nil,        // cmdVelocity
+			nil,        // cmdChannel
+			nil,        // cmdProgram
+			nil,        // cmdControl
+			nil,        // cmdStart
+			nil,        // cmdStop
 		},
 	},
 	actionRow{ // S69
@@ -2311,14 +2311,14 @@ var actionTab = actionTable{
 			nil,        // letRing
 			nil,        // cmdAssign
 			nil,        // cmdPlay
-			nil,        // :tempo
-			nil,        // :timesig
-			nil,        // :velocity
-			nil,        // :channel
-			nil,        // :program
-			nil,        // :control
-			nil,        // :start
-			nil,        // :stop
+			nil,        // cmdTempo
+			nil,        // cmdTimesig
+			nil,        // cmdVelocity
+			nil,        // cmdChannel
+			nil,        // cmdProgram
+			nil,        // cmdControl
+			nil,        // cmdStart
+			nil,        // cmdStop
 		},
 	},
 	actionRow{ // S70
@@ -2344,14 +2344,14 @@ var actionTab = actionTable{
 			nil,        // letRing
 			nil,        // cmdAssign
 			nil,        // cmdPlay
-			nil,        // :tempo
-			nil,        // :timesig
-			nil,        // :velocity
-			nil,        // :channel
-			nil,        // :program
-			nil,        // :control
-			nil,        // :start
-			nil,        // :stop
+			nil,        // cmdTempo
+			nil,        // cmdTimesig
+			nil,        // cmdVelocity
+			nil,        // cmdChannel
+			nil,        // cmdProgram
+			nil,        // cmdControl
+			nil,        // cmdStart
+			nil,        // cmdStop
 		},
 	},
 	actionRow{ // S71
@@ -2377,14 +2377,14 @@ var actionTab = actionTable{
 			nil,        // letRing
 			nil,        // cmdAssign
 			nil,        // cmdPlay
-			nil,        // :tempo
-			nil,        // :timesig
-			nil,        // :velocity
-			nil,        // :channel
-			nil,        // :program
-			nil,        // :control
-			nil,        // :start
-			nil,        // :stop
+			nil,        // cmdTempo
+			nil,        // cmdTimesig
+			nil,        // cmdVelocity
+			nil,        // cmdChannel
+			nil,        // cmdProgram
+			nil,        // cmdControl
+			nil,        // cmdStart
+			nil,        // cmdStop
 		},
 	},
 	actionRow{ // S72
@@ -2410,14 +2410,14 @@ var actionTab = actionTable{
 			nil,        // letRing
 			nil,        // cmdAssign
 			nil,        // cmdPlay
-			nil,        // :tempo
-			nil,        // :timesig
-			nil,        // :velocity
-			nil,        // :channel
-			nil,        // :program
-			nil,        // :control
-			nil,        // :start
-			nil,        // :stop
+			nil,        // cmdTempo
+			nil,        // cmdTimesig
+			nil,        // cmdVelocity
+			nil,        // cmdChannel
+			nil,        // cmdProgram
+			nil,        // cmdControl
+			nil,        // cmdStart
+			nil,        // cmdStop
 		},
 	},
 	actionRow{ // S73
@@ -2443,14 +2443,14 @@ var actionTab = actionTable{
 			nil,        // letRing
 			nil,        // cmdAssign
 			nil,        // cmdPlay
-			nil,        // :tempo
-			nil,        // :timesig
-			nil,        // :velocity
-			nil,        // :channel
-			nil,        // :program
-			nil,        // :control
-			nil,        // :start
-			nil,        // :stop
+			nil,        // cmdTempo
+			nil,        // cmdTimesig
+			nil,        // cmdVelocity
+			nil,        // cmdChannel
+			nil,        // cmdProgram
+			nil,        // cmdControl
+			nil,        // cmdStart
+			nil,        // cmdStop
 		},
 	},
 	actionRow{ // S74
@@ -2476,14 +2476,14 @@ var actionTab = actionTable{
 			nil,       // letRing
 			nil,       // cmdAssign
 			nil,       // cmdPlay
-			reduce(3), // :tempo, reduce: RepeatTerminator
-			reduce(3), // :timesig, reduce: RepeatTerminator
-			reduce(3), // :velocity, reduce: RepeatTerminator
-			reduce(3), // :channel, reduce: RepeatTerminator
-			reduce(3), // :program, reduce: RepeatTerminator
-			reduce(3), // :control, reduce: RepeatTerminator
-			reduce(3), // :start, reduce: RepeatTerminator
-			reduce(3), // :stop, reduce: RepeatTerminator
+			reduce(3), // cmdTempo, reduce: RepeatTerminator
+			reduce(3), // cmdTimesig, reduce: RepeatTerminator
+			reduce(3), // cmdVelocity, reduce: RepeatTerminator
+			reduce(3), // cmdChannel, reduce: RepeatTerminator
+			reduce(3), // cmdProgram, reduce: RepeatTerminator
+			reduce(3), // cmdControl, reduce: RepeatTerminator
+			reduce(3), // cmdStart, reduce: RepeatTerminator
+			reduce(3), // cmdStop, reduce: RepeatTerminator
 		},
 	},
 	actionRow{ // S75
@@ -2509,14 +2509,14 @@ var actionTab = actionTable{
 			nil,        // letRing
 			nil,        // cmdAssign
 			nil,        // cmdPlay
-			nil,        // :tempo
-			nil,        // :timesig
-			nil,        // :velocity
-			nil,        // :channel
-			nil,        // :program
-			nil,        // :control
-			nil,        // :start
-			nil,        // :stop
+			nil,        // cmdTempo
+			nil,        // cmdTimesig
+			nil,        // cmdVelocity
+			nil,        // cmdChannel
+			nil,        // cmdProgram
+			nil,        // cmdControl
+			nil,        // cmdStart
+			nil,        // cmdStop
 		},
 	},
 	actionRow{ // S76
@@ -2542,14 +2542,14 @@ var actionTab = actionTable{
 			shift(41),  // letRing
 			nil,        // cmdAssign
 			nil,        // cmdPlay
-			nil,        // :tempo
-			nil,        // :timesig
-			nil,        // :velocity
-			nil,        // :channel
-			nil,        // :program
-			nil,        // :control
-			nil,        // :start
-			nil,        // :stop
+			nil,        // cmdTempo
+			nil,        // cmdTimesig
+			nil,        // cmdVelocity
+			nil,        // cmdChannel
+			nil,        // cmdProgram
+			nil,        // cmdControl
+			nil,        // cmdStart
+			nil,        // cmdStop
 		},
 	},
 	actionRow{ // S77
@@ -2575,14 +2575,14 @@ var actionTab = actionTable{
 			nil,        // letRing
 			nil,        // cmdAssign
 			nil,        // cmdPlay
-			nil,        // :tempo
-			nil,        // :timesig
-			nil,        // :velocity
-			nil,        // :channel
-			nil,        // :program
-			nil,        // :control
-			nil,        // :start
-			nil,        // :stop
+			nil,        // cmdTempo
+			nil,        // cmdTimesig
+			nil,        // cmdVelocity
+			nil,        // cmdChannel
+			nil,        // cmdProgram
+			nil,        // cmdControl
+			nil,        // cmdStart
+			nil,        // cmdStop
 		},
 	},
 	actionRow{ // S78
@@ -2608,14 +2608,14 @@ var actionTab = actionTable{
 			nil,        // letRing
 			nil,        // cmdAssign
 			nil,        // cmdPlay
-			nil,        // :tempo
-			nil,        // :timesig
-			nil,        // :velocity
-			nil,        // :channel
-			nil,        // :program
-			nil,        // :control
-			nil,        // :start
-			nil,        // :stop
+			nil,        // cmdTempo
+			nil,        // cmdTimesig
+			nil,        // cmdVelocity
+			nil,        // cmdChannel
+			nil,        // cmdProgram
+			nil,        // cmdControl
+			nil,        // cmdStart
+			nil,        // cmdStop
 		},
 	},
 	actionRow{ // S79
@@ -2641,14 +2641,14 @@ var actionTab = actionTable{
 			shift(87),  // letRing
 			nil,        // cmdAssign
 			nil,        // cmdPlay
-			nil,        // :tempo
-			nil,        // :timesig
-			nil,        // :velocity
-			nil,        // :channel
-			nil,        // :program
-			nil,        // :control
-			nil,        // :start
-			nil,        // :stop
+			nil,        // cmdTempo
+			nil,        // cmdTimesig
+			nil,        // cmdVelocity
+			nil,        // cmdChannel
+			nil,        // cmdProgram
+			nil,        // cmdControl
+			nil,        // cmdStart
+			nil,        // cmdStop
 		},
 	},
 	actionRow{ // S80
@@ -2674,14 +2674,14 @@ var actionTab = actionTable{
 			reduce(22), // letRing, reduce: Property
 			nil,        // cmdAssign
 			nil,        // cmdPlay
-			nil,        // :tempo
-			nil,        // :timesig
-			nil,        // :velocity
-			nil,        // :channel
-			nil,        // :program
-			nil,        // :control
-			nil,        // :start
-			nil,        // :stop
+			nil,        // cmdTempo
+			nil,        // cmdTimesig
+			nil,        // cmdVelocity
+			nil,        // cmdChannel
+			nil,        // cmdProgram
+			nil,        // cmdControl
+			nil,        // cmdStart
+			nil,        // cmdStop
 		},
 	},
 	actionRow{ // S81
@@ -2707,14 +2707,14 @@ var actionTab = actionTable{
 			reduce(23), // letRing, reduce: Property
 			nil,        // cmdAssign
 			nil,        // cmdPlay
-			nil,        // :tempo
-			nil,        // :timesig
-			nil,        // :velocity
-			nil,        // :channel
-			nil,        // :program
-			nil,        // :control
-			nil,        // :start
-			nil,        // :stop
+			nil,        // cmdTempo
+			nil,        // cmdTimesig
+			nil,        // cmdVelocity
+			nil,        // cmdChannel
+			nil,        // cmdProgram
+			nil,        // cmdControl
+			nil,        // cmdStart
+			nil,        // cmdStop
 		},
 	},
 	actionRow{ // S82
@@ -2740,14 +2740,14 @@ var actionTab = actionTable{
 			reduce(24), // letRing, reduce: Property
 			nil,        // cmdAssign
 			nil,        // cmdPlay
-			nil,        // :tempo
-			nil,        // :timesig
-			nil,        // :velocity
-			nil,        // :channel
-			nil,        // :program
-			nil,        // :control
-			nil,        // :start
-			nil,        // :stop
+			nil,        // cmdTempo
+			nil,        // cmdTimesig
+			nil,        // cmdVelocity
+			nil,        // cmdChannel
+			nil,        // cmdProgram
+			nil,        // cmdControl
+			nil,        // cmdStart
+			nil,        // cmdStop
 		},
 	},
 	actionRow{ // S83
@@ -2773,14 +2773,14 @@ var actionTab = actionTable{
 			reduce(25), // letRing, reduce: Property
 			nil,        // cmdAssign
 			nil,        // cmdPlay
-			nil,        // :tempo
-			nil,        // :timesig
-			nil,        // :velocity
-			nil,        // :channel
-			nil,        // :program
-			nil,        // :control
-			nil,        // :start
-			nil,        // :stop
+			nil,        // cmdTempo
+			nil,        // cmdTimesig
+			nil,        // cmdVelocity
+			nil,        // cmdChannel
+			nil,        // cmdProgram
+			nil,        // cmdControl
+			nil,        // cmdStart
+			nil,        // cmdStop
 		},
 	},
 	actionRow{ // S84
@@ -2806,14 +2806,14 @@ var actionTab = actionTable{
 			reduce(26), // letRing, reduce: Property
 			nil,        // cmdAssign
 			nil,        // cmdPlay
-			nil,        // :tempo
-			nil,        // :timesig
-			nil,        // :velocity
-			nil,        // :channel
-			nil,        // :program
-			nil,        // :control
-			nil,        // :start
-			nil,        // :stop
+			nil,        // cmdTempo
+			nil,        // cmdTimesig
+			nil,        // cmdVelocity
+			nil,        // cmdChannel
+			nil,        // cmdProgram
+			nil,        // cmdControl
+			nil,        // cmdStart
+			nil,        // cmdStop
 		},
 	},
 	actionRow{ // S85
@@ -2839,14 +2839,14 @@ var actionTab = actionTable{
 			reduce(27), // letRing, reduce: Property
 			nil,        // cmdAssign
 			nil,        // cmdPlay
-			nil,        // :tempo
-			nil,        // :timesig
-			nil,        // :velocity
-			nil,        // :channel
-			nil,        // :program
-			nil,        // :control
-			nil,        // :start
-			nil,        // :stop
+			nil,        // cmdTempo
+			nil,        // cmdTimesig
+			nil,        // cmdVelocity
+			nil,        // cmdChannel
+			nil,        // cmdProgram
+			nil,        // cmdControl
+			nil,        // cmdStart
+			nil,        // cmdStop
 		},
 	},
 	actionRow{ // S86
@@ -2872,14 +2872,14 @@ var actionTab = actionTable{
 			reduce(28), // letRing, reduce: Property
 			nil,        // cmdAssign
 			nil,        // cmdPlay
-			nil,        // :tempo
-			nil,        // :timesig
-			nil,        // :velocity
-			nil,        // :channel
-			nil,        // :program
-			nil,        // :control
-			nil,        // :start
-			nil,        // :stop
+			nil,        // cmdTempo
+			nil,        // cmdTimesig
+			nil,        // cmdVelocity
+			nil,        // cmdChannel
+			nil,        // cmdProgram
+			nil,        // cmdControl
+			nil,        // cmdStart
+			nil,        // cmdStop
 		},
 	},
 	actionRow{ // S87
@@ -2905,14 +2905,14 @@ var actionTab = actionTable{
 			reduce(29), // letRing, reduce: Property
 			nil,        // cmdAssign
 			nil,        // cmdPlay
-			nil,        // :tempo
-			nil,        // :timesig
-			nil,        // :velocity
-			nil,        // :channel
-			nil,        // :program
-			nil,        // :control
-			nil,        // :start
-			nil,        // :stop
+			nil,        // cmdTempo
+			nil,        // cmdTimesig
+			nil,        // cmdVelocity
+			nil,        // cmdChannel
+			nil,        // cmdProgram
+			nil,        // cmdControl
+			nil,        // cmdStart
+			nil,        // cmdStop
 		},
 	},
 	actionRow{ // S88
@@ -2938,14 +2938,14 @@ var actionTab = actionTable{
 			nil,        // letRing
 			nil,        // cmdAssign
 			nil,        // cmdPlay
-			nil,        // :tempo
-			nil,        // :timesig
-			nil,        // :velocity
-			nil,        // :channel
-			nil,        // :program
-			nil,        // :control
-			nil,        // :start
-			nil,        // :stop
+			nil,        // cmdTempo
+			nil,        // cmdTimesig
+			nil,        // cmdVelocity
+			nil,        // cmdChannel
+			nil,        // cmdProgram
+			nil,        // cmdControl
+			nil,        // cmdStart
+			nil,        // cmdStop
 		},
 	},
 	actionRow{ // S89
@@ -2971,14 +2971,14 @@ var actionTab = actionTable{
 			nil,        // letRing
 			nil,        // cmdAssign
 			nil,        // cmdPlay
-			nil,        // :tempo
-			nil,        // :timesig
-			nil,        // :velocity
-			nil,        // :channel
-			nil,        // :program
-			nil,        // :control
-			nil,        // :start
-			nil,        // :stop
+			nil,        // cmdTempo
+			nil,        // cmdTimesig
+			nil,        // cmdVelocity
+			nil,        // cmdChannel
+			nil,        // cmdProgram
+			nil,        // cmdControl
+			nil,        // cmdStart
+			nil,        // cmdStop
 		},
 	},
 	actionRow{ // S90
@@ -3004,14 +3004,14 @@ var actionTab = actionTable{
 			nil,        // letRing
 			nil,        // cmdAssign
 			nil,        // cmdPlay
-			nil,        // :tempo
-			nil,        // :timesig
-			nil,        // :velocity
-			nil,        // :channel
-			nil,        // :program
-			nil,        // :control
-			nil,        // :start
-			nil,        // :stop
+			nil,        // cmdTempo
+			nil,        // cmdTimesig
+			nil,        // cmdVelocity
+			nil,        // cmdChannel
+			nil,        // cmdProgram
+			nil,        // cmdControl
+			nil,        // cmdStart
+			nil,        // cmdStop
 		},
 	},
 	actionRow{ // S91
@@ -3037,14 +3037,14 @@ var actionTab = actionTable{
 			nil,        // letRing
 			nil,        // cmdAssign
 			nil,        // cmdPlay
-			nil,        // :tempo
-			nil,        // :timesig
-			nil,        // :velocity
-			nil,        // :channel
-			nil,        // :program
-			nil,        // :control
-			nil,        // :start
-			nil,        // :stop
+			nil,        // cmdTempo
+			nil,        // cmdTimesig
+			nil,        // cmdVelocity
+			nil,        // cmdChannel
+			nil,        // cmdProgram
+			nil,        // cmdControl
+			nil,        // cmdStart
+			nil,        // cmdStop
 		},
 	},
 	actionRow{ // S92
@@ -3070,14 +3070,14 @@ var actionTab = actionTable{
 			nil,       // letRing
 			nil,       // cmdAssign
 			nil,       // cmdPlay
-			nil,       // :tempo
-			nil,       // :timesig
-			nil,       // :velocity
-			nil,       // :channel
-			nil,       // :program
-			nil,       // :control
-			nil,       // :start
-			nil,       // :stop
+			nil,       // cmdTempo
+			nil,       // cmdTimesig
+			nil,       // cmdVelocity
+			nil,       // cmdChannel
+			nil,       // cmdProgram
+			nil,       // cmdControl
+			nil,       // cmdStart
+			nil,       // cmdStop
 		},
 	},
 	actionRow{ // S93
@@ -3103,14 +3103,14 @@ var actionTab = actionTable{
 			nil,       // letRing
 			reduce(3), // cmdAssign, reduce: RepeatTerminator
 			reduce(3), // cmdPlay, reduce: RepeatTerminator
-			reduce(3), // :tempo, reduce: RepeatTerminator
-			reduce(3), // :timesig, reduce: RepeatTerminator
-			reduce(3), // :velocity, reduce: RepeatTerminator
-			reduce(3), // :channel, reduce: RepeatTerminator
-			reduce(3), // :program, reduce: RepeatTerminator
-			reduce(3), // :control, reduce: RepeatTerminator
-			reduce(3), // :start, reduce: RepeatTerminator
-			reduce(3), // :stop, reduce: RepeatTerminator
+			reduce(3), // cmdTempo, reduce: RepeatTerminator
+			reduce(3), // cmdTimesig, reduce: RepeatTerminator
+			reduce(3), // cmdVelocity, reduce: RepeatTerminator
+			reduce(3), // cmdChannel, reduce: RepeatTerminator
+			reduce(3), // cmdProgram, reduce: RepeatTerminator
+			reduce(3), // cmdControl, reduce: RepeatTerminator
+			reduce(3), // cmdStart, reduce: RepeatTerminator
+			reduce(3), // cmdStop, reduce: RepeatTerminator
 		},
 	},
 	actionRow{ // S94
@@ -3136,14 +3136,14 @@ var actionTab = actionTable{
 			nil,        // letRing
 			nil,        // cmdAssign
 			nil,        // cmdPlay
-			nil,        // :tempo
-			nil,        // :timesig
-			nil,        // :velocity
-			nil,        // :channel
-			nil,        // :program
-			nil,        // :control
-			nil,        // :start
-			nil,        // :stop
+			nil,        // cmdTempo
+			nil,        // cmdTimesig
+			nil,        // cmdVelocity
+			nil,        // cmdChannel
+			nil,        // cmdProgram
+			nil,        // cmdControl
+			nil,        // cmdStart
+			nil,        // cmdStop
 		},
 	},
 	actionRow{ // S95
@@ -3169,14 +3169,14 @@ var actionTab = actionTable{
 			nil,       // letRing
 			nil,       // cmdAssign
 			nil,       // cmdPlay
-			nil,       // :tempo
-			nil,       // :timesig
-			nil,       // :velocity
-			nil,       // :channel
-			nil,       // :program
-			nil,       // :control
-			nil,       // :start
-			nil,       // :stop
+			nil,       // cmdTempo
+			nil,       // cmdTimesig
+			nil,       // cmdVelocity
+			nil,       // cmdChannel
+			nil,       // cmdProgram
+			nil,       // cmdControl
+			nil,       // cmdStart
+			nil,       // cmdStop
 		},
 	},
 	actionRow{ // S96
@@ -3202,14 +3202,14 @@ var actionTab = actionTable{
 			nil,        // letRing
 			nil,        // cmdAssign
 			nil,        // cmdPlay
-			reduce(2),  // :tempo, reduce: RepeatTerminator
-			reduce(2),  // :timesig, reduce: RepeatTerminator
-			reduce(2),  // :velocity, reduce: RepeatTerminator
-			reduce(2),  // :channel, reduce: RepeatTerminator
-			reduce(2),  // :program, reduce: RepeatTerminator
-			reduce(2),  // :control, reduce: RepeatTerminator
-			reduce(2),  // :start, reduce: RepeatTerminator
-			reduce(2),  // :stop, reduce: RepeatTerminator
+			reduce(2),  // cmdTempo, reduce: RepeatTerminator
+			reduce(2),  // cmdTimesig, reduce: RepeatTerminator
+			reduce(2),  // cmdVelocity, reduce: RepeatTerminator
+			reduce(2),  // cmdChannel, reduce: RepeatTerminator
+			reduce(2),  // cmdProgram, reduce: RepeatTerminator
+			reduce(2),  // cmdControl, reduce: RepeatTerminator
+			reduce(2),  // cmdStart, reduce: RepeatTerminator
+			reduce(2),  // cmdStop, reduce: RepeatTerminator
 		},
 	},
 	actionRow{ // S97
@@ -3235,14 +3235,14 @@ var actionTab = actionTable{
 			nil,        // letRing
 			nil,        // cmdAssign
 			nil,        // cmdPlay
-			nil,        // :tempo
-			nil,        // :timesig
-			nil,        // :velocity
-			nil,        // :channel
-			nil,        // :program
-			nil,        // :control
-			nil,        // :start
-			nil,        // :stop
+			nil,        // cmdTempo
+			nil,        // cmdTimesig
+			nil,        // cmdVelocity
+			nil,        // cmdChannel
+			nil,        // cmdProgram
+			nil,        // cmdControl
+			nil,        // cmdStart
+			nil,        // cmdStop
 		},
 	},
 	actionRow{ // S98
@@ -3268,14 +3268,14 @@ var actionTab = actionTable{
 			nil,        // letRing
 			nil,        // cmdAssign
 			nil,        // cmdPlay
-			nil,        // :tempo
-			nil,        // :timesig
-			nil,        // :velocity
-			nil,        // :channel
-			nil,        // :program
-			nil,        // :control
-			nil,        // :start
-			nil,        // :stop
+			nil,        // cmdTempo
+			nil,        // cmdTimesig
+			nil,        // cmdVelocity
+			nil,        // cmdChannel
+			nil,        // cmdProgram
+			nil,        // cmdControl
+			nil,        // cmdStart
+			nil,        // cmdStop
 		},
 	},
 	actionRow{ // S99
@@ -3301,14 +3301,14 @@ var actionTab = actionTable{
 			shift(107), // letRing
 			nil,        // cmdAssign
 			nil,        // cmdPlay
-			nil,        // :tempo
-			nil,        // :timesig
-			nil,        // :velocity
-			nil,        // :channel
-			nil,        // :program
-			nil,        // :control
-			nil,        // :start
-			nil,        // :stop
+			nil,        // cmdTempo
+			nil,        // cmdTimesig
+			nil,        // cmdVelocity
+			nil,        // cmdChannel
+			nil,        // cmdProgram
+			nil,        // cmdControl
+			nil,        // cmdStart
+			nil,        // cmdStop
 		},
 	},
 	actionRow{ // S100
@@ -3334,14 +3334,14 @@ var actionTab = actionTable{
 			reduce(22), // letRing, reduce: Property
 			nil,        // cmdAssign
 			nil,        // cmdPlay
-			nil,        // :tempo
-			nil,        // :timesig
-			nil,        // :velocity
-			nil,        // :channel
-			nil,        // :program
-			nil,        // :control
-			nil,        // :start
-			nil,        // :stop
+			nil,        // cmdTempo
+			nil,        // cmdTimesig
+			nil,        // cmdVelocity
+			nil,        // cmdChannel
+			nil,        // cmdProgram
+			nil,        // cmdControl
+			nil,        // cmdStart
+			nil,        // cmdStop
 		},
 	},
 	actionRow{ // S101
@@ -3367,14 +3367,14 @@ var actionTab = actionTable{
 			reduce(23), // letRing, reduce: Property
 			nil,        // cmdAssign
 			nil,        // cmdPlay
-			nil,        // :tempo
-			nil,        // :timesig
-			nil,        // :velocity
-			nil,        // :channel
-			nil,        // :program
-			nil,        // :control
-			nil,        // :start
-			nil,        // :stop
+			nil,        // cmdTempo
+			nil,        // cmdTimesig
+			nil,        // cmdVelocity
+			nil,        // cmdChannel
+			nil,        // cmdProgram
+			nil,        // cmdControl
+			nil,        // cmdStart
+			nil,        // cmdStop
 		},
 	},
 	actionRow{ // S102
@@ -3400,14 +3400,14 @@ var actionTab = actionTable{
 			reduce(24), // letRing, reduce: Property
 			nil,        // cmdAssign
 			nil,        // cmdPlay
-			nil,        // :tempo
-			nil,        // :timesig
-			nil,        // :velocity
-			nil,        // :channel
-			nil,        // :program
-			nil,        // :control
-			nil,        // :start
-			nil,        // :stop
+			nil,        // cmdTempo
+			nil,        // cmdTimesig
+			nil,        // cmdVelocity
+			nil,        // cmdChannel
+			nil,        // cmdProgram
+			nil,        // cmdControl
+			nil,        // cmdStart
+			nil,        // cmdStop
 		},
 	},
 	actionRow{ // S103
@@ -3433,14 +3433,14 @@ var actionTab = actionTable{
 			reduce(25), // letRing, reduce: Property
 			nil,        // cmdAssign
 			nil,        // cmdPlay
-			nil,        // :tempo
-			nil,        // :timesig
-			nil,        // :velocity
-			nil,        // :channel
-			nil,        // :program
-			nil,        // :control
-			nil,        // :start
-			nil,        // :stop
+			nil,        // cmdTempo
+			nil,        // cmdTimesig
+			nil,        // cmdVelocity
+			nil,        // cmdChannel
+			nil,        // cmdProgram
+			nil,        // cmdControl
+			nil,        // cmdStart
+			nil,        // cmdStop
 		},
 	},
 	actionRow{ // S104
@@ -3466,14 +3466,14 @@ var actionTab = actionTable{
 			reduce(26), // letRing, reduce: Property
 			nil,        // cmdAssign
 			nil,        // cmdPlay
-			nil,        // :tempo
-			nil,        // :timesig
-			nil,        // :velocity
-			nil,        // :channel
-			nil,        // :program
-			nil,        // :control
-			nil,        // :start
-			nil,        // :stop
+			nil,        // cmdTempo
+			nil,        // cmdTimesig
+			nil,        // cmdVelocity
+			nil,        // cmdChannel
+			nil,        // cmdProgram
+			nil,        // cmdControl
+			nil,        // cmdStart
+			nil,        // cmdStop
 		},
 	},
 	actionRow{ // S105
@@ -3499,14 +3499,14 @@ var actionTab = actionTable{
 			reduce(27), // letRing, reduce: Property
 			nil,        // cmdAssign
 			nil,        // cmdPlay
-			nil,        // :tempo
-			nil,        // :timesig
-			nil,        // :velocity
-			nil,        // :channel
-			nil,        // :program
-			nil,        // :control
-			nil,        // :start
-			nil,        // :stop
+			nil,        // cmdTempo
+			nil,        // cmdTimesig
+			nil,        // cmdVelocity
+			nil,        // cmdChannel
+			nil,        // cmdProgram
+			nil,        // cmdControl
+			nil,        // cmdStart
+			nil,        // cmdStop
 		},
 	},
 	actionRow{ // S106
@@ -3532,14 +3532,14 @@ var actionTab = actionTable{
 			reduce(28), // letRing, reduce: Property
 			nil,        // cmdAssign
 			nil,        // cmdPlay
-			nil,        // :tempo
-			nil,        // :timesig
-			nil,        // :velocity
-			nil,        // :channel
-			nil,        // :program
-			nil,        // :control
-			nil,        // :start
-			nil,        // :stop
+			nil,        // cmdTempo
+			nil,        // cmdTimesig
+			nil,        // cmdVelocity
+			nil,        // cmdChannel
+			nil,        // cmdProgram
+			nil,        // cmdControl
+			nil,        // cmdStart
+			nil,        // cmdStop
 		},
 	},
 	actionRow{ // S107
@@ -3565,14 +3565,14 @@ var actionTab = actionTable{
 			reduce(29), // letRing, reduce: Property
 			nil,        // cmdAssign
 			nil,        // cmdPlay
-			nil,        // :tempo
-			nil,        // :timesig
-			nil,        // :velocity
-			nil,        // :channel
-			nil,        // :program
-			nil,        // :control
-			nil,        // :start
-			nil,        // :stop
+			nil,        // cmdTempo
+			nil,        // cmdTimesig
+			nil,        // cmdVelocity
+			nil,        // cmdChannel
+			nil,        // cmdProgram
+			nil,        // cmdControl
+			nil,        // cmdStart
+			nil,        // cmdStop
 		},
 	},
 	actionRow{ // S108
@@ -3598,14 +3598,14 @@ var actionTab = actionTable{
 			nil,        // letRing
 			nil,        // cmdAssign
 			nil,        // cmdPlay
-			nil,        // :tempo
-			nil,        // :timesig
-			nil,        // :velocity
-			nil,        // :channel
-			nil,        // :program
-			nil,        // :control
-			nil,        // :start
-			nil,        // :stop
+			nil,        // cmdTempo
+			nil,        // cmdTimesig
+			nil,        // cmdVelocity
+			nil,        // cmdChannel
+			nil,        // cmdProgram
+			nil,        // cmdControl
+			nil,        // cmdStart
+			nil,        // cmdStop
 		},
 	},
 	actionRow{ // S109
@@ -3631,14 +3631,14 @@ var actionTab = actionTable{
 			nil,        // letRing
 			nil,        // cmdAssign
 			nil,        // cmdPlay
-			nil,        // :tempo
-			nil,        // :timesig
-			nil,        // :velocity
-			nil,        // :channel
-			nil,        // :program
-			nil,        // :control
-			nil,        // :start
-			nil,        // :stop
+			nil,        // cmdTempo
+			nil,        // cmdTimesig
+			nil,        // cmdVelocity
+			nil,        // cmdChannel
+			nil,        // cmdProgram
+			nil,        // cmdControl
+			nil,        // cmdStart
+			nil,        // cmdStop
 		},
 	},
 	actionRow{ // S110
@@ -3664,14 +3664,14 @@ var actionTab = actionTable{
 			nil,        // letRing
 			nil,        // cmdAssign
 			nil,        // cmdPlay
-			nil,        // :tempo
-			nil,        // :timesig
-			nil,        // :velocity
-			nil,        // :channel
-			nil,        // :program
-			nil,        // :control
-			nil,        // :start
-			nil,        // :stop
+			nil,        // cmdTempo
+			nil,        // cmdTimesig
+			nil,        // cmdVelocity
+			nil,        // cmdChannel
+			nil,        // cmdProgram
+			nil,        // cmdControl
+			nil,        // cmdStart
+			nil,        // cmdStop
 		},
 	},
 	actionRow{ // S111
@@ -3697,14 +3697,14 @@ var actionTab = actionTable{
 			nil,        // letRing
 			nil,        // cmdAssign
 			nil,        // cmdPlay
-			nil,        // :tempo
-			nil,        // :timesig
-			nil,        // :velocity
-			nil,        // :channel
-			nil,        // :program
-			nil,        // :control
-			nil,        // :start
-			nil,        // :stop
+			nil,        // cmdTempo
+			nil,        // cmdTimesig
+			nil,        // cmdVelocity
+			nil,        // cmdChannel
+			nil,        // cmdProgram
+			nil,        // cmdControl
+			nil,        // cmdStart
+			nil,        // cmdStop
 		},
 	},
 	actionRow{ // S112
@@ -3730,14 +3730,14 @@ var actionTab = actionTable{
 			nil,        // letRing
 			nil,        // cmdAssign
 			nil,        // cmdPlay
-			nil,        // :tempo
-			nil,        // :timesig
-			nil,        // :velocity
-			nil,        // :channel
-			nil,        // :program
-			nil,        // :control
-			nil,        // :start
-			nil,        // :stop
+			nil,        // cmdTempo
+			nil,        // cmdTimesig
+			nil,        // cmdVelocity
+			nil,        // cmdChannel
+			nil,        // cmdProgram
+			nil,        // cmdControl
+			nil,        // cmdStart
+			nil,        // cmdStop
 		},
 	},
 	actionRow{ // S113
@@ -3763,14 +3763,14 @@ var actionTab = actionTable{
 			nil,        // letRing
 			nil,        // cmdAssign
 			nil,        // cmdPlay
-			nil,        // :tempo
-			nil,        // :timesig
-			nil,        // :velocity
-			nil,        // :channel
-			nil,        // :program
-			nil,        // :control
-			nil,        // :start
-			nil,        // :stop
+			nil,        // cmdTempo
+			nil,        // cmdTimesig
+			nil,        // cmdVelocity
+			nil,        // cmdChannel
+			nil,        // cmdProgram
+			nil,        // cmdControl
+			nil,        // cmdStart
+			nil,        // cmdStop
 		},
 	},
 	actionRow{ // S114
@@ -3796,14 +3796,14 @@ var actionTab = actionTable{
 			nil,        // letRing
 			nil,        // cmdAssign
 			nil,        // cmdPlay
-			nil,        // :tempo
-			nil,        // :timesig
-			nil,        // :velocity
-			nil,        // :channel
-			nil,        // :program
-			nil,        // :control
-			nil,        // :start
-			nil,        // :stop
+			nil,        // cmdTempo
+			nil,        // cmdTimesig
+			nil,        // cmdVelocity
+			nil,        // cmdChannel
+			nil,        // cmdProgram
+			nil,        // cmdControl
+			nil,        // cmdStart
+			nil,        // cmdStop
 		},
 	},
 	actionRow{ // S115
@@ -3829,14 +3829,14 @@ var actionTab = actionTable{
 			nil,        // letRing
 			nil,        // cmdAssign
 			nil,        // cmdPlay
-			nil,        // :tempo
-			nil,        // :timesig
-			nil,        // :velocity
-			nil,        // :channel
-			nil,        // :program
-			nil,        // :control
-			nil,        // :start
-			nil,        // :stop
+			nil,        // cmdTempo
+			nil,        // cmdTimesig
+			nil,        // cmdVelocity
+			nil,        // cmdChannel
+			nil,        // cmdProgram
+			nil,        // cmdControl
+			nil,        // cmdStart
+			nil,        // cmdStop
 		},
 	},
 	actionRow{ // S116
@@ -3862,14 +3862,14 @@ var actionTab = actionTable{
 			nil,        // letRing
 			nil,        // cmdAssign
 			nil,        // cmdPlay
-			nil,        // :tempo
-			nil,        // :timesig
-			nil,        // :velocity
-			nil,        // :channel
-			nil,        // :program
-			nil,        // :control
-			nil,        // :start
-			nil,        // :stop
+			nil,        // cmdTempo
+			nil,        // cmdTimesig
+			nil,        // cmdVelocity
+			nil,        // cmdChannel
+			nil,        // cmdProgram
+			nil,        // cmdControl
+			nil,        // cmdStart
+			nil,        // cmdStop
 		},
 	},
 	actionRow{ // S117
@@ -3895,14 +3895,14 @@ var actionTab = actionTable{
 			shift(87),  // letRing
 			nil,        // cmdAssign
 			nil,        // cmdPlay
-			nil,        // :tempo
-			nil,        // :timesig
-			nil,        // :velocity
-			nil,        // :channel
-			nil,        // :program
-			nil,        // :control
-			nil,        // :start
-			nil,        // :stop
+			nil,        // cmdTempo
+			nil,        // cmdTimesig
+			nil,        // cmdVelocity
+			nil,        // cmdChannel
+			nil,        // cmdProgram
+			nil,        // cmdControl
+			nil,        // cmdStart
+			nil,        // cmdStop
 		},
 	},
 	actionRow{ // S118
@@ -3928,14 +3928,14 @@ var actionTab = actionTable{
 			nil,       // letRing
 			nil,       // cmdAssign
 			nil,       // cmdPlay
-			shift(66), // :tempo
-			shift(67), // :timesig
-			shift(68), // :velocity
-			shift(69), // :channel
-			shift(70), // :program
-			shift(71), // :control
-			shift(72), // :start
-			shift(73), // :stop
+			shift(66), // cmdTempo
+			shift(67), // cmdTimesig
+			shift(68), // cmdVelocity
+			shift(69), // cmdChannel
+			shift(70), // cmdProgram
+			shift(71), // cmdControl
+			shift(72), // cmdStart
+			shift(73), // cmdStop
 		},
 	},
 	actionRow{ // S119
@@ -3961,14 +3961,14 @@ var actionTab = actionTable{
 			nil,        // letRing
 			nil,        // cmdAssign
 			nil,        // cmdPlay
-			reduce(2),  // :tempo, reduce: RepeatTerminator
-			reduce(2),  // :timesig, reduce: RepeatTerminator
-			reduce(2),  // :velocity, reduce: RepeatTerminator
-			reduce(2),  // :channel, reduce: RepeatTerminator
-			reduce(2),  // :program, reduce: RepeatTerminator
-			reduce(2),  // :control, reduce: RepeatTerminator
-			reduce(2),  // :start, reduce: RepeatTerminator
-			reduce(2),  // :stop, reduce: RepeatTerminator
+			reduce(2),  // cmdTempo, reduce: RepeatTerminator
+			reduce(2),  // cmdTimesig, reduce: RepeatTerminator
+			reduce(2),  // cmdVelocity, reduce: RepeatTerminator
+			reduce(2),  // cmdChannel, reduce: RepeatTerminator
+			reduce(2),  // cmdProgram, reduce: RepeatTerminator
+			reduce(2),  // cmdControl, reduce: RepeatTerminator
+			reduce(2),  // cmdStart, reduce: RepeatTerminator
+			reduce(2),  // cmdStop, reduce: RepeatTerminator
 		},
 	},
 	actionRow{ // S120
@@ -3994,14 +3994,14 @@ var actionTab = actionTable{
 			nil,        // letRing
 			nil,        // cmdAssign
 			nil,        // cmdPlay
-			nil,        // :tempo
-			nil,        // :timesig
-			nil,        // :velocity
-			nil,        // :channel
-			nil,        // :program
-			nil,        // :control
-			nil,        // :start
-			nil,        // :stop
+			nil,        // cmdTempo
+			nil,        // cmdTimesig
+			nil,        // cmdVelocity
+			nil,        // cmdChannel
+			nil,        // cmdProgram
+			nil,        // cmdControl
+			nil,        // cmdStart
+			nil,        // cmdStop
 		},
 	},
 	actionRow{ // S121
@@ -4027,14 +4027,14 @@ var actionTab = actionTable{
 			shift(107), // letRing
 			nil,        // cmdAssign
 			nil,        // cmdPlay
-			nil,        // :tempo
-			nil,        // :timesig
-			nil,        // :velocity
-			nil,        // :channel
-			nil,        // :program
-			nil,        // :control
-			nil,        // :start
-			nil,        // :stop
+			nil,        // cmdTempo
+			nil,        // cmdTimesig
+			nil,        // cmdVelocity
+			nil,        // cmdChannel
+			nil,        // cmdProgram
+			nil,        // cmdControl
+			nil,        // cmdStart
+			nil,        // cmdStop
 		},
 	},
 	actionRow{ // S122
@@ -4060,14 +4060,14 @@ var actionTab = actionTable{
 			nil,        // letRing
 			nil,        // cmdAssign
 			nil,        // cmdPlay
-			nil,        // :tempo
-			nil,        // :timesig
-			nil,        // :velocity
-			nil,        // :channel
-			nil,        // :program
-			nil,        // :control
-			nil,        // :start
-			nil,        // :stop
+			nil,        // cmdTempo
+			nil,        // cmdTimesig
+			nil,        // cmdVelocity
+			nil,        // cmdChannel
+			nil,        // cmdProgram
+			nil,        // cmdControl
+			nil,        // cmdStart
+			nil,        // cmdStop
 		},
 	},
 	actionRow{ // S123
@@ -4093,14 +4093,14 @@ var actionTab = actionTable{
 			nil,        // letRing
 			nil,        // cmdAssign
 			nil,        // cmdPlay
-			nil,        // :tempo
-			nil,        // :timesig
-			nil,        // :velocity
-			nil,        // :channel
-			nil,        // :program
-			nil,        // :control
-			nil,        // :start
-			nil,        // :stop
+			nil,        // cmdTempo
+			nil,        // cmdTimesig
+			nil,        // cmdVelocity
+			nil,        // cmdChannel
+			nil,        // cmdProgram
+			nil,        // cmdControl
+			nil,        // cmdStart
+			nil,        // cmdStop
 		},
 	},
 	actionRow{ // S124
@@ -4126,14 +4126,14 @@ var actionTab = actionTable{
 			nil,        // letRing
 			nil,        // cmdAssign
 			nil,        // cmdPlay
-			nil,        // :tempo
-			nil,        // :timesig
-			nil,        // :velocity
-			nil,        // :channel
-			nil,        // :program
-			nil,        // :control
-			nil,        // :start
-			nil,        // :stop
+			nil,        // cmdTempo
+			nil,        // cmdTimesig
+			nil,        // cmdVelocity
+			nil,        // cmdChannel
+			nil,        // cmdProgram
+			nil,        // cmdControl
+			nil,        // cmdStart
+			nil,        // cmdStop
 		},
 	},
 	actionRow{ // S125
@@ -4159,14 +4159,14 @@ var actionTab = actionTable{
 			nil,       // letRing
 			nil,       // cmdAssign
 			nil,       // cmdPlay
-			nil,       // :tempo
-			nil,       // :timesig
-			nil,       // :velocity
-			nil,       // :channel
-			nil,       // :program
-			nil,       // :control
-			nil,       // :start
-			nil,       // :stop
+			nil,       // cmdTempo
+			nil,       // cmdTimesig
+			nil,       // cmdVelocity
+			nil,       // cmdChannel
+			nil,       // cmdProgram
+			nil,       // cmdControl
+			nil,       // cmdStart
+			nil,       // cmdStop
 		},
 	},
 	actionRow{ // S126
@@ -4192,14 +4192,14 @@ var actionTab = actionTable{
 			nil,       // letRing
 			nil,       // cmdAssign
 			nil,       // cmdPlay
-			reduce(3), // :tempo, reduce: RepeatTerminator
-			reduce(3), // :timesig, reduce: RepeatTerminator
-			reduce(3), // :velocity, reduce: RepeatTerminator
-			reduce(3), // :channel, reduce: RepeatTerminator
-			reduce(3), // :program, reduce: RepeatTerminator
-			reduce(3), // :control, reduce: RepeatTerminator
-			reduce(3), // :start, reduce: RepeatTerminator
-			reduce(3), // :stop, reduce: RepeatTerminator
+			reduce(3), // cmdTempo, reduce: RepeatTerminator
+			reduce(3), // cmdTimesig, reduce: RepeatTerminator
+			reduce(3), // cmdVelocity, reduce: RepeatTerminator
+			reduce(3), // cmdChannel, reduce: RepeatTerminator
+			reduce(3), // cmdProgram, reduce: RepeatTerminator
+			reduce(3), // cmdControl, reduce: RepeatTerminator
+			reduce(3), // cmdStart, reduce: RepeatTerminator
+			reduce(3), // cmdStop, reduce: RepeatTerminator
 		},
 	},
 	actionRow{ // S127
@@ -4225,14 +4225,14 @@ var actionTab = actionTable{
 			nil,        // letRing
 			nil,        // cmdAssign
 			nil,        // cmdPlay
-			nil,        // :tempo
-			nil,        // :timesig
-			nil,        // :velocity
-			nil,        // :channel
-			nil,        // :program
-			nil,        // :control
-			nil,        // :start
-			nil,        // :stop
+			nil,        // cmdTempo
+			nil,        // cmdTimesig
+			nil,        // cmdVelocity
+			nil,        // cmdChannel
+			nil,        // cmdProgram
+			nil,        // cmdControl
+			nil,        // cmdStart
+			nil,        // cmdStop
 		},
 	},
 }

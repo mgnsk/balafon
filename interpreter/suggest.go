@@ -168,8 +168,8 @@ func (it *Interpreter) Suggest(in prompt.Document) []prompt.Suggest {
 				switch last2Tok.Type {
 				case
 					tokentype.CmdAssign.Type,
-					tokentype.Timesig.Type,
-					tokentype.Control.Type:
+					tokentype.CmdTimesig.Type,
+					tokentype.CmdControl.Type:
 					for i := 0; i <= constants.MaxValue; i++ {
 						sug = append(sug, prompt.Suggest{
 							Text:        strconv.Itoa(i),
@@ -182,12 +182,12 @@ func (it *Interpreter) Suggest(in prompt.Document) []prompt.Suggest {
 			if lastTok := tokens.Back(); lastTok != nil {
 				switch lastTok.Value.Type {
 				case
-					tokentype.Tempo.Type,
-					tokentype.Timesig.Type,
-					tokentype.Channel.Type,
-					tokentype.Velocity.Type,
-					tokentype.Program.Type,
-					tokentype.Control.Type:
+					tokentype.CmdTempo.Type,
+					tokentype.CmdTimesig.Type,
+					tokentype.CmdChannel.Type,
+					tokentype.CmdVelocity.Type,
+					tokentype.CmdProgram.Type,
+					tokentype.CmdControl.Type:
 					for i := 0; i <= constants.MaxValue; i++ {
 						sug = append(sug, prompt.Suggest{
 							Text:        strconv.Itoa(i),
@@ -235,42 +235,42 @@ func (it *Interpreter) Suggest(in prompt.Document) []prompt.Suggest {
 					Description: "command",
 				})
 			}
-		case tokentype.Tempo.ID:
+		case tokentype.CmdTempo.ID:
 			sug = append(sug, prompt.Suggest{
 				Text:        ":tempo",
 				Description: "command",
 			})
-		case tokentype.Timesig.ID:
+		case tokentype.CmdTimesig.ID:
 			sug = append(sug, prompt.Suggest{
 				Text:        ":timesig",
 				Description: "command",
 			})
-		case tokentype.Velocity.ID:
+		case tokentype.CmdVelocity.ID:
 			sug = append(sug, prompt.Suggest{
 				Text:        ":velocity",
 				Description: "command",
 			})
-		case tokentype.Channel.ID:
+		case tokentype.CmdChannel.ID:
 			sug = append(sug, prompt.Suggest{
 				Text:        ":channel",
 				Description: "command",
 			})
-		case tokentype.Program.ID:
+		case tokentype.CmdProgram.ID:
 			sug = append(sug, prompt.Suggest{
 				Text:        ":program",
 				Description: "command",
 			})
-		case tokentype.Control.ID:
+		case tokentype.CmdControl.ID:
 			sug = append(sug, prompt.Suggest{
 				Text:        ":control",
 				Description: "command",
 			})
-		case tokentype.Start.ID:
+		case tokentype.CmdStart.ID:
 			sug = append(sug, prompt.Suggest{
 				Text:        ":start",
 				Description: "command",
 			})
-		case tokentype.Stop.ID:
+		case tokentype.CmdStop.ID:
 			sug = append(sug, prompt.Suggest{
 				Text:        ":stop",
 				Description: "command",

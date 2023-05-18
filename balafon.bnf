@@ -15,6 +15,14 @@ cmdBar        : ':' 'b' 'a' 'r' _space _ident ;
 cmdEnd        : ':' 'e' 'n' 'd' ;
 cmdPlay       : ':' 'p' 'l' 'a' 'y' _space _ident ;
 cmdAssign     : ':' 'a' 's' 's' 'i' 'g' 'n' ;
+cmdTempo      : ':' 't' 'e' 'm' 'p' 'o' ;
+cmdTimesig    : ':' 't' 'i' 'm' 'e' 's' 'i' 'g' ;
+cmdVelocity   : ':' 'v' 'e' 'l' 'o' 'c' 'i' 't' 'y' ;
+cmdChannel    : ':' 'c' 'h' 'a' 'n' 'n' 'e' 'l' ;
+cmdProgram    : ':' 'p' 'r' 'o' 'g' 'r' 'a' 'm' ;
+cmdControl    : ':' 'c' 'o' 'n' 't' 'r' 'o' 'l' ;
+cmdStart      : ':' 's' 't' 'a' 'r' 't' ;
+cmdStop       : ':' 's' 't' 'o' 'p' ;
 
 bracketBegin : '[' ;
 bracketEnd   : ']' ;
@@ -115,12 +123,12 @@ TopLevelCommand
     ;
 
 BarBodyCommand
-    : ":tempo" uint                  << ast.NewCmdTempo(ast.Must($T1.Int64Value())) >>
-    | ":timesig" uint uint           << ast.NewCmdTimeSig(ast.Must($T1.Int64Value()), ast.Must($T2.Int64Value())) >>
-    | ":velocity" uint               << ast.NewCmdVelocity(ast.Must($T1.Int64Value())) >>
-    | ":channel" uint                << ast.NewCmdChannel(ast.Must($T1.Int64Value())) >>
-    | ":program" uint                << ast.NewCmdProgram(ast.Must($T1.Int64Value())) >>
-    | ":control" uint uint           << ast.NewCmdControl(ast.Must($T1.Int64Value()), ast.Must($T2.Int64Value())) >>
-    | ":start"                       << ast.CmdStart{}, nil >>
-    | ":stop"                        << ast.CmdStop{}, nil >>
+    : cmdTempo uint                  << ast.NewCmdTempo(ast.Must($T1.Int64Value())) >>
+    | cmdTimesig uint uint           << ast.NewCmdTimeSig(ast.Must($T1.Int64Value()), ast.Must($T2.Int64Value())) >>
+    | cmdVelocity uint               << ast.NewCmdVelocity(ast.Must($T1.Int64Value())) >>
+    | cmdChannel uint                << ast.NewCmdChannel(ast.Must($T1.Int64Value())) >>
+    | cmdProgram uint                << ast.NewCmdProgram(ast.Must($T1.Int64Value())) >>
+    | cmdControl uint uint           << ast.NewCmdControl(ast.Must($T1.Int64Value()), ast.Must($T2.Int64Value())) >>
+    | cmdStart                       << ast.CmdStart{}, nil >>
+    | cmdStop                        << ast.CmdStop{}, nil >>
     ;

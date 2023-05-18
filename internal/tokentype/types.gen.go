@@ -7,12 +7,18 @@ var (
 	Accent       = Type{"accent", 12}
 	BracketBegin = Type{"bracketBegin", 6}
 	BracketEnd   = Type{"bracketEnd", 7}
-	Channel      = Type{":channel", 23}
 	CmdAssign    = Type{"cmdAssign", 18}
 	CmdBar       = Type{"cmdBar", 4}
+	CmdChannel   = Type{"cmdChannel", 23}
+	CmdControl   = Type{"cmdControl", 25}
 	CmdEnd       = Type{"cmdEnd", 5}
 	CmdPlay      = Type{"cmdPlay", 19}
-	Control      = Type{":control", 25}
+	CmdProgram   = Type{"cmdProgram", 24}
+	CmdStart     = Type{"cmdStart", 26}
+	CmdStop      = Type{"cmdStop", 27}
+	CmdTempo     = Type{"cmdTempo", 20}
+	CmdTimesig   = Type{"cmdTimesig", 21}
+	CmdVelocity  = Type{"cmdVelocity", 22}
 	Dot          = Type{"dot", 15}
 	EOF          = Type{"EOF", 1}
 	Empty        = Type{"empty", 2}
@@ -20,16 +26,10 @@ var (
 	Ghost        = Type{"ghost", 13}
 	INVALID      = Type{"INVALID", 0}
 	LetRing      = Type{"letRing", 17}
-	Program      = Type{":program", 24}
 	Rest         = Type{"rest", 9}
 	Sharp        = Type{"sharp", 10}
-	Start        = Type{":start", 26}
-	Stop         = Type{":stop", 27}
 	Symbol       = Type{"symbol", 8}
-	Tempo        = Type{":tempo", 20}
 	Terminator   = Type{"terminator", 3}
-	Timesig      = Type{":timesig", 21}
 	Tuplet       = Type{"tuplet", 16}
 	Uint         = Type{"uint", 14}
-	Velocity     = Type{":velocity", 22}
 )

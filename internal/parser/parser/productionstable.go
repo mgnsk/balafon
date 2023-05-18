@@ -353,7 +353,7 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `BarBodyCommand : ":tempo" uint	<< ast.NewCmdTempo(ast.Must(X[1].(*token.Token).Int64Value())) >>`,
+		String: `BarBodyCommand : cmdTempo uint	<< ast.NewCmdTempo(ast.Must(X[1].(*token.Token).Int64Value())) >>`,
 		Id:         "BarBodyCommand",
 		NTType:     14,
 		Index:      33,
@@ -363,7 +363,7 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `BarBodyCommand : ":timesig" uint uint	<< ast.NewCmdTimeSig(ast.Must(X[1].(*token.Token).Int64Value()), ast.Must(X[2].(*token.Token).Int64Value())) >>`,
+		String: `BarBodyCommand : cmdTimesig uint uint	<< ast.NewCmdTimeSig(ast.Must(X[1].(*token.Token).Int64Value()), ast.Must(X[2].(*token.Token).Int64Value())) >>`,
 		Id:         "BarBodyCommand",
 		NTType:     14,
 		Index:      34,
@@ -373,7 +373,7 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `BarBodyCommand : ":velocity" uint	<< ast.NewCmdVelocity(ast.Must(X[1].(*token.Token).Int64Value())) >>`,
+		String: `BarBodyCommand : cmdVelocity uint	<< ast.NewCmdVelocity(ast.Must(X[1].(*token.Token).Int64Value())) >>`,
 		Id:         "BarBodyCommand",
 		NTType:     14,
 		Index:      35,
@@ -383,7 +383,7 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `BarBodyCommand : ":channel" uint	<< ast.NewCmdChannel(ast.Must(X[1].(*token.Token).Int64Value())) >>`,
+		String: `BarBodyCommand : cmdChannel uint	<< ast.NewCmdChannel(ast.Must(X[1].(*token.Token).Int64Value())) >>`,
 		Id:         "BarBodyCommand",
 		NTType:     14,
 		Index:      36,
@@ -393,7 +393,7 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `BarBodyCommand : ":program" uint	<< ast.NewCmdProgram(ast.Must(X[1].(*token.Token).Int64Value())) >>`,
+		String: `BarBodyCommand : cmdProgram uint	<< ast.NewCmdProgram(ast.Must(X[1].(*token.Token).Int64Value())) >>`,
 		Id:         "BarBodyCommand",
 		NTType:     14,
 		Index:      37,
@@ -403,7 +403,7 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `BarBodyCommand : ":control" uint uint	<< ast.NewCmdControl(ast.Must(X[1].(*token.Token).Int64Value()), ast.Must(X[2].(*token.Token).Int64Value())) >>`,
+		String: `BarBodyCommand : cmdControl uint uint	<< ast.NewCmdControl(ast.Must(X[1].(*token.Token).Int64Value()), ast.Must(X[2].(*token.Token).Int64Value())) >>`,
 		Id:         "BarBodyCommand",
 		NTType:     14,
 		Index:      38,
@@ -413,7 +413,7 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `BarBodyCommand : ":start"	<< ast.CmdStart{}, nil >>`,
+		String: `BarBodyCommand : cmdStart	<< ast.CmdStart{}, nil >>`,
 		Id:         "BarBodyCommand",
 		NTType:     14,
 		Index:      39,
@@ -423,7 +423,7 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `BarBodyCommand : ":stop"	<< ast.CmdStop{}, nil >>`,
+		String: `BarBodyCommand : cmdStop	<< ast.CmdStop{}, nil >>`,
 		Id:         "BarBodyCommand",
 		NTType:     14,
 		Index:      40,
