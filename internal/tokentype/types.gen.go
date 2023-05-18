@@ -2,32 +2,34 @@
 
 package tokentype
 
-// Token types.
-var INVALID Type = Type{"INVALID", 0}
-var EOF Type = Type{"EOF", 1}
-var Empty Type = Type{"empty", 2}
-var Terminator Type = Type{"terminator", 3}
-var CmdBar Type = Type{"cmdBar", 4}
-var End Type = Type{":end", 5}
-var BracketBegin Type = Type{"bracketBegin", 6}
-var BracketEnd Type = Type{"bracketEnd", 7}
-var Symbol Type = Type{"symbol", 8}
-var Rest Type = Type{"rest", 9}
-var Sharp Type = Type{"sharp", 10}
-var Flat Type = Type{"flat", 11}
-var Accent Type = Type{"accent", 12}
-var Ghost Type = Type{"ghost", 13}
-var Uint Type = Type{"uint", 14}
-var Dot Type = Type{"dot", 15}
-var Tuplet Type = Type{"tuplet", 16}
-var LetRing Type = Type{"letRing", 17}
-var Assign Type = Type{":assign", 18}
-var CmdPlay Type = Type{"cmdPlay", 19}
-var Tempo Type = Type{":tempo", 20}
-var Timesig Type = Type{":timesig", 21}
-var Velocity Type = Type{":velocity", 22}
-var Channel Type = Type{":channel", 23}
-var Program Type = Type{":program", 24}
-var Control Type = Type{":control", 25}
-var Start Type = Type{":start", 26}
-var Stop Type = Type{":stop", 27}
+// Language tokens.
+var (
+	Accent       = Type{"accent", 12}
+	Assign       = Type{":assign", 18}
+	BracketBegin = Type{"bracketBegin", 6}
+	BracketEnd   = Type{"bracketEnd", 7}
+	Channel      = Type{":channel", 23}
+	CmdBar       = Type{"cmdBar", 4}
+	CmdPlay      = Type{"cmdPlay", 19}
+	Control      = Type{":control", 25}
+	Dot          = Type{"dot", 15}
+	EOF          = Type{"EOF", 1}
+	Empty        = Type{"empty", 2}
+	End          = Type{":end", 5}
+	Flat         = Type{"flat", 11}
+	Ghost        = Type{"ghost", 13}
+	INVALID      = Type{"INVALID", 0}
+	LetRing      = Type{"letRing", 17}
+	Program      = Type{":program", 24}
+	Rest         = Type{"rest", 9}
+	Sharp        = Type{"sharp", 10}
+	Start        = Type{":start", 26}
+	Stop         = Type{":stop", 27}
+	Symbol       = Type{"symbol", 8}
+	Tempo        = Type{":tempo", 20}
+	Terminator   = Type{"terminator", 3}
+	Timesig      = Type{":timesig", 21}
+	Tuplet       = Type{"tuplet", 16}
+	Uint         = Type{"uint", 14}
+	Velocity     = Type{":velocity", 22}
+)
