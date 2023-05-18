@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"log"
 	"os"
-	"strings"
 
 	"github.com/iancoleman/strcase"
 	"github.com/mgnsk/balafon/internal/parser/token"
@@ -47,19 +46,8 @@ func main() {
 					id = "EOF"
 				}
 
-				// TODO: name lex tokens correctly
-				trimmedID := strings.Trim(id, ":")
-
-				varName := strcase.ToCamel(trimmedID)
-
-				if varName == "" {
-					fmt.Printf("skipping %q\n", id)
-					typ++
-					continue
-				}
-
 				words = append(words, word{
-					varName: varName,
+					varName: strcase.ToCamel(id),
 					id:      id,
 					typ:     typ,
 				})
