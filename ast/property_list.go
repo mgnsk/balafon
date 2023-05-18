@@ -62,12 +62,12 @@ func NewPropertyList(t *token.Token, inner interface{}) (PropertyList, error) {
 
 	if props, ok := inner.(PropertyList); ok {
 		p := make(PropertyList, len(props)+1)
-		p[0] = &token.Token{Type: t.Type, Lit: t.Lit}
+		p[0] = t
 		copy(p[1:], props)
 		sort.Sort(p)
 
 		return p, nil
 	}
 
-	return PropertyList{&token.Token{Type: t.Type, Lit: t.Lit}}, nil
+	return PropertyList{t}, nil
 }
