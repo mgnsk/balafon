@@ -32,7 +32,7 @@ var actionTab = actionTable{
 			nil,       // dot
 			nil,       // tuplet
 			nil,       // letRing
-			reduce(2), // :assign, reduce: RepeatTerminator
+			reduce(2), // cmdAssign, reduce: RepeatTerminator
 			reduce(2), // cmdPlay, reduce: RepeatTerminator
 			reduce(2), // :tempo, reduce: RepeatTerminator
 			reduce(2), // :timesig, reduce: RepeatTerminator
@@ -65,7 +65,7 @@ var actionTab = actionTable{
 			nil,          // dot
 			nil,          // tuplet
 			nil,          // letRing
-			nil,          // :assign
+			nil,          // cmdAssign
 			nil,          // cmdPlay
 			nil,          // :tempo
 			nil,          // :timesig
@@ -98,7 +98,7 @@ var actionTab = actionTable{
 			nil,       // dot
 			nil,       // tuplet
 			nil,       // letRing
-			shift(16), // :assign
+			shift(16), // cmdAssign
 			shift(17), // cmdPlay
 			shift(18), // :tempo
 			shift(19), // :timesig
@@ -131,7 +131,7 @@ var actionTab = actionTable{
 			nil,       // dot
 			nil,       // tuplet
 			nil,       // letRing
-			reduce(2), // :assign, reduce: RepeatTerminator
+			reduce(2), // cmdAssign, reduce: RepeatTerminator
 			reduce(2), // cmdPlay, reduce: RepeatTerminator
 			reduce(2), // :tempo, reduce: RepeatTerminator
 			reduce(2), // :timesig, reduce: RepeatTerminator
@@ -164,7 +164,7 @@ var actionTab = actionTable{
 			nil,       // dot
 			nil,       // tuplet
 			nil,       // letRing
-			nil,       // :assign
+			nil,       // cmdAssign
 			nil,       // cmdPlay
 			nil,       // :tempo
 			nil,       // :timesig
@@ -197,7 +197,7 @@ var actionTab = actionTable{
 			nil,       // dot
 			nil,       // tuplet
 			nil,       // letRing
-			nil,       // :assign
+			nil,       // cmdAssign
 			nil,       // cmdPlay
 			nil,       // :tempo
 			nil,       // :timesig
@@ -230,7 +230,7 @@ var actionTab = actionTable{
 			nil,       // dot
 			nil,       // tuplet
 			nil,       // letRing
-			nil,       // :assign
+			nil,       // cmdAssign
 			nil,       // cmdPlay
 			nil,       // :tempo
 			nil,       // :timesig
@@ -263,7 +263,7 @@ var actionTab = actionTable{
 			nil,       // dot
 			nil,       // tuplet
 			nil,       // letRing
-			nil,       // :assign
+			nil,       // cmdAssign
 			nil,       // cmdPlay
 			nil,       // :tempo
 			nil,       // :timesig
@@ -296,7 +296,7 @@ var actionTab = actionTable{
 			nil,        // dot
 			nil,        // tuplet
 			nil,        // letRing
-			nil,        // :assign
+			nil,        // cmdAssign
 			nil,        // cmdPlay
 			nil,        // :tempo
 			nil,        // :timesig
@@ -329,7 +329,7 @@ var actionTab = actionTable{
 			nil,        // dot
 			nil,        // tuplet
 			nil,        // letRing
-			nil,        // :assign
+			nil,        // cmdAssign
 			nil,        // cmdPlay
 			nil,        // :tempo
 			nil,        // :timesig
@@ -362,7 +362,7 @@ var actionTab = actionTable{
 			nil,       // dot
 			nil,       // tuplet
 			nil,       // letRing
-			nil,       // :assign
+			nil,       // cmdAssign
 			nil,       // cmdPlay
 			reduce(2), // :tempo, reduce: RepeatTerminator
 			reduce(2), // :timesig, reduce: RepeatTerminator
@@ -395,7 +395,7 @@ var actionTab = actionTable{
 			nil,        // dot
 			nil,        // tuplet
 			nil,        // letRing
-			nil,        // :assign
+			nil,        // cmdAssign
 			nil,        // cmdPlay
 			nil,        // :tempo
 			nil,        // :timesig
@@ -428,7 +428,7 @@ var actionTab = actionTable{
 			shift(39),  // dot
 			shift(40),  // tuplet
 			shift(41),  // letRing
-			nil,        // :assign
+			nil,        // cmdAssign
 			nil,        // cmdPlay
 			nil,        // :tempo
 			nil,        // :timesig
@@ -461,7 +461,7 @@ var actionTab = actionTable{
 			nil,       // dot
 			nil,       // tuplet
 			nil,       // letRing
-			nil,       // :assign
+			nil,       // cmdAssign
 			nil,       // cmdPlay
 			nil,       // :tempo
 			nil,       // :timesig
@@ -494,7 +494,7 @@ var actionTab = actionTable{
 			reduce(18), // dot, reduce: NoteSymbol
 			reduce(18), // tuplet, reduce: NoteSymbol
 			reduce(18), // letRing, reduce: NoteSymbol
-			nil,        // :assign
+			nil,        // cmdAssign
 			nil,        // cmdPlay
 			nil,        // :tempo
 			nil,        // :timesig
@@ -527,7 +527,7 @@ var actionTab = actionTable{
 			reduce(19), // dot, reduce: NoteSymbol
 			reduce(19), // tuplet, reduce: NoteSymbol
 			reduce(19), // letRing, reduce: NoteSymbol
-			nil,        // :assign
+			nil,        // cmdAssign
 			nil,        // cmdPlay
 			nil,        // :tempo
 			nil,        // :timesig
@@ -560,7 +560,7 @@ var actionTab = actionTable{
 			nil,       // dot
 			nil,       // tuplet
 			nil,       // letRing
-			nil,       // :assign
+			nil,       // cmdAssign
 			nil,       // cmdPlay
 			nil,       // :tempo
 			nil,       // :timesig
@@ -593,7 +593,7 @@ var actionTab = actionTable{
 			nil,        // dot
 			nil,        // tuplet
 			nil,        // letRing
-			nil,        // :assign
+			nil,        // cmdAssign
 			nil,        // cmdPlay
 			nil,        // :tempo
 			nil,        // :timesig
@@ -626,7 +626,7 @@ var actionTab = actionTable{
 			nil,       // dot
 			nil,       // tuplet
 			nil,       // letRing
-			nil,       // :assign
+			nil,       // cmdAssign
 			nil,       // cmdPlay
 			nil,       // :tempo
 			nil,       // :timesig
@@ -659,7 +659,7 @@ var actionTab = actionTable{
 			nil,       // dot
 			nil,       // tuplet
 			nil,       // letRing
-			nil,       // :assign
+			nil,       // cmdAssign
 			nil,       // cmdPlay
 			nil,       // :tempo
 			nil,       // :timesig
@@ -692,7 +692,7 @@ var actionTab = actionTable{
 			nil,       // dot
 			nil,       // tuplet
 			nil,       // letRing
-			nil,       // :assign
+			nil,       // cmdAssign
 			nil,       // cmdPlay
 			nil,       // :tempo
 			nil,       // :timesig
@@ -725,7 +725,7 @@ var actionTab = actionTable{
 			nil,       // dot
 			nil,       // tuplet
 			nil,       // letRing
-			nil,       // :assign
+			nil,       // cmdAssign
 			nil,       // cmdPlay
 			nil,       // :tempo
 			nil,       // :timesig
@@ -758,7 +758,7 @@ var actionTab = actionTable{
 			nil,       // dot
 			nil,       // tuplet
 			nil,       // letRing
-			nil,       // :assign
+			nil,       // cmdAssign
 			nil,       // cmdPlay
 			nil,       // :tempo
 			nil,       // :timesig
@@ -791,7 +791,7 @@ var actionTab = actionTable{
 			nil,       // dot
 			nil,       // tuplet
 			nil,       // letRing
-			nil,       // :assign
+			nil,       // cmdAssign
 			nil,       // cmdPlay
 			nil,       // :tempo
 			nil,       // :timesig
@@ -824,7 +824,7 @@ var actionTab = actionTable{
 			nil,        // dot
 			nil,        // tuplet
 			nil,        // letRing
-			nil,        // :assign
+			nil,        // cmdAssign
 			nil,        // cmdPlay
 			nil,        // :tempo
 			nil,        // :timesig
@@ -857,7 +857,7 @@ var actionTab = actionTable{
 			nil,        // dot
 			nil,        // tuplet
 			nil,        // letRing
-			nil,        // :assign
+			nil,        // cmdAssign
 			nil,        // cmdPlay
 			nil,        // :tempo
 			nil,        // :timesig
@@ -890,7 +890,7 @@ var actionTab = actionTable{
 			nil,       // dot
 			nil,       // tuplet
 			nil,       // letRing
-			reduce(3), // :assign, reduce: RepeatTerminator
+			reduce(3), // cmdAssign, reduce: RepeatTerminator
 			reduce(3), // cmdPlay, reduce: RepeatTerminator
 			reduce(3), // :tempo, reduce: RepeatTerminator
 			reduce(3), // :timesig, reduce: RepeatTerminator
@@ -923,7 +923,7 @@ var actionTab = actionTable{
 			nil,       // dot
 			nil,       // tuplet
 			nil,       // letRing
-			nil,       // :assign
+			nil,       // cmdAssign
 			nil,       // cmdPlay
 			nil,       // :tempo
 			nil,       // :timesig
@@ -956,7 +956,7 @@ var actionTab = actionTable{
 			nil,       // dot
 			nil,       // tuplet
 			nil,       // letRing
-			reduce(2), // :assign, reduce: RepeatTerminator
+			reduce(2), // cmdAssign, reduce: RepeatTerminator
 			reduce(2), // cmdPlay, reduce: RepeatTerminator
 			reduce(2), // :tempo, reduce: RepeatTerminator
 			reduce(2), // :timesig, reduce: RepeatTerminator
@@ -989,7 +989,7 @@ var actionTab = actionTable{
 			nil,       // dot
 			nil,       // tuplet
 			nil,       // letRing
-			nil,       // :assign
+			nil,       // cmdAssign
 			nil,       // cmdPlay
 			shift(66), // :tempo
 			shift(67), // :timesig
@@ -1022,7 +1022,7 @@ var actionTab = actionTable{
 			nil,       // dot
 			nil,       // tuplet
 			nil,       // letRing
-			nil,       // :assign
+			nil,       // cmdAssign
 			nil,       // cmdPlay
 			reduce(2), // :tempo, reduce: RepeatTerminator
 			reduce(2), // :timesig, reduce: RepeatTerminator
@@ -1055,7 +1055,7 @@ var actionTab = actionTable{
 			nil,        // dot
 			nil,        // tuplet
 			nil,        // letRing
-			nil,        // :assign
+			nil,        // cmdAssign
 			nil,        // cmdPlay
 			nil,        // :tempo
 			nil,        // :timesig
@@ -1088,7 +1088,7 @@ var actionTab = actionTable{
 			nil,        // dot
 			nil,        // tuplet
 			nil,        // letRing
-			nil,        // :assign
+			nil,        // cmdAssign
 			nil,        // cmdPlay
 			nil,        // :tempo
 			nil,        // :timesig
@@ -1121,7 +1121,7 @@ var actionTab = actionTable{
 			shift(39),  // dot
 			shift(40),  // tuplet
 			shift(41),  // letRing
-			nil,        // :assign
+			nil,        // cmdAssign
 			nil,        // cmdPlay
 			nil,        // :tempo
 			nil,        // :timesig
@@ -1154,7 +1154,7 @@ var actionTab = actionTable{
 			reduce(22), // dot, reduce: Property
 			reduce(22), // tuplet, reduce: Property
 			reduce(22), // letRing, reduce: Property
-			nil,        // :assign
+			nil,        // cmdAssign
 			nil,        // cmdPlay
 			nil,        // :tempo
 			nil,        // :timesig
@@ -1187,7 +1187,7 @@ var actionTab = actionTable{
 			reduce(23), // dot, reduce: Property
 			reduce(23), // tuplet, reduce: Property
 			reduce(23), // letRing, reduce: Property
-			nil,        // :assign
+			nil,        // cmdAssign
 			nil,        // cmdPlay
 			nil,        // :tempo
 			nil,        // :timesig
@@ -1220,7 +1220,7 @@ var actionTab = actionTable{
 			reduce(24), // dot, reduce: Property
 			reduce(24), // tuplet, reduce: Property
 			reduce(24), // letRing, reduce: Property
-			nil,        // :assign
+			nil,        // cmdAssign
 			nil,        // cmdPlay
 			nil,        // :tempo
 			nil,        // :timesig
@@ -1253,7 +1253,7 @@ var actionTab = actionTable{
 			reduce(25), // dot, reduce: Property
 			reduce(25), // tuplet, reduce: Property
 			reduce(25), // letRing, reduce: Property
-			nil,        // :assign
+			nil,        // cmdAssign
 			nil,        // cmdPlay
 			nil,        // :tempo
 			nil,        // :timesig
@@ -1286,7 +1286,7 @@ var actionTab = actionTable{
 			reduce(26), // dot, reduce: Property
 			reduce(26), // tuplet, reduce: Property
 			reduce(26), // letRing, reduce: Property
-			nil,        // :assign
+			nil,        // cmdAssign
 			nil,        // cmdPlay
 			nil,        // :tempo
 			nil,        // :timesig
@@ -1319,7 +1319,7 @@ var actionTab = actionTable{
 			reduce(27), // dot, reduce: Property
 			reduce(27), // tuplet, reduce: Property
 			reduce(27), // letRing, reduce: Property
-			nil,        // :assign
+			nil,        // cmdAssign
 			nil,        // cmdPlay
 			nil,        // :tempo
 			nil,        // :timesig
@@ -1352,7 +1352,7 @@ var actionTab = actionTable{
 			reduce(28), // dot, reduce: Property
 			reduce(28), // tuplet, reduce: Property
 			reduce(28), // letRing, reduce: Property
-			nil,        // :assign
+			nil,        // cmdAssign
 			nil,        // cmdPlay
 			nil,        // :tempo
 			nil,        // :timesig
@@ -1385,7 +1385,7 @@ var actionTab = actionTable{
 			reduce(29), // dot, reduce: Property
 			reduce(29), // tuplet, reduce: Property
 			reduce(29), // letRing, reduce: Property
-			nil,        // :assign
+			nil,        // cmdAssign
 			nil,        // cmdPlay
 			nil,        // :tempo
 			nil,        // :timesig
@@ -1418,7 +1418,7 @@ var actionTab = actionTable{
 			nil,       // dot
 			nil,       // tuplet
 			nil,       // letRing
-			nil,       // :assign
+			nil,       // cmdAssign
 			nil,       // cmdPlay
 			nil,       // :tempo
 			nil,       // :timesig
@@ -1451,7 +1451,7 @@ var actionTab = actionTable{
 			nil,        // dot
 			nil,        // tuplet
 			nil,        // letRing
-			nil,        // :assign
+			nil,        // cmdAssign
 			nil,        // cmdPlay
 			nil,        // :tempo
 			nil,        // :timesig
@@ -1484,7 +1484,7 @@ var actionTab = actionTable{
 			shift(85),  // dot
 			shift(86),  // tuplet
 			shift(87),  // letRing
-			nil,        // :assign
+			nil,        // cmdAssign
 			nil,        // cmdPlay
 			nil,        // :tempo
 			nil,        // :timesig
@@ -1517,7 +1517,7 @@ var actionTab = actionTable{
 			nil,       // dot
 			nil,       // tuplet
 			nil,       // letRing
-			nil,       // :assign
+			nil,       // cmdAssign
 			nil,       // cmdPlay
 			nil,       // :tempo
 			nil,       // :timesig
@@ -1550,7 +1550,7 @@ var actionTab = actionTable{
 			reduce(18), // dot, reduce: NoteSymbol
 			reduce(18), // tuplet, reduce: NoteSymbol
 			reduce(18), // letRing, reduce: NoteSymbol
-			nil,        // :assign
+			nil,        // cmdAssign
 			nil,        // cmdPlay
 			nil,        // :tempo
 			nil,        // :timesig
@@ -1583,7 +1583,7 @@ var actionTab = actionTable{
 			reduce(19), // dot, reduce: NoteSymbol
 			reduce(19), // tuplet, reduce: NoteSymbol
 			reduce(19), // letRing, reduce: NoteSymbol
-			nil,        // :assign
+			nil,        // cmdAssign
 			nil,        // cmdPlay
 			nil,        // :tempo
 			nil,        // :timesig
@@ -1616,7 +1616,7 @@ var actionTab = actionTable{
 			nil,       // dot
 			nil,       // tuplet
 			nil,       // letRing
-			nil,       // :assign
+			nil,       // cmdAssign
 			nil,       // cmdPlay
 			nil,       // :tempo
 			nil,       // :timesig
@@ -1649,7 +1649,7 @@ var actionTab = actionTable{
 			nil,        // dot
 			nil,        // tuplet
 			nil,        // letRing
-			nil,        // :assign
+			nil,        // cmdAssign
 			nil,        // cmdPlay
 			nil,        // :tempo
 			nil,        // :timesig
@@ -1682,7 +1682,7 @@ var actionTab = actionTable{
 			nil,       // dot
 			nil,       // tuplet
 			nil,       // letRing
-			nil,       // :assign
+			nil,       // cmdAssign
 			nil,       // cmdPlay
 			nil,       // :tempo
 			nil,       // :timesig
@@ -1715,7 +1715,7 @@ var actionTab = actionTable{
 			nil,        // dot
 			nil,        // tuplet
 			nil,        // letRing
-			nil,        // :assign
+			nil,        // cmdAssign
 			nil,        // cmdPlay
 			nil,        // :tempo
 			nil,        // :timesig
@@ -1748,7 +1748,7 @@ var actionTab = actionTable{
 			nil,        // dot
 			nil,        // tuplet
 			nil,        // letRing
-			nil,        // :assign
+			nil,        // cmdAssign
 			nil,        // cmdPlay
 			nil,        // :tempo
 			nil,        // :timesig
@@ -1781,7 +1781,7 @@ var actionTab = actionTable{
 			nil,        // dot
 			nil,        // tuplet
 			nil,        // letRing
-			nil,        // :assign
+			nil,        // cmdAssign
 			nil,        // cmdPlay
 			nil,        // :tempo
 			nil,        // :timesig
@@ -1814,7 +1814,7 @@ var actionTab = actionTable{
 			nil,       // dot
 			nil,       // tuplet
 			nil,       // letRing
-			nil,       // :assign
+			nil,       // cmdAssign
 			nil,       // cmdPlay
 			nil,       // :tempo
 			nil,       // :timesig
@@ -1847,7 +1847,7 @@ var actionTab = actionTable{
 			nil,       // dot
 			nil,       // tuplet
 			nil,       // letRing
-			shift(16), // :assign
+			shift(16), // cmdAssign
 			shift(17), // cmdPlay
 			shift(18), // :tempo
 			shift(19), // :timesig
@@ -1880,7 +1880,7 @@ var actionTab = actionTable{
 			nil,       // dot
 			nil,       // tuplet
 			nil,       // letRing
-			reduce(2), // :assign, reduce: RepeatTerminator
+			reduce(2), // cmdAssign, reduce: RepeatTerminator
 			reduce(2), // cmdPlay, reduce: RepeatTerminator
 			reduce(2), // :tempo, reduce: RepeatTerminator
 			reduce(2), // :timesig, reduce: RepeatTerminator
@@ -1913,7 +1913,7 @@ var actionTab = actionTable{
 			nil,       // dot
 			nil,       // tuplet
 			nil,       // letRing
-			nil,       // :assign
+			nil,       // cmdAssign
 			nil,       // cmdPlay
 			nil,       // :tempo
 			nil,       // :timesig
@@ -1946,7 +1946,7 @@ var actionTab = actionTable{
 			nil,       // dot
 			nil,       // tuplet
 			nil,       // letRing
-			nil,       // :assign
+			nil,       // cmdAssign
 			nil,       // cmdPlay
 			nil,       // :tempo
 			nil,       // :timesig
@@ -1979,7 +1979,7 @@ var actionTab = actionTable{
 			nil,        // dot
 			nil,        // tuplet
 			nil,        // letRing
-			nil,        // :assign
+			nil,        // cmdAssign
 			nil,        // cmdPlay
 			nil,        // :tempo
 			nil,        // :timesig
@@ -2012,7 +2012,7 @@ var actionTab = actionTable{
 			nil,        // dot
 			nil,        // tuplet
 			nil,        // letRing
-			nil,        // :assign
+			nil,        // cmdAssign
 			nil,        // cmdPlay
 			nil,        // :tempo
 			nil,        // :timesig
@@ -2045,7 +2045,7 @@ var actionTab = actionTable{
 			nil,        // dot
 			nil,        // tuplet
 			nil,        // letRing
-			nil,        // :assign
+			nil,        // cmdAssign
 			nil,        // cmdPlay
 			nil,        // :tempo
 			nil,        // :timesig
@@ -2078,7 +2078,7 @@ var actionTab = actionTable{
 			shift(105), // dot
 			shift(106), // tuplet
 			shift(107), // letRing
-			nil,        // :assign
+			nil,        // cmdAssign
 			nil,        // cmdPlay
 			nil,        // :tempo
 			nil,        // :timesig
@@ -2111,7 +2111,7 @@ var actionTab = actionTable{
 			nil,       // dot
 			nil,       // tuplet
 			nil,       // letRing
-			nil,       // :assign
+			nil,       // cmdAssign
 			nil,       // cmdPlay
 			nil,       // :tempo
 			nil,       // :timesig
@@ -2144,7 +2144,7 @@ var actionTab = actionTable{
 			reduce(18), // dot, reduce: NoteSymbol
 			reduce(18), // tuplet, reduce: NoteSymbol
 			reduce(18), // letRing, reduce: NoteSymbol
-			nil,        // :assign
+			nil,        // cmdAssign
 			nil,        // cmdPlay
 			nil,        // :tempo
 			nil,        // :timesig
@@ -2177,7 +2177,7 @@ var actionTab = actionTable{
 			reduce(19), // dot, reduce: NoteSymbol
 			reduce(19), // tuplet, reduce: NoteSymbol
 			reduce(19), // letRing, reduce: NoteSymbol
-			nil,        // :assign
+			nil,        // cmdAssign
 			nil,        // cmdPlay
 			nil,        // :tempo
 			nil,        // :timesig
@@ -2210,7 +2210,7 @@ var actionTab = actionTable{
 			nil,        // dot
 			nil,        // tuplet
 			nil,        // letRing
-			nil,        // :assign
+			nil,        // cmdAssign
 			nil,        // cmdPlay
 			nil,        // :tempo
 			nil,        // :timesig
@@ -2243,7 +2243,7 @@ var actionTab = actionTable{
 			nil,        // dot
 			nil,        // tuplet
 			nil,        // letRing
-			nil,        // :assign
+			nil,        // cmdAssign
 			nil,        // cmdPlay
 			nil,        // :tempo
 			nil,        // :timesig
@@ -2276,7 +2276,7 @@ var actionTab = actionTable{
 			nil,        // dot
 			nil,        // tuplet
 			nil,        // letRing
-			nil,        // :assign
+			nil,        // cmdAssign
 			nil,        // cmdPlay
 			nil,        // :tempo
 			nil,        // :timesig
@@ -2309,7 +2309,7 @@ var actionTab = actionTable{
 			nil,        // dot
 			nil,        // tuplet
 			nil,        // letRing
-			nil,        // :assign
+			nil,        // cmdAssign
 			nil,        // cmdPlay
 			nil,        // :tempo
 			nil,        // :timesig
@@ -2342,7 +2342,7 @@ var actionTab = actionTable{
 			nil,        // dot
 			nil,        // tuplet
 			nil,        // letRing
-			nil,        // :assign
+			nil,        // cmdAssign
 			nil,        // cmdPlay
 			nil,        // :tempo
 			nil,        // :timesig
@@ -2375,7 +2375,7 @@ var actionTab = actionTable{
 			nil,        // dot
 			nil,        // tuplet
 			nil,        // letRing
-			nil,        // :assign
+			nil,        // cmdAssign
 			nil,        // cmdPlay
 			nil,        // :tempo
 			nil,        // :timesig
@@ -2408,7 +2408,7 @@ var actionTab = actionTable{
 			nil,        // dot
 			nil,        // tuplet
 			nil,        // letRing
-			nil,        // :assign
+			nil,        // cmdAssign
 			nil,        // cmdPlay
 			nil,        // :tempo
 			nil,        // :timesig
@@ -2441,7 +2441,7 @@ var actionTab = actionTable{
 			nil,        // dot
 			nil,        // tuplet
 			nil,        // letRing
-			nil,        // :assign
+			nil,        // cmdAssign
 			nil,        // cmdPlay
 			nil,        // :tempo
 			nil,        // :timesig
@@ -2474,7 +2474,7 @@ var actionTab = actionTable{
 			nil,       // dot
 			nil,       // tuplet
 			nil,       // letRing
-			nil,       // :assign
+			nil,       // cmdAssign
 			nil,       // cmdPlay
 			reduce(3), // :tempo, reduce: RepeatTerminator
 			reduce(3), // :timesig, reduce: RepeatTerminator
@@ -2507,7 +2507,7 @@ var actionTab = actionTable{
 			nil,        // dot
 			nil,        // tuplet
 			nil,        // letRing
-			nil,        // :assign
+			nil,        // cmdAssign
 			nil,        // cmdPlay
 			nil,        // :tempo
 			nil,        // :timesig
@@ -2540,7 +2540,7 @@ var actionTab = actionTable{
 			shift(39),  // dot
 			shift(40),  // tuplet
 			shift(41),  // letRing
-			nil,        // :assign
+			nil,        // cmdAssign
 			nil,        // cmdPlay
 			nil,        // :tempo
 			nil,        // :timesig
@@ -2573,7 +2573,7 @@ var actionTab = actionTable{
 			nil,        // dot
 			nil,        // tuplet
 			nil,        // letRing
-			nil,        // :assign
+			nil,        // cmdAssign
 			nil,        // cmdPlay
 			nil,        // :tempo
 			nil,        // :timesig
@@ -2606,7 +2606,7 @@ var actionTab = actionTable{
 			nil,        // dot
 			nil,        // tuplet
 			nil,        // letRing
-			nil,        // :assign
+			nil,        // cmdAssign
 			nil,        // cmdPlay
 			nil,        // :tempo
 			nil,        // :timesig
@@ -2639,7 +2639,7 @@ var actionTab = actionTable{
 			shift(85),  // dot
 			shift(86),  // tuplet
 			shift(87),  // letRing
-			nil,        // :assign
+			nil,        // cmdAssign
 			nil,        // cmdPlay
 			nil,        // :tempo
 			nil,        // :timesig
@@ -2672,7 +2672,7 @@ var actionTab = actionTable{
 			reduce(22), // dot, reduce: Property
 			reduce(22), // tuplet, reduce: Property
 			reduce(22), // letRing, reduce: Property
-			nil,        // :assign
+			nil,        // cmdAssign
 			nil,        // cmdPlay
 			nil,        // :tempo
 			nil,        // :timesig
@@ -2705,7 +2705,7 @@ var actionTab = actionTable{
 			reduce(23), // dot, reduce: Property
 			reduce(23), // tuplet, reduce: Property
 			reduce(23), // letRing, reduce: Property
-			nil,        // :assign
+			nil,        // cmdAssign
 			nil,        // cmdPlay
 			nil,        // :tempo
 			nil,        // :timesig
@@ -2738,7 +2738,7 @@ var actionTab = actionTable{
 			reduce(24), // dot, reduce: Property
 			reduce(24), // tuplet, reduce: Property
 			reduce(24), // letRing, reduce: Property
-			nil,        // :assign
+			nil,        // cmdAssign
 			nil,        // cmdPlay
 			nil,        // :tempo
 			nil,        // :timesig
@@ -2771,7 +2771,7 @@ var actionTab = actionTable{
 			reduce(25), // dot, reduce: Property
 			reduce(25), // tuplet, reduce: Property
 			reduce(25), // letRing, reduce: Property
-			nil,        // :assign
+			nil,        // cmdAssign
 			nil,        // cmdPlay
 			nil,        // :tempo
 			nil,        // :timesig
@@ -2804,7 +2804,7 @@ var actionTab = actionTable{
 			reduce(26), // dot, reduce: Property
 			reduce(26), // tuplet, reduce: Property
 			reduce(26), // letRing, reduce: Property
-			nil,        // :assign
+			nil,        // cmdAssign
 			nil,        // cmdPlay
 			nil,        // :tempo
 			nil,        // :timesig
@@ -2837,7 +2837,7 @@ var actionTab = actionTable{
 			reduce(27), // dot, reduce: Property
 			reduce(27), // tuplet, reduce: Property
 			reduce(27), // letRing, reduce: Property
-			nil,        // :assign
+			nil,        // cmdAssign
 			nil,        // cmdPlay
 			nil,        // :tempo
 			nil,        // :timesig
@@ -2870,7 +2870,7 @@ var actionTab = actionTable{
 			reduce(28), // dot, reduce: Property
 			reduce(28), // tuplet, reduce: Property
 			reduce(28), // letRing, reduce: Property
-			nil,        // :assign
+			nil,        // cmdAssign
 			nil,        // cmdPlay
 			nil,        // :tempo
 			nil,        // :timesig
@@ -2903,7 +2903,7 @@ var actionTab = actionTable{
 			reduce(29), // dot, reduce: Property
 			reduce(29), // tuplet, reduce: Property
 			reduce(29), // letRing, reduce: Property
-			nil,        // :assign
+			nil,        // cmdAssign
 			nil,        // cmdPlay
 			nil,        // :tempo
 			nil,        // :timesig
@@ -2936,7 +2936,7 @@ var actionTab = actionTable{
 			nil,        // dot
 			nil,        // tuplet
 			nil,        // letRing
-			nil,        // :assign
+			nil,        // cmdAssign
 			nil,        // cmdPlay
 			nil,        // :tempo
 			nil,        // :timesig
@@ -2969,7 +2969,7 @@ var actionTab = actionTable{
 			nil,        // dot
 			nil,        // tuplet
 			nil,        // letRing
-			nil,        // :assign
+			nil,        // cmdAssign
 			nil,        // cmdPlay
 			nil,        // :tempo
 			nil,        // :timesig
@@ -3002,7 +3002,7 @@ var actionTab = actionTable{
 			nil,        // dot
 			nil,        // tuplet
 			nil,        // letRing
-			nil,        // :assign
+			nil,        // cmdAssign
 			nil,        // cmdPlay
 			nil,        // :tempo
 			nil,        // :timesig
@@ -3035,7 +3035,7 @@ var actionTab = actionTable{
 			nil,        // dot
 			nil,        // tuplet
 			nil,        // letRing
-			nil,        // :assign
+			nil,        // cmdAssign
 			nil,        // cmdPlay
 			nil,        // :tempo
 			nil,        // :timesig
@@ -3068,7 +3068,7 @@ var actionTab = actionTable{
 			nil,       // dot
 			nil,       // tuplet
 			nil,       // letRing
-			nil,       // :assign
+			nil,       // cmdAssign
 			nil,       // cmdPlay
 			nil,       // :tempo
 			nil,       // :timesig
@@ -3101,7 +3101,7 @@ var actionTab = actionTable{
 			nil,       // dot
 			nil,       // tuplet
 			nil,       // letRing
-			reduce(3), // :assign, reduce: RepeatTerminator
+			reduce(3), // cmdAssign, reduce: RepeatTerminator
 			reduce(3), // cmdPlay, reduce: RepeatTerminator
 			reduce(3), // :tempo, reduce: RepeatTerminator
 			reduce(3), // :timesig, reduce: RepeatTerminator
@@ -3134,7 +3134,7 @@ var actionTab = actionTable{
 			nil,        // dot
 			nil,        // tuplet
 			nil,        // letRing
-			nil,        // :assign
+			nil,        // cmdAssign
 			nil,        // cmdPlay
 			nil,        // :tempo
 			nil,        // :timesig
@@ -3167,7 +3167,7 @@ var actionTab = actionTable{
 			nil,       // dot
 			nil,       // tuplet
 			nil,       // letRing
-			nil,       // :assign
+			nil,       // cmdAssign
 			nil,       // cmdPlay
 			nil,       // :tempo
 			nil,       // :timesig
@@ -3200,7 +3200,7 @@ var actionTab = actionTable{
 			nil,        // dot
 			nil,        // tuplet
 			nil,        // letRing
-			nil,        // :assign
+			nil,        // cmdAssign
 			nil,        // cmdPlay
 			reduce(2),  // :tempo, reduce: RepeatTerminator
 			reduce(2),  // :timesig, reduce: RepeatTerminator
@@ -3233,7 +3233,7 @@ var actionTab = actionTable{
 			nil,        // dot
 			nil,        // tuplet
 			nil,        // letRing
-			nil,        // :assign
+			nil,        // cmdAssign
 			nil,        // cmdPlay
 			nil,        // :tempo
 			nil,        // :timesig
@@ -3266,7 +3266,7 @@ var actionTab = actionTable{
 			nil,        // dot
 			nil,        // tuplet
 			nil,        // letRing
-			nil,        // :assign
+			nil,        // cmdAssign
 			nil,        // cmdPlay
 			nil,        // :tempo
 			nil,        // :timesig
@@ -3299,7 +3299,7 @@ var actionTab = actionTable{
 			shift(105), // dot
 			shift(106), // tuplet
 			shift(107), // letRing
-			nil,        // :assign
+			nil,        // cmdAssign
 			nil,        // cmdPlay
 			nil,        // :tempo
 			nil,        // :timesig
@@ -3332,7 +3332,7 @@ var actionTab = actionTable{
 			reduce(22), // dot, reduce: Property
 			reduce(22), // tuplet, reduce: Property
 			reduce(22), // letRing, reduce: Property
-			nil,        // :assign
+			nil,        // cmdAssign
 			nil,        // cmdPlay
 			nil,        // :tempo
 			nil,        // :timesig
@@ -3365,7 +3365,7 @@ var actionTab = actionTable{
 			reduce(23), // dot, reduce: Property
 			reduce(23), // tuplet, reduce: Property
 			reduce(23), // letRing, reduce: Property
-			nil,        // :assign
+			nil,        // cmdAssign
 			nil,        // cmdPlay
 			nil,        // :tempo
 			nil,        // :timesig
@@ -3398,7 +3398,7 @@ var actionTab = actionTable{
 			reduce(24), // dot, reduce: Property
 			reduce(24), // tuplet, reduce: Property
 			reduce(24), // letRing, reduce: Property
-			nil,        // :assign
+			nil,        // cmdAssign
 			nil,        // cmdPlay
 			nil,        // :tempo
 			nil,        // :timesig
@@ -3431,7 +3431,7 @@ var actionTab = actionTable{
 			reduce(25), // dot, reduce: Property
 			reduce(25), // tuplet, reduce: Property
 			reduce(25), // letRing, reduce: Property
-			nil,        // :assign
+			nil,        // cmdAssign
 			nil,        // cmdPlay
 			nil,        // :tempo
 			nil,        // :timesig
@@ -3464,7 +3464,7 @@ var actionTab = actionTable{
 			reduce(26), // dot, reduce: Property
 			reduce(26), // tuplet, reduce: Property
 			reduce(26), // letRing, reduce: Property
-			nil,        // :assign
+			nil,        // cmdAssign
 			nil,        // cmdPlay
 			nil,        // :tempo
 			nil,        // :timesig
@@ -3497,7 +3497,7 @@ var actionTab = actionTable{
 			reduce(27), // dot, reduce: Property
 			reduce(27), // tuplet, reduce: Property
 			reduce(27), // letRing, reduce: Property
-			nil,        // :assign
+			nil,        // cmdAssign
 			nil,        // cmdPlay
 			nil,        // :tempo
 			nil,        // :timesig
@@ -3530,7 +3530,7 @@ var actionTab = actionTable{
 			reduce(28), // dot, reduce: Property
 			reduce(28), // tuplet, reduce: Property
 			reduce(28), // letRing, reduce: Property
-			nil,        // :assign
+			nil,        // cmdAssign
 			nil,        // cmdPlay
 			nil,        // :tempo
 			nil,        // :timesig
@@ -3563,7 +3563,7 @@ var actionTab = actionTable{
 			reduce(29), // dot, reduce: Property
 			reduce(29), // tuplet, reduce: Property
 			reduce(29), // letRing, reduce: Property
-			nil,        // :assign
+			nil,        // cmdAssign
 			nil,        // cmdPlay
 			nil,        // :tempo
 			nil,        // :timesig
@@ -3596,7 +3596,7 @@ var actionTab = actionTable{
 			nil,        // dot
 			nil,        // tuplet
 			nil,        // letRing
-			nil,        // :assign
+			nil,        // cmdAssign
 			nil,        // cmdPlay
 			nil,        // :tempo
 			nil,        // :timesig
@@ -3629,7 +3629,7 @@ var actionTab = actionTable{
 			nil,        // dot
 			nil,        // tuplet
 			nil,        // letRing
-			nil,        // :assign
+			nil,        // cmdAssign
 			nil,        // cmdPlay
 			nil,        // :tempo
 			nil,        // :timesig
@@ -3662,7 +3662,7 @@ var actionTab = actionTable{
 			nil,        // dot
 			nil,        // tuplet
 			nil,        // letRing
-			nil,        // :assign
+			nil,        // cmdAssign
 			nil,        // cmdPlay
 			nil,        // :tempo
 			nil,        // :timesig
@@ -3695,7 +3695,7 @@ var actionTab = actionTable{
 			nil,        // dot
 			nil,        // tuplet
 			nil,        // letRing
-			nil,        // :assign
+			nil,        // cmdAssign
 			nil,        // cmdPlay
 			nil,        // :tempo
 			nil,        // :timesig
@@ -3728,7 +3728,7 @@ var actionTab = actionTable{
 			nil,        // dot
 			nil,        // tuplet
 			nil,        // letRing
-			nil,        // :assign
+			nil,        // cmdAssign
 			nil,        // cmdPlay
 			nil,        // :tempo
 			nil,        // :timesig
@@ -3761,7 +3761,7 @@ var actionTab = actionTable{
 			nil,        // dot
 			nil,        // tuplet
 			nil,        // letRing
-			nil,        // :assign
+			nil,        // cmdAssign
 			nil,        // cmdPlay
 			nil,        // :tempo
 			nil,        // :timesig
@@ -3794,7 +3794,7 @@ var actionTab = actionTable{
 			nil,        // dot
 			nil,        // tuplet
 			nil,        // letRing
-			nil,        // :assign
+			nil,        // cmdAssign
 			nil,        // cmdPlay
 			nil,        // :tempo
 			nil,        // :timesig
@@ -3827,7 +3827,7 @@ var actionTab = actionTable{
 			nil,        // dot
 			nil,        // tuplet
 			nil,        // letRing
-			nil,        // :assign
+			nil,        // cmdAssign
 			nil,        // cmdPlay
 			nil,        // :tempo
 			nil,        // :timesig
@@ -3860,7 +3860,7 @@ var actionTab = actionTable{
 			nil,        // dot
 			nil,        // tuplet
 			nil,        // letRing
-			nil,        // :assign
+			nil,        // cmdAssign
 			nil,        // cmdPlay
 			nil,        // :tempo
 			nil,        // :timesig
@@ -3893,7 +3893,7 @@ var actionTab = actionTable{
 			shift(85),  // dot
 			shift(86),  // tuplet
 			shift(87),  // letRing
-			nil,        // :assign
+			nil,        // cmdAssign
 			nil,        // cmdPlay
 			nil,        // :tempo
 			nil,        // :timesig
@@ -3926,7 +3926,7 @@ var actionTab = actionTable{
 			nil,       // dot
 			nil,       // tuplet
 			nil,       // letRing
-			nil,       // :assign
+			nil,       // cmdAssign
 			nil,       // cmdPlay
 			shift(66), // :tempo
 			shift(67), // :timesig
@@ -3959,7 +3959,7 @@ var actionTab = actionTable{
 			nil,        // dot
 			nil,        // tuplet
 			nil,        // letRing
-			nil,        // :assign
+			nil,        // cmdAssign
 			nil,        // cmdPlay
 			reduce(2),  // :tempo, reduce: RepeatTerminator
 			reduce(2),  // :timesig, reduce: RepeatTerminator
@@ -3992,7 +3992,7 @@ var actionTab = actionTable{
 			nil,        // dot
 			nil,        // tuplet
 			nil,        // letRing
-			nil,        // :assign
+			nil,        // cmdAssign
 			nil,        // cmdPlay
 			nil,        // :tempo
 			nil,        // :timesig
@@ -4025,7 +4025,7 @@ var actionTab = actionTable{
 			shift(105), // dot
 			shift(106), // tuplet
 			shift(107), // letRing
-			nil,        // :assign
+			nil,        // cmdAssign
 			nil,        // cmdPlay
 			nil,        // :tempo
 			nil,        // :timesig
@@ -4058,7 +4058,7 @@ var actionTab = actionTable{
 			nil,        // dot
 			nil,        // tuplet
 			nil,        // letRing
-			nil,        // :assign
+			nil,        // cmdAssign
 			nil,        // cmdPlay
 			nil,        // :tempo
 			nil,        // :timesig
@@ -4091,7 +4091,7 @@ var actionTab = actionTable{
 			nil,        // dot
 			nil,        // tuplet
 			nil,        // letRing
-			nil,        // :assign
+			nil,        // cmdAssign
 			nil,        // cmdPlay
 			nil,        // :tempo
 			nil,        // :timesig
@@ -4124,7 +4124,7 @@ var actionTab = actionTable{
 			nil,        // dot
 			nil,        // tuplet
 			nil,        // letRing
-			nil,        // :assign
+			nil,        // cmdAssign
 			nil,        // cmdPlay
 			nil,        // :tempo
 			nil,        // :timesig
@@ -4157,7 +4157,7 @@ var actionTab = actionTable{
 			nil,       // dot
 			nil,       // tuplet
 			nil,       // letRing
-			nil,       // :assign
+			nil,       // cmdAssign
 			nil,       // cmdPlay
 			nil,       // :tempo
 			nil,       // :timesig
@@ -4190,7 +4190,7 @@ var actionTab = actionTable{
 			nil,       // dot
 			nil,       // tuplet
 			nil,       // letRing
-			nil,       // :assign
+			nil,       // cmdAssign
 			nil,       // cmdPlay
 			reduce(3), // :tempo, reduce: RepeatTerminator
 			reduce(3), // :timesig, reduce: RepeatTerminator
@@ -4223,7 +4223,7 @@ var actionTab = actionTable{
 			nil,        // dot
 			nil,        // tuplet
 			nil,        // letRing
-			nil,        // :assign
+			nil,        // cmdAssign
 			nil,        // cmdPlay
 			nil,        // :tempo
 			nil,        // :timesig

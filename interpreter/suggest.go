@@ -102,7 +102,7 @@ func (it *Interpreter) Suggest(in prompt.Document) []prompt.Suggest {
 		case tokentype.Symbol.ID:
 			lastTok := tokens.Back()
 
-			if lastTok != nil && lastTok.Value.Type == tokentype.Assign.Type {
+			if lastTok != nil && lastTok.Value.Type == tokentype.CmdAssign.Type {
 				// Suggest unassigned keys on the current channel.
 				for note := 'a'; note < 'z'; note++ {
 					if _, ok := it.keymap.Get(it.channel, note); !ok {
@@ -167,7 +167,7 @@ func (it *Interpreter) Suggest(in prompt.Document) []prompt.Suggest {
 			if last2Tok != nil {
 				switch last2Tok.Type {
 				case
-					tokentype.Assign.Type,
+					tokentype.CmdAssign.Type,
 					tokentype.Timesig.Type,
 					tokentype.Control.Type:
 					for i := 0; i <= constants.MaxValue; i++ {
@@ -223,7 +223,7 @@ func (it *Interpreter) Suggest(in prompt.Document) []prompt.Suggest {
 				Text:        "*",
 				Description: "let ring property",
 			})
-		case tokentype.Assign.ID:
+		case tokentype.CmdAssign.ID:
 			sug = append(sug, prompt.Suggest{
 				Text:        ":assign",
 				Description: "command",

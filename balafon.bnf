@@ -14,6 +14,7 @@ _space     : ' ' ;
 cmdBar        : ':' 'b' 'a' 'r' _space _ident ;
 cmdEnd        : ':' 'e' 'n' 'd' ;
 cmdPlay       : ':' 'p' 'l' 'a' 'y' _space _ident ;
+cmdAssign     : ':' 'a' 's' 's' 'i' 'g' 'n' ;
 
 bracketBegin : '[' ;
 bracketEnd   : ']' ;
@@ -108,7 +109,7 @@ Property
     ;
 
 TopLevelCommand
-    : ":assign" symbol uint            << ast.NewCmdAssign([]rune(string($T1.Lit))[0], ast.Must($T2.Int64Value())) >>
+    : cmdAssign symbol uint            << ast.NewCmdAssign([]rune(string($T1.Lit))[0], ast.Must($T2.Int64Value())) >>
     | cmdPlay                          << ast.NewCmdPlay(string($T0.Lit[len(":play "):])) >>
     | BarBodyCommand
     ;

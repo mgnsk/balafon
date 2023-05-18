@@ -323,7 +323,7 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `TopLevelCommand : ":assign" symbol uint	<< ast.NewCmdAssign([]rune(string(X[1].(*token.Token).Lit))[0], ast.Must(X[2].(*token.Token).Int64Value())) >>`,
+		String: `TopLevelCommand : cmdAssign symbol uint	<< ast.NewCmdAssign([]rune(string(X[1].(*token.Token).Lit))[0], ast.Must(X[2].(*token.Token).Int64Value())) >>`,
 		Id:         "TopLevelCommand",
 		NTType:     13,
 		Index:      30,

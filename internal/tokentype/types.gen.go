@@ -5,10 +5,10 @@ package tokentype
 // Language tokens.
 var (
 	Accent       = Type{"accent", 12}
-	Assign       = Type{":assign", 18}
 	BracketBegin = Type{"bracketBegin", 6}
 	BracketEnd   = Type{"bracketEnd", 7}
 	Channel      = Type{":channel", 23}
+	CmdAssign    = Type{"cmdAssign", 18}
 	CmdBar       = Type{"cmdBar", 4}
 	CmdEnd       = Type{"cmdEnd", 5}
 	CmdPlay      = Type{"cmdPlay", 19}
