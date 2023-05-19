@@ -12,19 +12,20 @@ rest       : '-' ;
 // Note: can't have standalone ident due to ambiguity with symbols.
 _ident     : ( _char | _uint ) { _char | _uint } ;
 _space     : ' ' ;
+_prefix    : ':' ;
 
-cmdBar        : ':' 'b' 'a' 'r' _space _ident ;
-cmdEnd        : ':' 'e' 'n' 'd' ;
-cmdPlay       : ':' 'p' 'l' 'a' 'y' _space _ident ;
-cmdAssign     : ':' 'a' 's' 's' 'i' 'g' 'n' ;
-cmdTempo      : ':' 't' 'e' 'm' 'p' 'o' ;
-cmdTimesig    : ':' 't' 'i' 'm' 'e' 's' 'i' 'g' ;
-cmdVelocity   : ':' 'v' 'e' 'l' 'o' 'c' 'i' 't' 'y' ;
-cmdChannel    : ':' 'c' 'h' 'a' 'n' 'n' 'e' 'l' ;
-cmdProgram    : ':' 'p' 'r' 'o' 'g' 'r' 'a' 'm' ;
-cmdControl    : ':' 'c' 'o' 'n' 't' 'r' 'o' 'l' ;
-cmdStart      : ':' 's' 't' 'a' 'r' 't' ;
-cmdStop       : ':' 's' 't' 'o' 'p' ;
+cmdBar        : _prefix 'b' 'a' 'r' _space _ident ;
+cmdEnd        : _prefix 'e' 'n' 'd' ;
+cmdPlay       : _prefix 'p' 'l' 'a' 'y' _space _ident ;
+cmdAssign     : _prefix 'a' 's' 's' 'i' 'g' 'n' ;
+cmdTempo      : _prefix 't' 'e' 'm' 'p' 'o' ;
+cmdTimesig    : _prefix 't' 'i' 'm' 'e' 's' 'i' 'g' ;
+cmdVelocity   : _prefix 'v' 'e' 'l' 'o' 'c' 'i' 't' 'y' ;
+cmdChannel    : _prefix 'c' 'h' 'a' 'n' 'n' 'e' 'l' ;
+cmdProgram    : _prefix 'p' 'r' 'o' 'g' 'r' 'a' 'm' ;
+cmdControl    : _prefix 'c' 'o' 'n' 't' 'r' 'o' 'l' ;
+cmdStart      : _prefix 's' 't' 'a' 'r' 't' ;
+cmdStop       : _prefix 's' 't' 'o' 'p' ;
 
 bracketBegin : '[' ;
 bracketEnd   : ']' ;
