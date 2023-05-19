@@ -23,7 +23,7 @@ var actionTab = actionTable{
 			reduce(2), // bracketBegin, reduce: RepeatTerminator
 			nil,       // bracketEnd
 			reduce(2), // symbol, reduce: RepeatTerminator
-			reduce(2), // propRest, reduce: RepeatTerminator
+			reduce(2), // rest, reduce: RepeatTerminator
 			nil,       // propSharp
 			nil,       // propFlat
 			nil,       // propAccent
@@ -56,7 +56,7 @@ var actionTab = actionTable{
 			nil,          // bracketBegin
 			nil,          // bracketEnd
 			nil,          // symbol
-			nil,          // propRest
+			nil,          // rest
 			nil,          // propSharp
 			nil,          // propFlat
 			nil,          // propAccent
@@ -89,7 +89,7 @@ var actionTab = actionTable{
 			shift(13), // bracketBegin
 			nil,       // bracketEnd
 			shift(14), // symbol
-			shift(15), // propRest
+			shift(15), // rest
 			nil,       // propSharp
 			nil,       // propFlat
 			nil,       // propAccent
@@ -122,7 +122,7 @@ var actionTab = actionTable{
 			reduce(2), // bracketBegin, reduce: RepeatTerminator
 			nil,       // bracketEnd
 			reduce(2), // symbol, reduce: RepeatTerminator
-			reduce(2), // propRest, reduce: RepeatTerminator
+			reduce(2), // rest, reduce: RepeatTerminator
 			nil,       // propSharp
 			nil,       // propFlat
 			nil,       // propAccent
@@ -155,7 +155,7 @@ var actionTab = actionTable{
 			nil,       // bracketBegin
 			nil,       // bracketEnd
 			nil,       // symbol
-			nil,       // propRest
+			nil,       // rest
 			nil,       // propSharp
 			nil,       // propFlat
 			nil,       // propAccent
@@ -188,7 +188,7 @@ var actionTab = actionTable{
 			nil,       // bracketBegin
 			nil,       // bracketEnd
 			nil,       // symbol
-			nil,       // propRest
+			nil,       // rest
 			nil,       // propSharp
 			nil,       // propFlat
 			nil,       // propAccent
@@ -221,7 +221,7 @@ var actionTab = actionTable{
 			nil,       // bracketBegin
 			nil,       // bracketEnd
 			nil,       // symbol
-			nil,       // propRest
+			nil,       // rest
 			nil,       // propSharp
 			nil,       // propFlat
 			nil,       // propAccent
@@ -254,7 +254,7 @@ var actionTab = actionTable{
 			nil,       // bracketBegin
 			nil,       // bracketEnd
 			nil,       // symbol
-			nil,       // propRest
+			nil,       // rest
 			nil,       // propSharp
 			nil,       // propFlat
 			nil,       // propAccent
@@ -287,7 +287,7 @@ var actionTab = actionTable{
 			nil,        // bracketBegin
 			nil,        // bracketEnd
 			nil,        // symbol
-			nil,        // propRest
+			nil,        // rest
 			nil,        // propSharp
 			nil,        // propFlat
 			nil,        // propAccent
@@ -320,7 +320,7 @@ var actionTab = actionTable{
 			nil,        // bracketBegin
 			nil,        // bracketEnd
 			nil,        // symbol
-			nil,        // propRest
+			nil,        // rest
 			nil,        // propSharp
 			nil,        // propFlat
 			nil,        // propAccent
@@ -353,7 +353,7 @@ var actionTab = actionTable{
 			reduce(2), // bracketBegin, reduce: RepeatTerminator
 			nil,       // bracketEnd
 			reduce(2), // symbol, reduce: RepeatTerminator
-			reduce(2), // propRest, reduce: RepeatTerminator
+			reduce(2), // rest, reduce: RepeatTerminator
 			nil,       // propSharp
 			nil,       // propFlat
 			nil,       // propAccent
@@ -386,7 +386,7 @@ var actionTab = actionTable{
 			shift(13),  // bracketBegin
 			nil,        // bracketEnd
 			shift(14),  // symbol
-			shift(15),  // propRest
+			shift(15),  // rest
 			nil,        // propSharp
 			nil,        // propFlat
 			nil,        // propAccent
@@ -419,7 +419,7 @@ var actionTab = actionTable{
 			reduce(20), // bracketBegin, reduce: PropertyList
 			nil,        // bracketEnd
 			reduce(20), // symbol, reduce: PropertyList
-			reduce(20), // propRest, reduce: PropertyList
+			reduce(20), // rest, reduce: PropertyList
 			shift(34),  // propSharp
 			shift(35),  // propFlat
 			shift(36),  // propAccent
@@ -452,7 +452,7 @@ var actionTab = actionTable{
 			shift(45), // bracketBegin
 			nil,       // bracketEnd
 			shift(46), // symbol
-			shift(47), // propRest
+			shift(47), // rest
 			nil,       // propSharp
 			nil,       // propFlat
 			nil,       // propAccent
@@ -485,7 +485,7 @@ var actionTab = actionTable{
 			reduce(18), // bracketBegin, reduce: NoteSymbol
 			nil,        // bracketEnd
 			reduce(18), // symbol, reduce: NoteSymbol
-			reduce(18), // propRest, reduce: NoteSymbol
+			reduce(18), // rest, reduce: NoteSymbol
 			reduce(18), // propSharp, reduce: NoteSymbol
 			reduce(18), // propFlat, reduce: NoteSymbol
 			reduce(18), // propAccent, reduce: NoteSymbol
@@ -518,7 +518,7 @@ var actionTab = actionTable{
 			reduce(19), // bracketBegin, reduce: NoteSymbol
 			nil,        // bracketEnd
 			reduce(19), // symbol, reduce: NoteSymbol
-			reduce(19), // propRest, reduce: NoteSymbol
+			reduce(19), // rest, reduce: NoteSymbol
 			reduce(19), // propSharp, reduce: NoteSymbol
 			reduce(19), // propFlat, reduce: NoteSymbol
 			reduce(19), // propAccent, reduce: NoteSymbol
@@ -551,7 +551,7 @@ var actionTab = actionTable{
 			nil,       // bracketBegin
 			nil,       // bracketEnd
 			shift(48), // symbol
-			nil,       // propRest
+			nil,       // rest
 			nil,       // propSharp
 			nil,       // propFlat
 			nil,       // propAccent
@@ -584,7 +584,7 @@ var actionTab = actionTable{
 			nil,        // bracketBegin
 			nil,        // bracketEnd
 			nil,        // symbol
-			nil,        // propRest
+			nil,        // rest
 			nil,        // propSharp
 			nil,        // propFlat
 			nil,        // propAccent
@@ -617,7 +617,7 @@ var actionTab = actionTable{
 			nil,       // bracketBegin
 			nil,       // bracketEnd
 			nil,       // symbol
-			nil,       // propRest
+			nil,       // rest
 			nil,       // propSharp
 			nil,       // propFlat
 			nil,       // propAccent
@@ -650,7 +650,7 @@ var actionTab = actionTable{
 			nil,       // bracketBegin
 			nil,       // bracketEnd
 			nil,       // symbol
-			nil,       // propRest
+			nil,       // rest
 			nil,       // propSharp
 			nil,       // propFlat
 			nil,       // propAccent
@@ -683,7 +683,7 @@ var actionTab = actionTable{
 			nil,       // bracketBegin
 			nil,       // bracketEnd
 			nil,       // symbol
-			nil,       // propRest
+			nil,       // rest
 			nil,       // propSharp
 			nil,       // propFlat
 			nil,       // propAccent
@@ -716,7 +716,7 @@ var actionTab = actionTable{
 			nil,       // bracketBegin
 			nil,       // bracketEnd
 			nil,       // symbol
-			nil,       // propRest
+			nil,       // rest
 			nil,       // propSharp
 			nil,       // propFlat
 			nil,       // propAccent
@@ -749,7 +749,7 @@ var actionTab = actionTable{
 			nil,       // bracketBegin
 			nil,       // bracketEnd
 			nil,       // symbol
-			nil,       // propRest
+			nil,       // rest
 			nil,       // propSharp
 			nil,       // propFlat
 			nil,       // propAccent
@@ -782,7 +782,7 @@ var actionTab = actionTable{
 			nil,       // bracketBegin
 			nil,       // bracketEnd
 			nil,       // symbol
-			nil,       // propRest
+			nil,       // rest
 			nil,       // propSharp
 			nil,       // propFlat
 			nil,       // propAccent
@@ -815,7 +815,7 @@ var actionTab = actionTable{
 			nil,        // bracketBegin
 			nil,        // bracketEnd
 			nil,        // symbol
-			nil,        // propRest
+			nil,        // rest
 			nil,        // propSharp
 			nil,        // propFlat
 			nil,        // propAccent
@@ -848,7 +848,7 @@ var actionTab = actionTable{
 			nil,        // bracketBegin
 			nil,        // bracketEnd
 			nil,        // symbol
-			nil,        // propRest
+			nil,        // rest
 			nil,        // propSharp
 			nil,        // propFlat
 			nil,        // propAccent
@@ -881,7 +881,7 @@ var actionTab = actionTable{
 			reduce(3), // bracketBegin, reduce: RepeatTerminator
 			nil,       // bracketEnd
 			reduce(3), // symbol, reduce: RepeatTerminator
-			reduce(3), // propRest, reduce: RepeatTerminator
+			reduce(3), // rest, reduce: RepeatTerminator
 			nil,       // propSharp
 			nil,       // propFlat
 			nil,       // propAccent
@@ -914,7 +914,7 @@ var actionTab = actionTable{
 			nil,       // bracketBegin
 			nil,       // bracketEnd
 			nil,       // symbol
-			nil,       // propRest
+			nil,       // rest
 			nil,       // propSharp
 			nil,       // propFlat
 			nil,       // propAccent
@@ -947,7 +947,7 @@ var actionTab = actionTable{
 			reduce(2), // bracketBegin, reduce: RepeatTerminator
 			nil,       // bracketEnd
 			reduce(2), // symbol, reduce: RepeatTerminator
-			reduce(2), // propRest, reduce: RepeatTerminator
+			reduce(2), // rest, reduce: RepeatTerminator
 			nil,       // propSharp
 			nil,       // propFlat
 			nil,       // propAccent
@@ -980,7 +980,7 @@ var actionTab = actionTable{
 			shift(63), // bracketBegin
 			nil,       // bracketEnd
 			shift(64), // symbol
-			shift(65), // propRest
+			shift(65), // rest
 			nil,       // propSharp
 			nil,       // propFlat
 			nil,       // propAccent
@@ -1013,7 +1013,7 @@ var actionTab = actionTable{
 			reduce(2), // bracketBegin, reduce: RepeatTerminator
 			nil,       // bracketEnd
 			reduce(2), // symbol, reduce: RepeatTerminator
-			reduce(2), // propRest, reduce: RepeatTerminator
+			reduce(2), // rest, reduce: RepeatTerminator
 			nil,       // propSharp
 			nil,       // propFlat
 			nil,       // propAccent
@@ -1046,7 +1046,7 @@ var actionTab = actionTable{
 			nil,        // bracketBegin
 			nil,        // bracketEnd
 			nil,        // symbol
-			nil,        // propRest
+			nil,        // rest
 			nil,        // propSharp
 			nil,        // propFlat
 			nil,        // propAccent
@@ -1079,7 +1079,7 @@ var actionTab = actionTable{
 			reduce(16), // bracketBegin, reduce: NoteObject
 			nil,        // bracketEnd
 			reduce(16), // symbol, reduce: NoteObject
-			reduce(16), // propRest, reduce: NoteObject
+			reduce(16), // rest, reduce: NoteObject
 			nil,        // propSharp
 			nil,        // propFlat
 			nil,        // propAccent
@@ -1112,7 +1112,7 @@ var actionTab = actionTable{
 			reduce(20), // bracketBegin, reduce: PropertyList
 			nil,        // bracketEnd
 			reduce(20), // symbol, reduce: PropertyList
-			reduce(20), // propRest, reduce: PropertyList
+			reduce(20), // rest, reduce: PropertyList
 			shift(34),  // propSharp
 			shift(35),  // propFlat
 			shift(36),  // propAccent
@@ -1145,7 +1145,7 @@ var actionTab = actionTable{
 			reduce(22), // bracketBegin, reduce: Property
 			nil,        // bracketEnd
 			reduce(22), // symbol, reduce: Property
-			reduce(22), // propRest, reduce: Property
+			reduce(22), // rest, reduce: Property
 			reduce(22), // propSharp, reduce: Property
 			reduce(22), // propFlat, reduce: Property
 			reduce(22), // propAccent, reduce: Property
@@ -1178,7 +1178,7 @@ var actionTab = actionTable{
 			reduce(23), // bracketBegin, reduce: Property
 			nil,        // bracketEnd
 			reduce(23), // symbol, reduce: Property
-			reduce(23), // propRest, reduce: Property
+			reduce(23), // rest, reduce: Property
 			reduce(23), // propSharp, reduce: Property
 			reduce(23), // propFlat, reduce: Property
 			reduce(23), // propAccent, reduce: Property
@@ -1211,7 +1211,7 @@ var actionTab = actionTable{
 			reduce(24), // bracketBegin, reduce: Property
 			nil,        // bracketEnd
 			reduce(24), // symbol, reduce: Property
-			reduce(24), // propRest, reduce: Property
+			reduce(24), // rest, reduce: Property
 			reduce(24), // propSharp, reduce: Property
 			reduce(24), // propFlat, reduce: Property
 			reduce(24), // propAccent, reduce: Property
@@ -1244,7 +1244,7 @@ var actionTab = actionTable{
 			reduce(25), // bracketBegin, reduce: Property
 			nil,        // bracketEnd
 			reduce(25), // symbol, reduce: Property
-			reduce(25), // propRest, reduce: Property
+			reduce(25), // rest, reduce: Property
 			reduce(25), // propSharp, reduce: Property
 			reduce(25), // propFlat, reduce: Property
 			reduce(25), // propAccent, reduce: Property
@@ -1277,7 +1277,7 @@ var actionTab = actionTable{
 			reduce(26), // bracketBegin, reduce: Property
 			nil,        // bracketEnd
 			reduce(26), // symbol, reduce: Property
-			reduce(26), // propRest, reduce: Property
+			reduce(26), // rest, reduce: Property
 			reduce(26), // propSharp, reduce: Property
 			reduce(26), // propFlat, reduce: Property
 			reduce(26), // propAccent, reduce: Property
@@ -1310,7 +1310,7 @@ var actionTab = actionTable{
 			reduce(27), // bracketBegin, reduce: Property
 			nil,        // bracketEnd
 			reduce(27), // symbol, reduce: Property
-			reduce(27), // propRest, reduce: Property
+			reduce(27), // rest, reduce: Property
 			reduce(27), // propSharp, reduce: Property
 			reduce(27), // propFlat, reduce: Property
 			reduce(27), // propAccent, reduce: Property
@@ -1343,7 +1343,7 @@ var actionTab = actionTable{
 			reduce(28), // bracketBegin, reduce: Property
 			nil,        // bracketEnd
 			reduce(28), // symbol, reduce: Property
-			reduce(28), // propRest, reduce: Property
+			reduce(28), // rest, reduce: Property
 			reduce(28), // propSharp, reduce: Property
 			reduce(28), // propFlat, reduce: Property
 			reduce(28), // propAccent, reduce: Property
@@ -1376,7 +1376,7 @@ var actionTab = actionTable{
 			reduce(29), // bracketBegin, reduce: Property
 			nil,        // bracketEnd
 			reduce(29), // symbol, reduce: Property
-			reduce(29), // propRest, reduce: Property
+			reduce(29), // rest, reduce: Property
 			reduce(29), // propSharp, reduce: Property
 			reduce(29), // propFlat, reduce: Property
 			reduce(29), // propAccent, reduce: Property
@@ -1409,7 +1409,7 @@ var actionTab = actionTable{
 			nil,       // bracketBegin
 			shift(76), // bracketEnd
 			nil,       // symbol
-			nil,       // propRest
+			nil,       // rest
 			nil,       // propSharp
 			nil,       // propFlat
 			nil,       // propAccent
@@ -1442,7 +1442,7 @@ var actionTab = actionTable{
 			shift(45),  // bracketBegin
 			reduce(14), // bracketEnd, reduce: NoteList
 			shift(46),  // symbol
-			shift(47),  // propRest
+			shift(47),  // rest
 			nil,        // propSharp
 			nil,        // propFlat
 			nil,        // propAccent
@@ -1475,7 +1475,7 @@ var actionTab = actionTable{
 			reduce(20), // bracketBegin, reduce: PropertyList
 			reduce(20), // bracketEnd, reduce: PropertyList
 			reduce(20), // symbol, reduce: PropertyList
-			reduce(20), // propRest, reduce: PropertyList
+			reduce(20), // rest, reduce: PropertyList
 			shift(80),  // propSharp
 			shift(81),  // propFlat
 			shift(82),  // propAccent
@@ -1508,7 +1508,7 @@ var actionTab = actionTable{
 			shift(45), // bracketBegin
 			nil,       // bracketEnd
 			shift(46), // symbol
-			shift(47), // propRest
+			shift(47), // rest
 			nil,       // propSharp
 			nil,       // propFlat
 			nil,       // propAccent
@@ -1541,7 +1541,7 @@ var actionTab = actionTable{
 			reduce(18), // bracketBegin, reduce: NoteSymbol
 			reduce(18), // bracketEnd, reduce: NoteSymbol
 			reduce(18), // symbol, reduce: NoteSymbol
-			reduce(18), // propRest, reduce: NoteSymbol
+			reduce(18), // rest, reduce: NoteSymbol
 			reduce(18), // propSharp, reduce: NoteSymbol
 			reduce(18), // propFlat, reduce: NoteSymbol
 			reduce(18), // propAccent, reduce: NoteSymbol
@@ -1574,7 +1574,7 @@ var actionTab = actionTable{
 			reduce(19), // bracketBegin, reduce: NoteSymbol
 			reduce(19), // bracketEnd, reduce: NoteSymbol
 			reduce(19), // symbol, reduce: NoteSymbol
-			reduce(19), // propRest, reduce: NoteSymbol
+			reduce(19), // rest, reduce: NoteSymbol
 			reduce(19), // propSharp, reduce: NoteSymbol
 			reduce(19), // propFlat, reduce: NoteSymbol
 			reduce(19), // propAccent, reduce: NoteSymbol
@@ -1607,7 +1607,7 @@ var actionTab = actionTable{
 			nil,       // bracketBegin
 			nil,       // bracketEnd
 			nil,       // symbol
-			nil,       // propRest
+			nil,       // rest
 			nil,       // propSharp
 			nil,       // propFlat
 			nil,       // propAccent
@@ -1640,7 +1640,7 @@ var actionTab = actionTable{
 			nil,        // bracketBegin
 			nil,        // bracketEnd
 			nil,        // symbol
-			nil,        // propRest
+			nil,        // rest
 			nil,        // propSharp
 			nil,        // propFlat
 			nil,        // propAccent
@@ -1673,7 +1673,7 @@ var actionTab = actionTable{
 			nil,       // bracketBegin
 			nil,       // bracketEnd
 			nil,       // symbol
-			nil,       // propRest
+			nil,       // rest
 			nil,       // propSharp
 			nil,       // propFlat
 			nil,       // propAccent
@@ -1706,7 +1706,7 @@ var actionTab = actionTable{
 			nil,        // bracketBegin
 			nil,        // bracketEnd
 			nil,        // symbol
-			nil,        // propRest
+			nil,        // rest
 			nil,        // propSharp
 			nil,        // propFlat
 			nil,        // propAccent
@@ -1739,7 +1739,7 @@ var actionTab = actionTable{
 			nil,        // bracketBegin
 			nil,        // bracketEnd
 			nil,        // symbol
-			nil,        // propRest
+			nil,        // rest
 			nil,        // propSharp
 			nil,        // propFlat
 			nil,        // propAccent
@@ -1772,7 +1772,7 @@ var actionTab = actionTable{
 			nil,        // bracketBegin
 			nil,        // bracketEnd
 			nil,        // symbol
-			nil,        // propRest
+			nil,        // rest
 			nil,        // propSharp
 			nil,        // propFlat
 			nil,        // propAccent
@@ -1805,7 +1805,7 @@ var actionTab = actionTable{
 			nil,       // bracketBegin
 			nil,       // bracketEnd
 			nil,       // symbol
-			nil,       // propRest
+			nil,       // rest
 			nil,       // propSharp
 			nil,       // propFlat
 			nil,       // propAccent
@@ -1838,7 +1838,7 @@ var actionTab = actionTable{
 			shift(13), // bracketBegin
 			nil,       // bracketEnd
 			shift(14), // symbol
-			shift(15), // propRest
+			shift(15), // rest
 			nil,       // propSharp
 			nil,       // propFlat
 			nil,       // propAccent
@@ -1871,7 +1871,7 @@ var actionTab = actionTable{
 			reduce(2), // bracketBegin, reduce: RepeatTerminator
 			nil,       // bracketEnd
 			reduce(2), // symbol, reduce: RepeatTerminator
-			reduce(2), // propRest, reduce: RepeatTerminator
+			reduce(2), // rest, reduce: RepeatTerminator
 			nil,       // propSharp
 			nil,       // propFlat
 			nil,       // propAccent
@@ -1904,7 +1904,7 @@ var actionTab = actionTable{
 			nil,       // bracketBegin
 			nil,       // bracketEnd
 			nil,       // symbol
-			nil,       // propRest
+			nil,       // rest
 			nil,       // propSharp
 			nil,       // propFlat
 			nil,       // propAccent
@@ -1937,7 +1937,7 @@ var actionTab = actionTable{
 			nil,       // bracketBegin
 			nil,       // bracketEnd
 			nil,       // symbol
-			nil,       // propRest
+			nil,       // rest
 			nil,       // propSharp
 			nil,       // propFlat
 			nil,       // propAccent
@@ -1970,7 +1970,7 @@ var actionTab = actionTable{
 			nil,        // bracketBegin
 			nil,        // bracketEnd
 			nil,        // symbol
-			nil,        // propRest
+			nil,        // rest
 			nil,        // propSharp
 			nil,        // propFlat
 			nil,        // propAccent
@@ -2003,7 +2003,7 @@ var actionTab = actionTable{
 			nil,        // bracketBegin
 			nil,        // bracketEnd
 			nil,        // symbol
-			nil,        // propRest
+			nil,        // rest
 			nil,        // propSharp
 			nil,        // propFlat
 			nil,        // propAccent
@@ -2036,7 +2036,7 @@ var actionTab = actionTable{
 			shift(63),  // bracketBegin
 			nil,        // bracketEnd
 			shift(64),  // symbol
-			shift(65),  // propRest
+			shift(65),  // rest
 			nil,        // propSharp
 			nil,        // propFlat
 			nil,        // propAccent
@@ -2069,7 +2069,7 @@ var actionTab = actionTable{
 			reduce(20), // bracketBegin, reduce: PropertyList
 			nil,        // bracketEnd
 			reduce(20), // symbol, reduce: PropertyList
-			reduce(20), // propRest, reduce: PropertyList
+			reduce(20), // rest, reduce: PropertyList
 			shift(100), // propSharp
 			shift(101), // propFlat
 			shift(102), // propAccent
@@ -2102,7 +2102,7 @@ var actionTab = actionTable{
 			shift(45), // bracketBegin
 			nil,       // bracketEnd
 			shift(46), // symbol
-			shift(47), // propRest
+			shift(47), // rest
 			nil,       // propSharp
 			nil,       // propFlat
 			nil,       // propAccent
@@ -2135,7 +2135,7 @@ var actionTab = actionTable{
 			reduce(18), // bracketBegin, reduce: NoteSymbol
 			nil,        // bracketEnd
 			reduce(18), // symbol, reduce: NoteSymbol
-			reduce(18), // propRest, reduce: NoteSymbol
+			reduce(18), // rest, reduce: NoteSymbol
 			reduce(18), // propSharp, reduce: NoteSymbol
 			reduce(18), // propFlat, reduce: NoteSymbol
 			reduce(18), // propAccent, reduce: NoteSymbol
@@ -2168,7 +2168,7 @@ var actionTab = actionTable{
 			reduce(19), // bracketBegin, reduce: NoteSymbol
 			nil,        // bracketEnd
 			reduce(19), // symbol, reduce: NoteSymbol
-			reduce(19), // propRest, reduce: NoteSymbol
+			reduce(19), // rest, reduce: NoteSymbol
 			reduce(19), // propSharp, reduce: NoteSymbol
 			reduce(19), // propFlat, reduce: NoteSymbol
 			reduce(19), // propAccent, reduce: NoteSymbol
@@ -2201,7 +2201,7 @@ var actionTab = actionTable{
 			nil,        // bracketBegin
 			nil,        // bracketEnd
 			nil,        // symbol
-			nil,        // propRest
+			nil,        // rest
 			nil,        // propSharp
 			nil,        // propFlat
 			nil,        // propAccent
@@ -2234,7 +2234,7 @@ var actionTab = actionTable{
 			nil,        // bracketBegin
 			nil,        // bracketEnd
 			nil,        // symbol
-			nil,        // propRest
+			nil,        // rest
 			nil,        // propSharp
 			nil,        // propFlat
 			nil,        // propAccent
@@ -2267,7 +2267,7 @@ var actionTab = actionTable{
 			nil,        // bracketBegin
 			nil,        // bracketEnd
 			nil,        // symbol
-			nil,        // propRest
+			nil,        // rest
 			nil,        // propSharp
 			nil,        // propFlat
 			nil,        // propAccent
@@ -2300,7 +2300,7 @@ var actionTab = actionTable{
 			nil,        // bracketBegin
 			nil,        // bracketEnd
 			nil,        // symbol
-			nil,        // propRest
+			nil,        // rest
 			nil,        // propSharp
 			nil,        // propFlat
 			nil,        // propAccent
@@ -2333,7 +2333,7 @@ var actionTab = actionTable{
 			nil,        // bracketBegin
 			nil,        // bracketEnd
 			nil,        // symbol
-			nil,        // propRest
+			nil,        // rest
 			nil,        // propSharp
 			nil,        // propFlat
 			nil,        // propAccent
@@ -2366,7 +2366,7 @@ var actionTab = actionTable{
 			nil,        // bracketBegin
 			nil,        // bracketEnd
 			nil,        // symbol
-			nil,        // propRest
+			nil,        // rest
 			nil,        // propSharp
 			nil,        // propFlat
 			nil,        // propAccent
@@ -2399,7 +2399,7 @@ var actionTab = actionTable{
 			nil,        // bracketBegin
 			nil,        // bracketEnd
 			nil,        // symbol
-			nil,        // propRest
+			nil,        // rest
 			nil,        // propSharp
 			nil,        // propFlat
 			nil,        // propAccent
@@ -2432,7 +2432,7 @@ var actionTab = actionTable{
 			nil,        // bracketBegin
 			nil,        // bracketEnd
 			nil,        // symbol
-			nil,        // propRest
+			nil,        // rest
 			nil,        // propSharp
 			nil,        // propFlat
 			nil,        // propAccent
@@ -2465,7 +2465,7 @@ var actionTab = actionTable{
 			reduce(3), // bracketBegin, reduce: RepeatTerminator
 			nil,       // bracketEnd
 			reduce(3), // symbol, reduce: RepeatTerminator
-			reduce(3), // propRest, reduce: RepeatTerminator
+			reduce(3), // rest, reduce: RepeatTerminator
 			nil,       // propSharp
 			nil,       // propFlat
 			nil,       // propAccent
@@ -2498,7 +2498,7 @@ var actionTab = actionTable{
 			reduce(21), // bracketBegin, reduce: PropertyList
 			nil,        // bracketEnd
 			reduce(21), // symbol, reduce: PropertyList
-			reduce(21), // propRest, reduce: PropertyList
+			reduce(21), // rest, reduce: PropertyList
 			nil,        // propSharp
 			nil,        // propFlat
 			nil,        // propAccent
@@ -2531,7 +2531,7 @@ var actionTab = actionTable{
 			reduce(20), // bracketBegin, reduce: PropertyList
 			nil,        // bracketEnd
 			reduce(20), // symbol, reduce: PropertyList
-			reduce(20), // propRest, reduce: PropertyList
+			reduce(20), // rest, reduce: PropertyList
 			shift(34),  // propSharp
 			shift(35),  // propFlat
 			shift(36),  // propAccent
@@ -2564,7 +2564,7 @@ var actionTab = actionTable{
 			nil,        // bracketBegin
 			reduce(15), // bracketEnd, reduce: NoteList
 			nil,        // symbol
-			nil,        // propRest
+			nil,        // rest
 			nil,        // propSharp
 			nil,        // propFlat
 			nil,        // propAccent
@@ -2597,7 +2597,7 @@ var actionTab = actionTable{
 			reduce(16), // bracketBegin, reduce: NoteObject
 			reduce(16), // bracketEnd, reduce: NoteObject
 			reduce(16), // symbol, reduce: NoteObject
-			reduce(16), // propRest, reduce: NoteObject
+			reduce(16), // rest, reduce: NoteObject
 			nil,        // propSharp
 			nil,        // propFlat
 			nil,        // propAccent
@@ -2630,7 +2630,7 @@ var actionTab = actionTable{
 			reduce(20), // bracketBegin, reduce: PropertyList
 			reduce(20), // bracketEnd, reduce: PropertyList
 			reduce(20), // symbol, reduce: PropertyList
-			reduce(20), // propRest, reduce: PropertyList
+			reduce(20), // rest, reduce: PropertyList
 			shift(80),  // propSharp
 			shift(81),  // propFlat
 			shift(82),  // propAccent
@@ -2663,7 +2663,7 @@ var actionTab = actionTable{
 			reduce(22), // bracketBegin, reduce: Property
 			reduce(22), // bracketEnd, reduce: Property
 			reduce(22), // symbol, reduce: Property
-			reduce(22), // propRest, reduce: Property
+			reduce(22), // rest, reduce: Property
 			reduce(22), // propSharp, reduce: Property
 			reduce(22), // propFlat, reduce: Property
 			reduce(22), // propAccent, reduce: Property
@@ -2696,7 +2696,7 @@ var actionTab = actionTable{
 			reduce(23), // bracketBegin, reduce: Property
 			reduce(23), // bracketEnd, reduce: Property
 			reduce(23), // symbol, reduce: Property
-			reduce(23), // propRest, reduce: Property
+			reduce(23), // rest, reduce: Property
 			reduce(23), // propSharp, reduce: Property
 			reduce(23), // propFlat, reduce: Property
 			reduce(23), // propAccent, reduce: Property
@@ -2729,7 +2729,7 @@ var actionTab = actionTable{
 			reduce(24), // bracketBegin, reduce: Property
 			reduce(24), // bracketEnd, reduce: Property
 			reduce(24), // symbol, reduce: Property
-			reduce(24), // propRest, reduce: Property
+			reduce(24), // rest, reduce: Property
 			reduce(24), // propSharp, reduce: Property
 			reduce(24), // propFlat, reduce: Property
 			reduce(24), // propAccent, reduce: Property
@@ -2762,7 +2762,7 @@ var actionTab = actionTable{
 			reduce(25), // bracketBegin, reduce: Property
 			reduce(25), // bracketEnd, reduce: Property
 			reduce(25), // symbol, reduce: Property
-			reduce(25), // propRest, reduce: Property
+			reduce(25), // rest, reduce: Property
 			reduce(25), // propSharp, reduce: Property
 			reduce(25), // propFlat, reduce: Property
 			reduce(25), // propAccent, reduce: Property
@@ -2795,7 +2795,7 @@ var actionTab = actionTable{
 			reduce(26), // bracketBegin, reduce: Property
 			reduce(26), // bracketEnd, reduce: Property
 			reduce(26), // symbol, reduce: Property
-			reduce(26), // propRest, reduce: Property
+			reduce(26), // rest, reduce: Property
 			reduce(26), // propSharp, reduce: Property
 			reduce(26), // propFlat, reduce: Property
 			reduce(26), // propAccent, reduce: Property
@@ -2828,7 +2828,7 @@ var actionTab = actionTable{
 			reduce(27), // bracketBegin, reduce: Property
 			reduce(27), // bracketEnd, reduce: Property
 			reduce(27), // symbol, reduce: Property
-			reduce(27), // propRest, reduce: Property
+			reduce(27), // rest, reduce: Property
 			reduce(27), // propSharp, reduce: Property
 			reduce(27), // propFlat, reduce: Property
 			reduce(27), // propAccent, reduce: Property
@@ -2861,7 +2861,7 @@ var actionTab = actionTable{
 			reduce(28), // bracketBegin, reduce: Property
 			reduce(28), // bracketEnd, reduce: Property
 			reduce(28), // symbol, reduce: Property
-			reduce(28), // propRest, reduce: Property
+			reduce(28), // rest, reduce: Property
 			reduce(28), // propSharp, reduce: Property
 			reduce(28), // propFlat, reduce: Property
 			reduce(28), // propAccent, reduce: Property
@@ -2894,7 +2894,7 @@ var actionTab = actionTable{
 			reduce(29), // bracketBegin, reduce: Property
 			reduce(29), // bracketEnd, reduce: Property
 			reduce(29), // symbol, reduce: Property
-			reduce(29), // propRest, reduce: Property
+			reduce(29), // rest, reduce: Property
 			reduce(29), // propSharp, reduce: Property
 			reduce(29), // propFlat, reduce: Property
 			reduce(29), // propAccent, reduce: Property
@@ -2927,7 +2927,7 @@ var actionTab = actionTable{
 			nil,        // bracketBegin
 			shift(117), // bracketEnd
 			nil,        // symbol
-			nil,        // propRest
+			nil,        // rest
 			nil,        // propSharp
 			nil,        // propFlat
 			nil,        // propAccent
@@ -2960,7 +2960,7 @@ var actionTab = actionTable{
 			nil,        // bracketBegin
 			nil,        // bracketEnd
 			nil,        // symbol
-			nil,        // propRest
+			nil,        // rest
 			nil,        // propSharp
 			nil,        // propFlat
 			nil,        // propAccent
@@ -2993,7 +2993,7 @@ var actionTab = actionTable{
 			nil,        // bracketBegin
 			nil,        // bracketEnd
 			nil,        // symbol
-			nil,        // propRest
+			nil,        // rest
 			nil,        // propSharp
 			nil,        // propFlat
 			nil,        // propAccent
@@ -3026,7 +3026,7 @@ var actionTab = actionTable{
 			nil,        // bracketBegin
 			nil,        // bracketEnd
 			nil,        // symbol
-			nil,        // propRest
+			nil,        // rest
 			nil,        // propSharp
 			nil,        // propFlat
 			nil,        // propAccent
@@ -3059,7 +3059,7 @@ var actionTab = actionTable{
 			nil,       // bracketBegin
 			nil,       // bracketEnd
 			nil,       // symbol
-			nil,       // propRest
+			nil,       // rest
 			nil,       // propSharp
 			nil,       // propFlat
 			nil,       // propAccent
@@ -3092,7 +3092,7 @@ var actionTab = actionTable{
 			reduce(3), // bracketBegin, reduce: RepeatTerminator
 			nil,       // bracketEnd
 			reduce(3), // symbol, reduce: RepeatTerminator
-			reduce(3), // propRest, reduce: RepeatTerminator
+			reduce(3), // rest, reduce: RepeatTerminator
 			nil,       // propSharp
 			nil,       // propFlat
 			nil,       // propAccent
@@ -3125,7 +3125,7 @@ var actionTab = actionTable{
 			nil,        // bracketBegin
 			nil,        // bracketEnd
 			nil,        // symbol
-			nil,        // propRest
+			nil,        // rest
 			nil,        // propSharp
 			nil,        // propFlat
 			nil,        // propAccent
@@ -3158,7 +3158,7 @@ var actionTab = actionTable{
 			nil,       // bracketBegin
 			nil,       // bracketEnd
 			nil,       // symbol
-			nil,       // propRest
+			nil,       // rest
 			nil,       // propSharp
 			nil,       // propFlat
 			nil,       // propAccent
@@ -3191,7 +3191,7 @@ var actionTab = actionTable{
 			reduce(2),  // bracketBegin, reduce: RepeatTerminator
 			nil,        // bracketEnd
 			reduce(2),  // symbol, reduce: RepeatTerminator
-			reduce(2),  // propRest, reduce: RepeatTerminator
+			reduce(2),  // rest, reduce: RepeatTerminator
 			nil,        // propSharp
 			nil,        // propFlat
 			nil,        // propAccent
@@ -3224,7 +3224,7 @@ var actionTab = actionTable{
 			nil,        // bracketBegin
 			nil,        // bracketEnd
 			nil,        // symbol
-			nil,        // propRest
+			nil,        // rest
 			nil,        // propSharp
 			nil,        // propFlat
 			nil,        // propAccent
@@ -3257,7 +3257,7 @@ var actionTab = actionTable{
 			reduce(16), // bracketBegin, reduce: NoteObject
 			nil,        // bracketEnd
 			reduce(16), // symbol, reduce: NoteObject
-			reduce(16), // propRest, reduce: NoteObject
+			reduce(16), // rest, reduce: NoteObject
 			nil,        // propSharp
 			nil,        // propFlat
 			nil,        // propAccent
@@ -3290,7 +3290,7 @@ var actionTab = actionTable{
 			reduce(20), // bracketBegin, reduce: PropertyList
 			nil,        // bracketEnd
 			reduce(20), // symbol, reduce: PropertyList
-			reduce(20), // propRest, reduce: PropertyList
+			reduce(20), // rest, reduce: PropertyList
 			shift(100), // propSharp
 			shift(101), // propFlat
 			shift(102), // propAccent
@@ -3323,7 +3323,7 @@ var actionTab = actionTable{
 			reduce(22), // bracketBegin, reduce: Property
 			nil,        // bracketEnd
 			reduce(22), // symbol, reduce: Property
-			reduce(22), // propRest, reduce: Property
+			reduce(22), // rest, reduce: Property
 			reduce(22), // propSharp, reduce: Property
 			reduce(22), // propFlat, reduce: Property
 			reduce(22), // propAccent, reduce: Property
@@ -3356,7 +3356,7 @@ var actionTab = actionTable{
 			reduce(23), // bracketBegin, reduce: Property
 			nil,        // bracketEnd
 			reduce(23), // symbol, reduce: Property
-			reduce(23), // propRest, reduce: Property
+			reduce(23), // rest, reduce: Property
 			reduce(23), // propSharp, reduce: Property
 			reduce(23), // propFlat, reduce: Property
 			reduce(23), // propAccent, reduce: Property
@@ -3389,7 +3389,7 @@ var actionTab = actionTable{
 			reduce(24), // bracketBegin, reduce: Property
 			nil,        // bracketEnd
 			reduce(24), // symbol, reduce: Property
-			reduce(24), // propRest, reduce: Property
+			reduce(24), // rest, reduce: Property
 			reduce(24), // propSharp, reduce: Property
 			reduce(24), // propFlat, reduce: Property
 			reduce(24), // propAccent, reduce: Property
@@ -3422,7 +3422,7 @@ var actionTab = actionTable{
 			reduce(25), // bracketBegin, reduce: Property
 			nil,        // bracketEnd
 			reduce(25), // symbol, reduce: Property
-			reduce(25), // propRest, reduce: Property
+			reduce(25), // rest, reduce: Property
 			reduce(25), // propSharp, reduce: Property
 			reduce(25), // propFlat, reduce: Property
 			reduce(25), // propAccent, reduce: Property
@@ -3455,7 +3455,7 @@ var actionTab = actionTable{
 			reduce(26), // bracketBegin, reduce: Property
 			nil,        // bracketEnd
 			reduce(26), // symbol, reduce: Property
-			reduce(26), // propRest, reduce: Property
+			reduce(26), // rest, reduce: Property
 			reduce(26), // propSharp, reduce: Property
 			reduce(26), // propFlat, reduce: Property
 			reduce(26), // propAccent, reduce: Property
@@ -3488,7 +3488,7 @@ var actionTab = actionTable{
 			reduce(27), // bracketBegin, reduce: Property
 			nil,        // bracketEnd
 			reduce(27), // symbol, reduce: Property
-			reduce(27), // propRest, reduce: Property
+			reduce(27), // rest, reduce: Property
 			reduce(27), // propSharp, reduce: Property
 			reduce(27), // propFlat, reduce: Property
 			reduce(27), // propAccent, reduce: Property
@@ -3521,7 +3521,7 @@ var actionTab = actionTable{
 			reduce(28), // bracketBegin, reduce: Property
 			nil,        // bracketEnd
 			reduce(28), // symbol, reduce: Property
-			reduce(28), // propRest, reduce: Property
+			reduce(28), // rest, reduce: Property
 			reduce(28), // propSharp, reduce: Property
 			reduce(28), // propFlat, reduce: Property
 			reduce(28), // propAccent, reduce: Property
@@ -3554,7 +3554,7 @@ var actionTab = actionTable{
 			reduce(29), // bracketBegin, reduce: Property
 			nil,        // bracketEnd
 			reduce(29), // symbol, reduce: Property
-			reduce(29), // propRest, reduce: Property
+			reduce(29), // rest, reduce: Property
 			reduce(29), // propSharp, reduce: Property
 			reduce(29), // propFlat, reduce: Property
 			reduce(29), // propAccent, reduce: Property
@@ -3587,7 +3587,7 @@ var actionTab = actionTable{
 			nil,        // bracketBegin
 			shift(121), // bracketEnd
 			nil,        // symbol
-			nil,        // propRest
+			nil,        // rest
 			nil,        // propSharp
 			nil,        // propFlat
 			nil,        // propAccent
@@ -3620,7 +3620,7 @@ var actionTab = actionTable{
 			nil,        // bracketBegin
 			nil,        // bracketEnd
 			nil,        // symbol
-			nil,        // propRest
+			nil,        // rest
 			nil,        // propSharp
 			nil,        // propFlat
 			nil,        // propAccent
@@ -3653,7 +3653,7 @@ var actionTab = actionTable{
 			nil,        // bracketBegin
 			nil,        // bracketEnd
 			nil,        // symbol
-			nil,        // propRest
+			nil,        // rest
 			nil,        // propSharp
 			nil,        // propFlat
 			nil,        // propAccent
@@ -3686,7 +3686,7 @@ var actionTab = actionTable{
 			nil,        // bracketBegin
 			nil,        // bracketEnd
 			nil,        // symbol
-			nil,        // propRest
+			nil,        // rest
 			nil,        // propSharp
 			nil,        // propFlat
 			nil,        // propAccent
@@ -3719,7 +3719,7 @@ var actionTab = actionTable{
 			nil,        // bracketBegin
 			nil,        // bracketEnd
 			nil,        // symbol
-			nil,        // propRest
+			nil,        // rest
 			nil,        // propSharp
 			nil,        // propFlat
 			nil,        // propAccent
@@ -3752,7 +3752,7 @@ var actionTab = actionTable{
 			nil,        // bracketBegin
 			nil,        // bracketEnd
 			nil,        // symbol
-			nil,        // propRest
+			nil,        // rest
 			nil,        // propSharp
 			nil,        // propFlat
 			nil,        // propAccent
@@ -3785,7 +3785,7 @@ var actionTab = actionTable{
 			nil,        // bracketBegin
 			nil,        // bracketEnd
 			nil,        // symbol
-			nil,        // propRest
+			nil,        // rest
 			nil,        // propSharp
 			nil,        // propFlat
 			nil,        // propAccent
@@ -3818,7 +3818,7 @@ var actionTab = actionTable{
 			reduce(17), // bracketBegin, reduce: NoteObject
 			nil,        // bracketEnd
 			reduce(17), // symbol, reduce: NoteObject
-			reduce(17), // propRest, reduce: NoteObject
+			reduce(17), // rest, reduce: NoteObject
 			nil,        // propSharp
 			nil,        // propFlat
 			nil,        // propAccent
@@ -3851,7 +3851,7 @@ var actionTab = actionTable{
 			reduce(21), // bracketBegin, reduce: PropertyList
 			reduce(21), // bracketEnd, reduce: PropertyList
 			reduce(21), // symbol, reduce: PropertyList
-			reduce(21), // propRest, reduce: PropertyList
+			reduce(21), // rest, reduce: PropertyList
 			nil,        // propSharp
 			nil,        // propFlat
 			nil,        // propAccent
@@ -3884,7 +3884,7 @@ var actionTab = actionTable{
 			reduce(20), // bracketBegin, reduce: PropertyList
 			reduce(20), // bracketEnd, reduce: PropertyList
 			reduce(20), // symbol, reduce: PropertyList
-			reduce(20), // propRest, reduce: PropertyList
+			reduce(20), // rest, reduce: PropertyList
 			shift(80),  // propSharp
 			shift(81),  // propFlat
 			shift(82),  // propAccent
@@ -3917,7 +3917,7 @@ var actionTab = actionTable{
 			shift(63), // bracketBegin
 			nil,       // bracketEnd
 			shift(64), // symbol
-			shift(65), // propRest
+			shift(65), // rest
 			nil,       // propSharp
 			nil,       // propFlat
 			nil,       // propAccent
@@ -3950,7 +3950,7 @@ var actionTab = actionTable{
 			reduce(2),  // bracketBegin, reduce: RepeatTerminator
 			nil,        // bracketEnd
 			reduce(2),  // symbol, reduce: RepeatTerminator
-			reduce(2),  // propRest, reduce: RepeatTerminator
+			reduce(2),  // rest, reduce: RepeatTerminator
 			nil,        // propSharp
 			nil,        // propFlat
 			nil,        // propAccent
@@ -3983,7 +3983,7 @@ var actionTab = actionTable{
 			reduce(21), // bracketBegin, reduce: PropertyList
 			nil,        // bracketEnd
 			reduce(21), // symbol, reduce: PropertyList
-			reduce(21), // propRest, reduce: PropertyList
+			reduce(21), // rest, reduce: PropertyList
 			nil,        // propSharp
 			nil,        // propFlat
 			nil,        // propAccent
@@ -4016,7 +4016,7 @@ var actionTab = actionTable{
 			reduce(20), // bracketBegin, reduce: PropertyList
 			nil,        // bracketEnd
 			reduce(20), // symbol, reduce: PropertyList
-			reduce(20), // propRest, reduce: PropertyList
+			reduce(20), // rest, reduce: PropertyList
 			shift(100), // propSharp
 			shift(101), // propFlat
 			shift(102), // propAccent
@@ -4049,7 +4049,7 @@ var actionTab = actionTable{
 			nil,        // bracketBegin
 			nil,        // bracketEnd
 			nil,        // symbol
-			nil,        // propRest
+			nil,        // rest
 			nil,        // propSharp
 			nil,        // propFlat
 			nil,        // propAccent
@@ -4082,7 +4082,7 @@ var actionTab = actionTable{
 			nil,        // bracketBegin
 			nil,        // bracketEnd
 			nil,        // symbol
-			nil,        // propRest
+			nil,        // rest
 			nil,        // propSharp
 			nil,        // propFlat
 			nil,        // propAccent
@@ -4115,7 +4115,7 @@ var actionTab = actionTable{
 			reduce(17), // bracketBegin, reduce: NoteObject
 			reduce(17), // bracketEnd, reduce: NoteObject
 			reduce(17), // symbol, reduce: NoteObject
-			reduce(17), // propRest, reduce: NoteObject
+			reduce(17), // rest, reduce: NoteObject
 			nil,        // propSharp
 			nil,        // propFlat
 			nil,        // propAccent
@@ -4148,7 +4148,7 @@ var actionTab = actionTable{
 			nil,       // bracketBegin
 			nil,       // bracketEnd
 			nil,       // symbol
-			nil,       // propRest
+			nil,       // rest
 			nil,       // propSharp
 			nil,       // propFlat
 			nil,       // propAccent
@@ -4181,7 +4181,7 @@ var actionTab = actionTable{
 			reduce(3), // bracketBegin, reduce: RepeatTerminator
 			nil,       // bracketEnd
 			reduce(3), // symbol, reduce: RepeatTerminator
-			reduce(3), // propRest, reduce: RepeatTerminator
+			reduce(3), // rest, reduce: RepeatTerminator
 			nil,       // propSharp
 			nil,       // propFlat
 			nil,       // propAccent
@@ -4214,7 +4214,7 @@ var actionTab = actionTable{
 			reduce(17), // bracketBegin, reduce: NoteObject
 			nil,        // bracketEnd
 			reduce(17), // symbol, reduce: NoteObject
-			reduce(17), // propRest, reduce: NoteObject
+			reduce(17), // rest, reduce: NoteObject
 			nil,        // propSharp
 			nil,        // propFlat
 			nil,        // propAccent

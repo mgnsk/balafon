@@ -26,9 +26,9 @@ var (
 	PropFlat     = Type{"propFlat", 11}
 	PropGhost    = Type{"propGhost", 13}
 	PropLetRing  = Type{"propLetRing", 17}
-	PropRest     = Type{"propRest", 9}
 	PropSharp    = Type{"propSharp", 10}
 	PropTuplet   = Type{"propTuplet", 16}
+	Rest         = Type{"rest", 9}
 	Symbol       = Type{"symbol", 8}
 	Terminator   = Type{"terminator", 3}
 	Uint         = Type{"uint", 14}

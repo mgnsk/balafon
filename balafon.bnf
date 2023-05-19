@@ -7,6 +7,8 @@ _uint        : '0' | '1'-'9' {'0'-'9'} ;
 
 _char      : 'a'-'z' | 'A'-'Z' ;
 symbol     : _char ;
+rest       : '-' ;
+
 // Note: can't have standalone ident due to ambiguity with symbols.
 _ident     : ( _char | _uint ) { _char | _uint } ;
 _space     : ' ' ;
@@ -27,7 +29,6 @@ cmdStop       : ':' 's' 't' 'o' 'p' ;
 bracketBegin : '[' ;
 bracketEnd   : ']' ;
 
-propRest    : '-' ;
 propSharp   : '#' ;
 propFlat    : '$' ;
 propAccent  : '^' ;
@@ -97,7 +98,7 @@ NoteObject
 
 NoteSymbol
     : symbol
-    | propRest
+    | rest
     ;
 
 PropertyList

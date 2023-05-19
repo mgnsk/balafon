@@ -213,7 +213,7 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `NoteSymbol : propRest	<<  >>`,
+		String: `NoteSymbol : rest	<<  >>`,
 		Id:         "NoteSymbol",
 		NTType:     10,
 		Index:      19,

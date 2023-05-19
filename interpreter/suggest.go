@@ -131,10 +131,10 @@ func (it *Interpreter) Suggest(in prompt.Document) []prompt.Suggest {
 					}
 				})
 			}
-		case tokentype.PropRest.ID:
+		case tokentype.Rest.ID:
 			sug = append(sug, prompt.Suggest{
 				Text:        "-",
-				Description: "rest property",
+				Description: "rest",
 			})
 		case tokentype.PropSharp.ID:
 			sug = append(sug, prompt.Suggest{
@@ -285,7 +285,7 @@ func (it *Interpreter) Suggest(in prompt.Document) []prompt.Suggest {
 			tokentype.BracketBegin.Type,
 			tokentype.BracketEnd.Type,
 			tokentype.Symbol.Type,
-			tokentype.PropRest.Type,
+			tokentype.Rest.Type,
 			tokentype.PropSharp.Type,
 			tokentype.PropFlat.Type,
 			tokentype.PropAccent.Type,
