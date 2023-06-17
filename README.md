@@ -6,7 +6,7 @@
 
 ## Introduction
 
-balafon is a multitrack MIDI sequencer language and interpreter. It consists of a shell with live mode, player and a linter.
+balafon is a multitrack MIDI sequencer language and interpreter. It consists of a live shell, player and a linter.
 
 ## Install
 
@@ -46,27 +46,7 @@ cat examples/bach | balafon play --port "VMPK" -
 balafon play --port 2 examples/bonham
 ```
 
-- Enter a shell on the default port:
-
-```sh
-balafon shell
-```
-
-A shell is a text shell for the balafon language. It is capable of multiline input when entering bars.
-
-- Enter a shell on a specific port:
-
-```sh
-balafon shell --port "Hydrogen"
-```
-
-- Load a file and enter a shell:
-
-```sh
-balafon load --port "Hydrogen" examples/bonham
-```
-
-- Enter live mode by entering the `live` command:
+- Enter live mode:
 
 ```sh
 balafon live --port "Hydrogen" examples/live_drumset
@@ -96,9 +76,7 @@ Available Commands:
   help        Help about any command
   lint        Lint a file
   live        Load a file and continue in a live shell
-  load        Load a file and continue in a balafon shell
   play        Play a file
-  shell       Run a balafon shell
 
 Flags:
   -h, --help   help for this command
