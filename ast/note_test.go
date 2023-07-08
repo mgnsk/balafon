@@ -82,8 +82,8 @@ func TestNoteList(t *testing.T) {
 			"k#8./3",
 		},
 		{
-			"[[[[[k]/3].]#]8]^^", // Testing the ordering of properties.
-			"k#^^8./3",
+			"[[[[[k]/3].]#]8]'^^", // Testing the ordering of properties.
+			"k#'^^8./3",
 		},
 		{
 			"[[[[[k*]/3].]$].8]))", // Testing the ordering of properties.

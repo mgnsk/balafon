@@ -145,7 +145,8 @@ The available properties are
 
 - sharp (`#`)
 - flat (`$`)
-- accentuated (`^`)
+- accentuated (`'`) - +5 velocity
+- heeavily accentuated (`^`) - +10 velocity
 - ghost (`)`)
 - numeric note value (`1`, `2`, `4`, `8` and so on)
 - dot (`.`)

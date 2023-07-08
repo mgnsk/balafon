@@ -97,6 +97,11 @@ func (note *Note) NumAccents() int {
 	return note.countProps(tokentype.PropAccent)
 }
 
+// NumHeavyAccents reports the number of heavy accent properties in the note.
+func (note *Note) NumHeavyAccents() int {
+	return note.countProps(tokentype.PropHeavyAccent)
+}
+
 // NumGhosts reports the number of ghost properties in the note.
 func (note *Note) NumGhosts() int {
 	return note.countProps(tokentype.PropGhost)

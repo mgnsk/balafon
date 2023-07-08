@@ -27,6 +27,7 @@ var actionTab = actionTable{
 			nil,       // propSharp
 			nil,       // propFlat
 			nil,       // propAccent
+			nil,       // propHeavyAccent
 			nil,       // propGhost
 			nil,       // uint
 			nil,       // propDot
@@ -60,6 +61,7 @@ var actionTab = actionTable{
 			nil,          // propSharp
 			nil,          // propFlat
 			nil,          // propAccent
+			nil,          // propHeavyAccent
 			nil,          // propGhost
 			nil,          // uint
 			nil,          // propDot
@@ -93,6 +95,7 @@ var actionTab = actionTable{
 			nil,       // propSharp
 			nil,       // propFlat
 			nil,       // propAccent
+			nil,       // propHeavyAccent
 			nil,       // propGhost
 			nil,       // uint
 			nil,       // propDot
@@ -126,6 +129,7 @@ var actionTab = actionTable{
 			nil,       // propSharp
 			nil,       // propFlat
 			nil,       // propAccent
+			nil,       // propHeavyAccent
 			nil,       // propGhost
 			nil,       // uint
 			nil,       // propDot
@@ -159,6 +163,7 @@ var actionTab = actionTable{
 			nil,       // propSharp
 			nil,       // propFlat
 			nil,       // propAccent
+			nil,       // propHeavyAccent
 			nil,       // propGhost
 			nil,       // uint
 			nil,       // propDot
@@ -192,6 +197,7 @@ var actionTab = actionTable{
 			nil,       // propSharp
 			nil,       // propFlat
 			nil,       // propAccent
+			nil,       // propHeavyAccent
 			nil,       // propGhost
 			nil,       // uint
 			nil,       // propDot
@@ -225,6 +231,7 @@ var actionTab = actionTable{
 			nil,       // propSharp
 			nil,       // propFlat
 			nil,       // propAccent
+			nil,       // propHeavyAccent
 			nil,       // propGhost
 			nil,       // uint
 			nil,       // propDot
@@ -258,6 +265,7 @@ var actionTab = actionTable{
 			nil,       // propSharp
 			nil,       // propFlat
 			nil,       // propAccent
+			nil,       // propHeavyAccent
 			nil,       // propGhost
 			nil,       // uint
 			nil,       // propDot
@@ -291,6 +299,7 @@ var actionTab = actionTable{
 			nil,        // propSharp
 			nil,        // propFlat
 			nil,        // propAccent
+			nil,        // propHeavyAccent
 			nil,        // propGhost
 			nil,        // uint
 			nil,        // propDot
@@ -312,9 +321,9 @@ var actionTab = actionTable{
 		canRecover: false,
 		actions: [numSymbols]action{
 			nil,        // INVALID
-			reduce(32), // ␚, reduce: TopLevelCommand
+			reduce(33), // ␚, reduce: TopLevelCommand
 			nil,        // empty
-			reduce(32), // terminator, reduce: TopLevelCommand
+			reduce(33), // terminator, reduce: TopLevelCommand
 			nil,        // cmdBar
 			nil,        // cmdEnd
 			nil,        // bracketBegin
@@ -324,6 +333,7 @@ var actionTab = actionTable{
 			nil,        // propSharp
 			nil,        // propFlat
 			nil,        // propAccent
+			nil,        // propHeavyAccent
 			nil,        // propGhost
 			nil,        // uint
 			nil,        // propDot
@@ -357,6 +367,7 @@ var actionTab = actionTable{
 			nil,       // propSharp
 			nil,       // propFlat
 			nil,       // propAccent
+			nil,       // propHeavyAccent
 			nil,       // propGhost
 			nil,       // uint
 			nil,       // propDot
@@ -390,6 +401,7 @@ var actionTab = actionTable{
 			nil,        // propSharp
 			nil,        // propFlat
 			nil,        // propAccent
+			nil,        // propHeavyAccent
 			nil,        // propGhost
 			nil,        // uint
 			nil,        // propDot
@@ -423,11 +435,12 @@ var actionTab = actionTable{
 			shift(34),  // propSharp
 			shift(35),  // propFlat
 			shift(36),  // propAccent
-			shift(37),  // propGhost
-			shift(38),  // uint
-			shift(39),  // propDot
-			shift(40),  // propTuplet
-			shift(41),  // propLetRing
+			shift(37),  // propHeavyAccent
+			shift(38),  // propGhost
+			shift(39),  // uint
+			shift(40),  // propDot
+			shift(41),  // propTuplet
+			shift(42),  // propLetRing
 			nil,        // cmdAssign
 			nil,        // cmdPlay
 			nil,        // cmdTempo
@@ -449,13 +462,14 @@ var actionTab = actionTable{
 			nil,       // terminator
 			nil,       // cmdBar
 			nil,       // cmdEnd
-			shift(45), // bracketBegin
+			shift(46), // bracketBegin
 			nil,       // bracketEnd
-			shift(46), // symbol
-			shift(47), // rest
+			shift(47), // symbol
+			shift(48), // rest
 			nil,       // propSharp
 			nil,       // propFlat
 			nil,       // propAccent
+			nil,       // propHeavyAccent
 			nil,       // propGhost
 			nil,       // uint
 			nil,       // propDot
@@ -489,6 +503,7 @@ var actionTab = actionTable{
 			reduce(18), // propSharp, reduce: NoteSymbol
 			reduce(18), // propFlat, reduce: NoteSymbol
 			reduce(18), // propAccent, reduce: NoteSymbol
+			reduce(18), // propHeavyAccent, reduce: NoteSymbol
 			reduce(18), // propGhost, reduce: NoteSymbol
 			reduce(18), // uint, reduce: NoteSymbol
 			reduce(18), // propDot, reduce: NoteSymbol
@@ -522,6 +537,7 @@ var actionTab = actionTable{
 			reduce(19), // propSharp, reduce: NoteSymbol
 			reduce(19), // propFlat, reduce: NoteSymbol
 			reduce(19), // propAccent, reduce: NoteSymbol
+			reduce(19), // propHeavyAccent, reduce: NoteSymbol
 			reduce(19), // propGhost, reduce: NoteSymbol
 			reduce(19), // uint, reduce: NoteSymbol
 			reduce(19), // propDot, reduce: NoteSymbol
@@ -550,11 +566,12 @@ var actionTab = actionTable{
 			nil,       // cmdEnd
 			nil,       // bracketBegin
 			nil,       // bracketEnd
-			shift(48), // symbol
+			shift(49), // symbol
 			nil,       // rest
 			nil,       // propSharp
 			nil,       // propFlat
 			nil,       // propAccent
+			nil,       // propHeavyAccent
 			nil,       // propGhost
 			nil,       // uint
 			nil,       // propDot
@@ -576,9 +593,9 @@ var actionTab = actionTable{
 		canRecover: false,
 		actions: [numSymbols]action{
 			nil,        // INVALID
-			reduce(31), // ␚, reduce: TopLevelCommand
+			reduce(32), // ␚, reduce: TopLevelCommand
 			nil,        // empty
-			reduce(31), // terminator, reduce: TopLevelCommand
+			reduce(32), // terminator, reduce: TopLevelCommand
 			nil,        // cmdBar
 			nil,        // cmdEnd
 			nil,        // bracketBegin
@@ -588,6 +605,7 @@ var actionTab = actionTable{
 			nil,        // propSharp
 			nil,        // propFlat
 			nil,        // propAccent
+			nil,        // propHeavyAccent
 			nil,        // propGhost
 			nil,        // uint
 			nil,        // propDot
@@ -621,8 +639,9 @@ var actionTab = actionTable{
 			nil,       // propSharp
 			nil,       // propFlat
 			nil,       // propAccent
+			nil,       // propHeavyAccent
 			nil,       // propGhost
-			shift(49), // uint
+			shift(50), // uint
 			nil,       // propDot
 			nil,       // propTuplet
 			nil,       // propLetRing
@@ -654,8 +673,9 @@ var actionTab = actionTable{
 			nil,       // propSharp
 			nil,       // propFlat
 			nil,       // propAccent
+			nil,       // propHeavyAccent
 			nil,       // propGhost
-			shift(50), // uint
+			shift(51), // uint
 			nil,       // propDot
 			nil,       // propTuplet
 			nil,       // propLetRing
@@ -687,8 +707,9 @@ var actionTab = actionTable{
 			nil,       // propSharp
 			nil,       // propFlat
 			nil,       // propAccent
+			nil,       // propHeavyAccent
 			nil,       // propGhost
-			shift(51), // uint
+			shift(52), // uint
 			nil,       // propDot
 			nil,       // propTuplet
 			nil,       // propLetRing
@@ -720,8 +741,9 @@ var actionTab = actionTable{
 			nil,       // propSharp
 			nil,       // propFlat
 			nil,       // propAccent
+			nil,       // propHeavyAccent
 			nil,       // propGhost
-			shift(52), // uint
+			shift(53), // uint
 			nil,       // propDot
 			nil,       // propTuplet
 			nil,       // propLetRing
@@ -753,8 +775,9 @@ var actionTab = actionTable{
 			nil,       // propSharp
 			nil,       // propFlat
 			nil,       // propAccent
+			nil,       // propHeavyAccent
 			nil,       // propGhost
-			shift(53), // uint
+			shift(54), // uint
 			nil,       // propDot
 			nil,       // propTuplet
 			nil,       // propLetRing
@@ -786,8 +809,9 @@ var actionTab = actionTable{
 			nil,       // propSharp
 			nil,       // propFlat
 			nil,       // propAccent
+			nil,       // propHeavyAccent
 			nil,       // propGhost
-			shift(54), // uint
+			shift(55), // uint
 			nil,       // propDot
 			nil,       // propTuplet
 			nil,       // propLetRing
@@ -807,9 +831,9 @@ var actionTab = actionTable{
 		canRecover: false,
 		actions: [numSymbols]action{
 			nil,        // INVALID
-			reduce(39), // ␚, reduce: BarBodyCommand
+			reduce(40), // ␚, reduce: BarBodyCommand
 			nil,        // empty
-			reduce(39), // terminator, reduce: BarBodyCommand
+			reduce(40), // terminator, reduce: BarBodyCommand
 			nil,        // cmdBar
 			nil,        // cmdEnd
 			nil,        // bracketBegin
@@ -819,6 +843,7 @@ var actionTab = actionTable{
 			nil,        // propSharp
 			nil,        // propFlat
 			nil,        // propAccent
+			nil,        // propHeavyAccent
 			nil,        // propGhost
 			nil,        // uint
 			nil,        // propDot
@@ -840,9 +865,9 @@ var actionTab = actionTable{
 		canRecover: false,
 		actions: [numSymbols]action{
 			nil,        // INVALID
-			reduce(40), // ␚, reduce: BarBodyCommand
+			reduce(41), // ␚, reduce: BarBodyCommand
 			nil,        // empty
-			reduce(40), // terminator, reduce: BarBodyCommand
+			reduce(41), // terminator, reduce: BarBodyCommand
 			nil,        // cmdBar
 			nil,        // cmdEnd
 			nil,        // bracketBegin
@@ -852,6 +877,7 @@ var actionTab = actionTable{
 			nil,        // propSharp
 			nil,        // propFlat
 			nil,        // propAccent
+			nil,        // propHeavyAccent
 			nil,        // propGhost
 			nil,        // uint
 			nil,        // propDot
@@ -885,6 +911,7 @@ var actionTab = actionTable{
 			nil,       // propSharp
 			nil,       // propFlat
 			nil,       // propAccent
+			nil,       // propHeavyAccent
 			nil,       // propGhost
 			nil,       // uint
 			nil,       // propDot
@@ -918,6 +945,7 @@ var actionTab = actionTable{
 			nil,       // propSharp
 			nil,       // propFlat
 			nil,       // propAccent
+			nil,       // propHeavyAccent
 			nil,       // propGhost
 			nil,       // uint
 			nil,       // propDot
@@ -941,7 +969,7 @@ var actionTab = actionTable{
 			nil,       // INVALID
 			reduce(2), // ␚, reduce: RepeatTerminator
 			nil,       // empty
-			shift(56), // terminator
+			shift(57), // terminator
 			reduce(2), // cmdBar, reduce: RepeatTerminator
 			nil,       // cmdEnd
 			reduce(2), // bracketBegin, reduce: RepeatTerminator
@@ -951,6 +979,7 @@ var actionTab = actionTable{
 			nil,       // propSharp
 			nil,       // propFlat
 			nil,       // propAccent
+			nil,       // propHeavyAccent
 			nil,       // propGhost
 			nil,       // uint
 			nil,       // propDot
@@ -977,13 +1006,14 @@ var actionTab = actionTable{
 			nil,       // terminator
 			nil,       // cmdBar
 			nil,       // cmdEnd
-			shift(63), // bracketBegin
+			shift(64), // bracketBegin
 			nil,       // bracketEnd
-			shift(64), // symbol
-			shift(65), // rest
+			shift(65), // symbol
+			shift(66), // rest
 			nil,       // propSharp
 			nil,       // propFlat
 			nil,       // propAccent
+			nil,       // propHeavyAccent
 			nil,       // propGhost
 			nil,       // uint
 			nil,       // propDot
@@ -991,14 +1021,14 @@ var actionTab = actionTable{
 			nil,       // propLetRing
 			nil,       // cmdAssign
 			nil,       // cmdPlay
-			shift(66), // cmdTempo
-			shift(67), // cmdTimesig
-			shift(68), // cmdVelocity
-			shift(69), // cmdChannel
-			shift(70), // cmdProgram
-			shift(71), // cmdControl
-			shift(72), // cmdStart
-			shift(73), // cmdStop
+			shift(67), // cmdTempo
+			shift(68), // cmdTimesig
+			shift(69), // cmdVelocity
+			shift(70), // cmdChannel
+			shift(71), // cmdProgram
+			shift(72), // cmdControl
+			shift(73), // cmdStart
+			shift(74), // cmdStop
 		},
 	},
 	actionRow{ // S30
@@ -1017,6 +1047,7 @@ var actionTab = actionTable{
 			nil,       // propSharp
 			nil,       // propFlat
 			nil,       // propAccent
+			nil,       // propHeavyAccent
 			nil,       // propGhost
 			nil,       // uint
 			nil,       // propDot
@@ -1050,6 +1081,7 @@ var actionTab = actionTable{
 			nil,        // propSharp
 			nil,        // propFlat
 			nil,        // propAccent
+			nil,        // propHeavyAccent
 			nil,        // propGhost
 			nil,        // uint
 			nil,        // propDot
@@ -1083,6 +1115,7 @@ var actionTab = actionTable{
 			nil,        // propSharp
 			nil,        // propFlat
 			nil,        // propAccent
+			nil,        // propHeavyAccent
 			nil,        // propGhost
 			nil,        // uint
 			nil,        // propDot
@@ -1116,11 +1149,12 @@ var actionTab = actionTable{
 			shift(34),  // propSharp
 			shift(35),  // propFlat
 			shift(36),  // propAccent
-			shift(37),  // propGhost
-			shift(38),  // uint
-			shift(39),  // propDot
-			shift(40),  // propTuplet
-			shift(41),  // propLetRing
+			shift(37),  // propHeavyAccent
+			shift(38),  // propGhost
+			shift(39),  // uint
+			shift(40),  // propDot
+			shift(41),  // propTuplet
+			shift(42),  // propLetRing
 			nil,        // cmdAssign
 			nil,        // cmdPlay
 			nil,        // cmdTempo
@@ -1149,6 +1183,7 @@ var actionTab = actionTable{
 			reduce(22), // propSharp, reduce: Property
 			reduce(22), // propFlat, reduce: Property
 			reduce(22), // propAccent, reduce: Property
+			reduce(22), // propHeavyAccent, reduce: Property
 			reduce(22), // propGhost, reduce: Property
 			reduce(22), // uint, reduce: Property
 			reduce(22), // propDot, reduce: Property
@@ -1182,6 +1217,7 @@ var actionTab = actionTable{
 			reduce(23), // propSharp, reduce: Property
 			reduce(23), // propFlat, reduce: Property
 			reduce(23), // propAccent, reduce: Property
+			reduce(23), // propHeavyAccent, reduce: Property
 			reduce(23), // propGhost, reduce: Property
 			reduce(23), // uint, reduce: Property
 			reduce(23), // propDot, reduce: Property
@@ -1215,6 +1251,7 @@ var actionTab = actionTable{
 			reduce(24), // propSharp, reduce: Property
 			reduce(24), // propFlat, reduce: Property
 			reduce(24), // propAccent, reduce: Property
+			reduce(24), // propHeavyAccent, reduce: Property
 			reduce(24), // propGhost, reduce: Property
 			reduce(24), // uint, reduce: Property
 			reduce(24), // propDot, reduce: Property
@@ -1248,6 +1285,7 @@ var actionTab = actionTable{
 			reduce(25), // propSharp, reduce: Property
 			reduce(25), // propFlat, reduce: Property
 			reduce(25), // propAccent, reduce: Property
+			reduce(25), // propHeavyAccent, reduce: Property
 			reduce(25), // propGhost, reduce: Property
 			reduce(25), // uint, reduce: Property
 			reduce(25), // propDot, reduce: Property
@@ -1281,6 +1319,7 @@ var actionTab = actionTable{
 			reduce(26), // propSharp, reduce: Property
 			reduce(26), // propFlat, reduce: Property
 			reduce(26), // propAccent, reduce: Property
+			reduce(26), // propHeavyAccent, reduce: Property
 			reduce(26), // propGhost, reduce: Property
 			reduce(26), // uint, reduce: Property
 			reduce(26), // propDot, reduce: Property
@@ -1314,6 +1353,7 @@ var actionTab = actionTable{
 			reduce(27), // propSharp, reduce: Property
 			reduce(27), // propFlat, reduce: Property
 			reduce(27), // propAccent, reduce: Property
+			reduce(27), // propHeavyAccent, reduce: Property
 			reduce(27), // propGhost, reduce: Property
 			reduce(27), // uint, reduce: Property
 			reduce(27), // propDot, reduce: Property
@@ -1347,6 +1387,7 @@ var actionTab = actionTable{
 			reduce(28), // propSharp, reduce: Property
 			reduce(28), // propFlat, reduce: Property
 			reduce(28), // propAccent, reduce: Property
+			reduce(28), // propHeavyAccent, reduce: Property
 			reduce(28), // propGhost, reduce: Property
 			reduce(28), // uint, reduce: Property
 			reduce(28), // propDot, reduce: Property
@@ -1380,6 +1421,7 @@ var actionTab = actionTable{
 			reduce(29), // propSharp, reduce: Property
 			reduce(29), // propFlat, reduce: Property
 			reduce(29), // propAccent, reduce: Property
+			reduce(29), // propHeavyAccent, reduce: Property
 			reduce(29), // propGhost, reduce: Property
 			reduce(29), // uint, reduce: Property
 			reduce(29), // propDot, reduce: Property
@@ -1400,6 +1442,40 @@ var actionTab = actionTable{
 	actionRow{ // S42
 		canRecover: false,
 		actions: [numSymbols]action{
+			nil,        // INVALID
+			reduce(30), // ␚, reduce: Property
+			nil,        // empty
+			reduce(30), // terminator, reduce: Property
+			nil,        // cmdBar
+			nil,        // cmdEnd
+			reduce(30), // bracketBegin, reduce: Property
+			nil,        // bracketEnd
+			reduce(30), // symbol, reduce: Property
+			reduce(30), // rest, reduce: Property
+			reduce(30), // propSharp, reduce: Property
+			reduce(30), // propFlat, reduce: Property
+			reduce(30), // propAccent, reduce: Property
+			reduce(30), // propHeavyAccent, reduce: Property
+			reduce(30), // propGhost, reduce: Property
+			reduce(30), // uint, reduce: Property
+			reduce(30), // propDot, reduce: Property
+			reduce(30), // propTuplet, reduce: Property
+			reduce(30), // propLetRing, reduce: Property
+			nil,        // cmdAssign
+			nil,        // cmdPlay
+			nil,        // cmdTempo
+			nil,        // cmdTimesig
+			nil,        // cmdVelocity
+			nil,        // cmdChannel
+			nil,        // cmdProgram
+			nil,        // cmdControl
+			nil,        // cmdStart
+			nil,        // cmdStop
+		},
+	},
+	actionRow{ // S43
+		canRecover: false,
+		actions: [numSymbols]action{
 			nil,       // INVALID
 			nil,       // ␚
 			nil,       // empty
@@ -1407,12 +1483,13 @@ var actionTab = actionTable{
 			nil,       // cmdBar
 			nil,       // cmdEnd
 			nil,       // bracketBegin
-			shift(76), // bracketEnd
+			shift(77), // bracketEnd
 			nil,       // symbol
 			nil,       // rest
 			nil,       // propSharp
 			nil,       // propFlat
 			nil,       // propAccent
+			nil,       // propHeavyAccent
 			nil,       // propGhost
 			nil,       // uint
 			nil,       // propDot
@@ -1430,7 +1507,7 @@ var actionTab = actionTable{
 			nil,       // cmdStop
 		},
 	},
-	actionRow{ // S43
+	actionRow{ // S44
 		canRecover: false,
 		actions: [numSymbols]action{
 			nil,        // INVALID
@@ -1439,13 +1516,14 @@ var actionTab = actionTable{
 			nil,        // terminator
 			nil,        // cmdBar
 			nil,        // cmdEnd
-			shift(45),  // bracketBegin
+			shift(46),  // bracketBegin
 			reduce(14), // bracketEnd, reduce: NoteList
-			shift(46),  // symbol
-			shift(47),  // rest
+			shift(47),  // symbol
+			shift(48),  // rest
 			nil,        // propSharp
 			nil,        // propFlat
 			nil,        // propAccent
+			nil,        // propHeavyAccent
 			nil,        // propGhost
 			nil,        // uint
 			nil,        // propDot
@@ -1463,7 +1541,7 @@ var actionTab = actionTable{
 			nil,        // cmdStop
 		},
 	},
-	actionRow{ // S44
+	actionRow{ // S45
 		canRecover: false,
 		actions: [numSymbols]action{
 			nil,        // INVALID
@@ -1476,14 +1554,15 @@ var actionTab = actionTable{
 			reduce(20), // bracketEnd, reduce: PropertyList
 			reduce(20), // symbol, reduce: PropertyList
 			reduce(20), // rest, reduce: PropertyList
-			shift(80),  // propSharp
-			shift(81),  // propFlat
-			shift(82),  // propAccent
-			shift(83),  // propGhost
-			shift(84),  // uint
-			shift(85),  // propDot
-			shift(86),  // propTuplet
-			shift(87),  // propLetRing
+			shift(81),  // propSharp
+			shift(82),  // propFlat
+			shift(83),  // propAccent
+			shift(84),  // propHeavyAccent
+			shift(85),  // propGhost
+			shift(86),  // uint
+			shift(87),  // propDot
+			shift(88),  // propTuplet
+			shift(89),  // propLetRing
 			nil,        // cmdAssign
 			nil,        // cmdPlay
 			nil,        // cmdTempo
@@ -1496,7 +1575,7 @@ var actionTab = actionTable{
 			nil,        // cmdStop
 		},
 	},
-	actionRow{ // S45
+	actionRow{ // S46
 		canRecover: false,
 		actions: [numSymbols]action{
 			nil,       // INVALID
@@ -1505,13 +1584,14 @@ var actionTab = actionTable{
 			nil,       // terminator
 			nil,       // cmdBar
 			nil,       // cmdEnd
-			shift(45), // bracketBegin
+			shift(46), // bracketBegin
 			nil,       // bracketEnd
-			shift(46), // symbol
-			shift(47), // rest
+			shift(47), // symbol
+			shift(48), // rest
 			nil,       // propSharp
 			nil,       // propFlat
 			nil,       // propAccent
+			nil,       // propHeavyAccent
 			nil,       // propGhost
 			nil,       // uint
 			nil,       // propDot
@@ -1529,7 +1609,7 @@ var actionTab = actionTable{
 			nil,       // cmdStop
 		},
 	},
-	actionRow{ // S46
+	actionRow{ // S47
 		canRecover: false,
 		actions: [numSymbols]action{
 			nil,        // INVALID
@@ -1545,6 +1625,7 @@ var actionTab = actionTable{
 			reduce(18), // propSharp, reduce: NoteSymbol
 			reduce(18), // propFlat, reduce: NoteSymbol
 			reduce(18), // propAccent, reduce: NoteSymbol
+			reduce(18), // propHeavyAccent, reduce: NoteSymbol
 			reduce(18), // propGhost, reduce: NoteSymbol
 			reduce(18), // uint, reduce: NoteSymbol
 			reduce(18), // propDot, reduce: NoteSymbol
@@ -1562,7 +1643,7 @@ var actionTab = actionTable{
 			nil,        // cmdStop
 		},
 	},
-	actionRow{ // S47
+	actionRow{ // S48
 		canRecover: false,
 		actions: [numSymbols]action{
 			nil,        // INVALID
@@ -1578,6 +1659,7 @@ var actionTab = actionTable{
 			reduce(19), // propSharp, reduce: NoteSymbol
 			reduce(19), // propFlat, reduce: NoteSymbol
 			reduce(19), // propAccent, reduce: NoteSymbol
+			reduce(19), // propHeavyAccent, reduce: NoteSymbol
 			reduce(19), // propGhost, reduce: NoteSymbol
 			reduce(19), // uint, reduce: NoteSymbol
 			reduce(19), // propDot, reduce: NoteSymbol
@@ -1595,7 +1677,7 @@ var actionTab = actionTable{
 			nil,        // cmdStop
 		},
 	},
-	actionRow{ // S48
+	actionRow{ // S49
 		canRecover: false,
 		actions: [numSymbols]action{
 			nil,       // INVALID
@@ -1611,8 +1693,9 @@ var actionTab = actionTable{
 			nil,       // propSharp
 			nil,       // propFlat
 			nil,       // propAccent
+			nil,       // propHeavyAccent
 			nil,       // propGhost
-			shift(89), // uint
+			shift(91), // uint
 			nil,       // propDot
 			nil,       // propTuplet
 			nil,       // propLetRing
@@ -1626,81 +1709,15 @@ var actionTab = actionTable{
 			nil,       // cmdControl
 			nil,       // cmdStart
 			nil,       // cmdStop
-		},
-	},
-	actionRow{ // S49
-		canRecover: false,
-		actions: [numSymbols]action{
-			nil,        // INVALID
-			reduce(33), // ␚, reduce: BarBodyCommand
-			nil,        // empty
-			reduce(33), // terminator, reduce: BarBodyCommand
-			nil,        // cmdBar
-			nil,        // cmdEnd
-			nil,        // bracketBegin
-			nil,        // bracketEnd
-			nil,        // symbol
-			nil,        // rest
-			nil,        // propSharp
-			nil,        // propFlat
-			nil,        // propAccent
-			nil,        // propGhost
-			nil,        // uint
-			nil,        // propDot
-			nil,        // propTuplet
-			nil,        // propLetRing
-			nil,        // cmdAssign
-			nil,        // cmdPlay
-			nil,        // cmdTempo
-			nil,        // cmdTimesig
-			nil,        // cmdVelocity
-			nil,        // cmdChannel
-			nil,        // cmdProgram
-			nil,        // cmdControl
-			nil,        // cmdStart
-			nil,        // cmdStop
 		},
 	},
 	actionRow{ // S50
 		canRecover: false,
 		actions: [numSymbols]action{
-			nil,       // INVALID
-			nil,       // ␚
-			nil,       // empty
-			nil,       // terminator
-			nil,       // cmdBar
-			nil,       // cmdEnd
-			nil,       // bracketBegin
-			nil,       // bracketEnd
-			nil,       // symbol
-			nil,       // rest
-			nil,       // propSharp
-			nil,       // propFlat
-			nil,       // propAccent
-			nil,       // propGhost
-			shift(90), // uint
-			nil,       // propDot
-			nil,       // propTuplet
-			nil,       // propLetRing
-			nil,       // cmdAssign
-			nil,       // cmdPlay
-			nil,       // cmdTempo
-			nil,       // cmdTimesig
-			nil,       // cmdVelocity
-			nil,       // cmdChannel
-			nil,       // cmdProgram
-			nil,       // cmdControl
-			nil,       // cmdStart
-			nil,       // cmdStop
-		},
-	},
-	actionRow{ // S51
-		canRecover: false,
-		actions: [numSymbols]action{
 			nil,        // INVALID
-			reduce(35), // ␚, reduce: BarBodyCommand
+			reduce(34), // ␚, reduce: BarBodyCommand
 			nil,        // empty
-			reduce(35), // terminator, reduce: BarBodyCommand
+			reduce(34), // terminator, reduce: BarBodyCommand
 			nil,        // cmdBar
 			nil,        // cmdEnd
 			nil,        // bracketBegin
@@ -1710,6 +1727,7 @@ var actionTab = actionTable{
 			nil,        // propSharp
 			nil,        // propFlat
 			nil,        // propAccent
+			nil,        // propHeavyAccent
 			nil,        // propGhost
 			nil,        // uint
 			nil,        // propDot
@@ -1725,6 +1743,40 @@ var actionTab = actionTable{
 			nil,        // cmdControl
 			nil,        // cmdStart
 			nil,        // cmdStop
+		},
+	},
+	actionRow{ // S51
+		canRecover: false,
+		actions: [numSymbols]action{
+			nil,       // INVALID
+			nil,       // ␚
+			nil,       // empty
+			nil,       // terminator
+			nil,       // cmdBar
+			nil,       // cmdEnd
+			nil,       // bracketBegin
+			nil,       // bracketEnd
+			nil,       // symbol
+			nil,       // rest
+			nil,       // propSharp
+			nil,       // propFlat
+			nil,       // propAccent
+			nil,       // propHeavyAccent
+			nil,       // propGhost
+			shift(92), // uint
+			nil,       // propDot
+			nil,       // propTuplet
+			nil,       // propLetRing
+			nil,       // cmdAssign
+			nil,       // cmdPlay
+			nil,       // cmdTempo
+			nil,       // cmdTimesig
+			nil,       // cmdVelocity
+			nil,       // cmdChannel
+			nil,       // cmdProgram
+			nil,       // cmdControl
+			nil,       // cmdStart
+			nil,       // cmdStop
 		},
 	},
 	actionRow{ // S52
@@ -1743,6 +1795,7 @@ var actionTab = actionTable{
 			nil,        // propSharp
 			nil,        // propFlat
 			nil,        // propAccent
+			nil,        // propHeavyAccent
 			nil,        // propGhost
 			nil,        // uint
 			nil,        // propDot
@@ -1776,6 +1829,7 @@ var actionTab = actionTable{
 			nil,        // propSharp
 			nil,        // propFlat
 			nil,        // propAccent
+			nil,        // propHeavyAccent
 			nil,        // propGhost
 			nil,        // uint
 			nil,        // propDot
@@ -1796,6 +1850,40 @@ var actionTab = actionTable{
 	actionRow{ // S54
 		canRecover: false,
 		actions: [numSymbols]action{
+			nil,        // INVALID
+			reduce(38), // ␚, reduce: BarBodyCommand
+			nil,        // empty
+			reduce(38), // terminator, reduce: BarBodyCommand
+			nil,        // cmdBar
+			nil,        // cmdEnd
+			nil,        // bracketBegin
+			nil,        // bracketEnd
+			nil,        // symbol
+			nil,        // rest
+			nil,        // propSharp
+			nil,        // propFlat
+			nil,        // propAccent
+			nil,        // propHeavyAccent
+			nil,        // propGhost
+			nil,        // uint
+			nil,        // propDot
+			nil,        // propTuplet
+			nil,        // propLetRing
+			nil,        // cmdAssign
+			nil,        // cmdPlay
+			nil,        // cmdTempo
+			nil,        // cmdTimesig
+			nil,        // cmdVelocity
+			nil,        // cmdChannel
+			nil,        // cmdProgram
+			nil,        // cmdControl
+			nil,        // cmdStart
+			nil,        // cmdStop
+		},
+	},
+	actionRow{ // S55
+		canRecover: false,
+		actions: [numSymbols]action{
 			nil,       // INVALID
 			nil,       // ␚
 			nil,       // empty
@@ -1809,8 +1897,9 @@ var actionTab = actionTable{
 			nil,       // propSharp
 			nil,       // propFlat
 			nil,       // propAccent
+			nil,       // propHeavyAccent
 			nil,       // propGhost
-			shift(91), // uint
+			shift(93), // uint
 			nil,       // propDot
 			nil,       // propTuplet
 			nil,       // propLetRing
@@ -1826,7 +1915,7 @@ var actionTab = actionTable{
 			nil,       // cmdStop
 		},
 	},
-	actionRow{ // S55
+	actionRow{ // S56
 		canRecover: false,
 		actions: [numSymbols]action{
 			nil,       // INVALID
@@ -1842,6 +1931,7 @@ var actionTab = actionTable{
 			nil,       // propSharp
 			nil,       // propFlat
 			nil,       // propAccent
+			nil,       // propHeavyAccent
 			nil,       // propGhost
 			nil,       // uint
 			nil,       // propDot
@@ -1859,13 +1949,13 @@ var actionTab = actionTable{
 			shift(25), // cmdStop
 		},
 	},
-	actionRow{ // S56
+	actionRow{ // S57
 		canRecover: false,
 		actions: [numSymbols]action{
 			nil,       // INVALID
 			reduce(2), // ␚, reduce: RepeatTerminator
 			nil,       // empty
-			shift(56), // terminator
+			shift(57), // terminator
 			reduce(2), // cmdBar, reduce: RepeatTerminator
 			nil,       // cmdEnd
 			reduce(2), // bracketBegin, reduce: RepeatTerminator
@@ -1875,6 +1965,7 @@ var actionTab = actionTable{
 			nil,       // propSharp
 			nil,       // propFlat
 			nil,       // propAccent
+			nil,       // propHeavyAccent
 			nil,       // propGhost
 			nil,       // uint
 			nil,       // propDot
@@ -1892,7 +1983,7 @@ var actionTab = actionTable{
 			reduce(2), // cmdStop, reduce: RepeatTerminator
 		},
 	},
-	actionRow{ // S57
+	actionRow{ // S58
 		canRecover: false,
 		actions: [numSymbols]action{
 			nil,       // INVALID
@@ -1900,7 +1991,7 @@ var actionTab = actionTable{
 			nil,       // empty
 			nil,       // terminator
 			nil,       // cmdBar
-			shift(94), // cmdEnd
+			shift(96), // cmdEnd
 			nil,       // bracketBegin
 			nil,       // bracketEnd
 			nil,       // symbol
@@ -1908,39 +1999,7 @@ var actionTab = actionTable{
 			nil,       // propSharp
 			nil,       // propFlat
 			nil,       // propAccent
-			nil,       // propGhost
-			nil,       // uint
-			nil,       // propDot
-			nil,       // propTuplet
-			nil,       // propLetRing
-			nil,       // cmdAssign
-			nil,       // cmdPlay
-			nil,       // cmdTempo
-			nil,       // cmdTimesig
-			nil,       // cmdVelocity
-			nil,       // cmdChannel
-			nil,       // cmdProgram
-			nil,       // cmdControl
-			nil,       // cmdStart
-			nil,       // cmdStop
-		},
-	},
-	actionRow{ // S58
-		canRecover: false,
-		actions: [numSymbols]action{
-			nil,       // INVALID
-			nil,       // ␚
-			nil,       // empty
-			shift(96), // terminator
-			nil,       // cmdBar
-			reduce(2), // cmdEnd, reduce: RepeatTerminator
-			nil,       // bracketBegin
-			nil,       // bracketEnd
-			nil,       // symbol
-			nil,       // rest
-			nil,       // propSharp
-			nil,       // propFlat
-			nil,       // propAccent
+			nil,       // propHeavyAccent
 			nil,       // propGhost
 			nil,       // uint
 			nil,       // propDot
@@ -1961,6 +2020,40 @@ var actionTab = actionTable{
 	actionRow{ // S59
 		canRecover: false,
 		actions: [numSymbols]action{
+			nil,       // INVALID
+			nil,       // ␚
+			nil,       // empty
+			shift(98), // terminator
+			nil,       // cmdBar
+			reduce(2), // cmdEnd, reduce: RepeatTerminator
+			nil,       // bracketBegin
+			nil,       // bracketEnd
+			nil,       // symbol
+			nil,       // rest
+			nil,       // propSharp
+			nil,       // propFlat
+			nil,       // propAccent
+			nil,       // propHeavyAccent
+			nil,       // propGhost
+			nil,       // uint
+			nil,       // propDot
+			nil,       // propTuplet
+			nil,       // propLetRing
+			nil,       // cmdAssign
+			nil,       // cmdPlay
+			nil,       // cmdTempo
+			nil,       // cmdTimesig
+			nil,       // cmdVelocity
+			nil,       // cmdChannel
+			nil,       // cmdProgram
+			nil,       // cmdControl
+			nil,       // cmdStart
+			nil,       // cmdStop
+		},
+	},
+	actionRow{ // S60
+		canRecover: false,
+		actions: [numSymbols]action{
 			nil,        // INVALID
 			nil,        // ␚
 			nil,        // empty
@@ -1974,39 +2067,7 @@ var actionTab = actionTable{
 			nil,        // propSharp
 			nil,        // propFlat
 			nil,        // propAccent
-			nil,        // propGhost
-			nil,        // uint
-			nil,        // propDot
-			nil,        // propTuplet
-			nil,        // propLetRing
-			nil,        // cmdAssign
-			nil,        // cmdPlay
-			nil,        // cmdTempo
-			nil,        // cmdTimesig
-			nil,        // cmdVelocity
-			nil,        // cmdChannel
-			nil,        // cmdProgram
-			nil,        // cmdControl
-			nil,        // cmdStart
-			nil,        // cmdStop
-		},
-	},
-	actionRow{ // S60
-		canRecover: false,
-		actions: [numSymbols]action{
-			nil,        // INVALID
-			nil,        // ␚
-			nil,        // empty
-			reduce(11), // terminator, reduce: BarBodyDecl
-			nil,        // cmdBar
-			reduce(11), // cmdEnd, reduce: BarBodyDecl
-			nil,        // bracketBegin
-			nil,        // bracketEnd
-			nil,        // symbol
-			nil,        // rest
-			nil,        // propSharp
-			nil,        // propFlat
-			nil,        // propAccent
+			nil,        // propHeavyAccent
 			nil,        // propGhost
 			nil,        // uint
 			nil,        // propDot
@@ -2030,16 +2091,17 @@ var actionTab = actionTable{
 			nil,        // INVALID
 			nil,        // ␚
 			nil,        // empty
-			reduce(14), // terminator, reduce: NoteList
+			reduce(11), // terminator, reduce: BarBodyDecl
 			nil,        // cmdBar
-			reduce(14), // cmdEnd, reduce: NoteList
-			shift(63),  // bracketBegin
+			reduce(11), // cmdEnd, reduce: BarBodyDecl
+			nil,        // bracketBegin
 			nil,        // bracketEnd
-			shift(64),  // symbol
-			shift(65),  // rest
+			nil,        // symbol
+			nil,        // rest
 			nil,        // propSharp
 			nil,        // propFlat
 			nil,        // propAccent
+			nil,        // propHeavyAccent
 			nil,        // propGhost
 			nil,        // uint
 			nil,        // propDot
@@ -2063,21 +2125,22 @@ var actionTab = actionTable{
 			nil,        // INVALID
 			nil,        // ␚
 			nil,        // empty
-			reduce(20), // terminator, reduce: PropertyList
+			reduce(14), // terminator, reduce: NoteList
 			nil,        // cmdBar
-			reduce(20), // cmdEnd, reduce: PropertyList
-			reduce(20), // bracketBegin, reduce: PropertyList
+			reduce(14), // cmdEnd, reduce: NoteList
+			shift(64),  // bracketBegin
 			nil,        // bracketEnd
-			reduce(20), // symbol, reduce: PropertyList
-			reduce(20), // rest, reduce: PropertyList
-			shift(100), // propSharp
-			shift(101), // propFlat
-			shift(102), // propAccent
-			shift(103), // propGhost
-			shift(104), // uint
-			shift(105), // propDot
-			shift(106), // propTuplet
-			shift(107), // propLetRing
+			shift(65),  // symbol
+			shift(66),  // rest
+			nil,        // propSharp
+			nil,        // propFlat
+			nil,        // propAccent
+			nil,        // propHeavyAccent
+			nil,        // propGhost
+			nil,        // uint
+			nil,        // propDot
+			nil,        // propTuplet
+			nil,        // propLetRing
 			nil,        // cmdAssign
 			nil,        // cmdPlay
 			nil,        // cmdTempo
@@ -2093,19 +2156,54 @@ var actionTab = actionTable{
 	actionRow{ // S63
 		canRecover: false,
 		actions: [numSymbols]action{
+			nil,        // INVALID
+			nil,        // ␚
+			nil,        // empty
+			reduce(20), // terminator, reduce: PropertyList
+			nil,        // cmdBar
+			reduce(20), // cmdEnd, reduce: PropertyList
+			reduce(20), // bracketBegin, reduce: PropertyList
+			nil,        // bracketEnd
+			reduce(20), // symbol, reduce: PropertyList
+			reduce(20), // rest, reduce: PropertyList
+			shift(102), // propSharp
+			shift(103), // propFlat
+			shift(104), // propAccent
+			shift(105), // propHeavyAccent
+			shift(106), // propGhost
+			shift(107), // uint
+			shift(108), // propDot
+			shift(109), // propTuplet
+			shift(110), // propLetRing
+			nil,        // cmdAssign
+			nil,        // cmdPlay
+			nil,        // cmdTempo
+			nil,        // cmdTimesig
+			nil,        // cmdVelocity
+			nil,        // cmdChannel
+			nil,        // cmdProgram
+			nil,        // cmdControl
+			nil,        // cmdStart
+			nil,        // cmdStop
+		},
+	},
+	actionRow{ // S64
+		canRecover: false,
+		actions: [numSymbols]action{
 			nil,       // INVALID
 			nil,       // ␚
 			nil,       // empty
 			nil,       // terminator
 			nil,       // cmdBar
 			nil,       // cmdEnd
-			shift(45), // bracketBegin
+			shift(46), // bracketBegin
 			nil,       // bracketEnd
-			shift(46), // symbol
-			shift(47), // rest
+			shift(47), // symbol
+			shift(48), // rest
 			nil,       // propSharp
 			nil,       // propFlat
 			nil,       // propAccent
+			nil,       // propHeavyAccent
 			nil,       // propGhost
 			nil,       // uint
 			nil,       // propDot
@@ -2123,7 +2221,7 @@ var actionTab = actionTable{
 			nil,       // cmdStop
 		},
 	},
-	actionRow{ // S64
+	actionRow{ // S65
 		canRecover: false,
 		actions: [numSymbols]action{
 			nil,        // INVALID
@@ -2139,44 +2237,12 @@ var actionTab = actionTable{
 			reduce(18), // propSharp, reduce: NoteSymbol
 			reduce(18), // propFlat, reduce: NoteSymbol
 			reduce(18), // propAccent, reduce: NoteSymbol
+			reduce(18), // propHeavyAccent, reduce: NoteSymbol
 			reduce(18), // propGhost, reduce: NoteSymbol
 			reduce(18), // uint, reduce: NoteSymbol
 			reduce(18), // propDot, reduce: NoteSymbol
 			reduce(18), // propTuplet, reduce: NoteSymbol
 			reduce(18), // propLetRing, reduce: NoteSymbol
-			nil,        // cmdAssign
-			nil,        // cmdPlay
-			nil,        // cmdTempo
-			nil,        // cmdTimesig
-			nil,        // cmdVelocity
-			nil,        // cmdChannel
-			nil,        // cmdProgram
-			nil,        // cmdControl
-			nil,        // cmdStart
-			nil,        // cmdStop
-		},
-	},
-	actionRow{ // S65
-		canRecover: false,
-		actions: [numSymbols]action{
-			nil,        // INVALID
-			nil,        // ␚
-			nil,        // empty
-			reduce(19), // terminator, reduce: NoteSymbol
-			nil,        // cmdBar
-			reduce(19), // cmdEnd, reduce: NoteSymbol
-			reduce(19), // bracketBegin, reduce: NoteSymbol
-			nil,        // bracketEnd
-			reduce(19), // symbol, reduce: NoteSymbol
-			reduce(19), // rest, reduce: NoteSymbol
-			reduce(19), // propSharp, reduce: NoteSymbol
-			reduce(19), // propFlat, reduce: NoteSymbol
-			reduce(19), // propAccent, reduce: NoteSymbol
-			reduce(19), // propGhost, reduce: NoteSymbol
-			reduce(19), // uint, reduce: NoteSymbol
-			reduce(19), // propDot, reduce: NoteSymbol
-			reduce(19), // propTuplet, reduce: NoteSymbol
-			reduce(19), // propLetRing, reduce: NoteSymbol
 			nil,        // cmdAssign
 			nil,        // cmdPlay
 			nil,        // cmdTempo
@@ -2195,21 +2261,22 @@ var actionTab = actionTable{
 			nil,        // INVALID
 			nil,        // ␚
 			nil,        // empty
-			nil,        // terminator
+			reduce(19), // terminator, reduce: NoteSymbol
 			nil,        // cmdBar
-			nil,        // cmdEnd
-			nil,        // bracketBegin
+			reduce(19), // cmdEnd, reduce: NoteSymbol
+			reduce(19), // bracketBegin, reduce: NoteSymbol
 			nil,        // bracketEnd
-			nil,        // symbol
-			nil,        // rest
-			nil,        // propSharp
-			nil,        // propFlat
-			nil,        // propAccent
-			nil,        // propGhost
-			shift(109), // uint
-			nil,        // propDot
-			nil,        // propTuplet
-			nil,        // propLetRing
+			reduce(19), // symbol, reduce: NoteSymbol
+			reduce(19), // rest, reduce: NoteSymbol
+			reduce(19), // propSharp, reduce: NoteSymbol
+			reduce(19), // propFlat, reduce: NoteSymbol
+			reduce(19), // propAccent, reduce: NoteSymbol
+			reduce(19), // propHeavyAccent, reduce: NoteSymbol
+			reduce(19), // propGhost, reduce: NoteSymbol
+			reduce(19), // uint, reduce: NoteSymbol
+			reduce(19), // propDot, reduce: NoteSymbol
+			reduce(19), // propTuplet, reduce: NoteSymbol
+			reduce(19), // propLetRing, reduce: NoteSymbol
 			nil,        // cmdAssign
 			nil,        // cmdPlay
 			nil,        // cmdTempo
@@ -2238,8 +2305,9 @@ var actionTab = actionTable{
 			nil,        // propSharp
 			nil,        // propFlat
 			nil,        // propAccent
+			nil,        // propHeavyAccent
 			nil,        // propGhost
-			shift(110), // uint
+			shift(112), // uint
 			nil,        // propDot
 			nil,        // propTuplet
 			nil,        // propLetRing
@@ -2271,8 +2339,9 @@ var actionTab = actionTable{
 			nil,        // propSharp
 			nil,        // propFlat
 			nil,        // propAccent
+			nil,        // propHeavyAccent
 			nil,        // propGhost
-			shift(111), // uint
+			shift(113), // uint
 			nil,        // propDot
 			nil,        // propTuplet
 			nil,        // propLetRing
@@ -2304,8 +2373,9 @@ var actionTab = actionTable{
 			nil,        // propSharp
 			nil,        // propFlat
 			nil,        // propAccent
+			nil,        // propHeavyAccent
 			nil,        // propGhost
-			shift(112), // uint
+			shift(114), // uint
 			nil,        // propDot
 			nil,        // propTuplet
 			nil,        // propLetRing
@@ -2337,8 +2407,9 @@ var actionTab = actionTable{
 			nil,        // propSharp
 			nil,        // propFlat
 			nil,        // propAccent
+			nil,        // propHeavyAccent
 			nil,        // propGhost
-			shift(113), // uint
+			shift(115), // uint
 			nil,        // propDot
 			nil,        // propTuplet
 			nil,        // propLetRing
@@ -2370,8 +2441,9 @@ var actionTab = actionTable{
 			nil,        // propSharp
 			nil,        // propFlat
 			nil,        // propAccent
+			nil,        // propHeavyAccent
 			nil,        // propGhost
-			shift(114), // uint
+			shift(116), // uint
 			nil,        // propDot
 			nil,        // propTuplet
 			nil,        // propLetRing
@@ -2393,9 +2465,9 @@ var actionTab = actionTable{
 			nil,        // INVALID
 			nil,        // ␚
 			nil,        // empty
-			reduce(39), // terminator, reduce: BarBodyCommand
+			nil,        // terminator
 			nil,        // cmdBar
-			reduce(39), // cmdEnd, reduce: BarBodyCommand
+			nil,        // cmdEnd
 			nil,        // bracketBegin
 			nil,        // bracketEnd
 			nil,        // symbol
@@ -2403,8 +2475,9 @@ var actionTab = actionTable{
 			nil,        // propSharp
 			nil,        // propFlat
 			nil,        // propAccent
+			nil,        // propHeavyAccent
 			nil,        // propGhost
-			nil,        // uint
+			shift(117), // uint
 			nil,        // propDot
 			nil,        // propTuplet
 			nil,        // propLetRing
@@ -2436,6 +2509,7 @@ var actionTab = actionTable{
 			nil,        // propSharp
 			nil,        // propFlat
 			nil,        // propAccent
+			nil,        // propHeavyAccent
 			nil,        // propGhost
 			nil,        // uint
 			nil,        // propDot
@@ -2456,6 +2530,40 @@ var actionTab = actionTable{
 	actionRow{ // S74
 		canRecover: false,
 		actions: [numSymbols]action{
+			nil,        // INVALID
+			nil,        // ␚
+			nil,        // empty
+			reduce(41), // terminator, reduce: BarBodyCommand
+			nil,        // cmdBar
+			reduce(41), // cmdEnd, reduce: BarBodyCommand
+			nil,        // bracketBegin
+			nil,        // bracketEnd
+			nil,        // symbol
+			nil,        // rest
+			nil,        // propSharp
+			nil,        // propFlat
+			nil,        // propAccent
+			nil,        // propHeavyAccent
+			nil,        // propGhost
+			nil,        // uint
+			nil,        // propDot
+			nil,        // propTuplet
+			nil,        // propLetRing
+			nil,        // cmdAssign
+			nil,        // cmdPlay
+			nil,        // cmdTempo
+			nil,        // cmdTimesig
+			nil,        // cmdVelocity
+			nil,        // cmdChannel
+			nil,        // cmdProgram
+			nil,        // cmdControl
+			nil,        // cmdStart
+			nil,        // cmdStop
+		},
+	},
+	actionRow{ // S75
+		canRecover: false,
+		actions: [numSymbols]action{
 			nil,       // INVALID
 			nil,       // ␚
 			nil,       // empty
@@ -2469,6 +2577,7 @@ var actionTab = actionTable{
 			nil,       // propSharp
 			nil,       // propFlat
 			nil,       // propAccent
+			nil,       // propHeavyAccent
 			nil,       // propGhost
 			nil,       // uint
 			nil,       // propDot
@@ -2486,7 +2595,7 @@ var actionTab = actionTable{
 			reduce(3), // cmdStop, reduce: RepeatTerminator
 		},
 	},
-	actionRow{ // S75
+	actionRow{ // S76
 		canRecover: false,
 		actions: [numSymbols]action{
 			nil,        // INVALID
@@ -2502,44 +2611,12 @@ var actionTab = actionTable{
 			nil,        // propSharp
 			nil,        // propFlat
 			nil,        // propAccent
+			nil,        // propHeavyAccent
 			nil,        // propGhost
 			nil,        // uint
 			nil,        // propDot
 			nil,        // propTuplet
 			nil,        // propLetRing
-			nil,        // cmdAssign
-			nil,        // cmdPlay
-			nil,        // cmdTempo
-			nil,        // cmdTimesig
-			nil,        // cmdVelocity
-			nil,        // cmdChannel
-			nil,        // cmdProgram
-			nil,        // cmdControl
-			nil,        // cmdStart
-			nil,        // cmdStop
-		},
-	},
-	actionRow{ // S76
-		canRecover: false,
-		actions: [numSymbols]action{
-			nil,        // INVALID
-			reduce(20), // ␚, reduce: PropertyList
-			nil,        // empty
-			reduce(20), // terminator, reduce: PropertyList
-			nil,        // cmdBar
-			nil,        // cmdEnd
-			reduce(20), // bracketBegin, reduce: PropertyList
-			nil,        // bracketEnd
-			reduce(20), // symbol, reduce: PropertyList
-			reduce(20), // rest, reduce: PropertyList
-			shift(34),  // propSharp
-			shift(35),  // propFlat
-			shift(36),  // propAccent
-			shift(37),  // propGhost
-			shift(38),  // uint
-			shift(39),  // propDot
-			shift(40),  // propTuplet
-			shift(41),  // propLetRing
 			nil,        // cmdAssign
 			nil,        // cmdPlay
 			nil,        // cmdTempo
@@ -2556,23 +2633,24 @@ var actionTab = actionTable{
 		canRecover: false,
 		actions: [numSymbols]action{
 			nil,        // INVALID
-			nil,        // ␚
+			reduce(20), // ␚, reduce: PropertyList
 			nil,        // empty
-			nil,        // terminator
+			reduce(20), // terminator, reduce: PropertyList
 			nil,        // cmdBar
 			nil,        // cmdEnd
-			nil,        // bracketBegin
-			reduce(15), // bracketEnd, reduce: NoteList
-			nil,        // symbol
-			nil,        // rest
-			nil,        // propSharp
-			nil,        // propFlat
-			nil,        // propAccent
-			nil,        // propGhost
-			nil,        // uint
-			nil,        // propDot
-			nil,        // propTuplet
-			nil,        // propLetRing
+			reduce(20), // bracketBegin, reduce: PropertyList
+			nil,        // bracketEnd
+			reduce(20), // symbol, reduce: PropertyList
+			reduce(20), // rest, reduce: PropertyList
+			shift(34),  // propSharp
+			shift(35),  // propFlat
+			shift(36),  // propAccent
+			shift(37),  // propHeavyAccent
+			shift(38),  // propGhost
+			shift(39),  // uint
+			shift(40),  // propDot
+			shift(41),  // propTuplet
+			shift(42),  // propLetRing
 			nil,        // cmdAssign
 			nil,        // cmdPlay
 			nil,        // cmdTempo
@@ -2594,13 +2672,14 @@ var actionTab = actionTable{
 			nil,        // terminator
 			nil,        // cmdBar
 			nil,        // cmdEnd
-			reduce(16), // bracketBegin, reduce: NoteObject
-			reduce(16), // bracketEnd, reduce: NoteObject
-			reduce(16), // symbol, reduce: NoteObject
-			reduce(16), // rest, reduce: NoteObject
+			nil,        // bracketBegin
+			reduce(15), // bracketEnd, reduce: NoteList
+			nil,        // symbol
+			nil,        // rest
 			nil,        // propSharp
 			nil,        // propFlat
 			nil,        // propAccent
+			nil,        // propHeavyAccent
 			nil,        // propGhost
 			nil,        // uint
 			nil,        // propDot
@@ -2627,18 +2706,19 @@ var actionTab = actionTable{
 			nil,        // terminator
 			nil,        // cmdBar
 			nil,        // cmdEnd
-			reduce(20), // bracketBegin, reduce: PropertyList
-			reduce(20), // bracketEnd, reduce: PropertyList
-			reduce(20), // symbol, reduce: PropertyList
-			reduce(20), // rest, reduce: PropertyList
-			shift(80),  // propSharp
-			shift(81),  // propFlat
-			shift(82),  // propAccent
-			shift(83),  // propGhost
-			shift(84),  // uint
-			shift(85),  // propDot
-			shift(86),  // propTuplet
-			shift(87),  // propLetRing
+			reduce(16), // bracketBegin, reduce: NoteObject
+			reduce(16), // bracketEnd, reduce: NoteObject
+			reduce(16), // symbol, reduce: NoteObject
+			reduce(16), // rest, reduce: NoteObject
+			nil,        // propSharp
+			nil,        // propFlat
+			nil,        // propAccent
+			nil,        // propHeavyAccent
+			nil,        // propGhost
+			nil,        // uint
+			nil,        // propDot
+			nil,        // propTuplet
+			nil,        // propLetRing
 			nil,        // cmdAssign
 			nil,        // cmdPlay
 			nil,        // cmdTempo
@@ -2660,18 +2740,19 @@ var actionTab = actionTable{
 			nil,        // terminator
 			nil,        // cmdBar
 			nil,        // cmdEnd
-			reduce(22), // bracketBegin, reduce: Property
-			reduce(22), // bracketEnd, reduce: Property
-			reduce(22), // symbol, reduce: Property
-			reduce(22), // rest, reduce: Property
-			reduce(22), // propSharp, reduce: Property
-			reduce(22), // propFlat, reduce: Property
-			reduce(22), // propAccent, reduce: Property
-			reduce(22), // propGhost, reduce: Property
-			reduce(22), // uint, reduce: Property
-			reduce(22), // propDot, reduce: Property
-			reduce(22), // propTuplet, reduce: Property
-			reduce(22), // propLetRing, reduce: Property
+			reduce(20), // bracketBegin, reduce: PropertyList
+			reduce(20), // bracketEnd, reduce: PropertyList
+			reduce(20), // symbol, reduce: PropertyList
+			reduce(20), // rest, reduce: PropertyList
+			shift(81),  // propSharp
+			shift(82),  // propFlat
+			shift(83),  // propAccent
+			shift(84),  // propHeavyAccent
+			shift(85),  // propGhost
+			shift(86),  // uint
+			shift(87),  // propDot
+			shift(88),  // propTuplet
+			shift(89),  // propLetRing
 			nil,        // cmdAssign
 			nil,        // cmdPlay
 			nil,        // cmdTempo
@@ -2693,18 +2774,19 @@ var actionTab = actionTable{
 			nil,        // terminator
 			nil,        // cmdBar
 			nil,        // cmdEnd
-			reduce(23), // bracketBegin, reduce: Property
-			reduce(23), // bracketEnd, reduce: Property
-			reduce(23), // symbol, reduce: Property
-			reduce(23), // rest, reduce: Property
-			reduce(23), // propSharp, reduce: Property
-			reduce(23), // propFlat, reduce: Property
-			reduce(23), // propAccent, reduce: Property
-			reduce(23), // propGhost, reduce: Property
-			reduce(23), // uint, reduce: Property
-			reduce(23), // propDot, reduce: Property
-			reduce(23), // propTuplet, reduce: Property
-			reduce(23), // propLetRing, reduce: Property
+			reduce(22), // bracketBegin, reduce: Property
+			reduce(22), // bracketEnd, reduce: Property
+			reduce(22), // symbol, reduce: Property
+			reduce(22), // rest, reduce: Property
+			reduce(22), // propSharp, reduce: Property
+			reduce(22), // propFlat, reduce: Property
+			reduce(22), // propAccent, reduce: Property
+			reduce(22), // propHeavyAccent, reduce: Property
+			reduce(22), // propGhost, reduce: Property
+			reduce(22), // uint, reduce: Property
+			reduce(22), // propDot, reduce: Property
+			reduce(22), // propTuplet, reduce: Property
+			reduce(22), // propLetRing, reduce: Property
 			nil,        // cmdAssign
 			nil,        // cmdPlay
 			nil,        // cmdTempo
@@ -2726,18 +2808,19 @@ var actionTab = actionTable{
 			nil,        // terminator
 			nil,        // cmdBar
 			nil,        // cmdEnd
-			reduce(24), // bracketBegin, reduce: Property
-			reduce(24), // bracketEnd, reduce: Property
-			reduce(24), // symbol, reduce: Property
-			reduce(24), // rest, reduce: Property
-			reduce(24), // propSharp, reduce: Property
-			reduce(24), // propFlat, reduce: Property
-			reduce(24), // propAccent, reduce: Property
-			reduce(24), // propGhost, reduce: Property
-			reduce(24), // uint, reduce: Property
-			reduce(24), // propDot, reduce: Property
-			reduce(24), // propTuplet, reduce: Property
-			reduce(24), // propLetRing, reduce: Property
+			reduce(23), // bracketBegin, reduce: Property
+			reduce(23), // bracketEnd, reduce: Property
+			reduce(23), // symbol, reduce: Property
+			reduce(23), // rest, reduce: Property
+			reduce(23), // propSharp, reduce: Property
+			reduce(23), // propFlat, reduce: Property
+			reduce(23), // propAccent, reduce: Property
+			reduce(23), // propHeavyAccent, reduce: Property
+			reduce(23), // propGhost, reduce: Property
+			reduce(23), // uint, reduce: Property
+			reduce(23), // propDot, reduce: Property
+			reduce(23), // propTuplet, reduce: Property
+			reduce(23), // propLetRing, reduce: Property
 			nil,        // cmdAssign
 			nil,        // cmdPlay
 			nil,        // cmdTempo
@@ -2759,18 +2842,19 @@ var actionTab = actionTable{
 			nil,        // terminator
 			nil,        // cmdBar
 			nil,        // cmdEnd
-			reduce(25), // bracketBegin, reduce: Property
-			reduce(25), // bracketEnd, reduce: Property
-			reduce(25), // symbol, reduce: Property
-			reduce(25), // rest, reduce: Property
-			reduce(25), // propSharp, reduce: Property
-			reduce(25), // propFlat, reduce: Property
-			reduce(25), // propAccent, reduce: Property
-			reduce(25), // propGhost, reduce: Property
-			reduce(25), // uint, reduce: Property
-			reduce(25), // propDot, reduce: Property
-			reduce(25), // propTuplet, reduce: Property
-			reduce(25), // propLetRing, reduce: Property
+			reduce(24), // bracketBegin, reduce: Property
+			reduce(24), // bracketEnd, reduce: Property
+			reduce(24), // symbol, reduce: Property
+			reduce(24), // rest, reduce: Property
+			reduce(24), // propSharp, reduce: Property
+			reduce(24), // propFlat, reduce: Property
+			reduce(24), // propAccent, reduce: Property
+			reduce(24), // propHeavyAccent, reduce: Property
+			reduce(24), // propGhost, reduce: Property
+			reduce(24), // uint, reduce: Property
+			reduce(24), // propDot, reduce: Property
+			reduce(24), // propTuplet, reduce: Property
+			reduce(24), // propLetRing, reduce: Property
 			nil,        // cmdAssign
 			nil,        // cmdPlay
 			nil,        // cmdTempo
@@ -2792,18 +2876,19 @@ var actionTab = actionTable{
 			nil,        // terminator
 			nil,        // cmdBar
 			nil,        // cmdEnd
-			reduce(26), // bracketBegin, reduce: Property
-			reduce(26), // bracketEnd, reduce: Property
-			reduce(26), // symbol, reduce: Property
-			reduce(26), // rest, reduce: Property
-			reduce(26), // propSharp, reduce: Property
-			reduce(26), // propFlat, reduce: Property
-			reduce(26), // propAccent, reduce: Property
-			reduce(26), // propGhost, reduce: Property
-			reduce(26), // uint, reduce: Property
-			reduce(26), // propDot, reduce: Property
-			reduce(26), // propTuplet, reduce: Property
-			reduce(26), // propLetRing, reduce: Property
+			reduce(25), // bracketBegin, reduce: Property
+			reduce(25), // bracketEnd, reduce: Property
+			reduce(25), // symbol, reduce: Property
+			reduce(25), // rest, reduce: Property
+			reduce(25), // propSharp, reduce: Property
+			reduce(25), // propFlat, reduce: Property
+			reduce(25), // propAccent, reduce: Property
+			reduce(25), // propHeavyAccent, reduce: Property
+			reduce(25), // propGhost, reduce: Property
+			reduce(25), // uint, reduce: Property
+			reduce(25), // propDot, reduce: Property
+			reduce(25), // propTuplet, reduce: Property
+			reduce(25), // propLetRing, reduce: Property
 			nil,        // cmdAssign
 			nil,        // cmdPlay
 			nil,        // cmdTempo
@@ -2825,18 +2910,19 @@ var actionTab = actionTable{
 			nil,        // terminator
 			nil,        // cmdBar
 			nil,        // cmdEnd
-			reduce(27), // bracketBegin, reduce: Property
-			reduce(27), // bracketEnd, reduce: Property
-			reduce(27), // symbol, reduce: Property
-			reduce(27), // rest, reduce: Property
-			reduce(27), // propSharp, reduce: Property
-			reduce(27), // propFlat, reduce: Property
-			reduce(27), // propAccent, reduce: Property
-			reduce(27), // propGhost, reduce: Property
-			reduce(27), // uint, reduce: Property
-			reduce(27), // propDot, reduce: Property
-			reduce(27), // propTuplet, reduce: Property
-			reduce(27), // propLetRing, reduce: Property
+			reduce(26), // bracketBegin, reduce: Property
+			reduce(26), // bracketEnd, reduce: Property
+			reduce(26), // symbol, reduce: Property
+			reduce(26), // rest, reduce: Property
+			reduce(26), // propSharp, reduce: Property
+			reduce(26), // propFlat, reduce: Property
+			reduce(26), // propAccent, reduce: Property
+			reduce(26), // propHeavyAccent, reduce: Property
+			reduce(26), // propGhost, reduce: Property
+			reduce(26), // uint, reduce: Property
+			reduce(26), // propDot, reduce: Property
+			reduce(26), // propTuplet, reduce: Property
+			reduce(26), // propLetRing, reduce: Property
 			nil,        // cmdAssign
 			nil,        // cmdPlay
 			nil,        // cmdTempo
@@ -2858,18 +2944,19 @@ var actionTab = actionTable{
 			nil,        // terminator
 			nil,        // cmdBar
 			nil,        // cmdEnd
-			reduce(28), // bracketBegin, reduce: Property
-			reduce(28), // bracketEnd, reduce: Property
-			reduce(28), // symbol, reduce: Property
-			reduce(28), // rest, reduce: Property
-			reduce(28), // propSharp, reduce: Property
-			reduce(28), // propFlat, reduce: Property
-			reduce(28), // propAccent, reduce: Property
-			reduce(28), // propGhost, reduce: Property
-			reduce(28), // uint, reduce: Property
-			reduce(28), // propDot, reduce: Property
-			reduce(28), // propTuplet, reduce: Property
-			reduce(28), // propLetRing, reduce: Property
+			reduce(27), // bracketBegin, reduce: Property
+			reduce(27), // bracketEnd, reduce: Property
+			reduce(27), // symbol, reduce: Property
+			reduce(27), // rest, reduce: Property
+			reduce(27), // propSharp, reduce: Property
+			reduce(27), // propFlat, reduce: Property
+			reduce(27), // propAccent, reduce: Property
+			reduce(27), // propHeavyAccent, reduce: Property
+			reduce(27), // propGhost, reduce: Property
+			reduce(27), // uint, reduce: Property
+			reduce(27), // propDot, reduce: Property
+			reduce(27), // propTuplet, reduce: Property
+			reduce(27), // propLetRing, reduce: Property
 			nil,        // cmdAssign
 			nil,        // cmdPlay
 			nil,        // cmdTempo
@@ -2891,18 +2978,19 @@ var actionTab = actionTable{
 			nil,        // terminator
 			nil,        // cmdBar
 			nil,        // cmdEnd
-			reduce(29), // bracketBegin, reduce: Property
-			reduce(29), // bracketEnd, reduce: Property
-			reduce(29), // symbol, reduce: Property
-			reduce(29), // rest, reduce: Property
-			reduce(29), // propSharp, reduce: Property
-			reduce(29), // propFlat, reduce: Property
-			reduce(29), // propAccent, reduce: Property
-			reduce(29), // propGhost, reduce: Property
-			reduce(29), // uint, reduce: Property
-			reduce(29), // propDot, reduce: Property
-			reduce(29), // propTuplet, reduce: Property
-			reduce(29), // propLetRing, reduce: Property
+			reduce(28), // bracketBegin, reduce: Property
+			reduce(28), // bracketEnd, reduce: Property
+			reduce(28), // symbol, reduce: Property
+			reduce(28), // rest, reduce: Property
+			reduce(28), // propSharp, reduce: Property
+			reduce(28), // propFlat, reduce: Property
+			reduce(28), // propAccent, reduce: Property
+			reduce(28), // propHeavyAccent, reduce: Property
+			reduce(28), // propGhost, reduce: Property
+			reduce(28), // uint, reduce: Property
+			reduce(28), // propDot, reduce: Property
+			reduce(28), // propTuplet, reduce: Property
+			reduce(28), // propLetRing, reduce: Property
 			nil,        // cmdAssign
 			nil,        // cmdPlay
 			nil,        // cmdTempo
@@ -2924,18 +3012,19 @@ var actionTab = actionTable{
 			nil,        // terminator
 			nil,        // cmdBar
 			nil,        // cmdEnd
-			nil,        // bracketBegin
-			shift(117), // bracketEnd
-			nil,        // symbol
-			nil,        // rest
-			nil,        // propSharp
-			nil,        // propFlat
-			nil,        // propAccent
-			nil,        // propGhost
-			nil,        // uint
-			nil,        // propDot
-			nil,        // propTuplet
-			nil,        // propLetRing
+			reduce(29), // bracketBegin, reduce: Property
+			reduce(29), // bracketEnd, reduce: Property
+			reduce(29), // symbol, reduce: Property
+			reduce(29), // rest, reduce: Property
+			reduce(29), // propSharp, reduce: Property
+			reduce(29), // propFlat, reduce: Property
+			reduce(29), // propAccent, reduce: Property
+			reduce(29), // propHeavyAccent, reduce: Property
+			reduce(29), // propGhost, reduce: Property
+			reduce(29), // uint, reduce: Property
+			reduce(29), // propDot, reduce: Property
+			reduce(29), // propTuplet, reduce: Property
+			reduce(29), // propLetRing, reduce: Property
 			nil,        // cmdAssign
 			nil,        // cmdPlay
 			nil,        // cmdTempo
@@ -2952,23 +3041,24 @@ var actionTab = actionTable{
 		canRecover: false,
 		actions: [numSymbols]action{
 			nil,        // INVALID
-			reduce(30), // ␚, reduce: TopLevelCommand
+			nil,        // ␚
 			nil,        // empty
-			reduce(30), // terminator, reduce: TopLevelCommand
+			nil,        // terminator
 			nil,        // cmdBar
 			nil,        // cmdEnd
-			nil,        // bracketBegin
-			nil,        // bracketEnd
-			nil,        // symbol
-			nil,        // rest
-			nil,        // propSharp
-			nil,        // propFlat
-			nil,        // propAccent
-			nil,        // propGhost
-			nil,        // uint
-			nil,        // propDot
-			nil,        // propTuplet
-			nil,        // propLetRing
+			reduce(30), // bracketBegin, reduce: Property
+			reduce(30), // bracketEnd, reduce: Property
+			reduce(30), // symbol, reduce: Property
+			reduce(30), // rest, reduce: Property
+			reduce(30), // propSharp, reduce: Property
+			reduce(30), // propFlat, reduce: Property
+			reduce(30), // propAccent, reduce: Property
+			reduce(30), // propHeavyAccent, reduce: Property
+			reduce(30), // propGhost, reduce: Property
+			reduce(30), // uint, reduce: Property
+			reduce(30), // propDot, reduce: Property
+			reduce(30), // propTuplet, reduce: Property
+			reduce(30), // propLetRing, reduce: Property
 			nil,        // cmdAssign
 			nil,        // cmdPlay
 			nil,        // cmdTempo
@@ -2985,18 +3075,19 @@ var actionTab = actionTable{
 		canRecover: false,
 		actions: [numSymbols]action{
 			nil,        // INVALID
-			reduce(34), // ␚, reduce: BarBodyCommand
+			nil,        // ␚
 			nil,        // empty
-			reduce(34), // terminator, reduce: BarBodyCommand
+			nil,        // terminator
 			nil,        // cmdBar
 			nil,        // cmdEnd
 			nil,        // bracketBegin
-			nil,        // bracketEnd
+			shift(120), // bracketEnd
 			nil,        // symbol
 			nil,        // rest
 			nil,        // propSharp
 			nil,        // propFlat
 			nil,        // propAccent
+			nil,        // propHeavyAccent
 			nil,        // propGhost
 			nil,        // uint
 			nil,        // propDot
@@ -3018,9 +3109,9 @@ var actionTab = actionTable{
 		canRecover: false,
 		actions: [numSymbols]action{
 			nil,        // INVALID
-			reduce(38), // ␚, reduce: BarBodyCommand
+			reduce(31), // ␚, reduce: TopLevelCommand
 			nil,        // empty
-			reduce(38), // terminator, reduce: BarBodyCommand
+			reduce(31), // terminator, reduce: TopLevelCommand
 			nil,        // cmdBar
 			nil,        // cmdEnd
 			nil,        // bracketBegin
@@ -3030,6 +3121,7 @@ var actionTab = actionTable{
 			nil,        // propSharp
 			nil,        // propFlat
 			nil,        // propAccent
+			nil,        // propHeavyAccent
 			nil,        // propGhost
 			nil,        // uint
 			nil,        // propDot
@@ -3050,6 +3142,74 @@ var actionTab = actionTable{
 	actionRow{ // S92
 		canRecover: false,
 		actions: [numSymbols]action{
+			nil,        // INVALID
+			reduce(35), // ␚, reduce: BarBodyCommand
+			nil,        // empty
+			reduce(35), // terminator, reduce: BarBodyCommand
+			nil,        // cmdBar
+			nil,        // cmdEnd
+			nil,        // bracketBegin
+			nil,        // bracketEnd
+			nil,        // symbol
+			nil,        // rest
+			nil,        // propSharp
+			nil,        // propFlat
+			nil,        // propAccent
+			nil,        // propHeavyAccent
+			nil,        // propGhost
+			nil,        // uint
+			nil,        // propDot
+			nil,        // propTuplet
+			nil,        // propLetRing
+			nil,        // cmdAssign
+			nil,        // cmdPlay
+			nil,        // cmdTempo
+			nil,        // cmdTimesig
+			nil,        // cmdVelocity
+			nil,        // cmdChannel
+			nil,        // cmdProgram
+			nil,        // cmdControl
+			nil,        // cmdStart
+			nil,        // cmdStop
+		},
+	},
+	actionRow{ // S93
+		canRecover: false,
+		actions: [numSymbols]action{
+			nil,        // INVALID
+			reduce(39), // ␚, reduce: BarBodyCommand
+			nil,        // empty
+			reduce(39), // terminator, reduce: BarBodyCommand
+			nil,        // cmdBar
+			nil,        // cmdEnd
+			nil,        // bracketBegin
+			nil,        // bracketEnd
+			nil,        // symbol
+			nil,        // rest
+			nil,        // propSharp
+			nil,        // propFlat
+			nil,        // propAccent
+			nil,        // propHeavyAccent
+			nil,        // propGhost
+			nil,        // uint
+			nil,        // propDot
+			nil,        // propTuplet
+			nil,        // propLetRing
+			nil,        // cmdAssign
+			nil,        // cmdPlay
+			nil,        // cmdTempo
+			nil,        // cmdTimesig
+			nil,        // cmdVelocity
+			nil,        // cmdChannel
+			nil,        // cmdProgram
+			nil,        // cmdControl
+			nil,        // cmdStart
+			nil,        // cmdStop
+		},
+	},
+	actionRow{ // S94
+		canRecover: false,
+		actions: [numSymbols]action{
 			nil,       // INVALID
 			reduce(4), // ␚, reduce: TopLevelDeclList
 			nil,       // empty
@@ -3063,6 +3223,7 @@ var actionTab = actionTable{
 			nil,       // propSharp
 			nil,       // propFlat
 			nil,       // propAccent
+			nil,       // propHeavyAccent
 			nil,       // propGhost
 			nil,       // uint
 			nil,       // propDot
@@ -3080,7 +3241,7 @@ var actionTab = actionTable{
 			nil,       // cmdStop
 		},
 	},
-	actionRow{ // S93
+	actionRow{ // S95
 		canRecover: false,
 		actions: [numSymbols]action{
 			nil,       // INVALID
@@ -3096,6 +3257,7 @@ var actionTab = actionTable{
 			nil,       // propSharp
 			nil,       // propFlat
 			nil,       // propAccent
+			nil,       // propHeavyAccent
 			nil,       // propGhost
 			nil,       // uint
 			nil,       // propDot
@@ -3113,7 +3275,7 @@ var actionTab = actionTable{
 			reduce(3), // cmdStop, reduce: RepeatTerminator
 		},
 	},
-	actionRow{ // S94
+	actionRow{ // S96
 		canRecover: false,
 		actions: [numSymbols]action{
 			nil,        // INVALID
@@ -3129,6 +3291,7 @@ var actionTab = actionTable{
 			nil,        // propSharp
 			nil,        // propFlat
 			nil,        // propAccent
+			nil,        // propHeavyAccent
 			nil,        // propGhost
 			nil,        // uint
 			nil,        // propDot
@@ -3146,7 +3309,7 @@ var actionTab = actionTable{
 			nil,        // cmdStop
 		},
 	},
-	actionRow{ // S95
+	actionRow{ // S97
 		canRecover: false,
 		actions: [numSymbols]action{
 			nil,       // INVALID
@@ -3162,6 +3325,7 @@ var actionTab = actionTable{
 			nil,       // propSharp
 			nil,       // propFlat
 			nil,       // propAccent
+			nil,       // propHeavyAccent
 			nil,       // propGhost
 			nil,       // uint
 			nil,       // propDot
@@ -3179,13 +3343,13 @@ var actionTab = actionTable{
 			nil,       // cmdStop
 		},
 	},
-	actionRow{ // S96
+	actionRow{ // S98
 		canRecover: false,
 		actions: [numSymbols]action{
 			nil,        // INVALID
 			nil,        // ␚
 			nil,        // empty
-			shift(119), // terminator
+			shift(122), // terminator
 			nil,        // cmdBar
 			reduce(2),  // cmdEnd, reduce: RepeatTerminator
 			reduce(2),  // bracketBegin, reduce: RepeatTerminator
@@ -3195,6 +3359,7 @@ var actionTab = actionTable{
 			nil,        // propSharp
 			nil,        // propFlat
 			nil,        // propAccent
+			nil,        // propHeavyAccent
 			nil,        // propGhost
 			nil,        // uint
 			nil,        // propDot
@@ -3212,7 +3377,7 @@ var actionTab = actionTable{
 			reduce(2),  // cmdStop, reduce: RepeatTerminator
 		},
 	},
-	actionRow{ // S97
+	actionRow{ // S99
 		canRecover: false,
 		actions: [numSymbols]action{
 			nil,        // INVALID
@@ -3228,77 +3393,12 @@ var actionTab = actionTable{
 			nil,        // propSharp
 			nil,        // propFlat
 			nil,        // propAccent
+			nil,        // propHeavyAccent
 			nil,        // propGhost
 			nil,        // uint
 			nil,        // propDot
 			nil,        // propTuplet
 			nil,        // propLetRing
-			nil,        // cmdAssign
-			nil,        // cmdPlay
-			nil,        // cmdTempo
-			nil,        // cmdTimesig
-			nil,        // cmdVelocity
-			nil,        // cmdChannel
-			nil,        // cmdProgram
-			nil,        // cmdControl
-			nil,        // cmdStart
-			nil,        // cmdStop
-		},
-	},
-	actionRow{ // S98
-		canRecover: false,
-		actions: [numSymbols]action{
-			nil,        // INVALID
-			nil,        // ␚
-			nil,        // empty
-			reduce(16), // terminator, reduce: NoteObject
-			nil,        // cmdBar
-			reduce(16), // cmdEnd, reduce: NoteObject
-			reduce(16), // bracketBegin, reduce: NoteObject
-			nil,        // bracketEnd
-			reduce(16), // symbol, reduce: NoteObject
-			reduce(16), // rest, reduce: NoteObject
-			nil,        // propSharp
-			nil,        // propFlat
-			nil,        // propAccent
-			nil,        // propGhost
-			nil,        // uint
-			nil,        // propDot
-			nil,        // propTuplet
-			nil,        // propLetRing
-			nil,        // cmdAssign
-			nil,        // cmdPlay
-			nil,        // cmdTempo
-			nil,        // cmdTimesig
-			nil,        // cmdVelocity
-			nil,        // cmdChannel
-			nil,        // cmdProgram
-			nil,        // cmdControl
-			nil,        // cmdStart
-			nil,        // cmdStop
-		},
-	},
-	actionRow{ // S99
-		canRecover: false,
-		actions: [numSymbols]action{
-			nil,        // INVALID
-			nil,        // ␚
-			nil,        // empty
-			reduce(20), // terminator, reduce: PropertyList
-			nil,        // cmdBar
-			reduce(20), // cmdEnd, reduce: PropertyList
-			reduce(20), // bracketBegin, reduce: PropertyList
-			nil,        // bracketEnd
-			reduce(20), // symbol, reduce: PropertyList
-			reduce(20), // rest, reduce: PropertyList
-			shift(100), // propSharp
-			shift(101), // propFlat
-			shift(102), // propAccent
-			shift(103), // propGhost
-			shift(104), // uint
-			shift(105), // propDot
-			shift(106), // propTuplet
-			shift(107), // propLetRing
 			nil,        // cmdAssign
 			nil,        // cmdPlay
 			nil,        // cmdTempo
@@ -3317,21 +3417,22 @@ var actionTab = actionTable{
 			nil,        // INVALID
 			nil,        // ␚
 			nil,        // empty
-			reduce(22), // terminator, reduce: Property
+			reduce(16), // terminator, reduce: NoteObject
 			nil,        // cmdBar
-			reduce(22), // cmdEnd, reduce: Property
-			reduce(22), // bracketBegin, reduce: Property
+			reduce(16), // cmdEnd, reduce: NoteObject
+			reduce(16), // bracketBegin, reduce: NoteObject
 			nil,        // bracketEnd
-			reduce(22), // symbol, reduce: Property
-			reduce(22), // rest, reduce: Property
-			reduce(22), // propSharp, reduce: Property
-			reduce(22), // propFlat, reduce: Property
-			reduce(22), // propAccent, reduce: Property
-			reduce(22), // propGhost, reduce: Property
-			reduce(22), // uint, reduce: Property
-			reduce(22), // propDot, reduce: Property
-			reduce(22), // propTuplet, reduce: Property
-			reduce(22), // propLetRing, reduce: Property
+			reduce(16), // symbol, reduce: NoteObject
+			reduce(16), // rest, reduce: NoteObject
+			nil,        // propSharp
+			nil,        // propFlat
+			nil,        // propAccent
+			nil,        // propHeavyAccent
+			nil,        // propGhost
+			nil,        // uint
+			nil,        // propDot
+			nil,        // propTuplet
+			nil,        // propLetRing
 			nil,        // cmdAssign
 			nil,        // cmdPlay
 			nil,        // cmdTempo
@@ -3350,21 +3451,22 @@ var actionTab = actionTable{
 			nil,        // INVALID
 			nil,        // ␚
 			nil,        // empty
-			reduce(23), // terminator, reduce: Property
+			reduce(20), // terminator, reduce: PropertyList
 			nil,        // cmdBar
-			reduce(23), // cmdEnd, reduce: Property
-			reduce(23), // bracketBegin, reduce: Property
+			reduce(20), // cmdEnd, reduce: PropertyList
+			reduce(20), // bracketBegin, reduce: PropertyList
 			nil,        // bracketEnd
-			reduce(23), // symbol, reduce: Property
-			reduce(23), // rest, reduce: Property
-			reduce(23), // propSharp, reduce: Property
-			reduce(23), // propFlat, reduce: Property
-			reduce(23), // propAccent, reduce: Property
-			reduce(23), // propGhost, reduce: Property
-			reduce(23), // uint, reduce: Property
-			reduce(23), // propDot, reduce: Property
-			reduce(23), // propTuplet, reduce: Property
-			reduce(23), // propLetRing, reduce: Property
+			reduce(20), // symbol, reduce: PropertyList
+			reduce(20), // rest, reduce: PropertyList
+			shift(102), // propSharp
+			shift(103), // propFlat
+			shift(104), // propAccent
+			shift(105), // propHeavyAccent
+			shift(106), // propGhost
+			shift(107), // uint
+			shift(108), // propDot
+			shift(109), // propTuplet
+			shift(110), // propLetRing
 			nil,        // cmdAssign
 			nil,        // cmdPlay
 			nil,        // cmdTempo
@@ -3383,21 +3485,22 @@ var actionTab = actionTable{
 			nil,        // INVALID
 			nil,        // ␚
 			nil,        // empty
-			reduce(24), // terminator, reduce: Property
+			reduce(22), // terminator, reduce: Property
 			nil,        // cmdBar
-			reduce(24), // cmdEnd, reduce: Property
-			reduce(24), // bracketBegin, reduce: Property
+			reduce(22), // cmdEnd, reduce: Property
+			reduce(22), // bracketBegin, reduce: Property
 			nil,        // bracketEnd
-			reduce(24), // symbol, reduce: Property
-			reduce(24), // rest, reduce: Property
-			reduce(24), // propSharp, reduce: Property
-			reduce(24), // propFlat, reduce: Property
-			reduce(24), // propAccent, reduce: Property
-			reduce(24), // propGhost, reduce: Property
-			reduce(24), // uint, reduce: Property
-			reduce(24), // propDot, reduce: Property
-			reduce(24), // propTuplet, reduce: Property
-			reduce(24), // propLetRing, reduce: Property
+			reduce(22), // symbol, reduce: Property
+			reduce(22), // rest, reduce: Property
+			reduce(22), // propSharp, reduce: Property
+			reduce(22), // propFlat, reduce: Property
+			reduce(22), // propAccent, reduce: Property
+			reduce(22), // propHeavyAccent, reduce: Property
+			reduce(22), // propGhost, reduce: Property
+			reduce(22), // uint, reduce: Property
+			reduce(22), // propDot, reduce: Property
+			reduce(22), // propTuplet, reduce: Property
+			reduce(22), // propLetRing, reduce: Property
 			nil,        // cmdAssign
 			nil,        // cmdPlay
 			nil,        // cmdTempo
@@ -3416,21 +3519,22 @@ var actionTab = actionTable{
 			nil,        // INVALID
 			nil,        // ␚
 			nil,        // empty
-			reduce(25), // terminator, reduce: Property
+			reduce(23), // terminator, reduce: Property
 			nil,        // cmdBar
-			reduce(25), // cmdEnd, reduce: Property
-			reduce(25), // bracketBegin, reduce: Property
+			reduce(23), // cmdEnd, reduce: Property
+			reduce(23), // bracketBegin, reduce: Property
 			nil,        // bracketEnd
-			reduce(25), // symbol, reduce: Property
-			reduce(25), // rest, reduce: Property
-			reduce(25), // propSharp, reduce: Property
-			reduce(25), // propFlat, reduce: Property
-			reduce(25), // propAccent, reduce: Property
-			reduce(25), // propGhost, reduce: Property
-			reduce(25), // uint, reduce: Property
-			reduce(25), // propDot, reduce: Property
-			reduce(25), // propTuplet, reduce: Property
-			reduce(25), // propLetRing, reduce: Property
+			reduce(23), // symbol, reduce: Property
+			reduce(23), // rest, reduce: Property
+			reduce(23), // propSharp, reduce: Property
+			reduce(23), // propFlat, reduce: Property
+			reduce(23), // propAccent, reduce: Property
+			reduce(23), // propHeavyAccent, reduce: Property
+			reduce(23), // propGhost, reduce: Property
+			reduce(23), // uint, reduce: Property
+			reduce(23), // propDot, reduce: Property
+			reduce(23), // propTuplet, reduce: Property
+			reduce(23), // propLetRing, reduce: Property
 			nil,        // cmdAssign
 			nil,        // cmdPlay
 			nil,        // cmdTempo
@@ -3449,21 +3553,22 @@ var actionTab = actionTable{
 			nil,        // INVALID
 			nil,        // ␚
 			nil,        // empty
-			reduce(26), // terminator, reduce: Property
+			reduce(24), // terminator, reduce: Property
 			nil,        // cmdBar
-			reduce(26), // cmdEnd, reduce: Property
-			reduce(26), // bracketBegin, reduce: Property
+			reduce(24), // cmdEnd, reduce: Property
+			reduce(24), // bracketBegin, reduce: Property
 			nil,        // bracketEnd
-			reduce(26), // symbol, reduce: Property
-			reduce(26), // rest, reduce: Property
-			reduce(26), // propSharp, reduce: Property
-			reduce(26), // propFlat, reduce: Property
-			reduce(26), // propAccent, reduce: Property
-			reduce(26), // propGhost, reduce: Property
-			reduce(26), // uint, reduce: Property
-			reduce(26), // propDot, reduce: Property
-			reduce(26), // propTuplet, reduce: Property
-			reduce(26), // propLetRing, reduce: Property
+			reduce(24), // symbol, reduce: Property
+			reduce(24), // rest, reduce: Property
+			reduce(24), // propSharp, reduce: Property
+			reduce(24), // propFlat, reduce: Property
+			reduce(24), // propAccent, reduce: Property
+			reduce(24), // propHeavyAccent, reduce: Property
+			reduce(24), // propGhost, reduce: Property
+			reduce(24), // uint, reduce: Property
+			reduce(24), // propDot, reduce: Property
+			reduce(24), // propTuplet, reduce: Property
+			reduce(24), // propLetRing, reduce: Property
 			nil,        // cmdAssign
 			nil,        // cmdPlay
 			nil,        // cmdTempo
@@ -3482,21 +3587,22 @@ var actionTab = actionTable{
 			nil,        // INVALID
 			nil,        // ␚
 			nil,        // empty
-			reduce(27), // terminator, reduce: Property
+			reduce(25), // terminator, reduce: Property
 			nil,        // cmdBar
-			reduce(27), // cmdEnd, reduce: Property
-			reduce(27), // bracketBegin, reduce: Property
+			reduce(25), // cmdEnd, reduce: Property
+			reduce(25), // bracketBegin, reduce: Property
 			nil,        // bracketEnd
-			reduce(27), // symbol, reduce: Property
-			reduce(27), // rest, reduce: Property
-			reduce(27), // propSharp, reduce: Property
-			reduce(27), // propFlat, reduce: Property
-			reduce(27), // propAccent, reduce: Property
-			reduce(27), // propGhost, reduce: Property
-			reduce(27), // uint, reduce: Property
-			reduce(27), // propDot, reduce: Property
-			reduce(27), // propTuplet, reduce: Property
-			reduce(27), // propLetRing, reduce: Property
+			reduce(25), // symbol, reduce: Property
+			reduce(25), // rest, reduce: Property
+			reduce(25), // propSharp, reduce: Property
+			reduce(25), // propFlat, reduce: Property
+			reduce(25), // propAccent, reduce: Property
+			reduce(25), // propHeavyAccent, reduce: Property
+			reduce(25), // propGhost, reduce: Property
+			reduce(25), // uint, reduce: Property
+			reduce(25), // propDot, reduce: Property
+			reduce(25), // propTuplet, reduce: Property
+			reduce(25), // propLetRing, reduce: Property
 			nil,        // cmdAssign
 			nil,        // cmdPlay
 			nil,        // cmdTempo
@@ -3515,21 +3621,22 @@ var actionTab = actionTable{
 			nil,        // INVALID
 			nil,        // ␚
 			nil,        // empty
-			reduce(28), // terminator, reduce: Property
+			reduce(26), // terminator, reduce: Property
 			nil,        // cmdBar
-			reduce(28), // cmdEnd, reduce: Property
-			reduce(28), // bracketBegin, reduce: Property
+			reduce(26), // cmdEnd, reduce: Property
+			reduce(26), // bracketBegin, reduce: Property
 			nil,        // bracketEnd
-			reduce(28), // symbol, reduce: Property
-			reduce(28), // rest, reduce: Property
-			reduce(28), // propSharp, reduce: Property
-			reduce(28), // propFlat, reduce: Property
-			reduce(28), // propAccent, reduce: Property
-			reduce(28), // propGhost, reduce: Property
-			reduce(28), // uint, reduce: Property
-			reduce(28), // propDot, reduce: Property
-			reduce(28), // propTuplet, reduce: Property
-			reduce(28), // propLetRing, reduce: Property
+			reduce(26), // symbol, reduce: Property
+			reduce(26), // rest, reduce: Property
+			reduce(26), // propSharp, reduce: Property
+			reduce(26), // propFlat, reduce: Property
+			reduce(26), // propAccent, reduce: Property
+			reduce(26), // propHeavyAccent, reduce: Property
+			reduce(26), // propGhost, reduce: Property
+			reduce(26), // uint, reduce: Property
+			reduce(26), // propDot, reduce: Property
+			reduce(26), // propTuplet, reduce: Property
+			reduce(26), // propLetRing, reduce: Property
 			nil,        // cmdAssign
 			nil,        // cmdPlay
 			nil,        // cmdTempo
@@ -3548,21 +3655,22 @@ var actionTab = actionTable{
 			nil,        // INVALID
 			nil,        // ␚
 			nil,        // empty
-			reduce(29), // terminator, reduce: Property
+			reduce(27), // terminator, reduce: Property
 			nil,        // cmdBar
-			reduce(29), // cmdEnd, reduce: Property
-			reduce(29), // bracketBegin, reduce: Property
+			reduce(27), // cmdEnd, reduce: Property
+			reduce(27), // bracketBegin, reduce: Property
 			nil,        // bracketEnd
-			reduce(29), // symbol, reduce: Property
-			reduce(29), // rest, reduce: Property
-			reduce(29), // propSharp, reduce: Property
-			reduce(29), // propFlat, reduce: Property
-			reduce(29), // propAccent, reduce: Property
-			reduce(29), // propGhost, reduce: Property
-			reduce(29), // uint, reduce: Property
-			reduce(29), // propDot, reduce: Property
-			reduce(29), // propTuplet, reduce: Property
-			reduce(29), // propLetRing, reduce: Property
+			reduce(27), // symbol, reduce: Property
+			reduce(27), // rest, reduce: Property
+			reduce(27), // propSharp, reduce: Property
+			reduce(27), // propFlat, reduce: Property
+			reduce(27), // propAccent, reduce: Property
+			reduce(27), // propHeavyAccent, reduce: Property
+			reduce(27), // propGhost, reduce: Property
+			reduce(27), // uint, reduce: Property
+			reduce(27), // propDot, reduce: Property
+			reduce(27), // propTuplet, reduce: Property
+			reduce(27), // propLetRing, reduce: Property
 			nil,        // cmdAssign
 			nil,        // cmdPlay
 			nil,        // cmdTempo
@@ -3581,21 +3689,22 @@ var actionTab = actionTable{
 			nil,        // INVALID
 			nil,        // ␚
 			nil,        // empty
-			nil,        // terminator
+			reduce(28), // terminator, reduce: Property
 			nil,        // cmdBar
-			nil,        // cmdEnd
-			nil,        // bracketBegin
-			shift(121), // bracketEnd
-			nil,        // symbol
-			nil,        // rest
-			nil,        // propSharp
-			nil,        // propFlat
-			nil,        // propAccent
-			nil,        // propGhost
-			nil,        // uint
-			nil,        // propDot
-			nil,        // propTuplet
-			nil,        // propLetRing
+			reduce(28), // cmdEnd, reduce: Property
+			reduce(28), // bracketBegin, reduce: Property
+			nil,        // bracketEnd
+			reduce(28), // symbol, reduce: Property
+			reduce(28), // rest, reduce: Property
+			reduce(28), // propSharp, reduce: Property
+			reduce(28), // propFlat, reduce: Property
+			reduce(28), // propAccent, reduce: Property
+			reduce(28), // propHeavyAccent, reduce: Property
+			reduce(28), // propGhost, reduce: Property
+			reduce(28), // uint, reduce: Property
+			reduce(28), // propDot, reduce: Property
+			reduce(28), // propTuplet, reduce: Property
+			reduce(28), // propLetRing, reduce: Property
 			nil,        // cmdAssign
 			nil,        // cmdPlay
 			nil,        // cmdTempo
@@ -3614,21 +3723,22 @@ var actionTab = actionTable{
 			nil,        // INVALID
 			nil,        // ␚
 			nil,        // empty
-			reduce(33), // terminator, reduce: BarBodyCommand
+			reduce(29), // terminator, reduce: Property
 			nil,        // cmdBar
-			reduce(33), // cmdEnd, reduce: BarBodyCommand
-			nil,        // bracketBegin
+			reduce(29), // cmdEnd, reduce: Property
+			reduce(29), // bracketBegin, reduce: Property
 			nil,        // bracketEnd
-			nil,        // symbol
-			nil,        // rest
-			nil,        // propSharp
-			nil,        // propFlat
-			nil,        // propAccent
-			nil,        // propGhost
-			nil,        // uint
-			nil,        // propDot
-			nil,        // propTuplet
-			nil,        // propLetRing
+			reduce(29), // symbol, reduce: Property
+			reduce(29), // rest, reduce: Property
+			reduce(29), // propSharp, reduce: Property
+			reduce(29), // propFlat, reduce: Property
+			reduce(29), // propAccent, reduce: Property
+			reduce(29), // propHeavyAccent, reduce: Property
+			reduce(29), // propGhost, reduce: Property
+			reduce(29), // uint, reduce: Property
+			reduce(29), // propDot, reduce: Property
+			reduce(29), // propTuplet, reduce: Property
+			reduce(29), // propLetRing, reduce: Property
 			nil,        // cmdAssign
 			nil,        // cmdPlay
 			nil,        // cmdTempo
@@ -3647,21 +3757,22 @@ var actionTab = actionTable{
 			nil,        // INVALID
 			nil,        // ␚
 			nil,        // empty
-			nil,        // terminator
+			reduce(30), // terminator, reduce: Property
 			nil,        // cmdBar
-			nil,        // cmdEnd
-			nil,        // bracketBegin
+			reduce(30), // cmdEnd, reduce: Property
+			reduce(30), // bracketBegin, reduce: Property
 			nil,        // bracketEnd
-			nil,        // symbol
-			nil,        // rest
-			nil,        // propSharp
-			nil,        // propFlat
-			nil,        // propAccent
-			nil,        // propGhost
-			shift(122), // uint
-			nil,        // propDot
-			nil,        // propTuplet
-			nil,        // propLetRing
+			reduce(30), // symbol, reduce: Property
+			reduce(30), // rest, reduce: Property
+			reduce(30), // propSharp, reduce: Property
+			reduce(30), // propFlat, reduce: Property
+			reduce(30), // propAccent, reduce: Property
+			reduce(30), // propHeavyAccent, reduce: Property
+			reduce(30), // propGhost, reduce: Property
+			reduce(30), // uint, reduce: Property
+			reduce(30), // propDot, reduce: Property
+			reduce(30), // propTuplet, reduce: Property
+			reduce(30), // propLetRing, reduce: Property
 			nil,        // cmdAssign
 			nil,        // cmdPlay
 			nil,        // cmdTempo
@@ -3680,16 +3791,17 @@ var actionTab = actionTable{
 			nil,        // INVALID
 			nil,        // ␚
 			nil,        // empty
-			reduce(35), // terminator, reduce: BarBodyCommand
+			nil,        // terminator
 			nil,        // cmdBar
-			reduce(35), // cmdEnd, reduce: BarBodyCommand
+			nil,        // cmdEnd
 			nil,        // bracketBegin
-			nil,        // bracketEnd
+			shift(124), // bracketEnd
 			nil,        // symbol
 			nil,        // rest
 			nil,        // propSharp
 			nil,        // propFlat
 			nil,        // propAccent
+			nil,        // propHeavyAccent
 			nil,        // propGhost
 			nil,        // uint
 			nil,        // propDot
@@ -3713,9 +3825,9 @@ var actionTab = actionTable{
 			nil,        // INVALID
 			nil,        // ␚
 			nil,        // empty
-			reduce(36), // terminator, reduce: BarBodyCommand
+			reduce(34), // terminator, reduce: BarBodyCommand
 			nil,        // cmdBar
-			reduce(36), // cmdEnd, reduce: BarBodyCommand
+			reduce(34), // cmdEnd, reduce: BarBodyCommand
 			nil,        // bracketBegin
 			nil,        // bracketEnd
 			nil,        // symbol
@@ -3723,6 +3835,7 @@ var actionTab = actionTable{
 			nil,        // propSharp
 			nil,        // propFlat
 			nil,        // propAccent
+			nil,        // propHeavyAccent
 			nil,        // propGhost
 			nil,        // uint
 			nil,        // propDot
@@ -3746,9 +3859,9 @@ var actionTab = actionTable{
 			nil,        // INVALID
 			nil,        // ␚
 			nil,        // empty
-			reduce(37), // terminator, reduce: BarBodyCommand
+			nil,        // terminator
 			nil,        // cmdBar
-			reduce(37), // cmdEnd, reduce: BarBodyCommand
+			nil,        // cmdEnd
 			nil,        // bracketBegin
 			nil,        // bracketEnd
 			nil,        // symbol
@@ -3756,8 +3869,9 @@ var actionTab = actionTable{
 			nil,        // propSharp
 			nil,        // propFlat
 			nil,        // propAccent
+			nil,        // propHeavyAccent
 			nil,        // propGhost
-			nil,        // uint
+			shift(125), // uint
 			nil,        // propDot
 			nil,        // propTuplet
 			nil,        // propLetRing
@@ -3779,9 +3893,9 @@ var actionTab = actionTable{
 			nil,        // INVALID
 			nil,        // ␚
 			nil,        // empty
-			nil,        // terminator
+			reduce(36), // terminator, reduce: BarBodyCommand
 			nil,        // cmdBar
-			nil,        // cmdEnd
+			reduce(36), // cmdEnd, reduce: BarBodyCommand
 			nil,        // bracketBegin
 			nil,        // bracketEnd
 			nil,        // symbol
@@ -3789,8 +3903,9 @@ var actionTab = actionTable{
 			nil,        // propSharp
 			nil,        // propFlat
 			nil,        // propAccent
+			nil,        // propHeavyAccent
 			nil,        // propGhost
-			shift(123), // uint
+			nil,        // uint
 			nil,        // propDot
 			nil,        // propTuplet
 			nil,        // propLetRing
@@ -3810,18 +3925,19 @@ var actionTab = actionTable{
 		canRecover: false,
 		actions: [numSymbols]action{
 			nil,        // INVALID
-			reduce(17), // ␚, reduce: NoteObject
+			nil,        // ␚
 			nil,        // empty
-			reduce(17), // terminator, reduce: NoteObject
+			reduce(37), // terminator, reduce: BarBodyCommand
 			nil,        // cmdBar
-			nil,        // cmdEnd
-			reduce(17), // bracketBegin, reduce: NoteObject
+			reduce(37), // cmdEnd, reduce: BarBodyCommand
+			nil,        // bracketBegin
 			nil,        // bracketEnd
-			reduce(17), // symbol, reduce: NoteObject
-			reduce(17), // rest, reduce: NoteObject
+			nil,        // symbol
+			nil,        // rest
 			nil,        // propSharp
 			nil,        // propFlat
 			nil,        // propAccent
+			nil,        // propHeavyAccent
 			nil,        // propGhost
 			nil,        // uint
 			nil,        // propDot
@@ -3845,16 +3961,17 @@ var actionTab = actionTable{
 			nil,        // INVALID
 			nil,        // ␚
 			nil,        // empty
-			nil,        // terminator
+			reduce(38), // terminator, reduce: BarBodyCommand
 			nil,        // cmdBar
-			nil,        // cmdEnd
-			reduce(21), // bracketBegin, reduce: PropertyList
-			reduce(21), // bracketEnd, reduce: PropertyList
-			reduce(21), // symbol, reduce: PropertyList
-			reduce(21), // rest, reduce: PropertyList
+			reduce(38), // cmdEnd, reduce: BarBodyCommand
+			nil,        // bracketBegin
+			nil,        // bracketEnd
+			nil,        // symbol
+			nil,        // rest
 			nil,        // propSharp
 			nil,        // propFlat
 			nil,        // propAccent
+			nil,        // propHeavyAccent
 			nil,        // propGhost
 			nil,        // uint
 			nil,        // propDot
@@ -3881,18 +3998,19 @@ var actionTab = actionTable{
 			nil,        // terminator
 			nil,        // cmdBar
 			nil,        // cmdEnd
-			reduce(20), // bracketBegin, reduce: PropertyList
-			reduce(20), // bracketEnd, reduce: PropertyList
-			reduce(20), // symbol, reduce: PropertyList
-			reduce(20), // rest, reduce: PropertyList
-			shift(80),  // propSharp
-			shift(81),  // propFlat
-			shift(82),  // propAccent
-			shift(83),  // propGhost
-			shift(84),  // uint
-			shift(85),  // propDot
-			shift(86),  // propTuplet
-			shift(87),  // propLetRing
+			nil,        // bracketBegin
+			nil,        // bracketEnd
+			nil,        // symbol
+			nil,        // rest
+			nil,        // propSharp
+			nil,        // propFlat
+			nil,        // propAccent
+			nil,        // propHeavyAccent
+			nil,        // propGhost
+			shift(126), // uint
+			nil,        // propDot
+			nil,        // propTuplet
+			nil,        // propLetRing
 			nil,        // cmdAssign
 			nil,        // cmdPlay
 			nil,        // cmdTempo
@@ -3908,34 +4026,35 @@ var actionTab = actionTable{
 	actionRow{ // S118
 		canRecover: false,
 		actions: [numSymbols]action{
-			nil,       // INVALID
-			nil,       // ␚
-			nil,       // empty
-			nil,       // terminator
-			nil,       // cmdBar
-			reduce(3), // cmdEnd, reduce: RepeatTerminator
-			shift(63), // bracketBegin
-			nil,       // bracketEnd
-			shift(64), // symbol
-			shift(65), // rest
-			nil,       // propSharp
-			nil,       // propFlat
-			nil,       // propAccent
-			nil,       // propGhost
-			nil,       // uint
-			nil,       // propDot
-			nil,       // propTuplet
-			nil,       // propLetRing
-			nil,       // cmdAssign
-			nil,       // cmdPlay
-			shift(66), // cmdTempo
-			shift(67), // cmdTimesig
-			shift(68), // cmdVelocity
-			shift(69), // cmdChannel
-			shift(70), // cmdProgram
-			shift(71), // cmdControl
-			shift(72), // cmdStart
-			shift(73), // cmdStop
+			nil,        // INVALID
+			reduce(17), // ␚, reduce: NoteObject
+			nil,        // empty
+			reduce(17), // terminator, reduce: NoteObject
+			nil,        // cmdBar
+			nil,        // cmdEnd
+			reduce(17), // bracketBegin, reduce: NoteObject
+			nil,        // bracketEnd
+			reduce(17), // symbol, reduce: NoteObject
+			reduce(17), // rest, reduce: NoteObject
+			nil,        // propSharp
+			nil,        // propFlat
+			nil,        // propAccent
+			nil,        // propHeavyAccent
+			nil,        // propGhost
+			nil,        // uint
+			nil,        // propDot
+			nil,        // propTuplet
+			nil,        // propLetRing
+			nil,        // cmdAssign
+			nil,        // cmdPlay
+			nil,        // cmdTempo
+			nil,        // cmdTimesig
+			nil,        // cmdVelocity
+			nil,        // cmdChannel
+			nil,        // cmdProgram
+			nil,        // cmdControl
+			nil,        // cmdStart
+			nil,        // cmdStop
 		},
 	},
 	actionRow{ // S119
@@ -3944,7 +4063,109 @@ var actionTab = actionTable{
 			nil,        // INVALID
 			nil,        // ␚
 			nil,        // empty
-			shift(119), // terminator
+			nil,        // terminator
+			nil,        // cmdBar
+			nil,        // cmdEnd
+			reduce(21), // bracketBegin, reduce: PropertyList
+			reduce(21), // bracketEnd, reduce: PropertyList
+			reduce(21), // symbol, reduce: PropertyList
+			reduce(21), // rest, reduce: PropertyList
+			nil,        // propSharp
+			nil,        // propFlat
+			nil,        // propAccent
+			nil,        // propHeavyAccent
+			nil,        // propGhost
+			nil,        // uint
+			nil,        // propDot
+			nil,        // propTuplet
+			nil,        // propLetRing
+			nil,        // cmdAssign
+			nil,        // cmdPlay
+			nil,        // cmdTempo
+			nil,        // cmdTimesig
+			nil,        // cmdVelocity
+			nil,        // cmdChannel
+			nil,        // cmdProgram
+			nil,        // cmdControl
+			nil,        // cmdStart
+			nil,        // cmdStop
+		},
+	},
+	actionRow{ // S120
+		canRecover: false,
+		actions: [numSymbols]action{
+			nil,        // INVALID
+			nil,        // ␚
+			nil,        // empty
+			nil,        // terminator
+			nil,        // cmdBar
+			nil,        // cmdEnd
+			reduce(20), // bracketBegin, reduce: PropertyList
+			reduce(20), // bracketEnd, reduce: PropertyList
+			reduce(20), // symbol, reduce: PropertyList
+			reduce(20), // rest, reduce: PropertyList
+			shift(81),  // propSharp
+			shift(82),  // propFlat
+			shift(83),  // propAccent
+			shift(84),  // propHeavyAccent
+			shift(85),  // propGhost
+			shift(86),  // uint
+			shift(87),  // propDot
+			shift(88),  // propTuplet
+			shift(89),  // propLetRing
+			nil,        // cmdAssign
+			nil,        // cmdPlay
+			nil,        // cmdTempo
+			nil,        // cmdTimesig
+			nil,        // cmdVelocity
+			nil,        // cmdChannel
+			nil,        // cmdProgram
+			nil,        // cmdControl
+			nil,        // cmdStart
+			nil,        // cmdStop
+		},
+	},
+	actionRow{ // S121
+		canRecover: false,
+		actions: [numSymbols]action{
+			nil,       // INVALID
+			nil,       // ␚
+			nil,       // empty
+			nil,       // terminator
+			nil,       // cmdBar
+			reduce(3), // cmdEnd, reduce: RepeatTerminator
+			shift(64), // bracketBegin
+			nil,       // bracketEnd
+			shift(65), // symbol
+			shift(66), // rest
+			nil,       // propSharp
+			nil,       // propFlat
+			nil,       // propAccent
+			nil,       // propHeavyAccent
+			nil,       // propGhost
+			nil,       // uint
+			nil,       // propDot
+			nil,       // propTuplet
+			nil,       // propLetRing
+			nil,       // cmdAssign
+			nil,       // cmdPlay
+			shift(67), // cmdTempo
+			shift(68), // cmdTimesig
+			shift(69), // cmdVelocity
+			shift(70), // cmdChannel
+			shift(71), // cmdProgram
+			shift(72), // cmdControl
+			shift(73), // cmdStart
+			shift(74), // cmdStop
+		},
+	},
+	actionRow{ // S122
+		canRecover: false,
+		actions: [numSymbols]action{
+			nil,        // INVALID
+			nil,        // ␚
+			nil,        // empty
+			shift(122), // terminator
 			nil,        // cmdBar
 			reduce(2),  // cmdEnd, reduce: RepeatTerminator
 			reduce(2),  // bracketBegin, reduce: RepeatTerminator
@@ -3954,6 +4175,7 @@ var actionTab = actionTable{
 			nil,        // propSharp
 			nil,        // propFlat
 			nil,        // propAccent
+			nil,        // propHeavyAccent
 			nil,        // propGhost
 			nil,        // uint
 			nil,        // propDot
@@ -3971,7 +4193,7 @@ var actionTab = actionTable{
 			reduce(2),  // cmdStop, reduce: RepeatTerminator
 		},
 	},
-	actionRow{ // S120
+	actionRow{ // S123
 		canRecover: false,
 		actions: [numSymbols]action{
 			nil,        // INVALID
@@ -3987,105 +4209,7 @@ var actionTab = actionTable{
 			nil,        // propSharp
 			nil,        // propFlat
 			nil,        // propAccent
-			nil,        // propGhost
-			nil,        // uint
-			nil,        // propDot
-			nil,        // propTuplet
-			nil,        // propLetRing
-			nil,        // cmdAssign
-			nil,        // cmdPlay
-			nil,        // cmdTempo
-			nil,        // cmdTimesig
-			nil,        // cmdVelocity
-			nil,        // cmdChannel
-			nil,        // cmdProgram
-			nil,        // cmdControl
-			nil,        // cmdStart
-			nil,        // cmdStop
-		},
-	},
-	actionRow{ // S121
-		canRecover: false,
-		actions: [numSymbols]action{
-			nil,        // INVALID
-			nil,        // ␚
-			nil,        // empty
-			reduce(20), // terminator, reduce: PropertyList
-			nil,        // cmdBar
-			reduce(20), // cmdEnd, reduce: PropertyList
-			reduce(20), // bracketBegin, reduce: PropertyList
-			nil,        // bracketEnd
-			reduce(20), // symbol, reduce: PropertyList
-			reduce(20), // rest, reduce: PropertyList
-			shift(100), // propSharp
-			shift(101), // propFlat
-			shift(102), // propAccent
-			shift(103), // propGhost
-			shift(104), // uint
-			shift(105), // propDot
-			shift(106), // propTuplet
-			shift(107), // propLetRing
-			nil,        // cmdAssign
-			nil,        // cmdPlay
-			nil,        // cmdTempo
-			nil,        // cmdTimesig
-			nil,        // cmdVelocity
-			nil,        // cmdChannel
-			nil,        // cmdProgram
-			nil,        // cmdControl
-			nil,        // cmdStart
-			nil,        // cmdStop
-		},
-	},
-	actionRow{ // S122
-		canRecover: false,
-		actions: [numSymbols]action{
-			nil,        // INVALID
-			nil,        // ␚
-			nil,        // empty
-			reduce(34), // terminator, reduce: BarBodyCommand
-			nil,        // cmdBar
-			reduce(34), // cmdEnd, reduce: BarBodyCommand
-			nil,        // bracketBegin
-			nil,        // bracketEnd
-			nil,        // symbol
-			nil,        // rest
-			nil,        // propSharp
-			nil,        // propFlat
-			nil,        // propAccent
-			nil,        // propGhost
-			nil,        // uint
-			nil,        // propDot
-			nil,        // propTuplet
-			nil,        // propLetRing
-			nil,        // cmdAssign
-			nil,        // cmdPlay
-			nil,        // cmdTempo
-			nil,        // cmdTimesig
-			nil,        // cmdVelocity
-			nil,        // cmdChannel
-			nil,        // cmdProgram
-			nil,        // cmdControl
-			nil,        // cmdStart
-			nil,        // cmdStop
-		},
-	},
-	actionRow{ // S123
-		canRecover: false,
-		actions: [numSymbols]action{
-			nil,        // INVALID
-			nil,        // ␚
-			nil,        // empty
-			reduce(38), // terminator, reduce: BarBodyCommand
-			nil,        // cmdBar
-			reduce(38), // cmdEnd, reduce: BarBodyCommand
-			nil,        // bracketBegin
-			nil,        // bracketEnd
-			nil,        // symbol
-			nil,        // rest
-			nil,        // propSharp
-			nil,        // propFlat
-			nil,        // propAccent
+			nil,        // propHeavyAccent
 			nil,        // propGhost
 			nil,        // uint
 			nil,        // propDot
@@ -4109,16 +4233,51 @@ var actionTab = actionTable{
 			nil,        // INVALID
 			nil,        // ␚
 			nil,        // empty
-			nil,        // terminator
+			reduce(20), // terminator, reduce: PropertyList
 			nil,        // cmdBar
-			nil,        // cmdEnd
-			reduce(17), // bracketBegin, reduce: NoteObject
-			reduce(17), // bracketEnd, reduce: NoteObject
-			reduce(17), // symbol, reduce: NoteObject
-			reduce(17), // rest, reduce: NoteObject
+			reduce(20), // cmdEnd, reduce: PropertyList
+			reduce(20), // bracketBegin, reduce: PropertyList
+			nil,        // bracketEnd
+			reduce(20), // symbol, reduce: PropertyList
+			reduce(20), // rest, reduce: PropertyList
+			shift(102), // propSharp
+			shift(103), // propFlat
+			shift(104), // propAccent
+			shift(105), // propHeavyAccent
+			shift(106), // propGhost
+			shift(107), // uint
+			shift(108), // propDot
+			shift(109), // propTuplet
+			shift(110), // propLetRing
+			nil,        // cmdAssign
+			nil,        // cmdPlay
+			nil,        // cmdTempo
+			nil,        // cmdTimesig
+			nil,        // cmdVelocity
+			nil,        // cmdChannel
+			nil,        // cmdProgram
+			nil,        // cmdControl
+			nil,        // cmdStart
+			nil,        // cmdStop
+		},
+	},
+	actionRow{ // S125
+		canRecover: false,
+		actions: [numSymbols]action{
+			nil,        // INVALID
+			nil,        // ␚
+			nil,        // empty
+			reduce(35), // terminator, reduce: BarBodyCommand
+			nil,        // cmdBar
+			reduce(35), // cmdEnd, reduce: BarBodyCommand
+			nil,        // bracketBegin
+			nil,        // bracketEnd
+			nil,        // symbol
+			nil,        // rest
 			nil,        // propSharp
 			nil,        // propFlat
 			nil,        // propAccent
+			nil,        // propHeavyAccent
 			nil,        // propGhost
 			nil,        // uint
 			nil,        // propDot
@@ -4136,7 +4295,75 @@ var actionTab = actionTable{
 			nil,        // cmdStop
 		},
 	},
-	actionRow{ // S125
+	actionRow{ // S126
+		canRecover: false,
+		actions: [numSymbols]action{
+			nil,        // INVALID
+			nil,        // ␚
+			nil,        // empty
+			reduce(39), // terminator, reduce: BarBodyCommand
+			nil,        // cmdBar
+			reduce(39), // cmdEnd, reduce: BarBodyCommand
+			nil,        // bracketBegin
+			nil,        // bracketEnd
+			nil,        // symbol
+			nil,        // rest
+			nil,        // propSharp
+			nil,        // propFlat
+			nil,        // propAccent
+			nil,        // propHeavyAccent
+			nil,        // propGhost
+			nil,        // uint
+			nil,        // propDot
+			nil,        // propTuplet
+			nil,        // propLetRing
+			nil,        // cmdAssign
+			nil,        // cmdPlay
+			nil,        // cmdTempo
+			nil,        // cmdTimesig
+			nil,        // cmdVelocity
+			nil,        // cmdChannel
+			nil,        // cmdProgram
+			nil,        // cmdControl
+			nil,        // cmdStart
+			nil,        // cmdStop
+		},
+	},
+	actionRow{ // S127
+		canRecover: false,
+		actions: [numSymbols]action{
+			nil,        // INVALID
+			nil,        // ␚
+			nil,        // empty
+			nil,        // terminator
+			nil,        // cmdBar
+			nil,        // cmdEnd
+			reduce(17), // bracketBegin, reduce: NoteObject
+			reduce(17), // bracketEnd, reduce: NoteObject
+			reduce(17), // symbol, reduce: NoteObject
+			reduce(17), // rest, reduce: NoteObject
+			nil,        // propSharp
+			nil,        // propFlat
+			nil,        // propAccent
+			nil,        // propHeavyAccent
+			nil,        // propGhost
+			nil,        // uint
+			nil,        // propDot
+			nil,        // propTuplet
+			nil,        // propLetRing
+			nil,        // cmdAssign
+			nil,        // cmdPlay
+			nil,        // cmdTempo
+			nil,        // cmdTimesig
+			nil,        // cmdVelocity
+			nil,        // cmdChannel
+			nil,        // cmdProgram
+			nil,        // cmdControl
+			nil,        // cmdStart
+			nil,        // cmdStop
+		},
+	},
+	actionRow{ // S128
 		canRecover: false,
 		actions: [numSymbols]action{
 			nil,       // INVALID
@@ -4152,6 +4379,7 @@ var actionTab = actionTable{
 			nil,       // propSharp
 			nil,       // propFlat
 			nil,       // propAccent
+			nil,       // propHeavyAccent
 			nil,       // propGhost
 			nil,       // uint
 			nil,       // propDot
@@ -4169,7 +4397,7 @@ var actionTab = actionTable{
 			nil,       // cmdStop
 		},
 	},
-	actionRow{ // S126
+	actionRow{ // S129
 		canRecover: false,
 		actions: [numSymbols]action{
 			nil,       // INVALID
@@ -4185,6 +4413,7 @@ var actionTab = actionTable{
 			nil,       // propSharp
 			nil,       // propFlat
 			nil,       // propAccent
+			nil,       // propHeavyAccent
 			nil,       // propGhost
 			nil,       // uint
 			nil,       // propDot
@@ -4202,7 +4431,7 @@ var actionTab = actionTable{
 			reduce(3), // cmdStop, reduce: RepeatTerminator
 		},
 	},
-	actionRow{ // S127
+	actionRow{ // S130
 		canRecover: false,
 		actions: [numSymbols]action{
 			nil,        // INVALID
@@ -4218,6 +4447,7 @@ var actionTab = actionTable{
 			nil,        // propSharp
 			nil,        // propFlat
 			nil,        // propAccent
+			nil,        // propHeavyAccent
 			nil,        // propGhost
 			nil,        // uint
 			nil,        // propDot
