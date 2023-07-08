@@ -2,8 +2,8 @@
 
 terminator : ';' '\n' | ';' | '\n' ;
 
-uint      : _uint ;
-_uint        : '0' | '1'-'9' {'0'-'9'} ;
+uint       : _uint ;
+_uint      : '0' | '1'-'9' {'0'-'9'} ;
 
 _char      : 'a'-'z' | 'A'-'Z' ;
 symbol     : _char ;
@@ -63,13 +63,13 @@ RepeatTerminator
     ;
 
 TopLevelDeclList
-    : TopLevelDecl terminator RepeatTerminator TopLevelDeclList << ast.NewNodeList($0.(ast.Node), $3.(ast.NodeList)), nil >>
-    | TopLevelDecl RepeatTerminator  << ast.NewNodeList($0.(ast.Node), nil), nil >>
+    : TopLevelDecl terminator RepeatTerminator TopLevelDeclList    << ast.NewNodeList($0.(ast.Node), $3.(ast.NodeList)), nil >>
+    | TopLevelDecl RepeatTerminator                                << ast.NewNodeList($0.(ast.Node), nil), nil >>
     ;
 
 BarBodyDeclList
-    : BarBodyDecl terminator RepeatTerminator BarBodyDeclList << ast.NewNodeList($0.(ast.Node), $3.(ast.NodeList)), nil >>
-    | BarBodyDecl RepeatTerminator  << ast.NewNodeList($0.(ast.Node), nil), nil >>
+    : BarBodyDecl terminator RepeatTerminator BarBodyDeclList      << ast.NewNodeList($0.(ast.Node), $3.(ast.NodeList)), nil >>
+    | BarBodyDecl RepeatTerminator                                 << ast.NewNodeList($0.(ast.Node), nil), nil >>
     ;
 
 TopLevelDecl
@@ -84,17 +84,17 @@ BarBodyDecl
     ;
 
 Bar
-    : cmdBar RepeatTerminator BarBodyDeclList cmdEnd << ast.NewBar(string($T0.Lit[len(":bar "):]), $2.(ast.NodeList)), nil >>
+    : cmdBar RepeatTerminator BarBodyDeclList cmdEnd    << ast.NewBar(string($T0.Lit[len(":bar "):]), $2.(ast.NodeList)), nil >>
     ;
 
 NoteList
-    : NoteObject << ast.NewNoteList($0.(ast.Node), nil), nil >>
-    | NoteObject NoteList << ast.NewNoteList($0.(ast.Node), $1.(ast.NoteList)), nil >>
+    : NoteObject                                        << ast.NewNoteList($0.(ast.Node), nil), nil >>
+    | NoteObject NoteList                               << ast.NewNoteList($0.(ast.Node), $1.(ast.NoteList)), nil >>
     ;
 
 NoteObject
-    : NoteSymbol PropertyList       << ast.NewNote([]rune(string($T0.Lit))[0], $1.(ast.PropertyList)), nil >>
-    | bracketBegin NoteList bracketEnd PropertyList << ast.NewNoteListFromGroup($1.(ast.NoteList), $3.(ast.PropertyList)) >>
+    : NoteSymbol PropertyList                           << ast.NewNote([]rune(string($T0.Lit))[0], $1.(ast.PropertyList)), nil >>
+    | bracketBegin NoteList bracketEnd PropertyList     << ast.NewNoteListFromGroup($1.(ast.NoteList), $3.(ast.PropertyList)) >>
     ;
 
 NoteSymbol
@@ -103,8 +103,8 @@ NoteSymbol
     ;
 
 PropertyList
-    : empty                         << ast.PropertyList(nil), nil >>
-    | Property PropertyList         << ast.NewPropertyList($T0, $1) >>
+    : empty                          << ast.PropertyList(nil), nil >>
+    | Property PropertyList          << ast.NewPropertyList($T0, $1) >>
     ;
 
 Property
@@ -119,8 +119,8 @@ Property
     ;
 
 TopLevelCommand
-    : cmdAssign symbol uint            << ast.NewCmdAssign([]rune(string($T1.Lit))[0], ast.Must($T2.Int64Value())) >>
-    | cmdPlay                          << ast.NewCmdPlay(string($T0.Lit[len(":play "):])) >>
+    : cmdAssign symbol uint          << ast.NewCmdAssign([]rune(string($T1.Lit))[0], ast.Must($T2.Int64Value())) >>
+    | cmdPlay                        << ast.NewCmdPlay(string($T0.Lit[len(":play "):])) >>
     | BarBodyCommand
     ;
 
