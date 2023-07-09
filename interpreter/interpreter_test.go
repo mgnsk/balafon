@@ -196,13 +196,18 @@ func TestAccentuatedAndGhostNote(t *testing.T) {
 		velocity uint8
 	}{
 		{":velocity 110; :assign c 60; c", 110},
+		{":velocity 110; :assign c 60; c>", 115},
+		{":velocity 110; :assign c 60; c>>", 120},
+		{":velocity 110; :assign c 60; c>>>", 125},
+		{":velocity 110; :assign c 60; c>>>>", constants.MaxValue},
 		{":velocity 110; :assign c 60; c^", 120},
 		{":velocity 110; :assign c 60; c^^", constants.MaxValue},
 		{":velocity 110; :assign c 60; c^^^", constants.MaxValue},
-		{":velocity 20; :assign c 60; c", 20},
-		{":velocity 20; :assign c 60; c)", 10},
-		{":velocity 20; :assign c 60; c))", 0},
-		{":velocity 20; :assign c 60; c)))", 0},
+		{":velocity 110; :assign c 60; c^>", 125},
+		{":velocity 110; :assign c 60; c^>>", constants.MaxValue},
+		{":velocity 10; :assign c 60; c", 10},
+		{":velocity 10; :assign c 60; c)", 5},
+		{":velocity 10; :assign c 60; c))", 0},
 	} {
 		t.Run(tc.input, func(t *testing.T) {
 			g := NewWithT(t)

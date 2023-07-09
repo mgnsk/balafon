@@ -26,22 +26,22 @@
 
 // Start the first bar with a crash cymbal and let it ring.
 :bar bonham1
-	[[c*-o]   [x'-x]    [x^-x] [x'-x]]8/3
+	[[c*-o]   [x>-x]    [x^-x] [x>-x]]8/3
 	-         [-s)-]8/3 s^     [-s)-]8/3
-	[k-k]^8/3 [--k]8/3  -      [--k]8/3
+	[k-k]>8/3 [--k]8/3  -      [--k]8/3
 	-         X         -2
 :end
 
 :bar bonham2
-	[[x^-o]   [x'-x]    [x^-x] [x'-x]]8/3
+	[[x^-o]   [x>-x]    [x^-x] [x>-x]]8/3
 	-         [-s)-]8/3 s^     [-s)-]8/3
-	[k-k]^8/3 [--k]8/3  -      [--k]8/3
+	[k-k]>8/3 [--k]8/3  -      [--k]8/3
 	-         X         -2
 :end
 
 :bar fill
 	[[x^-s] [sss] [ssq] [qgg]]8/3
-	[[k-k]^ [--k]]8/3   -2
+	[[k-k]> [--k]]8/3   -2
 	-       X     X     X
 :end
 

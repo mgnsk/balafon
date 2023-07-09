@@ -31,14 +31,14 @@ cmdStop       : _prefix 's' 't' 'o' 'p' ;
 bracketBegin : '[' ;
 bracketEnd   : ']' ;
 
-propSharp   : '#' ;
-propFlat    : '$' ;
-propAccent  : '\'' ;
+propSharp        : '#' ;
+propFlat         : '$' ;
+propAccent       : '>' ;
 propHeavyAccent  : '^' ;
-propGhost   : ')' ;
-propDot     : '.' ;
-propTuplet  : '/' '3' | '/' '5' ;
-propLetRing : '*' ;
+propGhost        : ')' ;
+propDot          : '.' ;
+propTuplet       : '/' '3' | '/' '5' ;
+propLetRing      : '*' ;
 
 _lineComment  : '/' '/' { . } '\n' ;
 _blockComment : '/' '*' { . | '*' } '*' '/' ;
