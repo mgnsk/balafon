@@ -225,6 +225,31 @@ func TestAccentuatedAndGhostNote(t *testing.T) {
 	}
 }
 
+func TestStaccatoNote(t *testing.T) {
+	for _, tc := range []struct {
+		input string
+		offAt uint32
+	}{
+		{":timesig 1 4; :assign c 60; c", uint32(constants.TicksPerQuarter)},
+		{":timesig 1 4; :assign c 60; c`", uint32(constants.TicksPerQuarter / 2)},
+		{":timesig 1 4; :assign c 60; c``", uint32(constants.TicksPerQuarter / 4)},
+	} {
+		t.Run(tc.input, func(t *testing.T) {
+			g := NewWithT(t)
+
+			it := interpreter.New()
+
+			g.Expect(it.EvalString(tc.input)).To(Succeed())
+
+			bars := it.Flush()
+			g.Expect(bars).To(HaveLen(1))
+			g.Expect(bars[0].TimeSig).To(Equal([2]uint8{1, 4}))
+			g.Expect(bars[0].Events[0].Duration).To(Equal(tc.offAt))
+			g.Expect(bars[0].Events[1].Pos).To(Equal(tc.offAt))
+		})
+	}
+}
+
 func TestNoteLengths(t *testing.T) {
 	for _, tc := range []struct {
 		input string

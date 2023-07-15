@@ -92,6 +92,11 @@ func (note *Note) NumFlat() int {
 	return note.countProps(tokentype.PropFlat)
 }
 
+// NumStaccato reports the number of staccato properties.
+func (note *Note) NumStaccato() int {
+	return note.countProps(tokentype.PropStaccato)
+}
+
 // NumAccents reports the number of accent properties in the note.
 func (note *Note) NumAccents() int {
 	return note.countProps(tokentype.PropAccent)

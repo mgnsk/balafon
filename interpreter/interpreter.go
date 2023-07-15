@@ -254,15 +254,20 @@ func (it *Interpreter) parseNoteList(bar *Bar, noteList ast.NoteList) error {
 			v = math.MaxUint8
 		}
 
+		actualNoteLen := noteLen
+		if n := uint32(note.NumStaccato()); n > 0 {
+			actualNoteLen = actualNoteLen / (2 * n)
+		}
+
 		bar.Events = append(bar.Events, Event{
 			Pos:      it.pos,
-			Duration: noteLen,
+			Duration: actualNoteLen,
 			Message:  smf.Message(midi.NoteOn(it.channel, uint8(key), uint8(v))),
 		})
 
 		if !note.IsLetRing() {
 			bar.Events = append(bar.Events, Event{
-				Pos:      it.pos + noteLen,
+				Pos:      it.pos + actualNoteLen,
 				Duration: 0,
 				Message:  smf.Message(midi.NoteOff(it.channel, uint8(key))),
 			})
