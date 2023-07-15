@@ -3,10 +3,12 @@ package shell
 import (
 	"fmt"
 	"io"
+	"os"
 	"unicode/utf8"
 
 	"github.com/mgnsk/balafon/interpreter"
 	"gitlab.com/gomidi/midi/v2/smf"
+	"golang.org/x/term"
 )
 
 const (
@@ -41,6 +43,12 @@ func NewLiveShell(r io.Reader, it *interpreter.Interpreter, handler EventHandler
 
 // Run the shell.
 func (s *LiveShell) Run() error {
+	oldState, err := term.MakeRaw(int(os.Stdin.Fd()))
+	if err != nil {
+		return err
+	}
+	defer term.Restore(int(os.Stdin.Fd()), oldState)
+
 	input := make([]byte, 1)
 
 	for {

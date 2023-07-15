@@ -7,6 +7,7 @@ import (
 	"log"
 	"os"
 	"strconv"
+	"strings"
 
 	"github.com/mgnsk/balafon/interpreter"
 	"github.com/mgnsk/balafon/lint"
@@ -18,7 +19,6 @@ import (
 	"gitlab.com/gomidi/midi/v2/drivers"
 	_ "gitlab.com/gomidi/midi/v2/drivers/rtmididrv"
 	"gitlab.com/gomidi/midi/v2/smf"
-	"golang.org/x/term"
 )
 
 const (
@@ -90,12 +90,6 @@ func createCmdLive() *cobra.Command {
 				}
 				return nil
 			})
-
-			oldState, err := term.MakeRaw(int(os.Stdin.Fd()))
-			if err != nil {
-				return err
-			}
-			defer term.Restore(int(os.Stdin.Fd()), oldState)
 
 			return s.Run()
 		},
@@ -178,15 +172,23 @@ func openInputFile(name string) (io.ReadCloser, error) {
 	return f, nil
 }
 
-func openOut(port string) (out drivers.Out, err error) {
-	if portNum, perr := strconv.Atoi(port); perr == nil {
+func openOut(name string) (out drivers.Out, err error) {
+	if portNum, perr := strconv.Atoi(name); perr == nil {
 		out, err = midi.OutPort(portNum)
+		if err != nil {
+			return nil, err
+		}
 	} else {
-		out, err = midi.FindOutPort(port)
-	}
-
-	if err != nil {
-		return nil, err
+		lcPort := strings.ToLower(name)
+		for _, p := range midi.GetOutPorts() {
+			if strings.Contains(strings.ToLower(p.String()), lcPort) {
+				out = p
+				break
+			}
+		}
+		if out == nil {
+			return nil, fmt.Errorf("can't find MIDI output port %v", name)
+		}
 	}
 
 	if perr := out.Open(); perr != nil {

@@ -49,7 +49,7 @@ balafon play --port 2 examples/bonham
 - Enter live mode:
 
 ```sh
-balafon live --port "Hydrogen" examples/live_drumset
+balafon live --port hydro examples/live_drumset
 ```
 
 Live mode is an unbuffered input mode in the shell. Whenever an assigned key is pressed,
