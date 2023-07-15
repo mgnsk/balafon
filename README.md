@@ -151,7 +151,7 @@ The available properties are
 - ghost (`)`) -5 velocity
 - numeric note value (`1`, `2`, `4`, `8` and so on)
 - dot (`.`)
-- tuplet (`/3`) (The number in the tuplet specifies the divison, for example a quintuplet `/5`)
+- tuplet (`/3`) (only triplet `/3` or quintuplet `/5`)
 - let ring (`*`)
 
 ### Note values
