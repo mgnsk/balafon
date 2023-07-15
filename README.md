@@ -145,9 +145,10 @@ The available properties are
 
 - sharp (`#`)
 - flat (`$`)
-- accentuated (`>`) - +5 velocity
-- heavily accentuated (`^`) - +10 velocity
-- ghost (`)`) - -5 velocity
+- staccato (`` ` ``) shorten note by 50%
+- accentuated (`>`) +5 velocity
+- heavily accentuated (`^`) +10 velocity
+- ghost (`)`) -5 velocity
 - numeric note value (`1`, `2`, `4`, `8` and so on)
 - dot (`.`)
 - tuplet (`/3`) (The number in the tuplet specifies the divison, for example a quintuplet `/5`)
