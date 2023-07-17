@@ -3,76 +3,75 @@ package shell
 import (
 	"fmt"
 	"io"
-	"os"
 	"unicode/utf8"
 
 	"github.com/mgnsk/balafon/interpreter"
-	"gitlab.com/gomidi/midi/v2/smf"
-	"golang.org/x/term"
+	"gitlab.com/gomidi/midi/v2"
 )
 
 const (
-	// Keycode for Ctrl+D.
+	// EOT is keycode for Ctrl+D.
 	EOT = 4
-
-	defaultReso = 16
-
-	gridBG    = "🟦"
-	beatBG    = "⭕"
-	currentBG = "🔴"
 )
 
-// EventHandler handles a live MIDI message.
-type EventHandler func(smf.Message) error
+// Out is the interface for an opened MIDI output port.
+type Out interface {
+	Send(data []byte) error
+}
 
 // LiveShell is an unbuffered live shell.
 type LiveShell struct {
-	r       io.Reader
-	it      *interpreter.Interpreter
-	handler EventHandler
+	r   io.Reader
+	it  *interpreter.Interpreter
+	buf []byte
+	out Out
 }
 
 // NewLiveShell creates a new live shell.
-func NewLiveShell(r io.Reader, it *interpreter.Interpreter, handler EventHandler) *LiveShell {
+func NewLiveShell(r io.Reader, it *interpreter.Interpreter, out Out) *LiveShell {
 	return &LiveShell{
-		r:       r,
-		it:      it,
-		handler: handler,
+		r:   r,
+		it:  it,
+		buf: make([]byte, 1),
+		out: out,
 	}
+}
+
+// HandleNext handles the next character from input.
+func (s *LiveShell) HandleNext() error {
+	_, err := s.r.Read(s.buf)
+	if err != nil {
+		return fmt.Errorf("error reading input: %w", err)
+	}
+
+	r, _ := utf8.DecodeRune(s.buf)
+	if r == EOT {
+		return io.EOF
+	}
+
+	if err := s.it.EvalString(string(r)); err != nil {
+		fmt.Printf("%s\n", err.Error())
+		return nil
+	}
+
+	for _, bar := range s.it.Flush() {
+		for _, ev := range bar.Events {
+			if ev.Message.Is(midi.NoteOnMsg) {
+				if err := s.out.Send(ev.Message); err != nil {
+					return err
+				}
+			}
+		}
+	}
+
+	return nil
 }
 
 // Run the shell.
 func (s *LiveShell) Run() error {
-	oldState, err := term.MakeRaw(int(os.Stdin.Fd()))
-	if err != nil {
-		return err
-	}
-	defer term.Restore(int(os.Stdin.Fd()), oldState)
-
-	input := make([]byte, 1)
-
 	for {
-		_, err := s.r.Read(input)
-		if err != nil {
-			return fmt.Errorf("error reading from stdin: %w", err)
-		}
-
-		r, _ := utf8.DecodeRune(input)
-		if r == EOT {
-			return nil
-		}
-
-		if err := s.it.EvalString(string(r)); err != nil {
-			fmt.Println(err)
-			continue
-		}
-
-		for _, bar := range s.it.Flush() {
-			for _, ev := range bar.Events {
-				if err := s.handler(ev.Message); err != nil {
-					return fmt.Errorf("error handling MIDI message: %w", err)
-				}
-			}
+		if err := s.HandleNext(); err != nil {
+			return err
 		}
 	}
 }

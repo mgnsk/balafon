@@ -18,7 +18,7 @@ import (
 	"gitlab.com/gomidi/midi/v2"
 	"gitlab.com/gomidi/midi/v2/drivers"
 	_ "gitlab.com/gomidi/midi/v2/drivers/rtmididrv"
-	"gitlab.com/gomidi/midi/v2/smf"
+	"golang.org/x/term"
 )
 
 const (
@@ -82,16 +82,20 @@ func createCmdLive() *cobra.Command {
 			it.Flush()
 			fmt.Println(string(file))
 
-			s := shell.NewLiveShell(os.Stdin, it, func(msg smf.Message) error {
-				if msg.Is(midi.NoteOnMsg) {
-					if err := out.Send(msg); err != nil {
-						return err
-					}
-				}
-				return nil
-			})
+			s := shell.NewLiveShell(os.Stdin, it, out)
 
-			return s.Run()
+			oldState, err := term.MakeRaw(int(os.Stdin.Fd()))
+			if err != nil {
+				return err
+			}
+			defer term.Restore(int(os.Stdin.Fd()), oldState)
+
+			err = s.Run()
+			if err != nil && err == io.EOF {
+				return nil
+			}
+
+			return err
 		},
 	}
 	addPortFlag(cmd)
