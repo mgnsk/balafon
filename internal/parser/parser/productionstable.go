@@ -3,8 +3,8 @@
 package parser
 
 import (
-    "github.com/mgnsk/balafon/ast"
-    "github.com/mgnsk/balafon/internal/parser/token"
+	"github.com/mgnsk/balafon/internal/ast"
+	"github.com/mgnsk/balafon/internal/parser/token"
 )
 
 type (
@@ -23,7 +23,7 @@ type (
 
 var productionsTable = ProdTab{
 	ProdTabEntry{
-		String: `S' : SourceFile	<<  >>`,
+		String:     `S' : SourceFile	<<  >>`,
 		Id:         "S'",
 		NTType:     0,
 		Index:      0,
@@ -33,7 +33,7 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `SourceFile : RepeatTerminator TopLevelDeclList	<< X[1], nil >>`,
+		String:     `SourceFile : RepeatTerminator TopLevelDeclList	<< X[1], nil >>`,
 		Id:         "SourceFile",
 		NTType:     1,
 		Index:      1,
@@ -43,7 +43,7 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `RepeatTerminator : empty	<<  >>`,
+		String:     `RepeatTerminator : empty	<<  >>`,
 		Id:         "RepeatTerminator",
 		NTType:     2,
 		Index:      2,
@@ -53,7 +53,7 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `RepeatTerminator : terminator RepeatTerminator	<<  >>`,
+		String:     `RepeatTerminator : terminator RepeatTerminator	<<  >>`,
 		Id:         "RepeatTerminator",
 		NTType:     2,
 		Index:      3,
@@ -63,7 +63,7 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `TopLevelDeclList : TopLevelDecl terminator RepeatTerminator TopLevelDeclList	<< ast.NewNodeList(X[0].(ast.Node), X[3].(ast.NodeList)), nil >>`,
+		String:     `TopLevelDeclList : TopLevelDecl terminator RepeatTerminator TopLevelDeclList	<< ast.NewNodeList(X[0].(ast.Node), X[3].(ast.NodeList)), nil >>`,
 		Id:         "TopLevelDeclList",
 		NTType:     3,
 		Index:      4,
@@ -73,7 +73,7 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `TopLevelDeclList : TopLevelDecl RepeatTerminator	<< ast.NewNodeList(X[0].(ast.Node), nil), nil >>`,
+		String:     `TopLevelDeclList : TopLevelDecl RepeatTerminator	<< ast.NewNodeList(X[0].(ast.Node), nil), nil >>`,
 		Id:         "TopLevelDeclList",
 		NTType:     3,
 		Index:      5,
@@ -83,7 +83,7 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `BarBodyDeclList : BarBodyDecl terminator RepeatTerminator BarBodyDeclList	<< ast.NewNodeList(X[0].(ast.Node), X[3].(ast.NodeList)), nil >>`,
+		String:     `BarBodyDeclList : BarBodyDecl terminator RepeatTerminator BarBodyDeclList	<< ast.NewNodeList(X[0].(ast.Node), X[3].(ast.NodeList)), nil >>`,
 		Id:         "BarBodyDeclList",
 		NTType:     4,
 		Index:      6,
@@ -93,7 +93,7 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `BarBodyDeclList : BarBodyDecl RepeatTerminator	<< ast.NewNodeList(X[0].(ast.Node), nil), nil >>`,
+		String:     `BarBodyDeclList : BarBodyDecl RepeatTerminator	<< ast.NewNodeList(X[0].(ast.Node), nil), nil >>`,
 		Id:         "BarBodyDeclList",
 		NTType:     4,
 		Index:      7,
@@ -103,7 +103,7 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `TopLevelDecl : Bar	<<  >>`,
+		String:     `TopLevelDecl : Bar	<<  >>`,
 		Id:         "TopLevelDecl",
 		NTType:     5,
 		Index:      8,
@@ -113,7 +113,7 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `TopLevelDecl : TopLevelCommand	<<  >>`,
+		String:     `TopLevelDecl : TopLevelCommand	<<  >>`,
 		Id:         "TopLevelDecl",
 		NTType:     5,
 		Index:      9,
@@ -123,7 +123,7 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `TopLevelDecl : NoteList	<<  >>`,
+		String:     `TopLevelDecl : NoteList	<<  >>`,
 		Id:         "TopLevelDecl",
 		NTType:     5,
 		Index:      10,
@@ -133,7 +133,7 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `BarBodyDecl : BarBodyCommand	<<  >>`,
+		String:     `BarBodyDecl : BarBodyCommand	<<  >>`,
 		Id:         "BarBodyDecl",
 		NTType:     6,
 		Index:      11,
@@ -143,7 +143,7 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `BarBodyDecl : NoteList	<<  >>`,
+		String:     `BarBodyDecl : NoteList	<<  >>`,
 		Id:         "BarBodyDecl",
 		NTType:     6,
 		Index:      12,
@@ -153,7 +153,7 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `Bar : cmdBar RepeatTerminator BarBodyDeclList cmdEnd	<< ast.NewBar(string(X[0].(*token.Token).Lit[len(":bar "):]), X[2].(ast.NodeList)), nil >>`,
+		String:     `Bar : cmdBar RepeatTerminator BarBodyDeclList cmdEnd	<< ast.NewBar(string(X[0].(*token.Token).Lit[len(":bar "):]), X[2].(ast.NodeList)), nil >>`,
 		Id:         "Bar",
 		NTType:     7,
 		Index:      13,
@@ -163,7 +163,7 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `NoteList : NoteObject	<< ast.NewNoteList(X[0].(ast.Node), nil), nil >>`,
+		String:     `NoteList : NoteObject	<< ast.NewNoteList(X[0].(ast.Node), nil), nil >>`,
 		Id:         "NoteList",
 		NTType:     8,
 		Index:      14,
@@ -173,7 +173,7 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `NoteList : NoteObject NoteList	<< ast.NewNoteList(X[0].(ast.Node), X[1].(ast.NoteList)), nil >>`,
+		String:     `NoteList : NoteObject NoteList	<< ast.NewNoteList(X[0].(ast.Node), X[1].(ast.NoteList)), nil >>`,
 		Id:         "NoteList",
 		NTType:     8,
 		Index:      15,
@@ -183,7 +183,7 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `NoteObject : NoteSymbol PropertyList	<< ast.NewNote([]rune(string(X[0].(*token.Token).Lit))[0], X[1].(ast.PropertyList)), nil >>`,
+		String:     `NoteObject : NoteSymbol PropertyList	<< ast.NewNote([]rune(string(X[0].(*token.Token).Lit))[0], X[1].(ast.PropertyList)), nil >>`,
 		Id:         "NoteObject",
 		NTType:     9,
 		Index:      16,
@@ -193,7 +193,7 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `NoteObject : bracketBegin NoteList bracketEnd PropertyList	<< ast.NewNoteListFromGroup(X[1].(ast.NoteList), X[3].(ast.PropertyList)) >>`,
+		String:     `NoteObject : bracketBegin NoteList bracketEnd PropertyList	<< ast.NewNoteListFromGroup(X[1].(ast.NoteList), X[3].(ast.PropertyList)) >>`,
 		Id:         "NoteObject",
 		NTType:     9,
 		Index:      17,
@@ -203,7 +203,7 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `NoteSymbol : symbol	<<  >>`,
+		String:     `NoteSymbol : symbol	<<  >>`,
 		Id:         "NoteSymbol",
 		NTType:     10,
 		Index:      18,
@@ -213,7 +213,7 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `NoteSymbol : rest	<<  >>`,
+		String:     `NoteSymbol : rest	<<  >>`,
 		Id:         "NoteSymbol",
 		NTType:     10,
 		Index:      19,
@@ -223,7 +223,7 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `PropertyList : empty	<< ast.PropertyList(nil), nil >>`,
+		String:     `PropertyList : empty	<< ast.PropertyList(nil), nil >>`,
 		Id:         "PropertyList",
 		NTType:     11,
 		Index:      20,
@@ -233,7 +233,7 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `PropertyList : Property PropertyList	<< ast.NewPropertyList(X[0].(*token.Token), X[1]) >>`,
+		String:     `PropertyList : Property PropertyList	<< ast.NewPropertyList(X[0].(*token.Token), X[1]) >>`,
 		Id:         "PropertyList",
 		NTType:     11,
 		Index:      21,
@@ -243,7 +243,7 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `Property : propSharp	<<  >>`,
+		String:     `Property : propSharp	<<  >>`,
 		Id:         "Property",
 		NTType:     12,
 		Index:      22,
@@ -253,7 +253,7 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `Property : propFlat	<<  >>`,
+		String:     `Property : propFlat	<<  >>`,
 		Id:         "Property",
 		NTType:     12,
 		Index:      23,
@@ -263,7 +263,7 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `Property : propStaccato	<<  >>`,
+		String:     `Property : propStaccato	<<  >>`,
 		Id:         "Property",
 		NTType:     12,
 		Index:      24,
@@ -273,7 +273,7 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `Property : propAccent	<<  >>`,
+		String:     `Property : propAccent	<<  >>`,
 		Id:         "Property",
 		NTType:     12,
 		Index:      25,
@@ -283,7 +283,7 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `Property : propMarcato	<<  >>`,
+		String:     `Property : propMarcato	<<  >>`,
 		Id:         "Property",
 		NTType:     12,
 		Index:      26,
@@ -293,7 +293,7 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `Property : propGhost	<<  >>`,
+		String:     `Property : propGhost	<<  >>`,
 		Id:         "Property",
 		NTType:     12,
 		Index:      27,
@@ -303,7 +303,7 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `Property : uint	<<  >>`,
+		String:     `Property : uint	<<  >>`,
 		Id:         "Property",
 		NTType:     12,
 		Index:      28,
@@ -313,7 +313,7 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `Property : propDot	<<  >>`,
+		String:     `Property : propDot	<<  >>`,
 		Id:         "Property",
 		NTType:     12,
 		Index:      29,
@@ -323,7 +323,7 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `Property : propTuplet	<<  >>`,
+		String:     `Property : propTuplet	<<  >>`,
 		Id:         "Property",
 		NTType:     12,
 		Index:      30,
@@ -333,7 +333,7 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `Property : propLetRing	<<  >>`,
+		String:     `Property : propLetRing	<<  >>`,
 		Id:         "Property",
 		NTType:     12,
 		Index:      31,
@@ -343,7 +343,7 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `TopLevelCommand : cmdAssign symbol uint	<< ast.NewCmdAssign([]rune(string(X[1].(*token.Token).Lit))[0], ast.Must(X[2].(*token.Token).Int64Value())) >>`,
+		String:     `TopLevelCommand : cmdAssign symbol uint	<< ast.NewCmdAssign([]rune(string(X[1].(*token.Token).Lit))[0], ast.Must(X[2].(*token.Token).Int64Value())) >>`,
 		Id:         "TopLevelCommand",
 		NTType:     13,
 		Index:      32,
@@ -353,7 +353,7 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `TopLevelCommand : cmdPlay	<< ast.NewCmdPlay(string(X[0].(*token.Token).Lit[len(":play "):])) >>`,
+		String:     `TopLevelCommand : cmdPlay	<< ast.NewCmdPlay(string(X[0].(*token.Token).Lit[len(":play "):])) >>`,
 		Id:         "TopLevelCommand",
 		NTType:     13,
 		Index:      33,
@@ -363,7 +363,7 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `TopLevelCommand : BarBodyCommand	<<  >>`,
+		String:     `TopLevelCommand : BarBodyCommand	<<  >>`,
 		Id:         "TopLevelCommand",
 		NTType:     13,
 		Index:      34,
@@ -373,7 +373,7 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `BarBodyCommand : cmdTempo uint	<< ast.NewCmdTempo(ast.Must(X[1].(*token.Token).Int64Value())) >>`,
+		String:     `BarBodyCommand : cmdTempo uint	<< ast.NewCmdTempo(ast.Must(X[1].(*token.Token).Int64Value())) >>`,
 		Id:         "BarBodyCommand",
 		NTType:     14,
 		Index:      35,
@@ -383,7 +383,7 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `BarBodyCommand : cmdTimesig uint uint	<< ast.NewCmdTimeSig(ast.Must(X[1].(*token.Token).Int64Value()), ast.Must(X[2].(*token.Token).Int64Value())) >>`,
+		String:     `BarBodyCommand : cmdTimesig uint uint	<< ast.NewCmdTimeSig(ast.Must(X[1].(*token.Token).Int64Value()), ast.Must(X[2].(*token.Token).Int64Value())) >>`,
 		Id:         "BarBodyCommand",
 		NTType:     14,
 		Index:      36,
@@ -393,7 +393,7 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `BarBodyCommand : cmdVelocity uint	<< ast.NewCmdVelocity(ast.Must(X[1].(*token.Token).Int64Value())) >>`,
+		String:     `BarBodyCommand : cmdVelocity uint	<< ast.NewCmdVelocity(ast.Must(X[1].(*token.Token).Int64Value())) >>`,
 		Id:         "BarBodyCommand",
 		NTType:     14,
 		Index:      37,
@@ -403,7 +403,7 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `BarBodyCommand : cmdChannel uint	<< ast.NewCmdChannel(ast.Must(X[1].(*token.Token).Int64Value())) >>`,
+		String:     `BarBodyCommand : cmdChannel uint	<< ast.NewCmdChannel(ast.Must(X[1].(*token.Token).Int64Value())) >>`,
 		Id:         "BarBodyCommand",
 		NTType:     14,
 		Index:      38,
@@ -413,7 +413,7 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `BarBodyCommand : cmdProgram uint	<< ast.NewCmdProgram(ast.Must(X[1].(*token.Token).Int64Value())) >>`,
+		String:     `BarBodyCommand : cmdProgram uint	<< ast.NewCmdProgram(ast.Must(X[1].(*token.Token).Int64Value())) >>`,
 		Id:         "BarBodyCommand",
 		NTType:     14,
 		Index:      39,
@@ -423,7 +423,7 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `BarBodyCommand : cmdControl uint uint	<< ast.NewCmdControl(ast.Must(X[1].(*token.Token).Int64Value()), ast.Must(X[2].(*token.Token).Int64Value())) >>`,
+		String:     `BarBodyCommand : cmdControl uint uint	<< ast.NewCmdControl(ast.Must(X[1].(*token.Token).Int64Value()), ast.Must(X[2].(*token.Token).Int64Value())) >>`,
 		Id:         "BarBodyCommand",
 		NTType:     14,
 		Index:      40,
@@ -433,7 +433,7 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `BarBodyCommand : cmdStart	<< ast.CmdStart{}, nil >>`,
+		String:     `BarBodyCommand : cmdStart	<< ast.CmdStart{}, nil >>`,
 		Id:         "BarBodyCommand",
 		NTType:     14,
 		Index:      41,
@@ -443,7 +443,7 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `BarBodyCommand : cmdStop	<< ast.CmdStop{}, nil >>`,
+		String:     `BarBodyCommand : cmdStop	<< ast.CmdStop{}, nil >>`,
 		Id:         "BarBodyCommand",
 		NTType:     14,
 		Index:      42,
