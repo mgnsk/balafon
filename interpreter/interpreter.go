@@ -245,8 +245,8 @@ func (it *Interpreter) parseNoteList(bar *Bar, noteList ast.NoteList) error {
 		}
 
 		v := it.velocity
-		v += note.NumAccents() * 5
-		v += note.NumHeavyAccents() * 10
+		v += note.NumAccent() * 5
+		v += note.NumMarcato() * 10
 		v -= note.NumGhosts() * 5
 		if v < 0 {
 			v = 0

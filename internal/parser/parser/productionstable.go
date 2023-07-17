@@ -283,7 +283,7 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `Property : propHeavyAccent	<<  >>`,
+		String: `Property : propMarcato	<<  >>`,
 		Id:         "Property",
 		NTType:     12,
 		Index:      26,

@@ -28,7 +28,7 @@ var actionTab = actionTable{
 			nil,       // propFlat
 			nil,       // propStaccato
 			nil,       // propAccent
-			nil,       // propHeavyAccent
+			nil,       // propMarcato
 			nil,       // propGhost
 			nil,       // uint
 			nil,       // propDot
@@ -63,7 +63,7 @@ var actionTab = actionTable{
 			nil,          // propFlat
 			nil,          // propStaccato
 			nil,          // propAccent
-			nil,          // propHeavyAccent
+			nil,          // propMarcato
 			nil,          // propGhost
 			nil,          // uint
 			nil,          // propDot
@@ -98,7 +98,7 @@ var actionTab = actionTable{
 			nil,       // propFlat
 			nil,       // propStaccato
 			nil,       // propAccent
-			nil,       // propHeavyAccent
+			nil,       // propMarcato
 			nil,       // propGhost
 			nil,       // uint
 			nil,       // propDot
@@ -133,7 +133,7 @@ var actionTab = actionTable{
 			nil,       // propFlat
 			nil,       // propStaccato
 			nil,       // propAccent
-			nil,       // propHeavyAccent
+			nil,       // propMarcato
 			nil,       // propGhost
 			nil,       // uint
 			nil,       // propDot
@@ -168,7 +168,7 @@ var actionTab = actionTable{
 			nil,       // propFlat
 			nil,       // propStaccato
 			nil,       // propAccent
-			nil,       // propHeavyAccent
+			nil,       // propMarcato
 			nil,       // propGhost
 			nil,       // uint
 			nil,       // propDot
@@ -203,7 +203,7 @@ var actionTab = actionTable{
 			nil,       // propFlat
 			nil,       // propStaccato
 			nil,       // propAccent
-			nil,       // propHeavyAccent
+			nil,       // propMarcato
 			nil,       // propGhost
 			nil,       // uint
 			nil,       // propDot
@@ -238,7 +238,7 @@ var actionTab = actionTable{
 			nil,       // propFlat
 			nil,       // propStaccato
 			nil,       // propAccent
-			nil,       // propHeavyAccent
+			nil,       // propMarcato
 			nil,       // propGhost
 			nil,       // uint
 			nil,       // propDot
@@ -273,7 +273,7 @@ var actionTab = actionTable{
 			nil,       // propFlat
 			nil,       // propStaccato
 			nil,       // propAccent
-			nil,       // propHeavyAccent
+			nil,       // propMarcato
 			nil,       // propGhost
 			nil,       // uint
 			nil,       // propDot
@@ -308,7 +308,7 @@ var actionTab = actionTable{
 			nil,        // propFlat
 			nil,        // propStaccato
 			nil,        // propAccent
-			nil,        // propHeavyAccent
+			nil,        // propMarcato
 			nil,        // propGhost
 			nil,        // uint
 			nil,        // propDot
@@ -343,7 +343,7 @@ var actionTab = actionTable{
 			nil,        // propFlat
 			nil,        // propStaccato
 			nil,        // propAccent
-			nil,        // propHeavyAccent
+			nil,        // propMarcato
 			nil,        // propGhost
 			nil,        // uint
 			nil,        // propDot
@@ -378,7 +378,7 @@ var actionTab = actionTable{
 			nil,       // propFlat
 			nil,       // propStaccato
 			nil,       // propAccent
-			nil,       // propHeavyAccent
+			nil,       // propMarcato
 			nil,       // propGhost
 			nil,       // uint
 			nil,       // propDot
@@ -413,7 +413,7 @@ var actionTab = actionTable{
 			nil,        // propFlat
 			nil,        // propStaccato
 			nil,        // propAccent
-			nil,        // propHeavyAccent
+			nil,        // propMarcato
 			nil,        // propGhost
 			nil,        // uint
 			nil,        // propDot
@@ -448,7 +448,7 @@ var actionTab = actionTable{
 			shift(35),  // propFlat
 			shift(36),  // propStaccato
 			shift(37),  // propAccent
-			shift(38),  // propHeavyAccent
+			shift(38),  // propMarcato
 			shift(39),  // propGhost
 			shift(40),  // uint
 			shift(41),  // propDot
@@ -483,7 +483,7 @@ var actionTab = actionTable{
 			nil,       // propFlat
 			nil,       // propStaccato
 			nil,       // propAccent
-			nil,       // propHeavyAccent
+			nil,       // propMarcato
 			nil,       // propGhost
 			nil,       // uint
 			nil,       // propDot
@@ -518,7 +518,7 @@ var actionTab = actionTable{
 			reduce(18), // propFlat, reduce: NoteSymbol
 			reduce(18), // propStaccato, reduce: NoteSymbol
 			reduce(18), // propAccent, reduce: NoteSymbol
-			reduce(18), // propHeavyAccent, reduce: NoteSymbol
+			reduce(18), // propMarcato, reduce: NoteSymbol
 			reduce(18), // propGhost, reduce: NoteSymbol
 			reduce(18), // uint, reduce: NoteSymbol
 			reduce(18), // propDot, reduce: NoteSymbol
@@ -553,7 +553,7 @@ var actionTab = actionTable{
 			reduce(19), // propFlat, reduce: NoteSymbol
 			reduce(19), // propStaccato, reduce: NoteSymbol
 			reduce(19), // propAccent, reduce: NoteSymbol
-			reduce(19), // propHeavyAccent, reduce: NoteSymbol
+			reduce(19), // propMarcato, reduce: NoteSymbol
 			reduce(19), // propGhost, reduce: NoteSymbol
 			reduce(19), // uint, reduce: NoteSymbol
 			reduce(19), // propDot, reduce: NoteSymbol
@@ -588,7 +588,7 @@ var actionTab = actionTable{
 			nil,       // propFlat
 			nil,       // propStaccato
 			nil,       // propAccent
-			nil,       // propHeavyAccent
+			nil,       // propMarcato
 			nil,       // propGhost
 			nil,       // uint
 			nil,       // propDot
@@ -623,7 +623,7 @@ var actionTab = actionTable{
 			nil,        // propFlat
 			nil,        // propStaccato
 			nil,        // propAccent
-			nil,        // propHeavyAccent
+			nil,        // propMarcato
 			nil,        // propGhost
 			nil,        // uint
 			nil,        // propDot
@@ -658,7 +658,7 @@ var actionTab = actionTable{
 			nil,       // propFlat
 			nil,       // propStaccato
 			nil,       // propAccent
-			nil,       // propHeavyAccent
+			nil,       // propMarcato
 			nil,       // propGhost
 			shift(51), // uint
 			nil,       // propDot
@@ -693,7 +693,7 @@ var actionTab = actionTable{
 			nil,       // propFlat
 			nil,       // propStaccato
 			nil,       // propAccent
-			nil,       // propHeavyAccent
+			nil,       // propMarcato
 			nil,       // propGhost
 			shift(52), // uint
 			nil,       // propDot
@@ -728,7 +728,7 @@ var actionTab = actionTable{
 			nil,       // propFlat
 			nil,       // propStaccato
 			nil,       // propAccent
-			nil,       // propHeavyAccent
+			nil,       // propMarcato
 			nil,       // propGhost
 			shift(53), // uint
 			nil,       // propDot
@@ -763,7 +763,7 @@ var actionTab = actionTable{
 			nil,       // propFlat
 			nil,       // propStaccato
 			nil,       // propAccent
-			nil,       // propHeavyAccent
+			nil,       // propMarcato
 			nil,       // propGhost
 			shift(54), // uint
 			nil,       // propDot
@@ -798,7 +798,7 @@ var actionTab = actionTable{
 			nil,       // propFlat
 			nil,       // propStaccato
 			nil,       // propAccent
-			nil,       // propHeavyAccent
+			nil,       // propMarcato
 			nil,       // propGhost
 			shift(55), // uint
 			nil,       // propDot
@@ -833,7 +833,7 @@ var actionTab = actionTable{
 			nil,       // propFlat
 			nil,       // propStaccato
 			nil,       // propAccent
-			nil,       // propHeavyAccent
+			nil,       // propMarcato
 			nil,       // propGhost
 			shift(56), // uint
 			nil,       // propDot
@@ -868,7 +868,7 @@ var actionTab = actionTable{
 			nil,        // propFlat
 			nil,        // propStaccato
 			nil,        // propAccent
-			nil,        // propHeavyAccent
+			nil,        // propMarcato
 			nil,        // propGhost
 			nil,        // uint
 			nil,        // propDot
@@ -903,7 +903,7 @@ var actionTab = actionTable{
 			nil,        // propFlat
 			nil,        // propStaccato
 			nil,        // propAccent
-			nil,        // propHeavyAccent
+			nil,        // propMarcato
 			nil,        // propGhost
 			nil,        // uint
 			nil,        // propDot
@@ -938,7 +938,7 @@ var actionTab = actionTable{
 			nil,       // propFlat
 			nil,       // propStaccato
 			nil,       // propAccent
-			nil,       // propHeavyAccent
+			nil,       // propMarcato
 			nil,       // propGhost
 			nil,       // uint
 			nil,       // propDot
@@ -973,7 +973,7 @@ var actionTab = actionTable{
 			nil,       // propFlat
 			nil,       // propStaccato
 			nil,       // propAccent
-			nil,       // propHeavyAccent
+			nil,       // propMarcato
 			nil,       // propGhost
 			nil,       // uint
 			nil,       // propDot
@@ -1008,7 +1008,7 @@ var actionTab = actionTable{
 			nil,       // propFlat
 			nil,       // propStaccato
 			nil,       // propAccent
-			nil,       // propHeavyAccent
+			nil,       // propMarcato
 			nil,       // propGhost
 			nil,       // uint
 			nil,       // propDot
@@ -1043,7 +1043,7 @@ var actionTab = actionTable{
 			nil,       // propFlat
 			nil,       // propStaccato
 			nil,       // propAccent
-			nil,       // propHeavyAccent
+			nil,       // propMarcato
 			nil,       // propGhost
 			nil,       // uint
 			nil,       // propDot
@@ -1078,7 +1078,7 @@ var actionTab = actionTable{
 			nil,       // propFlat
 			nil,       // propStaccato
 			nil,       // propAccent
-			nil,       // propHeavyAccent
+			nil,       // propMarcato
 			nil,       // propGhost
 			nil,       // uint
 			nil,       // propDot
@@ -1113,7 +1113,7 @@ var actionTab = actionTable{
 			nil,        // propFlat
 			nil,        // propStaccato
 			nil,        // propAccent
-			nil,        // propHeavyAccent
+			nil,        // propMarcato
 			nil,        // propGhost
 			nil,        // uint
 			nil,        // propDot
@@ -1148,7 +1148,7 @@ var actionTab = actionTable{
 			nil,        // propFlat
 			nil,        // propStaccato
 			nil,        // propAccent
-			nil,        // propHeavyAccent
+			nil,        // propMarcato
 			nil,        // propGhost
 			nil,        // uint
 			nil,        // propDot
@@ -1183,7 +1183,7 @@ var actionTab = actionTable{
 			shift(35),  // propFlat
 			shift(36),  // propStaccato
 			shift(37),  // propAccent
-			shift(38),  // propHeavyAccent
+			shift(38),  // propMarcato
 			shift(39),  // propGhost
 			shift(40),  // uint
 			shift(41),  // propDot
@@ -1218,7 +1218,7 @@ var actionTab = actionTable{
 			reduce(22), // propFlat, reduce: Property
 			reduce(22), // propStaccato, reduce: Property
 			reduce(22), // propAccent, reduce: Property
-			reduce(22), // propHeavyAccent, reduce: Property
+			reduce(22), // propMarcato, reduce: Property
 			reduce(22), // propGhost, reduce: Property
 			reduce(22), // uint, reduce: Property
 			reduce(22), // propDot, reduce: Property
@@ -1253,7 +1253,7 @@ var actionTab = actionTable{
 			reduce(23), // propFlat, reduce: Property
 			reduce(23), // propStaccato, reduce: Property
 			reduce(23), // propAccent, reduce: Property
-			reduce(23), // propHeavyAccent, reduce: Property
+			reduce(23), // propMarcato, reduce: Property
 			reduce(23), // propGhost, reduce: Property
 			reduce(23), // uint, reduce: Property
 			reduce(23), // propDot, reduce: Property
@@ -1288,7 +1288,7 @@ var actionTab = actionTable{
 			reduce(24), // propFlat, reduce: Property
 			reduce(24), // propStaccato, reduce: Property
 			reduce(24), // propAccent, reduce: Property
-			reduce(24), // propHeavyAccent, reduce: Property
+			reduce(24), // propMarcato, reduce: Property
 			reduce(24), // propGhost, reduce: Property
 			reduce(24), // uint, reduce: Property
 			reduce(24), // propDot, reduce: Property
@@ -1323,7 +1323,7 @@ var actionTab = actionTable{
 			reduce(25), // propFlat, reduce: Property
 			reduce(25), // propStaccato, reduce: Property
 			reduce(25), // propAccent, reduce: Property
-			reduce(25), // propHeavyAccent, reduce: Property
+			reduce(25), // propMarcato, reduce: Property
 			reduce(25), // propGhost, reduce: Property
 			reduce(25), // uint, reduce: Property
 			reduce(25), // propDot, reduce: Property
@@ -1358,7 +1358,7 @@ var actionTab = actionTable{
 			reduce(26), // propFlat, reduce: Property
 			reduce(26), // propStaccato, reduce: Property
 			reduce(26), // propAccent, reduce: Property
-			reduce(26), // propHeavyAccent, reduce: Property
+			reduce(26), // propMarcato, reduce: Property
 			reduce(26), // propGhost, reduce: Property
 			reduce(26), // uint, reduce: Property
 			reduce(26), // propDot, reduce: Property
@@ -1393,7 +1393,7 @@ var actionTab = actionTable{
 			reduce(27), // propFlat, reduce: Property
 			reduce(27), // propStaccato, reduce: Property
 			reduce(27), // propAccent, reduce: Property
-			reduce(27), // propHeavyAccent, reduce: Property
+			reduce(27), // propMarcato, reduce: Property
 			reduce(27), // propGhost, reduce: Property
 			reduce(27), // uint, reduce: Property
 			reduce(27), // propDot, reduce: Property
@@ -1428,7 +1428,7 @@ var actionTab = actionTable{
 			reduce(28), // propFlat, reduce: Property
 			reduce(28), // propStaccato, reduce: Property
 			reduce(28), // propAccent, reduce: Property
-			reduce(28), // propHeavyAccent, reduce: Property
+			reduce(28), // propMarcato, reduce: Property
 			reduce(28), // propGhost, reduce: Property
 			reduce(28), // uint, reduce: Property
 			reduce(28), // propDot, reduce: Property
@@ -1463,7 +1463,7 @@ var actionTab = actionTable{
 			reduce(29), // propFlat, reduce: Property
 			reduce(29), // propStaccato, reduce: Property
 			reduce(29), // propAccent, reduce: Property
-			reduce(29), // propHeavyAccent, reduce: Property
+			reduce(29), // propMarcato, reduce: Property
 			reduce(29), // propGhost, reduce: Property
 			reduce(29), // uint, reduce: Property
 			reduce(29), // propDot, reduce: Property
@@ -1498,7 +1498,7 @@ var actionTab = actionTable{
 			reduce(30), // propFlat, reduce: Property
 			reduce(30), // propStaccato, reduce: Property
 			reduce(30), // propAccent, reduce: Property
-			reduce(30), // propHeavyAccent, reduce: Property
+			reduce(30), // propMarcato, reduce: Property
 			reduce(30), // propGhost, reduce: Property
 			reduce(30), // uint, reduce: Property
 			reduce(30), // propDot, reduce: Property
@@ -1533,7 +1533,7 @@ var actionTab = actionTable{
 			reduce(31), // propFlat, reduce: Property
 			reduce(31), // propStaccato, reduce: Property
 			reduce(31), // propAccent, reduce: Property
-			reduce(31), // propHeavyAccent, reduce: Property
+			reduce(31), // propMarcato, reduce: Property
 			reduce(31), // propGhost, reduce: Property
 			reduce(31), // uint, reduce: Property
 			reduce(31), // propDot, reduce: Property
@@ -1568,7 +1568,7 @@ var actionTab = actionTable{
 			nil,       // propFlat
 			nil,       // propStaccato
 			nil,       // propAccent
-			nil,       // propHeavyAccent
+			nil,       // propMarcato
 			nil,       // propGhost
 			nil,       // uint
 			nil,       // propDot
@@ -1603,7 +1603,7 @@ var actionTab = actionTable{
 			nil,        // propFlat
 			nil,        // propStaccato
 			nil,        // propAccent
-			nil,        // propHeavyAccent
+			nil,        // propMarcato
 			nil,        // propGhost
 			nil,        // uint
 			nil,        // propDot
@@ -1638,7 +1638,7 @@ var actionTab = actionTable{
 			shift(83),  // propFlat
 			shift(84),  // propStaccato
 			shift(85),  // propAccent
-			shift(86),  // propHeavyAccent
+			shift(86),  // propMarcato
 			shift(87),  // propGhost
 			shift(88),  // uint
 			shift(89),  // propDot
@@ -1673,7 +1673,7 @@ var actionTab = actionTable{
 			nil,       // propFlat
 			nil,       // propStaccato
 			nil,       // propAccent
-			nil,       // propHeavyAccent
+			nil,       // propMarcato
 			nil,       // propGhost
 			nil,       // uint
 			nil,       // propDot
@@ -1708,7 +1708,7 @@ var actionTab = actionTable{
 			reduce(18), // propFlat, reduce: NoteSymbol
 			reduce(18), // propStaccato, reduce: NoteSymbol
 			reduce(18), // propAccent, reduce: NoteSymbol
-			reduce(18), // propHeavyAccent, reduce: NoteSymbol
+			reduce(18), // propMarcato, reduce: NoteSymbol
 			reduce(18), // propGhost, reduce: NoteSymbol
 			reduce(18), // uint, reduce: NoteSymbol
 			reduce(18), // propDot, reduce: NoteSymbol
@@ -1743,7 +1743,7 @@ var actionTab = actionTable{
 			reduce(19), // propFlat, reduce: NoteSymbol
 			reduce(19), // propStaccato, reduce: NoteSymbol
 			reduce(19), // propAccent, reduce: NoteSymbol
-			reduce(19), // propHeavyAccent, reduce: NoteSymbol
+			reduce(19), // propMarcato, reduce: NoteSymbol
 			reduce(19), // propGhost, reduce: NoteSymbol
 			reduce(19), // uint, reduce: NoteSymbol
 			reduce(19), // propDot, reduce: NoteSymbol
@@ -1778,7 +1778,7 @@ var actionTab = actionTable{
 			nil,       // propFlat
 			nil,       // propStaccato
 			nil,       // propAccent
-			nil,       // propHeavyAccent
+			nil,       // propMarcato
 			nil,       // propGhost
 			shift(93), // uint
 			nil,       // propDot
@@ -1813,7 +1813,7 @@ var actionTab = actionTable{
 			nil,        // propFlat
 			nil,        // propStaccato
 			nil,        // propAccent
-			nil,        // propHeavyAccent
+			nil,        // propMarcato
 			nil,        // propGhost
 			nil,        // uint
 			nil,        // propDot
@@ -1848,7 +1848,7 @@ var actionTab = actionTable{
 			nil,       // propFlat
 			nil,       // propStaccato
 			nil,       // propAccent
-			nil,       // propHeavyAccent
+			nil,       // propMarcato
 			nil,       // propGhost
 			shift(94), // uint
 			nil,       // propDot
@@ -1883,7 +1883,7 @@ var actionTab = actionTable{
 			nil,        // propFlat
 			nil,        // propStaccato
 			nil,        // propAccent
-			nil,        // propHeavyAccent
+			nil,        // propMarcato
 			nil,        // propGhost
 			nil,        // uint
 			nil,        // propDot
@@ -1918,7 +1918,7 @@ var actionTab = actionTable{
 			nil,        // propFlat
 			nil,        // propStaccato
 			nil,        // propAccent
-			nil,        // propHeavyAccent
+			nil,        // propMarcato
 			nil,        // propGhost
 			nil,        // uint
 			nil,        // propDot
@@ -1953,7 +1953,7 @@ var actionTab = actionTable{
 			nil,        // propFlat
 			nil,        // propStaccato
 			nil,        // propAccent
-			nil,        // propHeavyAccent
+			nil,        // propMarcato
 			nil,        // propGhost
 			nil,        // uint
 			nil,        // propDot
@@ -1988,7 +1988,7 @@ var actionTab = actionTable{
 			nil,       // propFlat
 			nil,       // propStaccato
 			nil,       // propAccent
-			nil,       // propHeavyAccent
+			nil,       // propMarcato
 			nil,       // propGhost
 			shift(95), // uint
 			nil,       // propDot
@@ -2023,7 +2023,7 @@ var actionTab = actionTable{
 			nil,       // propFlat
 			nil,       // propStaccato
 			nil,       // propAccent
-			nil,       // propHeavyAccent
+			nil,       // propMarcato
 			nil,       // propGhost
 			nil,       // uint
 			nil,       // propDot
@@ -2058,7 +2058,7 @@ var actionTab = actionTable{
 			nil,       // propFlat
 			nil,       // propStaccato
 			nil,       // propAccent
-			nil,       // propHeavyAccent
+			nil,       // propMarcato
 			nil,       // propGhost
 			nil,       // uint
 			nil,       // propDot
@@ -2093,7 +2093,7 @@ var actionTab = actionTable{
 			nil,       // propFlat
 			nil,       // propStaccato
 			nil,       // propAccent
-			nil,       // propHeavyAccent
+			nil,       // propMarcato
 			nil,       // propGhost
 			nil,       // uint
 			nil,       // propDot
@@ -2128,7 +2128,7 @@ var actionTab = actionTable{
 			nil,        // propFlat
 			nil,        // propStaccato
 			nil,        // propAccent
-			nil,        // propHeavyAccent
+			nil,        // propMarcato
 			nil,        // propGhost
 			nil,        // uint
 			nil,        // propDot
@@ -2163,7 +2163,7 @@ var actionTab = actionTable{
 			nil,        // propFlat
 			nil,        // propStaccato
 			nil,        // propAccent
-			nil,        // propHeavyAccent
+			nil,        // propMarcato
 			nil,        // propGhost
 			nil,        // uint
 			nil,        // propDot
@@ -2198,7 +2198,7 @@ var actionTab = actionTable{
 			nil,        // propFlat
 			nil,        // propStaccato
 			nil,        // propAccent
-			nil,        // propHeavyAccent
+			nil,        // propMarcato
 			nil,        // propGhost
 			nil,        // uint
 			nil,        // propDot
@@ -2233,7 +2233,7 @@ var actionTab = actionTable{
 			nil,        // propFlat
 			nil,        // propStaccato
 			nil,        // propAccent
-			nil,        // propHeavyAccent
+			nil,        // propMarcato
 			nil,        // propGhost
 			nil,        // uint
 			nil,        // propDot
@@ -2268,7 +2268,7 @@ var actionTab = actionTable{
 			shift(105), // propFlat
 			shift(106), // propStaccato
 			shift(107), // propAccent
-			shift(108), // propHeavyAccent
+			shift(108), // propMarcato
 			shift(109), // propGhost
 			shift(110), // uint
 			shift(111), // propDot
@@ -2303,7 +2303,7 @@ var actionTab = actionTable{
 			nil,       // propFlat
 			nil,       // propStaccato
 			nil,       // propAccent
-			nil,       // propHeavyAccent
+			nil,       // propMarcato
 			nil,       // propGhost
 			nil,       // uint
 			nil,       // propDot
@@ -2338,7 +2338,7 @@ var actionTab = actionTable{
 			reduce(18), // propFlat, reduce: NoteSymbol
 			reduce(18), // propStaccato, reduce: NoteSymbol
 			reduce(18), // propAccent, reduce: NoteSymbol
-			reduce(18), // propHeavyAccent, reduce: NoteSymbol
+			reduce(18), // propMarcato, reduce: NoteSymbol
 			reduce(18), // propGhost, reduce: NoteSymbol
 			reduce(18), // uint, reduce: NoteSymbol
 			reduce(18), // propDot, reduce: NoteSymbol
@@ -2373,7 +2373,7 @@ var actionTab = actionTable{
 			reduce(19), // propFlat, reduce: NoteSymbol
 			reduce(19), // propStaccato, reduce: NoteSymbol
 			reduce(19), // propAccent, reduce: NoteSymbol
-			reduce(19), // propHeavyAccent, reduce: NoteSymbol
+			reduce(19), // propMarcato, reduce: NoteSymbol
 			reduce(19), // propGhost, reduce: NoteSymbol
 			reduce(19), // uint, reduce: NoteSymbol
 			reduce(19), // propDot, reduce: NoteSymbol
@@ -2408,7 +2408,7 @@ var actionTab = actionTable{
 			nil,        // propFlat
 			nil,        // propStaccato
 			nil,        // propAccent
-			nil,        // propHeavyAccent
+			nil,        // propMarcato
 			nil,        // propGhost
 			shift(115), // uint
 			nil,        // propDot
@@ -2443,7 +2443,7 @@ var actionTab = actionTable{
 			nil,        // propFlat
 			nil,        // propStaccato
 			nil,        // propAccent
-			nil,        // propHeavyAccent
+			nil,        // propMarcato
 			nil,        // propGhost
 			shift(116), // uint
 			nil,        // propDot
@@ -2478,7 +2478,7 @@ var actionTab = actionTable{
 			nil,        // propFlat
 			nil,        // propStaccato
 			nil,        // propAccent
-			nil,        // propHeavyAccent
+			nil,        // propMarcato
 			nil,        // propGhost
 			shift(117), // uint
 			nil,        // propDot
@@ -2513,7 +2513,7 @@ var actionTab = actionTable{
 			nil,        // propFlat
 			nil,        // propStaccato
 			nil,        // propAccent
-			nil,        // propHeavyAccent
+			nil,        // propMarcato
 			nil,        // propGhost
 			shift(118), // uint
 			nil,        // propDot
@@ -2548,7 +2548,7 @@ var actionTab = actionTable{
 			nil,        // propFlat
 			nil,        // propStaccato
 			nil,        // propAccent
-			nil,        // propHeavyAccent
+			nil,        // propMarcato
 			nil,        // propGhost
 			shift(119), // uint
 			nil,        // propDot
@@ -2583,7 +2583,7 @@ var actionTab = actionTable{
 			nil,        // propFlat
 			nil,        // propStaccato
 			nil,        // propAccent
-			nil,        // propHeavyAccent
+			nil,        // propMarcato
 			nil,        // propGhost
 			shift(120), // uint
 			nil,        // propDot
@@ -2618,7 +2618,7 @@ var actionTab = actionTable{
 			nil,        // propFlat
 			nil,        // propStaccato
 			nil,        // propAccent
-			nil,        // propHeavyAccent
+			nil,        // propMarcato
 			nil,        // propGhost
 			nil,        // uint
 			nil,        // propDot
@@ -2653,7 +2653,7 @@ var actionTab = actionTable{
 			nil,        // propFlat
 			nil,        // propStaccato
 			nil,        // propAccent
-			nil,        // propHeavyAccent
+			nil,        // propMarcato
 			nil,        // propGhost
 			nil,        // uint
 			nil,        // propDot
@@ -2688,7 +2688,7 @@ var actionTab = actionTable{
 			nil,       // propFlat
 			nil,       // propStaccato
 			nil,       // propAccent
-			nil,       // propHeavyAccent
+			nil,       // propMarcato
 			nil,       // propGhost
 			nil,       // uint
 			nil,       // propDot
@@ -2723,7 +2723,7 @@ var actionTab = actionTable{
 			nil,        // propFlat
 			nil,        // propStaccato
 			nil,        // propAccent
-			nil,        // propHeavyAccent
+			nil,        // propMarcato
 			nil,        // propGhost
 			nil,        // uint
 			nil,        // propDot
@@ -2758,7 +2758,7 @@ var actionTab = actionTable{
 			shift(35),  // propFlat
 			shift(36),  // propStaccato
 			shift(37),  // propAccent
-			shift(38),  // propHeavyAccent
+			shift(38),  // propMarcato
 			shift(39),  // propGhost
 			shift(40),  // uint
 			shift(41),  // propDot
@@ -2793,7 +2793,7 @@ var actionTab = actionTable{
 			nil,        // propFlat
 			nil,        // propStaccato
 			nil,        // propAccent
-			nil,        // propHeavyAccent
+			nil,        // propMarcato
 			nil,        // propGhost
 			nil,        // uint
 			nil,        // propDot
@@ -2828,7 +2828,7 @@ var actionTab = actionTable{
 			nil,        // propFlat
 			nil,        // propStaccato
 			nil,        // propAccent
-			nil,        // propHeavyAccent
+			nil,        // propMarcato
 			nil,        // propGhost
 			nil,        // uint
 			nil,        // propDot
@@ -2863,7 +2863,7 @@ var actionTab = actionTable{
 			shift(83),  // propFlat
 			shift(84),  // propStaccato
 			shift(85),  // propAccent
-			shift(86),  // propHeavyAccent
+			shift(86),  // propMarcato
 			shift(87),  // propGhost
 			shift(88),  // uint
 			shift(89),  // propDot
@@ -2898,7 +2898,7 @@ var actionTab = actionTable{
 			reduce(22), // propFlat, reduce: Property
 			reduce(22), // propStaccato, reduce: Property
 			reduce(22), // propAccent, reduce: Property
-			reduce(22), // propHeavyAccent, reduce: Property
+			reduce(22), // propMarcato, reduce: Property
 			reduce(22), // propGhost, reduce: Property
 			reduce(22), // uint, reduce: Property
 			reduce(22), // propDot, reduce: Property
@@ -2933,7 +2933,7 @@ var actionTab = actionTable{
 			reduce(23), // propFlat, reduce: Property
 			reduce(23), // propStaccato, reduce: Property
 			reduce(23), // propAccent, reduce: Property
-			reduce(23), // propHeavyAccent, reduce: Property
+			reduce(23), // propMarcato, reduce: Property
 			reduce(23), // propGhost, reduce: Property
 			reduce(23), // uint, reduce: Property
 			reduce(23), // propDot, reduce: Property
@@ -2968,7 +2968,7 @@ var actionTab = actionTable{
 			reduce(24), // propFlat, reduce: Property
 			reduce(24), // propStaccato, reduce: Property
 			reduce(24), // propAccent, reduce: Property
-			reduce(24), // propHeavyAccent, reduce: Property
+			reduce(24), // propMarcato, reduce: Property
 			reduce(24), // propGhost, reduce: Property
 			reduce(24), // uint, reduce: Property
 			reduce(24), // propDot, reduce: Property
@@ -3003,7 +3003,7 @@ var actionTab = actionTable{
 			reduce(25), // propFlat, reduce: Property
 			reduce(25), // propStaccato, reduce: Property
 			reduce(25), // propAccent, reduce: Property
-			reduce(25), // propHeavyAccent, reduce: Property
+			reduce(25), // propMarcato, reduce: Property
 			reduce(25), // propGhost, reduce: Property
 			reduce(25), // uint, reduce: Property
 			reduce(25), // propDot, reduce: Property
@@ -3038,7 +3038,7 @@ var actionTab = actionTable{
 			reduce(26), // propFlat, reduce: Property
 			reduce(26), // propStaccato, reduce: Property
 			reduce(26), // propAccent, reduce: Property
-			reduce(26), // propHeavyAccent, reduce: Property
+			reduce(26), // propMarcato, reduce: Property
 			reduce(26), // propGhost, reduce: Property
 			reduce(26), // uint, reduce: Property
 			reduce(26), // propDot, reduce: Property
@@ -3073,7 +3073,7 @@ var actionTab = actionTable{
 			reduce(27), // propFlat, reduce: Property
 			reduce(27), // propStaccato, reduce: Property
 			reduce(27), // propAccent, reduce: Property
-			reduce(27), // propHeavyAccent, reduce: Property
+			reduce(27), // propMarcato, reduce: Property
 			reduce(27), // propGhost, reduce: Property
 			reduce(27), // uint, reduce: Property
 			reduce(27), // propDot, reduce: Property
@@ -3108,7 +3108,7 @@ var actionTab = actionTable{
 			reduce(28), // propFlat, reduce: Property
 			reduce(28), // propStaccato, reduce: Property
 			reduce(28), // propAccent, reduce: Property
-			reduce(28), // propHeavyAccent, reduce: Property
+			reduce(28), // propMarcato, reduce: Property
 			reduce(28), // propGhost, reduce: Property
 			reduce(28), // uint, reduce: Property
 			reduce(28), // propDot, reduce: Property
@@ -3143,7 +3143,7 @@ var actionTab = actionTable{
 			reduce(29), // propFlat, reduce: Property
 			reduce(29), // propStaccato, reduce: Property
 			reduce(29), // propAccent, reduce: Property
-			reduce(29), // propHeavyAccent, reduce: Property
+			reduce(29), // propMarcato, reduce: Property
 			reduce(29), // propGhost, reduce: Property
 			reduce(29), // uint, reduce: Property
 			reduce(29), // propDot, reduce: Property
@@ -3178,7 +3178,7 @@ var actionTab = actionTable{
 			reduce(30), // propFlat, reduce: Property
 			reduce(30), // propStaccato, reduce: Property
 			reduce(30), // propAccent, reduce: Property
-			reduce(30), // propHeavyAccent, reduce: Property
+			reduce(30), // propMarcato, reduce: Property
 			reduce(30), // propGhost, reduce: Property
 			reduce(30), // uint, reduce: Property
 			reduce(30), // propDot, reduce: Property
@@ -3213,7 +3213,7 @@ var actionTab = actionTable{
 			reduce(31), // propFlat, reduce: Property
 			reduce(31), // propStaccato, reduce: Property
 			reduce(31), // propAccent, reduce: Property
-			reduce(31), // propHeavyAccent, reduce: Property
+			reduce(31), // propMarcato, reduce: Property
 			reduce(31), // propGhost, reduce: Property
 			reduce(31), // uint, reduce: Property
 			reduce(31), // propDot, reduce: Property
@@ -3248,7 +3248,7 @@ var actionTab = actionTable{
 			nil,        // propFlat
 			nil,        // propStaccato
 			nil,        // propAccent
-			nil,        // propHeavyAccent
+			nil,        // propMarcato
 			nil,        // propGhost
 			nil,        // uint
 			nil,        // propDot
@@ -3283,7 +3283,7 @@ var actionTab = actionTable{
 			nil,        // propFlat
 			nil,        // propStaccato
 			nil,        // propAccent
-			nil,        // propHeavyAccent
+			nil,        // propMarcato
 			nil,        // propGhost
 			nil,        // uint
 			nil,        // propDot
@@ -3318,7 +3318,7 @@ var actionTab = actionTable{
 			nil,        // propFlat
 			nil,        // propStaccato
 			nil,        // propAccent
-			nil,        // propHeavyAccent
+			nil,        // propMarcato
 			nil,        // propGhost
 			nil,        // uint
 			nil,        // propDot
@@ -3353,7 +3353,7 @@ var actionTab = actionTable{
 			nil,        // propFlat
 			nil,        // propStaccato
 			nil,        // propAccent
-			nil,        // propHeavyAccent
+			nil,        // propMarcato
 			nil,        // propGhost
 			nil,        // uint
 			nil,        // propDot
@@ -3388,7 +3388,7 @@ var actionTab = actionTable{
 			nil,       // propFlat
 			nil,       // propStaccato
 			nil,       // propAccent
-			nil,       // propHeavyAccent
+			nil,       // propMarcato
 			nil,       // propGhost
 			nil,       // uint
 			nil,       // propDot
@@ -3423,7 +3423,7 @@ var actionTab = actionTable{
 			nil,       // propFlat
 			nil,       // propStaccato
 			nil,       // propAccent
-			nil,       // propHeavyAccent
+			nil,       // propMarcato
 			nil,       // propGhost
 			nil,       // uint
 			nil,       // propDot
@@ -3458,7 +3458,7 @@ var actionTab = actionTable{
 			nil,        // propFlat
 			nil,        // propStaccato
 			nil,        // propAccent
-			nil,        // propHeavyAccent
+			nil,        // propMarcato
 			nil,        // propGhost
 			nil,        // uint
 			nil,        // propDot
@@ -3493,7 +3493,7 @@ var actionTab = actionTable{
 			nil,       // propFlat
 			nil,       // propStaccato
 			nil,       // propAccent
-			nil,       // propHeavyAccent
+			nil,       // propMarcato
 			nil,       // propGhost
 			nil,       // uint
 			nil,       // propDot
@@ -3528,7 +3528,7 @@ var actionTab = actionTable{
 			nil,        // propFlat
 			nil,        // propStaccato
 			nil,        // propAccent
-			nil,        // propHeavyAccent
+			nil,        // propMarcato
 			nil,        // propGhost
 			nil,        // uint
 			nil,        // propDot
@@ -3563,7 +3563,7 @@ var actionTab = actionTable{
 			nil,        // propFlat
 			nil,        // propStaccato
 			nil,        // propAccent
-			nil,        // propHeavyAccent
+			nil,        // propMarcato
 			nil,        // propGhost
 			nil,        // uint
 			nil,        // propDot
@@ -3598,7 +3598,7 @@ var actionTab = actionTable{
 			nil,        // propFlat
 			nil,        // propStaccato
 			nil,        // propAccent
-			nil,        // propHeavyAccent
+			nil,        // propMarcato
 			nil,        // propGhost
 			nil,        // uint
 			nil,        // propDot
@@ -3633,7 +3633,7 @@ var actionTab = actionTable{
 			shift(105), // propFlat
 			shift(106), // propStaccato
 			shift(107), // propAccent
-			shift(108), // propHeavyAccent
+			shift(108), // propMarcato
 			shift(109), // propGhost
 			shift(110), // uint
 			shift(111), // propDot
@@ -3668,7 +3668,7 @@ var actionTab = actionTable{
 			reduce(22), // propFlat, reduce: Property
 			reduce(22), // propStaccato, reduce: Property
 			reduce(22), // propAccent, reduce: Property
-			reduce(22), // propHeavyAccent, reduce: Property
+			reduce(22), // propMarcato, reduce: Property
 			reduce(22), // propGhost, reduce: Property
 			reduce(22), // uint, reduce: Property
 			reduce(22), // propDot, reduce: Property
@@ -3703,7 +3703,7 @@ var actionTab = actionTable{
 			reduce(23), // propFlat, reduce: Property
 			reduce(23), // propStaccato, reduce: Property
 			reduce(23), // propAccent, reduce: Property
-			reduce(23), // propHeavyAccent, reduce: Property
+			reduce(23), // propMarcato, reduce: Property
 			reduce(23), // propGhost, reduce: Property
 			reduce(23), // uint, reduce: Property
 			reduce(23), // propDot, reduce: Property
@@ -3738,7 +3738,7 @@ var actionTab = actionTable{
 			reduce(24), // propFlat, reduce: Property
 			reduce(24), // propStaccato, reduce: Property
 			reduce(24), // propAccent, reduce: Property
-			reduce(24), // propHeavyAccent, reduce: Property
+			reduce(24), // propMarcato, reduce: Property
 			reduce(24), // propGhost, reduce: Property
 			reduce(24), // uint, reduce: Property
 			reduce(24), // propDot, reduce: Property
@@ -3773,7 +3773,7 @@ var actionTab = actionTable{
 			reduce(25), // propFlat, reduce: Property
 			reduce(25), // propStaccato, reduce: Property
 			reduce(25), // propAccent, reduce: Property
-			reduce(25), // propHeavyAccent, reduce: Property
+			reduce(25), // propMarcato, reduce: Property
 			reduce(25), // propGhost, reduce: Property
 			reduce(25), // uint, reduce: Property
 			reduce(25), // propDot, reduce: Property
@@ -3808,7 +3808,7 @@ var actionTab = actionTable{
 			reduce(26), // propFlat, reduce: Property
 			reduce(26), // propStaccato, reduce: Property
 			reduce(26), // propAccent, reduce: Property
-			reduce(26), // propHeavyAccent, reduce: Property
+			reduce(26), // propMarcato, reduce: Property
 			reduce(26), // propGhost, reduce: Property
 			reduce(26), // uint, reduce: Property
 			reduce(26), // propDot, reduce: Property
@@ -3843,7 +3843,7 @@ var actionTab = actionTable{
 			reduce(27), // propFlat, reduce: Property
 			reduce(27), // propStaccato, reduce: Property
 			reduce(27), // propAccent, reduce: Property
-			reduce(27), // propHeavyAccent, reduce: Property
+			reduce(27), // propMarcato, reduce: Property
 			reduce(27), // propGhost, reduce: Property
 			reduce(27), // uint, reduce: Property
 			reduce(27), // propDot, reduce: Property
@@ -3878,7 +3878,7 @@ var actionTab = actionTable{
 			reduce(28), // propFlat, reduce: Property
 			reduce(28), // propStaccato, reduce: Property
 			reduce(28), // propAccent, reduce: Property
-			reduce(28), // propHeavyAccent, reduce: Property
+			reduce(28), // propMarcato, reduce: Property
 			reduce(28), // propGhost, reduce: Property
 			reduce(28), // uint, reduce: Property
 			reduce(28), // propDot, reduce: Property
@@ -3913,7 +3913,7 @@ var actionTab = actionTable{
 			reduce(29), // propFlat, reduce: Property
 			reduce(29), // propStaccato, reduce: Property
 			reduce(29), // propAccent, reduce: Property
-			reduce(29), // propHeavyAccent, reduce: Property
+			reduce(29), // propMarcato, reduce: Property
 			reduce(29), // propGhost, reduce: Property
 			reduce(29), // uint, reduce: Property
 			reduce(29), // propDot, reduce: Property
@@ -3948,7 +3948,7 @@ var actionTab = actionTable{
 			reduce(30), // propFlat, reduce: Property
 			reduce(30), // propStaccato, reduce: Property
 			reduce(30), // propAccent, reduce: Property
-			reduce(30), // propHeavyAccent, reduce: Property
+			reduce(30), // propMarcato, reduce: Property
 			reduce(30), // propGhost, reduce: Property
 			reduce(30), // uint, reduce: Property
 			reduce(30), // propDot, reduce: Property
@@ -3983,7 +3983,7 @@ var actionTab = actionTable{
 			reduce(31), // propFlat, reduce: Property
 			reduce(31), // propStaccato, reduce: Property
 			reduce(31), // propAccent, reduce: Property
-			reduce(31), // propHeavyAccent, reduce: Property
+			reduce(31), // propMarcato, reduce: Property
 			reduce(31), // propGhost, reduce: Property
 			reduce(31), // uint, reduce: Property
 			reduce(31), // propDot, reduce: Property
@@ -4018,7 +4018,7 @@ var actionTab = actionTable{
 			nil,        // propFlat
 			nil,        // propStaccato
 			nil,        // propAccent
-			nil,        // propHeavyAccent
+			nil,        // propMarcato
 			nil,        // propGhost
 			nil,        // uint
 			nil,        // propDot
@@ -4053,7 +4053,7 @@ var actionTab = actionTable{
 			nil,        // propFlat
 			nil,        // propStaccato
 			nil,        // propAccent
-			nil,        // propHeavyAccent
+			nil,        // propMarcato
 			nil,        // propGhost
 			nil,        // uint
 			nil,        // propDot
@@ -4088,7 +4088,7 @@ var actionTab = actionTable{
 			nil,        // propFlat
 			nil,        // propStaccato
 			nil,        // propAccent
-			nil,        // propHeavyAccent
+			nil,        // propMarcato
 			nil,        // propGhost
 			shift(128), // uint
 			nil,        // propDot
@@ -4123,7 +4123,7 @@ var actionTab = actionTable{
 			nil,        // propFlat
 			nil,        // propStaccato
 			nil,        // propAccent
-			nil,        // propHeavyAccent
+			nil,        // propMarcato
 			nil,        // propGhost
 			nil,        // uint
 			nil,        // propDot
@@ -4158,7 +4158,7 @@ var actionTab = actionTable{
 			nil,        // propFlat
 			nil,        // propStaccato
 			nil,        // propAccent
-			nil,        // propHeavyAccent
+			nil,        // propMarcato
 			nil,        // propGhost
 			nil,        // uint
 			nil,        // propDot
@@ -4193,7 +4193,7 @@ var actionTab = actionTable{
 			nil,        // propFlat
 			nil,        // propStaccato
 			nil,        // propAccent
-			nil,        // propHeavyAccent
+			nil,        // propMarcato
 			nil,        // propGhost
 			nil,        // uint
 			nil,        // propDot
@@ -4228,7 +4228,7 @@ var actionTab = actionTable{
 			nil,        // propFlat
 			nil,        // propStaccato
 			nil,        // propAccent
-			nil,        // propHeavyAccent
+			nil,        // propMarcato
 			nil,        // propGhost
 			shift(129), // uint
 			nil,        // propDot
@@ -4263,7 +4263,7 @@ var actionTab = actionTable{
 			nil,        // propFlat
 			nil,        // propStaccato
 			nil,        // propAccent
-			nil,        // propHeavyAccent
+			nil,        // propMarcato
 			nil,        // propGhost
 			nil,        // uint
 			nil,        // propDot
@@ -4298,7 +4298,7 @@ var actionTab = actionTable{
 			nil,        // propFlat
 			nil,        // propStaccato
 			nil,        // propAccent
-			nil,        // propHeavyAccent
+			nil,        // propMarcato
 			nil,        // propGhost
 			nil,        // uint
 			nil,        // propDot
@@ -4333,7 +4333,7 @@ var actionTab = actionTable{
 			shift(83),  // propFlat
 			shift(84),  // propStaccato
 			shift(85),  // propAccent
-			shift(86),  // propHeavyAccent
+			shift(86),  // propMarcato
 			shift(87),  // propGhost
 			shift(88),  // uint
 			shift(89),  // propDot
@@ -4368,7 +4368,7 @@ var actionTab = actionTable{
 			nil,       // propFlat
 			nil,       // propStaccato
 			nil,       // propAccent
-			nil,       // propHeavyAccent
+			nil,       // propMarcato
 			nil,       // propGhost
 			nil,       // uint
 			nil,       // propDot
@@ -4403,7 +4403,7 @@ var actionTab = actionTable{
 			nil,        // propFlat
 			nil,        // propStaccato
 			nil,        // propAccent
-			nil,        // propHeavyAccent
+			nil,        // propMarcato
 			nil,        // propGhost
 			nil,        // uint
 			nil,        // propDot
@@ -4438,7 +4438,7 @@ var actionTab = actionTable{
 			nil,        // propFlat
 			nil,        // propStaccato
 			nil,        // propAccent
-			nil,        // propHeavyAccent
+			nil,        // propMarcato
 			nil,        // propGhost
 			nil,        // uint
 			nil,        // propDot
@@ -4473,7 +4473,7 @@ var actionTab = actionTable{
 			shift(105), // propFlat
 			shift(106), // propStaccato
 			shift(107), // propAccent
-			shift(108), // propHeavyAccent
+			shift(108), // propMarcato
 			shift(109), // propGhost
 			shift(110), // uint
 			shift(111), // propDot
@@ -4508,7 +4508,7 @@ var actionTab = actionTable{
 			nil,        // propFlat
 			nil,        // propStaccato
 			nil,        // propAccent
-			nil,        // propHeavyAccent
+			nil,        // propMarcato
 			nil,        // propGhost
 			nil,        // uint
 			nil,        // propDot
@@ -4543,7 +4543,7 @@ var actionTab = actionTable{
 			nil,        // propFlat
 			nil,        // propStaccato
 			nil,        // propAccent
-			nil,        // propHeavyAccent
+			nil,        // propMarcato
 			nil,        // propGhost
 			nil,        // uint
 			nil,        // propDot
@@ -4578,7 +4578,7 @@ var actionTab = actionTable{
 			nil,        // propFlat
 			nil,        // propStaccato
 			nil,        // propAccent
-			nil,        // propHeavyAccent
+			nil,        // propMarcato
 			nil,        // propGhost
 			nil,        // uint
 			nil,        // propDot
@@ -4613,7 +4613,7 @@ var actionTab = actionTable{
 			nil,       // propFlat
 			nil,       // propStaccato
 			nil,       // propAccent
-			nil,       // propHeavyAccent
+			nil,       // propMarcato
 			nil,       // propGhost
 			nil,       // uint
 			nil,       // propDot
@@ -4648,7 +4648,7 @@ var actionTab = actionTable{
 			nil,       // propFlat
 			nil,       // propStaccato
 			nil,       // propAccent
-			nil,       // propHeavyAccent
+			nil,       // propMarcato
 			nil,       // propGhost
 			nil,       // uint
 			nil,       // propDot
@@ -4683,7 +4683,7 @@ var actionTab = actionTable{
 			nil,        // propFlat
 			nil,        // propStaccato
 			nil,        // propAccent
-			nil,        // propHeavyAccent
+			nil,        // propMarcato
 			nil,        // propGhost
 			nil,        // uint
 			nil,        // propDot

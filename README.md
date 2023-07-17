@@ -146,8 +146,8 @@ The available properties are
 - sharp (`#`)
 - flat (`$`)
 - staccato (`` ` ``) shorten note by 50%
-- accentuated (`>`) +5 velocity
-- heavily accentuated (`^`) +10 velocity
+- accent (`>`) +5 velocity
+- marcato (`^`) +10 velocity
 - ghost (`)`) -5 velocity
 - numeric note value (`1`, `2`, `4`, `8` and so on)
 - dot (`.`)

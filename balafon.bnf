@@ -13,7 +13,6 @@ rest       : '-' ;
 _ident     : ( _char | _uint ) { _char | _uint } ;
 _space     : ' ' ;
 _prefix    : ':' ;
-// accentuated and heavy accentuated
 
 cmdBar        : _prefix 'b' 'a' 'r' _space _ident ;
 cmdEnd        : _prefix 'e' 'n' 'd' ;
@@ -35,7 +34,7 @@ propSharp        : '#' ;
 propFlat         : '$' ;
 propStaccato     : '`' ;
 propAccent       : '>' ;
-propHeavyAccent  : '^' ;
+propMarcato      : '^' ;
 propGhost        : ')' ;
 propDot          : '.' ;
 propTuplet       : '/' '3' | '/' '5' ;
@@ -115,7 +114,7 @@ Property
     | propFlat
     | propStaccato
     | propAccent
-    | propHeavyAccent
+    | propMarcato
     | propGhost
     | uint
     | propDot

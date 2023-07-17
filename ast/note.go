@@ -97,17 +97,17 @@ func (note *Note) NumStaccato() int {
 	return note.countProps(tokentype.PropStaccato)
 }
 
-// NumAccents reports the number of accent properties in the note.
-func (note *Note) NumAccents() int {
+// NumAccent reports the number of accent properties.
+func (note *Note) NumAccent() int {
 	return note.countProps(tokentype.PropAccent)
 }
 
-// NumHeavyAccents reports the number of heavy accent properties in the note.
-func (note *Note) NumHeavyAccents() int {
-	return note.countProps(tokentype.PropHeavyAccent)
+// NumMarcato reports the number of marcato properties.
+func (note *Note) NumMarcato() int {
+	return note.countProps(tokentype.PropMarcato)
 }
 
-// NumGhosts reports the number of ghost properties in the note.
+// NumGhosts reports the number of ghost properties.
 func (note *Note) NumGhosts() int {
 	return note.countProps(tokentype.PropGhost)
 }
@@ -126,7 +126,7 @@ func (note *Note) Value() uint8 {
 	return uint8(v)
 }
 
-// NumDots reports the number of dot properties in the note.
+// NumDots reports the number of dot properties.
 func (note *Note) NumDots() int {
 	return note.countProps(tokentype.PropDot)
 }
