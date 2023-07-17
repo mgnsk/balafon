@@ -6,6 +6,7 @@ import (
 	"strconv"
 
 	"github.com/mgnsk/balafon/constants"
+	"github.com/mgnsk/balafon/internal/parser/token"
 	"github.com/mgnsk/balafon/internal/tokentype"
 )
 
@@ -160,10 +161,10 @@ func (note *Note) WriteTo(w io.Writer) (int64, error) {
 	return int64(n), ew.Flush()
 }
 
-func (note *Note) countProps(targetType tokentype.Type) int {
+func (note *Note) countProps(typ token.Type) int {
 	var count int
 	for _, t := range note.Props {
-		if t.Type == targetType.Type {
+		if t.Type == typ {
 			count++
 		}
 	}

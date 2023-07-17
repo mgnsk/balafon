@@ -2,36 +2,38 @@
 
 package tokentype
 
+import (
+	"github.com/mgnsk/balafon/internal/parser/token"
+)
+
 // Language tokens.
 var (
-	BracketBegin = Type{"bracketBegin", 6}
-	BracketEnd   = Type{"bracketEnd", 7}
-	CmdAssign    = Type{"cmdAssign", 20}
-	CmdBar       = Type{"cmdBar", 4}
-	CmdChannel   = Type{"cmdChannel", 25}
-	CmdControl   = Type{"cmdControl", 27}
-	CmdEnd       = Type{"cmdEnd", 5}
-	CmdPlay      = Type{"cmdPlay", 21}
-	CmdProgram   = Type{"cmdProgram", 26}
-	CmdStart     = Type{"cmdStart", 28}
-	CmdStop      = Type{"cmdStop", 29}
-	CmdTempo     = Type{"cmdTempo", 22}
-	CmdTimesig   = Type{"cmdTimesig", 23}
-	CmdVelocity  = Type{"cmdVelocity", 24}
-	EOF          = Type{"EOF", 1}
-	Empty        = Type{"empty", 2}
-	INVALID      = Type{"INVALID", 0}
-	PropAccent   = Type{"propAccent", 13}
-	PropDot      = Type{"propDot", 17}
-	PropFlat     = Type{"propFlat", 11}
-	PropGhost    = Type{"propGhost", 15}
-	PropLetRing  = Type{"propLetRing", 19}
-	PropMarcato  = Type{"propMarcato", 14}
-	PropSharp    = Type{"propSharp", 10}
-	PropStaccato = Type{"propStaccato", 12}
-	PropTuplet   = Type{"propTuplet", 18}
-	Rest         = Type{"rest", 9}
-	Symbol       = Type{"symbol", 8}
-	Terminator   = Type{"terminator", 3}
-	Uint         = Type{"uint", 16}
+	BracketBegin = token.TokMap.Type("bracketBegin")
+	BracketEnd   = token.TokMap.Type("bracketEnd")
+	CmdAssign    = token.TokMap.Type("cmdAssign")
+	CmdBar       = token.TokMap.Type("cmdBar")
+	CmdChannel   = token.TokMap.Type("cmdChannel")
+	CmdControl   = token.TokMap.Type("cmdControl")
+	CmdEnd       = token.TokMap.Type("cmdEnd")
+	CmdPlay      = token.TokMap.Type("cmdPlay")
+	CmdProgram   = token.TokMap.Type("cmdProgram")
+	CmdStart     = token.TokMap.Type("cmdStart")
+	CmdStop      = token.TokMap.Type("cmdStop")
+	CmdTempo     = token.TokMap.Type("cmdTempo")
+	CmdTimesig   = token.TokMap.Type("cmdTimesig")
+	CmdVelocity  = token.TokMap.Type("cmdVelocity")
+	Empty        = token.TokMap.Type("empty")
+	PropAccent   = token.TokMap.Type("propAccent")
+	PropDot      = token.TokMap.Type("propDot")
+	PropFlat     = token.TokMap.Type("propFlat")
+	PropGhost    = token.TokMap.Type("propGhost")
+	PropLetRing  = token.TokMap.Type("propLetRing")
+	PropMarcato  = token.TokMap.Type("propMarcato")
+	PropSharp    = token.TokMap.Type("propSharp")
+	PropStaccato = token.TokMap.Type("propStaccato")
+	PropTuplet   = token.TokMap.Type("propTuplet")
+	Rest         = token.TokMap.Type("rest")
+	Symbol       = token.TokMap.Type("symbol")
+	Terminator   = token.TokMap.Type("terminator")
+	Uint         = token.TokMap.Type("uint")
 )

@@ -19,9 +19,9 @@ func (p PropertyList) Less(i, j int) bool {
 }
 
 // Find the property with specified type.
-func (p PropertyList) Find(typ tokentype.Type) *token.Token {
+func (p PropertyList) Find(typ token.Type) *token.Token {
 	for _, tok := range p {
-		if tok.Type == typ.Type {
+		if tok.Type == typ {
 			return tok
 		}
 	}
@@ -42,7 +42,7 @@ func (p PropertyList) WriteTo(w io.Writer) (int64, error) {
 // NewPropertyList creates a note property list.
 func NewPropertyList(t *token.Token, inner interface{}) (PropertyList, error) {
 	switch t.Type {
-	case tokentype.Uint.Type:
+	case tokentype.Uint:
 		v, err := strconv.Atoi(string(t.Lit))
 		if err != nil {
 			return nil, err
@@ -50,7 +50,7 @@ func NewPropertyList(t *token.Token, inner interface{}) (PropertyList, error) {
 		if err := validateNoteValue(v); err != nil {
 			return nil, err
 		}
-	case tokentype.PropTuplet.Type:
+	case tokentype.PropTuplet:
 		v, err := strconv.Atoi(string(t.Lit[1:]))
 		if err != nil {
 			return nil, err
