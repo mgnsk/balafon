@@ -5,7 +5,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/mgnsk/balafon/constants"
+	"github.com/mgnsk/balafon/internal/constants"
 	"github.com/mgnsk/balafon/interpreter"
 	. "github.com/onsi/gomega"
 	"gitlab.com/gomidi/midi/v2"

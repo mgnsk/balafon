@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"math"
 
-	"github.com/mgnsk/balafon/constants"
 	"github.com/mgnsk/balafon/internal/ast"
+	"github.com/mgnsk/balafon/internal/constants"
 	"github.com/mgnsk/balafon/internal/parser/lexer"
 	"github.com/mgnsk/balafon/internal/parser/parser"
 	"gitlab.com/gomidi/midi/v2"

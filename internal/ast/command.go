@@ -4,7 +4,7 @@ import (
 	"io"
 	"math"
 
-	"github.com/mgnsk/balafon/constants"
+	"github.com/mgnsk/balafon/internal/constants"
 )
 
 // CmdAssign is a note assignment command.

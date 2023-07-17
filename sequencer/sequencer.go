@@ -1,7 +1,7 @@
 package sequencer
 
 import (
-	"github.com/mgnsk/balafon/constants"
+	"github.com/mgnsk/balafon/internal/constants"
 	"github.com/mgnsk/balafon/interpreter"
 	"gitlab.com/gomidi/midi/v2/smf"
 	"golang.org/x/exp/slices"

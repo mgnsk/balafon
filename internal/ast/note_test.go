@@ -5,8 +5,8 @@ import (
 	"io"
 	"testing"
 
-	"github.com/mgnsk/balafon/constants"
 	"github.com/mgnsk/balafon/internal/ast"
+	"github.com/mgnsk/balafon/internal/constants"
 	. "github.com/onsi/gomega"
 	"github.com/onsi/gomega/types"
 )

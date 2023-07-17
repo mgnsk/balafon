@@ -5,7 +5,7 @@ import (
 	"sort"
 	"strconv"
 
-	"github.com/mgnsk/balafon/constants"
+	"github.com/mgnsk/balafon/internal/constants"
 	"github.com/mgnsk/balafon/internal/parser/token"
 	"github.com/mgnsk/balafon/internal/tokentype"
 )

@@ -3,7 +3,7 @@ package interpreter
 import (
 	"time"
 
-	"github.com/mgnsk/balafon/constants"
+	"github.com/mgnsk/balafon/internal/constants"
 )
 
 // Bar is a single bar of events.
