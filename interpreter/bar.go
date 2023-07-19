@@ -12,8 +12,8 @@ type Bar struct {
 	TimeSig [2]uint8
 }
 
-// IsVirtual returns whether the bar consists of only zero duration events.
-func (b *Bar) IsVirtual() bool {
+// IsZeroDuration returns whether the bar consists of only zero duration events.
+func (b *Bar) IsZeroDuration() bool {
 	if len(b.Events) == 0 {
 		// A bar that consists of rests only.
 		return false
@@ -35,5 +35,9 @@ func (b *Bar) Cap() uint32 {
 
 // Duration returns the bar's duration.
 func (b *Bar) Duration(tempo float64) time.Duration {
+	if b.IsZeroDuration() {
+		return 0
+	}
+
 	return constants.TicksPerQuarter.Duration(tempo, b.Cap())
 }

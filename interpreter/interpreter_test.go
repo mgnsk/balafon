@@ -316,7 +316,7 @@ func TestNoteLengths(t *testing.T) {
 	}
 }
 
-func TestNotEmptyBar(t *testing.T) {
+func TestZeroDurationBarCollapse(t *testing.T) {
 	g := NewWithT(t)
 
 	it := interpreter.New()
@@ -330,6 +330,10 @@ func TestNotEmptyBar(t *testing.T) {
 
 :bar two
 	:program 1
+:end
+
+:bar three
+	-
 :end
 
 :play one

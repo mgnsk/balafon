@@ -69,7 +69,7 @@ func (it *Interpreter) Flush() []*Bar {
 	for _, bar := range it.barBuffer {
 		timesig = bar.TimeSig
 
-		if bar.IsVirtual() {
+		if bar.IsZeroDuration() {
 			buf = append(buf, bar.Events...)
 			continue
 		}
