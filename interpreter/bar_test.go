@@ -1,6 +1,7 @@
 package interpreter_test
 
 import (
+	"fmt"
 	"testing"
 	"time"
 
@@ -76,35 +77,35 @@ func TestBarDurationMultiTrack(t *testing.T) {
 	g.Expect(bar.Duration(60)).To(Equal(time.Second))
 }
 
-// func TestBarDurationTimeSignatures(t *testing.T) {
-// 	for _, tc := range []struct {
-// 		timesig string
-// 		input   string
-// 	}{
-// 		{
-// 			timesig: "1 4",
-// 			input:   "c",
-// 		},
-// 		{
-// 			timesig: "2 8",
-// 			input:   "c",
-// 		},
-// 	} {
-// 		t.Run(fmt.Sprintf(":timesig %s", tc.timesig), func(t *testing.T) {
-// 			g := NewWithT(t)
+func TestBarDurationTimeSignatures(t *testing.T) {
+	for _, tc := range []struct {
+		timesig string
+		input   string
+	}{
+		{
+			timesig: "1 4",
+			input:   "c",
+		},
+		{
+			timesig: "2 8",
+			input:   "c",
+		},
+	} {
+		t.Run(fmt.Sprintf(":timesig %s", tc.timesig), func(t *testing.T) {
+			g := NewWithT(t)
 
-// 			it := interpreter.New()
+			it := interpreter.New()
 
-// 			g.Expect(it.EvalString(fmt.Sprintf(":timesig %s", tc.timesig))).To(Succeed())
-// 			g.Expect(it.EvalString(":assign c 60")).To(Succeed())
-// 			g.Expect(it.EvalString(tc.input)).To(Succeed())
+			g.Expect(it.EvalString(fmt.Sprintf(":timesig %s", tc.timesig))).To(Succeed())
+			g.Expect(it.EvalString(":assign c 60")).To(Succeed())
+			g.Expect(it.EvalString(tc.input)).To(Succeed())
 
-// 			bars := it.Flush()
-// 			g.Expect(bars).To(HaveLen(1))
-// 			g.Expect(bars[0].Duration(60)).To(Equal(time.Second))
-// 		})
-// 	}
-// }
+			bars := it.Flush()
+			g.Expect(bars).To(HaveLen(1))
+			g.Expect(bars[0].Duration(60)).To(Equal(time.Second))
+		})
+	}
+}
 
 func TestEmptyBarIsInvalid(t *testing.T) {
 	g := NewWithT(t)
