@@ -1,4 +1,4 @@
-package interpreter
+package balafon
 
 import (
 	"fmt"
@@ -24,7 +24,7 @@ type Interpreter struct {
 	pos     uint32
 	timesig [2]uint8
 
-	keymap *KeyMap
+	keymap *keyMap
 	bars   map[string]*Bar
 }
 
@@ -283,7 +283,7 @@ func (it *Interpreter) parseNoteList(bar *Bar, noteList ast.NoteList) error {
 	return nil
 }
 
-// New creates an interpreter.
+// New creates a balafon interpreter.
 func New() *Interpreter {
 	return &Interpreter{
 		parser:   parser.NewParser(),
@@ -291,7 +291,7 @@ func New() *Interpreter {
 		channel:  0,
 		pos:      0,
 		timesig:  [2]uint8{4, 4},
-		keymap:   NewKeyMap(),
+		keymap:   newKeyMap(),
 		bars:     map[string]*Bar{},
 	}
 }

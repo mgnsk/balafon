@@ -1,4 +1,4 @@
-package interpreter
+package balafon
 
 import (
 	"gitlab.com/gomidi/midi/v2/smf"

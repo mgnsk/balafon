@@ -1,4 +1,4 @@
-package main_test
+package balafon_test
 
 import (
 	"embed"

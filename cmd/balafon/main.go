@@ -9,11 +9,8 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/mgnsk/balafon/interpreter"
+	"github.com/mgnsk/balafon"
 	"github.com/mgnsk/balafon/lint"
-	"github.com/mgnsk/balafon/player"
-	"github.com/mgnsk/balafon/sequencer"
-	"github.com/mgnsk/balafon/shell"
 	"github.com/spf13/cobra"
 	"gitlab.com/gomidi/midi/v2"
 	"gitlab.com/gomidi/midi/v2/drivers"
@@ -74,7 +71,7 @@ func createCmdLive() *cobra.Command {
 				return err
 			}
 
-			it := interpreter.New()
+			it := balafon.New()
 			if err := it.Eval(file); err != nil {
 				return err
 			}
@@ -82,7 +79,7 @@ func createCmdLive() *cobra.Command {
 			it.Flush()
 			fmt.Println(string(file))
 
-			s := shell.NewLiveShell(os.Stdin, it, out)
+			s := balafon.NewLiveShell(os.Stdin, it, out)
 
 			oldState, err := term.MakeRaw(int(os.Stdin.Fd()))
 			if err != nil {
@@ -118,17 +115,17 @@ func createCmdPlay() *cobra.Command {
 				return err
 			}
 
-			it := interpreter.New()
+			it := balafon.New()
 			if err := it.Eval(file); err != nil {
 				return err
 			}
 
-			s := sequencer.New()
+			s := balafon.NewSequencer()
 			s.AddBars(it.Flush()...)
 
 			events := s.Flush()
 
-			p := player.New(out)
+			p := balafon.NewPlayer(out)
 
 			return p.Play(events...)
 		},

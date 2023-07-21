@@ -1,13 +1,15 @@
-package shell_test
+package balafon_test
 
 import (
 	"testing"
 
-	"github.com/mgnsk/balafon/interpreter"
-	"github.com/mgnsk/balafon/shell"
+	"github.com/mgnsk/balafon"
+	"gitlab.com/gomidi/midi/v2/drivers"
 )
 
-type out struct{}
+type out struct {
+	drivers.Port
+}
 
 func (*out) Send([]byte) error {
 	return nil
@@ -21,12 +23,12 @@ func (*reader) Read(p []byte) (int, error) {
 }
 
 func BenchmarkLiveShell(b *testing.B) {
-	it := interpreter.New()
+	it := balafon.New()
 	if err := it.EvalString(":assign a 60"); err != nil {
 		b.Fatal(err)
 	}
 
-	s := shell.NewLiveShell(&reader{}, it, &out{})
+	s := balafon.NewLiveShell(&reader{}, it, &out{})
 
 	b.ReportAllocs()
 	b.ResetTimer()

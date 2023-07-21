@@ -1,12 +1,11 @@
-package sequencer_test
+package balafon_test
 
 import (
 	"testing"
 	"time"
 
+	"github.com/mgnsk/balafon"
 	"github.com/mgnsk/balafon/internal/constants"
-	"github.com/mgnsk/balafon/interpreter"
-	"github.com/mgnsk/balafon/sequencer"
 	. "github.com/onsi/gomega"
 	"gitlab.com/gomidi/midi/v2"
 	_ "gitlab.com/gomidi/midi/v2/drivers/testdrv"
@@ -34,10 +33,10 @@ func TestSequencerTiming(t *testing.T) {
 		t.Run(tc.input, func(t *testing.T) {
 			g := NewWithT(t)
 
-			it := interpreter.New()
+			it := balafon.New()
 			g.Expect(it.EvalString(tc.input)).To(Succeed())
 
-			s := sequencer.New()
+			s := balafon.NewSequencer()
 			s.AddBars(it.Flush()...)
 
 			sm := s.Flush()
@@ -61,7 +60,7 @@ func TestSequencerTiming(t *testing.T) {
 func TestSequencerMultiTrackTiming(t *testing.T) {
 	g := NewWithT(t)
 
-	it := interpreter.New()
+	it := balafon.New()
 
 	input := `
 :channel 1
@@ -81,7 +80,7 @@ func TestSequencerMultiTrackTiming(t *testing.T) {
 
 	g.Expect(it.EvalString(input)).To(Succeed())
 
-	s := sequencer.New()
+	s := balafon.NewSequencer()
 	s.AddBars(it.Flush()...)
 
 	sm := s.Flush()
@@ -99,7 +98,7 @@ func TestSequencerMultiTrackTiming(t *testing.T) {
 func TestSilenceBetweenBars(t *testing.T) {
 	g := NewWithT(t)
 
-	it := interpreter.New()
+	it := balafon.New()
 
 	input := `
 :assign x 42
@@ -120,7 +119,7 @@ func TestSilenceBetweenBars(t *testing.T) {
 
 	g.Expect(it.EvalString(input)).To(Succeed())
 
-	s := sequencer.New()
+	s := balafon.NewSequencer()
 	s.AddBars(it.Flush()...)
 
 	sm := s.Flush()
@@ -146,7 +145,7 @@ func TestSilenceBetweenBars(t *testing.T) {
 func TestTempoChange(t *testing.T) {
 	g := NewWithT(t)
 
-	it := interpreter.New()
+	it := balafon.New()
 
 	input := `
 :assign x 42
@@ -169,13 +168,13 @@ func TestTempoChange(t *testing.T) {
 
 	g.Expect(it.EvalString(input)).To(Succeed())
 
-	s := sequencer.New()
+	s := balafon.NewSequencer()
 	s.AddBars(it.Flush()...)
 
 	sm := s.Flush()
 	g.Expect(sm).To(HaveLen(8))
 
-	g.Expect(sm[7]).To(Equal(sequencer.TrackEvent{
+	g.Expect(sm[7]).To(Equal(balafon.TrackEvent{
 		Message:        smf.Message(midi.NoteOff(0, 42)),
 		AbsTicks:       uint32(3 * constants.TicksPerQuarter),
 		AbsNanoseconds: 2 * time.Second.Nanoseconds(),

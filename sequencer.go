@@ -1,8 +1,7 @@
-package sequencer
+package balafon
 
 import (
 	"github.com/mgnsk/balafon/internal/constants"
-	"github.com/mgnsk/balafon/interpreter"
 	"gitlab.com/gomidi/midi/v2/smf"
 	"golang.org/x/exp/slices"
 )
@@ -23,7 +22,7 @@ type Sequencer struct {
 }
 
 // AddBars adds bars to te sequence.
-func (s *Sequencer) AddBars(bars ...*interpreter.Bar) {
+func (s *Sequencer) AddBars(bars ...*Bar) {
 	for _, bar := range bars {
 		for _, ev := range bar.Events {
 			te := TrackEvent{
@@ -59,7 +58,7 @@ func (s *Sequencer) Flush() []TrackEvent {
 }
 
 // New creates an SMF sequencer.
-func New() *Sequencer {
+func NewSequencer() *Sequencer {
 	return &Sequencer{
 		tempo: constants.DefaultTempo,
 	}

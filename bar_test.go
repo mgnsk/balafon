@@ -1,12 +1,12 @@
-package interpreter_test
+package balafon_test
 
 import (
 	"fmt"
 	"testing"
 	"time"
 
+	"github.com/mgnsk/balafon"
 	"github.com/mgnsk/balafon/internal/constants"
-	"github.com/mgnsk/balafon/interpreter"
 	. "github.com/onsi/gomega"
 )
 
@@ -26,7 +26,7 @@ func TestBarCapTimeSignatures(t *testing.T) {
 	} {
 		g := NewWithT(t)
 
-		bar := interpreter.Bar{TimeSig: tc.timesig}
+		bar := balafon.Bar{TimeSig: tc.timesig}
 		g.Expect(bar.Cap()).To(Equal(tc.capacity))
 	}
 }
@@ -48,7 +48,7 @@ func TestZeroDurationBar(t *testing.T) {
 		t.Run(tc.input, func(t *testing.T) {
 			g := NewWithT(t)
 
-			it := interpreter.New()
+			it := balafon.New()
 
 			g.Expect(it.EvalString(tc.input)).To(Succeed())
 
@@ -62,9 +62,9 @@ func TestZeroDurationBar(t *testing.T) {
 func TestBarDurationMultiTrack(t *testing.T) {
 	g := NewWithT(t)
 
-	bar := interpreter.Bar{
+	bar := balafon.Bar{
 		TimeSig: [2]uint8{1, 4},
-		Events: []interpreter.Event{
+		Events: []balafon.Event{
 			{
 				Duration: uint32(constants.TicksPerQuarter),
 			},
@@ -94,7 +94,7 @@ func TestBarDurationTimeSignatures(t *testing.T) {
 		t.Run(fmt.Sprintf(":timesig %s", tc.timesig), func(t *testing.T) {
 			g := NewWithT(t)
 
-			it := interpreter.New()
+			it := balafon.New()
 
 			g.Expect(it.EvalString(fmt.Sprintf(":timesig %s", tc.timesig))).To(Succeed())
 			g.Expect(it.EvalString(":assign c 60")).To(Succeed())
@@ -118,6 +118,6 @@ func TestEmptyBarIsInvalid(t *testing.T) {
 :end
 	`
 
-	it := interpreter.New()
+	it := balafon.New()
 	g.Expect(it.EvalString(input)).NotTo(Succeed())
 }

@@ -3,13 +3,13 @@ package lint
 import (
 	"errors"
 
+	"github.com/mgnsk/balafon"
 	parseErrors "github.com/mgnsk/balafon/internal/parser/errors"
-	"github.com/mgnsk/balafon/interpreter"
 )
 
 // Lint the input script.
 func Lint(filename string, script []byte) error {
-	it := interpreter.New()
+	it := balafon.New()
 	err := it.Eval(script)
 
 	var e *parseErrors.Error

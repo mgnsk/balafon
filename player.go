@@ -1,9 +1,8 @@
-package player
+package balafon
 
 import (
 	"time"
 
-	"github.com/mgnsk/balafon/sequencer"
 	"gitlab.com/gomidi/midi/v2/drivers"
 )
 
@@ -12,15 +11,15 @@ type Player struct {
 	out drivers.Out
 }
 
-// New creates a new player.
-func New(out drivers.Out) *Player {
+// NewPlayer creates a new player.
+func NewPlayer(out drivers.Out) *Player {
 	return &Player{
 		out: out,
 	}
 }
 
 // Play the events into the out port.
-func (p *Player) Play(events ...sequencer.TrackEvent) error {
+func (p *Player) Play(events ...TrackEvent) error {
 	if len(events) == 0 {
 		return nil
 	}

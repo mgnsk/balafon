@@ -1,12 +1,12 @@
-package interpreter_test
+package balafon_test
 
 import (
 	"fmt"
 	"testing"
 	"time"
 
+	balafon "github.com/mgnsk/balafon"
 	"github.com/mgnsk/balafon/internal/constants"
-	"github.com/mgnsk/balafon/interpreter"
 	. "github.com/onsi/gomega"
 	"gitlab.com/gomidi/midi/v2"
 	"gitlab.com/gomidi/midi/v2/smf"
@@ -105,7 +105,7 @@ func TestCommands(t *testing.T) {
 		t.Run(tc.input, func(t *testing.T) {
 			g := NewWithT(t)
 
-			it := interpreter.New()
+			it := balafon.New()
 
 			g.Expect(it.EvalString(tc.input)).To(Succeed())
 
@@ -129,7 +129,7 @@ func TestCommands(t *testing.T) {
 func TestUndefinedKey(t *testing.T) {
 	g := NewWithT(t)
 
-	it := interpreter.New()
+	it := balafon.New()
 
 	g.Expect(it.EvalString("k")).NotTo(Succeed())
 }
@@ -137,7 +137,7 @@ func TestUndefinedKey(t *testing.T) {
 func TestNoteAlreadyAssigned(t *testing.T) {
 	g := NewWithT(t)
 
-	it := interpreter.New()
+	it := balafon.New()
 
 	g.Expect(it.EvalString(":assign c 60")).To(Succeed())
 	g.Expect(it.EvalString(":assign c 61")).NotTo(Succeed())
@@ -159,7 +159,7 @@ func TestSharpFlatNote(t *testing.T) {
 			t.Run(tc.input, func(t *testing.T) {
 				g := NewWithT(t)
 
-				it := interpreter.New()
+				it := balafon.New()
 
 				g.Expect(it.EvalString(tc.input)).To(Succeed())
 
@@ -182,7 +182,7 @@ func TestSharpFlatNote(t *testing.T) {
 			t.Run(tc.input, func(t *testing.T) {
 				g := NewWithT(t)
 
-				it := interpreter.New()
+				it := balafon.New()
 
 				g.Expect(it.EvalString(tc.input)).NotTo(Succeed())
 			})
@@ -212,7 +212,7 @@ func TestAccentuatedAndGhostNote(t *testing.T) {
 		t.Run(tc.input, func(t *testing.T) {
 			g := NewWithT(t)
 
-			it := interpreter.New()
+			it := balafon.New()
 
 			g.Expect(it.EvalString(tc.input)).To(Succeed())
 
@@ -237,7 +237,7 @@ func TestStaccatoNote(t *testing.T) {
 		t.Run(tc.input, func(t *testing.T) {
 			g := NewWithT(t)
 
-			it := interpreter.New()
+			it := balafon.New()
 
 			g.Expect(it.EvalString(tc.input)).To(Succeed())
 
@@ -283,7 +283,7 @@ func TestNoteLengths(t *testing.T) {
 		t.Run(tc.input, func(t *testing.T) {
 			g := NewWithT(t)
 
-			it := interpreter.New()
+			it := balafon.New()
 
 			tempo := 60
 
@@ -296,17 +296,17 @@ func TestNoteLengths(t *testing.T) {
 			g.Expect(bars).To(HaveLen(1))
 			g.Expect(bars[0].TimeSig).To(Equal([2]uint8{4, 4}))
 			g.Expect(bars[0].Events).To(ConsistOf(
-				interpreter.Event{
+				balafon.Event{
 					Pos:      0,
 					Duration: 0,
 					Message:  smf.MetaTempo(float64(tempo)),
 				},
-				interpreter.Event{
+				balafon.Event{
 					Pos:      0,
 					Duration: tc.offAt,
 					Message:  smf.Message(midi.NoteOn(0, 36, constants.DefaultVelocity)),
 				},
-				interpreter.Event{
+				balafon.Event{
 					Pos:      tc.offAt,
 					Duration: 0,
 					Message:  smf.Message(midi.NoteOff(0, 36)),
@@ -319,7 +319,7 @@ func TestNoteLengths(t *testing.T) {
 func TestZeroDurationBarCollapse(t *testing.T) {
 	g := NewWithT(t)
 
-	it := interpreter.New()
+	it := balafon.New()
 
 	err := it.EvalString(`
 :timesig 1 4
@@ -357,7 +357,7 @@ func TestSilence(t *testing.T) {
 	t.Run("end of bar", func(t *testing.T) {
 		g := NewWithT(t)
 
-		it := interpreter.New()
+		it := balafon.New()
 
 		err := it.EvalString(`
 :timesig 4 4
@@ -371,12 +371,12 @@ c
 		g.Expect(bars).To(HaveLen(1))
 		g.Expect(bars[0].Cap()).To(Equal(uint32(constants.TicksPerWhole)))
 		g.Expect(bars[0].Events).To(ConsistOf(
-			interpreter.Event{
+			balafon.Event{
 				Message:  smf.Message(midi.NoteOn(0, 60, constants.DefaultVelocity)),
 				Pos:      0,
 				Duration: uint32(constants.TicksPerQuarter),
 			},
-			interpreter.Event{
+			balafon.Event{
 				Message:  smf.Message(midi.NoteOff(0, 60)),
 				Pos:      uint32(constants.TicksPerQuarter),
 				Duration: 0,
@@ -387,7 +387,7 @@ c
 	t.Run("beginning of bar", func(t *testing.T) {
 		g := NewWithT(t)
 
-		it := interpreter.New()
+		it := balafon.New()
 
 		err := it.EvalString(`
 :timesig 4 4
@@ -401,12 +401,12 @@ c
 		g.Expect(bars).To(HaveLen(1))
 		g.Expect(bars[0].Cap()).To(Equal(uint32(constants.TicksPerWhole)))
 		g.Expect(bars[0].Events).To(ConsistOf(
-			interpreter.Event{
+			balafon.Event{
 				Message:  smf.Message(midi.NoteOn(0, 60, constants.DefaultVelocity)),
 				Pos:      uint32(3 * constants.TicksPerQuarter),
 				Duration: uint32(constants.TicksPerQuarter),
 			},
-			interpreter.Event{
+			balafon.Event{
 				Message:  smf.Message(midi.NoteOff(0, 60)),
 				Pos:      uint32(constants.TicksPerWhole),
 				Duration: 0,
@@ -418,7 +418,7 @@ c
 func TestTimeSignature(t *testing.T) {
 	g := NewWithT(t)
 
-	it := interpreter.New()
+	it := balafon.New()
 
 	err := it.EvalString(`
 :assign c 60
@@ -449,7 +449,7 @@ c
 func TestBarTooLong(t *testing.T) {
 	g := NewWithT(t)
 
-	it := interpreter.New()
+	it := balafon.New()
 
 	err := it.EvalString(`
 :assign c 60
@@ -464,7 +464,7 @@ ccccc
 func TestFlushSkipsTooLongBar(t *testing.T) {
 	g := NewWithT(t)
 
-	it := interpreter.New()
+	it := balafon.New()
 
 	g.Expect(it.EvalString(":assign c 60")).To(Succeed())
 	g.Expect(it.EvalString(":timesig 4 4")).To(Succeed())
@@ -473,9 +473,9 @@ func TestFlushSkipsTooLongBar(t *testing.T) {
 
 	bars := it.Flush()
 
-	g.Expect(bars).To(ConsistOf(&interpreter.Bar{
+	g.Expect(bars).To(ConsistOf(&balafon.Bar{
 		TimeSig: [2]uint8{4, 4},
-		Events: []interpreter.Event{
+		Events: []balafon.Event{
 			{
 				Message:  smf.Message(midi.NoteOn(0, 60, constants.DefaultVelocity)),
 				Pos:      0,
@@ -493,7 +493,7 @@ func TestFlushSkipsTooLongBar(t *testing.T) {
 func TestMultiTrackNotesAreSortedPairs(t *testing.T) {
 	g := NewWithT(t)
 
-	it := interpreter.New()
+	it := balafon.New()
 
 	input := `
 :channel 1
@@ -542,7 +542,7 @@ func TestMultiTrackNotesAreSortedPairs(t *testing.T) {
 func TestPendingGlobalCommands(t *testing.T) {
 	g := NewWithT(t)
 
-	it := interpreter.New()
+	it := balafon.New()
 
 	err := it.EvalString(`
 :channel 2; :assign d 62
@@ -587,9 +587,9 @@ c
 	bars := it.Flush()
 
 	g.Expect(bars).To(ConsistOf(
-		&interpreter.Bar{
+		&balafon.Bar{
 			TimeSig: [2]uint8{2, 8},
-			Events: []interpreter.Event{
+			Events: []balafon.Event{
 				{Message: smf.MetaTempo(60)},
 				{Message: smf.Message(midi.ProgramChange(1, 1))},
 				{Message: smf.Message(midi.ControlChange(1, 1, 1))},
@@ -618,9 +618,9 @@ c
 				},
 			},
 		},
-		&interpreter.Bar{
+		&balafon.Bar{
 			TimeSig: [2]uint8{1, 4},
-			Events: []interpreter.Event{
+			Events: []balafon.Event{
 				{
 					Message: smf.MetaTempo(120),
 				},
@@ -636,9 +636,9 @@ c
 				},
 			},
 		},
-		&interpreter.Bar{
+		&balafon.Bar{
 			TimeSig: [2]uint8{1, 4},
-			Events: []interpreter.Event{
+			Events: []balafon.Event{
 				{
 					Pos:      0,
 					Duration: uint32(constants.TicksPerQuarter),
@@ -657,7 +657,7 @@ c
 func TestTempoIsGlobal(t *testing.T) {
 	g := NewWithT(t)
 
-	it := interpreter.New()
+	it := balafon.New()
 
 	err := it.EvalString(`
 :channel 1; :assign c 60
@@ -688,16 +688,16 @@ c
 	bars := it.Flush()
 
 	g.Expect(bars).To(ConsistOf(
-		&interpreter.Bar{
+		&balafon.Bar{
 			TimeSig: [2]uint8{1, 4},
-			Events: []interpreter.Event{
+			Events: []balafon.Event{
 				{Message: smf.MetaTempo(120)},
 				{Message: smf.MetaTempo(60)},
 			},
 		},
-		&interpreter.Bar{
+		&balafon.Bar{
 			TimeSig: [2]uint8{2, 8},
-			Events: []interpreter.Event{
+			Events: []balafon.Event{
 				{
 					Pos:      0,
 					Duration: uint32(constants.TicksPerQuarter),
@@ -710,9 +710,9 @@ c
 				},
 			},
 		},
-		&interpreter.Bar{
+		&balafon.Bar{
 			TimeSig: [2]uint8{2, 8},
-			Events: []interpreter.Event{
+			Events: []balafon.Event{
 				{Message: smf.MetaTempo(120)},
 				{
 					Pos:      0,
@@ -726,9 +726,9 @@ c
 				},
 			},
 		},
-		&interpreter.Bar{
+		&balafon.Bar{
 			TimeSig: [2]uint8{1, 4},
-			Events: []interpreter.Event{
+			Events: []balafon.Event{
 				{
 					Pos:      0,
 					Duration: uint32(constants.TicksPerQuarter),
@@ -747,7 +747,7 @@ c
 func TestLetRing(t *testing.T) {
 	g := NewWithT(t)
 
-	it := interpreter.New()
+	it := balafon.New()
 
 	g.Expect(it.EvalString(":assign k 36")).To(Succeed())
 	g.Expect(it.EvalString("k*")).To(Succeed())
@@ -755,7 +755,7 @@ func TestLetRing(t *testing.T) {
 	bars := it.Flush()
 	g.Expect(bars).To(HaveLen(1))
 	g.Expect(bars[0].Events).To(ConsistOf(
-		interpreter.Event{
+		balafon.Event{
 			Message:  smf.Message(midi.NoteOn(0, 36, constants.DefaultVelocity)),
 			Pos:      0,
 			Duration: uint32(constants.TicksPerQuarter),

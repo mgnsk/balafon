@@ -1,12 +1,12 @@
-package shell
+package balafon
 
 import (
 	"fmt"
 	"io"
 	"unicode/utf8"
 
-	"github.com/mgnsk/balafon/interpreter"
 	"gitlab.com/gomidi/midi/v2"
+	"gitlab.com/gomidi/midi/v2/drivers"
 )
 
 const (
@@ -14,21 +14,16 @@ const (
 	EOT = 4
 )
 
-// Out is the interface for an opened MIDI output port.
-type Out interface {
-	Send(data []byte) error
-}
-
 // LiveShell is an unbuffered live shell.
 type LiveShell struct {
 	r   io.Reader
-	it  *interpreter.Interpreter
+	it  *Interpreter
 	buf []byte
-	out Out
+	out drivers.Out
 }
 
 // NewLiveShell creates a new live shell.
-func NewLiveShell(r io.Reader, it *interpreter.Interpreter, out Out) *LiveShell {
+func NewLiveShell(r io.Reader, it *Interpreter, out drivers.Out) *LiveShell {
 	return &LiveShell{
 		r:   r,
 		it:  it,

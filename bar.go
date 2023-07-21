@@ -1,4 +1,4 @@
-package interpreter
+package balafon
 
 import (
 	"time"
