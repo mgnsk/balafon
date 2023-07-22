@@ -48,6 +48,27 @@ func (it *Interpreter) Eval(input []byte) error {
 	return it.eval(lexer.NewLexer(input))
 }
 
+func (it *Interpreter) eval(scanner parser.Scanner) error {
+	res, err := it.parser.Parse(scanner)
+	if err != nil {
+		return err
+	}
+
+	declList, ok := res.(ast.NodeList)
+	if !ok {
+		return fmt.Errorf("invalid input, expected ast.NodeList")
+	}
+
+	bars, err := it.parse(declList)
+	if err != nil {
+		return err
+	}
+
+	it.barBuffer = append(it.barBuffer, bars...)
+
+	return nil
+}
+
 // Flush the parsed bar queue.
 func (it *Interpreter) Flush() []*Bar {
 	var (
@@ -91,27 +112,6 @@ func (it *Interpreter) Flush() []*Bar {
 	}
 
 	return playableBars
-}
-
-func (it *Interpreter) eval(scanner parser.Scanner) error {
-	res, err := it.parser.Parse(scanner)
-	if err != nil {
-		return err
-	}
-
-	declList, ok := res.(ast.NodeList)
-	if !ok {
-		return fmt.Errorf("invalid input, expected ast.NodeList")
-	}
-
-	bars, err := it.parse(declList)
-	if err != nil {
-		return err
-	}
-
-	it.barBuffer = append(it.barBuffer, bars...)
-
-	return nil
 }
 
 func (it *Interpreter) beginBar() *Interpreter {

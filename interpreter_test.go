@@ -1,6 +1,7 @@
 package balafon_test
 
 import (
+	"errors"
 	"fmt"
 	"testing"
 	"time"
@@ -12,6 +13,22 @@ import (
 	"gitlab.com/gomidi/midi/v2/smf"
 	"golang.org/x/exp/slices"
 )
+
+func TestParseError(t *testing.T) {
+	g := NewWithT(t)
+
+	it := balafon.New()
+
+	err := it.EvalString("")
+	g.Expect(err).To(HaveOccurred())
+
+	var perr *balafon.ParseError
+	g.Expect(errors.As(err, &perr)).To(BeTrue())
+}
+
+func TestEvalError(t *testing.T) {
+	// TODO: add Pos to nodes to report eval errors correctly
+}
 
 func TestCommands(t *testing.T) {
 	for _, tc := range []struct {

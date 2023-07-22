@@ -34,12 +34,6 @@ balafon
 balafon play --port "VMPK" examples/bach
 ```
 
-To use piped input, pass `-` as the argument:
-
-```sh
-cat examples/bach | balafon play --port "VMPK" -
-```
-
 - Port can also be specified by its number:
 
 ```sh

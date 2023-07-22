@@ -2,11 +2,10 @@ package balafon_test
 
 import (
 	"embed"
-	"fmt"
 	"io/fs"
 	"testing"
 
-	"github.com/mgnsk/balafon/lint"
+	"github.com/mgnsk/balafon"
 )
 
 //go:embed examples/*
@@ -22,16 +21,9 @@ func TestExamples(t *testing.T) {
 			return nil
 		}
 
-		script, err := examples.ReadFile(path)
-		if err != nil {
-			return err
-		}
+		it := balafon.New()
 
-		if err := lint.Lint(path, script); err != nil {
-			return fmt.Errorf("error in file '%s': %w", path, err)
-		}
-
-		return nil
+		return it.EvalFile(path)
 	}); err != nil {
 		t.Fatal(err)
 	}

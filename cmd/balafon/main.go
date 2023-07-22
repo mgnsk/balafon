@@ -1,16 +1,15 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"log"
 	"os"
 	"strconv"
 	"strings"
 
 	"github.com/mgnsk/balafon"
-	"github.com/mgnsk/balafon/lint"
 	"github.com/spf13/cobra"
 	"gitlab.com/gomidi/midi/v2"
 	"gitlab.com/gomidi/midi/v2/drivers"
@@ -61,23 +60,17 @@ func createCmdLive() *cobra.Command {
 		Short: "Load a file and continue in a live shell",
 		Args:  cobra.ExactArgs(1),
 		RunE: func(c *cobra.Command, args []string) error {
-			file, err := ioutil.ReadFile(args[0])
-			if err != nil {
-				return err
-			}
-
 			out, err := openOut(c.Flag("port").Value.String())
 			if err != nil {
 				return err
 			}
 
 			it := balafon.New()
-			if err := it.Eval(file); err != nil {
+			if err := it.EvalFile(args[0]); err != nil {
 				return err
 			}
 
 			it.Flush()
-			fmt.Println(string(file))
 
 			s := balafon.NewLiveShell(os.Stdin, it, out)
 
@@ -88,7 +81,7 @@ func createCmdLive() *cobra.Command {
 			defer term.Restore(int(os.Stdin.Fd()), oldState)
 
 			err = s.Run()
-			if err != nil && err == io.EOF {
+			if err != nil && errors.Is(err, io.EOF) {
 				return nil
 			}
 
@@ -105,18 +98,13 @@ func createCmdPlay() *cobra.Command {
 		Short: "Play a file",
 		Args:  cobra.ExactArgs(1),
 		RunE: func(c *cobra.Command, args []string) error {
-			file, err := ioutil.ReadFile(args[0])
-			if err != nil {
-				return err
-			}
-
 			out, err := openOut(c.Flag("port").Value.String())
 			if err != nil {
 				return err
 			}
 
 			it := balafon.New()
-			if err := it.Eval(file); err != nil {
+			if err := it.EvalFile(args[0]); err != nil {
 				return err
 			}
 
@@ -140,37 +128,12 @@ func createCmdLint() *cobra.Command {
 		Short: "Lint a file",
 		Args:  cobra.ExactArgs(1),
 		RunE: func(c *cobra.Command, args []string) error {
-			f, err := openInputFile(args[0])
-			if err != nil {
-				return err
-			}
-			defer f.Close()
+			it := balafon.New()
 
-			input, err := io.ReadAll(f)
-			if err != nil {
-				return err
-			}
-
-			// TODO: stdin filename argument for error formatting
-			return lint.Lint(args[0], input)
+			return it.EvalFile(args[0])
 		},
 	}
 	return cmd
-}
-
-func openInputFile(name string) (io.ReadCloser, error) {
-	if name == "-" {
-		return os.Stdin, nil
-	} else if name == "" {
-		return nil, fmt.Errorf("file argument or '-' for stdin required")
-	}
-
-	f, err := os.Open(name)
-	if err != nil {
-		return nil, err
-	}
-
-	return f, nil
 }
 
 func openOut(name string) (out drivers.Out, err error) {
