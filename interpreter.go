@@ -28,33 +28,24 @@ type Interpreter struct {
 	bars   map[string]*Bar
 }
 
+// EvalFile evaluates a file.
+func (it *Interpreter) EvalFile(filepath string) error {
+	scanner, err := lexer.NewLexerFile(filepath)
+	if err != nil {
+		return err
+	}
+
+	return it.eval(scanner)
+}
+
 // EvalString evaluates the string input.
 func (it *Interpreter) EvalString(input string) error {
-	return it.Eval([]byte(input))
+	return it.eval(lexer.NewLexer([]byte(input)))
 }
 
 // Eval evaluates the input.
 func (it *Interpreter) Eval(input []byte) error {
-	scanner := lexer.NewLexer(input)
-
-	res, err := it.parser.Parse(scanner)
-	if err != nil {
-		return err
-	}
-
-	declList, ok := res.(ast.NodeList)
-	if !ok {
-		return fmt.Errorf("invalid input, expected ast.NodeList")
-	}
-
-	bars, err := it.parse(declList)
-	if err != nil {
-		return err
-	}
-
-	it.barBuffer = append(it.barBuffer, bars...)
-
-	return nil
+	return it.eval(lexer.NewLexer(input))
 }
 
 // Flush the parsed bar queue.
@@ -100,6 +91,27 @@ func (it *Interpreter) Flush() []*Bar {
 	}
 
 	return playableBars
+}
+
+func (it *Interpreter) eval(scanner parser.Scanner) error {
+	res, err := it.parser.Parse(scanner)
+	if err != nil {
+		return err
+	}
+
+	declList, ok := res.(ast.NodeList)
+	if !ok {
+		return fmt.Errorf("invalid input, expected ast.NodeList")
+	}
+
+	bars, err := it.parse(declList)
+	if err != nil {
+		return err
+	}
+
+	it.barBuffer = append(it.barBuffer, bars...)
+
+	return nil
 }
 
 func (it *Interpreter) beginBar() *Interpreter {
