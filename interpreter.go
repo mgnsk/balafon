@@ -56,7 +56,7 @@ func (it *Interpreter) eval(scanner parser.Scanner) error {
 
 	declList, ok := res.(ast.NodeList)
 	if !ok {
-		return fmt.Errorf("invalid input, expected ast.NodeList")
+		panic("invalid input, expected ast.NodeList")
 	}
 
 	bars, err := it.parse(declList)
