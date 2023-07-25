@@ -3,7 +3,6 @@ package ast_test
 import (
 	"testing"
 
-	"github.com/mgnsk/balafon/internal/ast"
 	. "github.com/onsi/gomega"
 )
 
@@ -30,8 +29,11 @@ block comment
 	} {
 		res, err := parse(input)
 		g.Expect(err).NotTo(HaveOccurred())
-		g.Expect(res).To(Equal(ast.NodeList{
-			ast.CmdAssign{Note: 'c', Key: 60},
-		}))
+		g.Expect(res).To(ConsistOf(
+			SatisfyAll(
+				HaveField("Note", 'c'),
+				HaveField("Key", 60),
+			),
+		))
 	}
 }

@@ -135,12 +135,18 @@ func (it *Interpreter) parse(declList ast.NodeList) ([]*Bar, error) {
 		case ast.CmdAssign:
 			if !it.keymap.Set(it.channel, decl.Note, decl.Key) {
 				old, _ := it.keymap.Get(it.channel, decl.Note)
-				return nil, fmt.Errorf("note '%c' already assigned to key '%d' on channel '%d'", decl.Note, old, it.channel)
+				return nil, &EvalError{
+					Err: fmt.Errorf("note '%c' already assigned to key '%d' on channel '%d'", decl.Note, old, it.channel),
+					Pos: decl.Pos,
+				}
 			}
 
 		case ast.Bar:
 			if _, ok := it.bars[decl.Name]; ok {
-				return nil, fmt.Errorf("bar '%s' already defined", decl.Name)
+				return nil, &EvalError{
+					Err: fmt.Errorf("bar '%s' already defined", decl.Name),
+					Pos: decl.Pos,
+				}
 			}
 			barParser := it.beginBar()
 			newBar, err := barParser.parseBar(decl.DeclList)
@@ -148,14 +154,20 @@ func (it *Interpreter) parse(declList ast.NodeList) ([]*Bar, error) {
 				return nil, err
 			}
 			if newBar == nil {
-				return nil, fmt.Errorf("invalid empty bar '%s'", decl.Name)
+				return nil, &EvalError{
+					Err: fmt.Errorf("invalid empty bar '%s'", decl.Name),
+					Pos: decl.Pos,
+				}
 			}
 			it.bars[decl.Name] = newBar
 
 		case ast.CmdPlay:
 			savedBar, ok := it.bars[decl.BarName]
 			if !ok {
-				return nil, fmt.Errorf("unknown bar '%s'", decl.BarName)
+				return nil, &EvalError{
+					Err: fmt.Errorf("unknown bar '%s'", decl.BarName),
+					Pos: decl.Pos,
+				}
 			}
 			bars = append(bars, savedBar)
 
@@ -186,18 +198,18 @@ func (it *Interpreter) parseBar(declList ast.NodeList) (*Bar, error) {
 			})
 
 		case ast.CmdTimeSig:
-			it.timesig = decl
-			bar.TimeSig = decl
+			it.timesig = [2]uint8{decl.Num, decl.Denom}
+			bar.TimeSig = it.timesig
 
 		case ast.CmdVelocity:
-			it.velocity = decl.Value()
+			it.velocity = decl.Velocity
 
 		case ast.CmdChannel:
-			it.channel = decl.Value()
+			it.channel = decl.Channel
 
 		case ast.CmdProgram:
 			bar.Events = append(bar.Events, Event{
-				Message: smf.Message(midi.ProgramChange(it.channel, decl.Value())),
+				Message: smf.Message(midi.ProgramChange(it.channel, decl.Program)),
 			})
 
 		case ast.CmdControl:
@@ -247,13 +259,19 @@ func (it *Interpreter) parseNoteList(bar *Bar, noteList ast.NoteList) error {
 
 		key, ok := it.keymap.Get(it.channel, note.Name)
 		if !ok {
-			return fmt.Errorf("note '%c' undefined", note.Name)
+			return &EvalError{
+				Err: fmt.Errorf("note '%c' undefined", note.Name),
+				Pos: note.Pos,
+			}
 		}
 
 		key += note.NumSharp()
 		key -= note.NumFlat()
 		if key < 0 || key > constants.MaxValue {
-			return fmt.Errorf("note key must be in range [%d, %d], got: %d", 0, constants.MaxValue, key)
+			return &EvalError{
+				Err: fmt.Errorf("note key must be in range [%d, %d], got: %d", 0, constants.MaxValue, key),
+				Pos: note.Pos,
+			}
 		}
 
 		v := it.velocity
@@ -289,7 +307,10 @@ func (it *Interpreter) parseNoteList(bar *Bar, noteList ast.NoteList) error {
 	}
 
 	if it.pos > bar.Cap() {
-		return fmt.Errorf("bar too long, timesig is %d/%d", it.timesig[0], it.timesig[1])
+		return &EvalError{
+			Err: fmt.Errorf("bar too long, timesig is %d/%d", it.timesig[0], it.timesig[1]),
+			Pos: noteList[0].Pos,
+		}
 	}
 
 	return nil

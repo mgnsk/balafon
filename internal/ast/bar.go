@@ -2,10 +2,13 @@ package ast
 
 import (
 	"io"
+
+	"github.com/mgnsk/balafon/internal/parser/token"
 )
 
 // Bar is a bar.
 type Bar struct {
+	Pos      token.Pos
 	Name     string
 	DeclList NodeList
 }
@@ -30,8 +33,9 @@ func (b Bar) WriteTo(w io.Writer) (int64, error) {
 }
 
 // NewBar creates a new bar.
-func NewBar(name string, declList NodeList) Bar {
+func NewBar(pos token.Pos, name string, declList NodeList) Bar {
 	return Bar{
+		Pos:      pos,
 		Name:     name,
 		DeclList: declList,
 	}

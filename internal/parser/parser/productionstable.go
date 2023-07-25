@@ -153,13 +153,13 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `Bar : cmdBar RepeatTerminator BarBodyDeclList cmdEnd	<< ast.NewBar(string(X[0].(*token.Token).Lit[len(":bar "):]), X[2].(ast.NodeList)), nil >>`,
+		String: `Bar : cmdBar RepeatTerminator BarBodyDeclList cmdEnd	<< ast.NewBar(X[0].(*token.Token).Pos, string(X[0].(*token.Token).Lit[len(":bar "):]), X[2].(ast.NodeList)), nil >>`,
 		Id:         "Bar",
 		NTType:     7,
 		Index:      13,
 		NumSymbols: 4,
 		ReduceFunc: func(X []Attrib, C interface{}) (Attrib, error) {
-			return ast.NewBar(string(X[0].(*token.Token).Lit[len(":bar "):]), X[2].(ast.NodeList)), nil
+			return ast.NewBar(X[0].(*token.Token).Pos, string(X[0].(*token.Token).Lit[len(":bar "):]), X[2].(ast.NodeList)), nil
 		},
 	},
 	ProdTabEntry{
@@ -183,13 +183,13 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `NoteObject : NoteSymbol PropertyList	<< ast.NewNote([]rune(string(X[0].(*token.Token).Lit))[0], X[1].(ast.PropertyList)), nil >>`,
+		String: `NoteObject : NoteSymbol PropertyList	<< ast.NewNote(X[0].(*token.Token).Pos, []rune(string(X[0].(*token.Token).Lit))[0], X[1].(ast.PropertyList)), nil >>`,
 		Id:         "NoteObject",
 		NTType:     9,
 		Index:      16,
 		NumSymbols: 2,
 		ReduceFunc: func(X []Attrib, C interface{}) (Attrib, error) {
-			return ast.NewNote([]rune(string(X[0].(*token.Token).Lit))[0], X[1].(ast.PropertyList)), nil
+			return ast.NewNote(X[0].(*token.Token).Pos, []rune(string(X[0].(*token.Token).Lit))[0], X[1].(ast.PropertyList)), nil
 		},
 	},
 	ProdTabEntry{
@@ -343,23 +343,23 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `TopLevelCommand : cmdAssign symbol uint	<< ast.NewCmdAssign([]rune(string(X[1].(*token.Token).Lit))[0], ast.Must(X[2].(*token.Token).Int64Value())) >>`,
+		String: `TopLevelCommand : cmdAssign symbol uint	<< ast.NewCmdAssign(X[0].(*token.Token).Pos, []rune(string(X[1].(*token.Token).Lit))[0], ast.Must(X[2].(*token.Token).Int64Value())) >>`,
 		Id:         "TopLevelCommand",
 		NTType:     13,
 		Index:      32,
 		NumSymbols: 3,
 		ReduceFunc: func(X []Attrib, C interface{}) (Attrib, error) {
-			return ast.NewCmdAssign([]rune(string(X[1].(*token.Token).Lit))[0], ast.Must(X[2].(*token.Token).Int64Value()))
+			return ast.NewCmdAssign(X[0].(*token.Token).Pos, []rune(string(X[1].(*token.Token).Lit))[0], ast.Must(X[2].(*token.Token).Int64Value()))
 		},
 	},
 	ProdTabEntry{
-		String: `TopLevelCommand : cmdPlay	<< ast.NewCmdPlay(string(X[0].(*token.Token).Lit[len(":play "):])) >>`,
+		String: `TopLevelCommand : cmdPlay	<< ast.NewCmdPlay(X[0].(*token.Token).Pos, string(X[0].(*token.Token).Lit[len(":play "):])) >>`,
 		Id:         "TopLevelCommand",
 		NTType:     13,
 		Index:      33,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib, C interface{}) (Attrib, error) {
-			return ast.NewCmdPlay(string(X[0].(*token.Token).Lit[len(":play "):]))
+			return ast.NewCmdPlay(X[0].(*token.Token).Pos, string(X[0].(*token.Token).Lit[len(":play "):]))
 		},
 	},
 	ProdTabEntry{
@@ -373,63 +373,63 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `BarBodyCommand : cmdTempo uint	<< ast.NewCmdTempo(ast.Must(X[1].(*token.Token).Int64Value())) >>`,
+		String: `BarBodyCommand : cmdTempo uint	<< ast.NewCmdTempo(X[0].(*token.Token).Pos, ast.Must(X[1].(*token.Token).Int64Value())) >>`,
 		Id:         "BarBodyCommand",
 		NTType:     14,
 		Index:      35,
 		NumSymbols: 2,
 		ReduceFunc: func(X []Attrib, C interface{}) (Attrib, error) {
-			return ast.NewCmdTempo(ast.Must(X[1].(*token.Token).Int64Value()))
+			return ast.NewCmdTempo(X[0].(*token.Token).Pos, ast.Must(X[1].(*token.Token).Int64Value()))
 		},
 	},
 	ProdTabEntry{
-		String: `BarBodyCommand : cmdTimesig uint uint	<< ast.NewCmdTimeSig(ast.Must(X[1].(*token.Token).Int64Value()), ast.Must(X[2].(*token.Token).Int64Value())) >>`,
+		String: `BarBodyCommand : cmdTimesig uint uint	<< ast.NewCmdTimeSig(X[0].(*token.Token).Pos, ast.Must(X[1].(*token.Token).Int64Value()), ast.Must(X[2].(*token.Token).Int64Value())) >>`,
 		Id:         "BarBodyCommand",
 		NTType:     14,
 		Index:      36,
 		NumSymbols: 3,
 		ReduceFunc: func(X []Attrib, C interface{}) (Attrib, error) {
-			return ast.NewCmdTimeSig(ast.Must(X[1].(*token.Token).Int64Value()), ast.Must(X[2].(*token.Token).Int64Value()))
+			return ast.NewCmdTimeSig(X[0].(*token.Token).Pos, ast.Must(X[1].(*token.Token).Int64Value()), ast.Must(X[2].(*token.Token).Int64Value()))
 		},
 	},
 	ProdTabEntry{
-		String: `BarBodyCommand : cmdVelocity uint	<< ast.NewCmdVelocity(ast.Must(X[1].(*token.Token).Int64Value())) >>`,
+		String: `BarBodyCommand : cmdVelocity uint	<< ast.NewCmdVelocity(X[0].(*token.Token).Pos, ast.Must(X[1].(*token.Token).Int64Value())) >>`,
 		Id:         "BarBodyCommand",
 		NTType:     14,
 		Index:      37,
 		NumSymbols: 2,
 		ReduceFunc: func(X []Attrib, C interface{}) (Attrib, error) {
-			return ast.NewCmdVelocity(ast.Must(X[1].(*token.Token).Int64Value()))
+			return ast.NewCmdVelocity(X[0].(*token.Token).Pos, ast.Must(X[1].(*token.Token).Int64Value()))
 		},
 	},
 	ProdTabEntry{
-		String: `BarBodyCommand : cmdChannel uint	<< ast.NewCmdChannel(ast.Must(X[1].(*token.Token).Int64Value())) >>`,
+		String: `BarBodyCommand : cmdChannel uint	<< ast.NewCmdChannel(X[0].(*token.Token).Pos, ast.Must(X[1].(*token.Token).Int64Value())) >>`,
 		Id:         "BarBodyCommand",
 		NTType:     14,
 		Index:      38,
 		NumSymbols: 2,
 		ReduceFunc: func(X []Attrib, C interface{}) (Attrib, error) {
-			return ast.NewCmdChannel(ast.Must(X[1].(*token.Token).Int64Value()))
+			return ast.NewCmdChannel(X[0].(*token.Token).Pos, ast.Must(X[1].(*token.Token).Int64Value()))
 		},
 	},
 	ProdTabEntry{
-		String: `BarBodyCommand : cmdProgram uint	<< ast.NewCmdProgram(ast.Must(X[1].(*token.Token).Int64Value())) >>`,
+		String: `BarBodyCommand : cmdProgram uint	<< ast.NewCmdProgram(X[0].(*token.Token).Pos, ast.Must(X[1].(*token.Token).Int64Value())) >>`,
 		Id:         "BarBodyCommand",
 		NTType:     14,
 		Index:      39,
 		NumSymbols: 2,
 		ReduceFunc: func(X []Attrib, C interface{}) (Attrib, error) {
-			return ast.NewCmdProgram(ast.Must(X[1].(*token.Token).Int64Value()))
+			return ast.NewCmdProgram(X[0].(*token.Token).Pos, ast.Must(X[1].(*token.Token).Int64Value()))
 		},
 	},
 	ProdTabEntry{
-		String: `BarBodyCommand : cmdControl uint uint	<< ast.NewCmdControl(ast.Must(X[1].(*token.Token).Int64Value()), ast.Must(X[2].(*token.Token).Int64Value())) >>`,
+		String: `BarBodyCommand : cmdControl uint uint	<< ast.NewCmdControl(X[0].(*token.Token).Pos, ast.Must(X[1].(*token.Token).Int64Value()), ast.Must(X[2].(*token.Token).Int64Value())) >>`,
 		Id:         "BarBodyCommand",
 		NTType:     14,
 		Index:      40,
 		NumSymbols: 3,
 		ReduceFunc: func(X []Attrib, C interface{}) (Attrib, error) {
-			return ast.NewCmdControl(ast.Must(X[1].(*token.Token).Int64Value()), ast.Must(X[2].(*token.Token).Int64Value()))
+			return ast.NewCmdControl(X[0].(*token.Token).Pos, ast.Must(X[1].(*token.Token).Int64Value()), ast.Must(X[2].(*token.Token).Int64Value()))
 		},
 	},
 	ProdTabEntry{

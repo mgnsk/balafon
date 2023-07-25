@@ -19,15 +19,25 @@ func TestParseError(t *testing.T) {
 
 	it := balafon.New()
 
-	err := it.EvalString("")
+	err := it.EvalFile("testdata/parse_error")
 	g.Expect(err).To(HaveOccurred())
 
 	var perr *balafon.ParseError
 	g.Expect(errors.As(err, &perr)).To(BeTrue())
+	g.Expect(perr.Error()).To(HavePrefix("testdata/parse_error:1:1: error:"))
 }
 
 func TestEvalError(t *testing.T) {
-	// TODO: add Pos to nodes to report eval errors correctly
+	g := NewWithT(t)
+
+	it := balafon.New()
+
+	err := it.EvalFile("testdata/eval_error")
+	g.Expect(err).To(HaveOccurred())
+
+	var perr *balafon.EvalError
+	g.Expect(errors.As(err, &perr)).To(BeTrue())
+	g.Expect(perr.Error()).To(HavePrefix("testdata/eval_error:2:1: error:"))
 }
 
 func TestCommands(t *testing.T) {

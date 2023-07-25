@@ -86,7 +86,7 @@ BarBodyDecl
     ;
 
 Bar
-    : cmdBar RepeatTerminator BarBodyDeclList cmdEnd    << ast.NewBar(string($T0.Lit[len(":bar "):]), $2.(ast.NodeList)), nil >>
+    : cmdBar RepeatTerminator BarBodyDeclList cmdEnd    << ast.NewBar($T0.Pos, string($T0.Lit[len(":bar "):]), $2.(ast.NodeList)), nil >>
     ;
 
 NoteList
@@ -95,7 +95,7 @@ NoteList
     ;
 
 NoteObject
-    : NoteSymbol PropertyList                           << ast.NewNote([]rune(string($T0.Lit))[0], $1.(ast.PropertyList)), nil >>
+    : NoteSymbol PropertyList                           << ast.NewNote($T0.Pos, []rune(string($T0.Lit))[0], $1.(ast.PropertyList)), nil >>
     | bracketBegin NoteList bracketEnd PropertyList     << ast.NewNoteListFromGroup($1.(ast.NoteList), $3.(ast.PropertyList)) >>
     ;
 
@@ -123,18 +123,18 @@ Property
     ;
 
 TopLevelCommand
-    : cmdAssign symbol uint          << ast.NewCmdAssign([]rune(string($T1.Lit))[0], ast.Must($T2.Int64Value())) >>
-    | cmdPlay                        << ast.NewCmdPlay(string($T0.Lit[len(":play "):])) >>
+    : cmdAssign symbol uint          << ast.NewCmdAssign($T0.Pos, []rune(string($T1.Lit))[0], ast.Must($T2.Int64Value())) >>
+    | cmdPlay                        << ast.NewCmdPlay($T0.Pos, string($T0.Lit[len(":play "):])) >>
     | BarBodyCommand
     ;
 
 BarBodyCommand
-    : cmdTempo uint                  << ast.NewCmdTempo(ast.Must($T1.Int64Value())) >>
-    | cmdTimesig uint uint           << ast.NewCmdTimeSig(ast.Must($T1.Int64Value()), ast.Must($T2.Int64Value())) >>
-    | cmdVelocity uint               << ast.NewCmdVelocity(ast.Must($T1.Int64Value())) >>
-    | cmdChannel uint                << ast.NewCmdChannel(ast.Must($T1.Int64Value())) >>
-    | cmdProgram uint                << ast.NewCmdProgram(ast.Must($T1.Int64Value())) >>
-    | cmdControl uint uint           << ast.NewCmdControl(ast.Must($T1.Int64Value()), ast.Must($T2.Int64Value())) >>
+    : cmdTempo uint                  << ast.NewCmdTempo($T0.Pos, ast.Must($T1.Int64Value())) >>
+    | cmdTimesig uint uint           << ast.NewCmdTimeSig($T0.Pos, ast.Must($T1.Int64Value()), ast.Must($T2.Int64Value())) >>
+    | cmdVelocity uint               << ast.NewCmdVelocity($T0.Pos, ast.Must($T1.Int64Value())) >>
+    | cmdChannel uint                << ast.NewCmdChannel($T0.Pos, ast.Must($T1.Int64Value())) >>
+    | cmdProgram uint                << ast.NewCmdProgram($T0.Pos, ast.Must($T1.Int64Value())) >>
+    | cmdControl uint uint           << ast.NewCmdControl($T0.Pos, ast.Must($T1.Int64Value()), ast.Must($T2.Int64Value())) >>
     | cmdStart                       << ast.CmdStart{}, nil >>
     | cmdStop                        << ast.CmdStop{}, nil >>
     ;

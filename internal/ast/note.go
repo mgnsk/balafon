@@ -59,6 +59,7 @@ func NewNoteListFromGroup(notes NoteList, props PropertyList) (NoteList, error) 
 
 // Note is a single note with sorted properties.
 type Note struct {
+	Pos   token.Pos
 	Props PropertyList
 	Name  rune
 }
@@ -172,8 +173,9 @@ func (note *Note) countProps(typ token.Type) int {
 }
 
 // NewNote creates a note with properties.
-func NewNote(name rune, propList PropertyList) *Note {
+func NewNote(pos token.Pos, name rune, propList PropertyList) *Note {
 	return &Note{
+		Pos:   pos,
 		Props: propList,
 		Name:  name,
 	}

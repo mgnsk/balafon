@@ -16,31 +16,31 @@ func TestValidCommands(t *testing.T) {
 	}{
 		{
 			`:assign k 36`,
-			Equal(ast.CmdAssign{'k', 36}),
+			Equal(ast.CmdAssign{Note: 'k', Key: 36}),
 		},
 		{
 			`:tempo 120`,
-			Equal(ast.CmdTempo(120)),
+			Equal(ast.CmdTempo{BPM: 120}),
 		},
 		{
 			`:timesig 1 1`,
-			Equal(ast.CmdTimeSig{1, 1}),
+			Equal(ast.CmdTimeSig{Num: 1, Denom: 1}),
 		},
 		{
 			`:channel 15`,
-			Equal(ast.CmdChannel(15)),
+			Equal(ast.CmdChannel{Channel: 15}),
 		},
 		{
 			`:velocity 127`,
-			Equal(ast.CmdVelocity(127)),
+			Equal(ast.CmdVelocity{Velocity: 127}),
 		},
 		{
 			`:program 127`,
-			Equal(ast.CmdProgram(127)),
+			Equal(ast.CmdProgram{Program: 127}),
 		},
 		{
 			`:control 127 127`,
-			Equal(ast.CmdControl{127, 127}),
+			Equal(ast.CmdControl{Control: 127, Parameter: 127}),
 		},
 		{
 			`:play chorus`,
