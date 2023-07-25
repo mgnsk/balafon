@@ -31,19 +31,19 @@ balafon
 - Play a file through a specific port. The port name must contain the passed in flag value:
 
 ```sh
-balafon play --port "VMPK" examples/bach
+balafon play --port "VMPK" examples/bach.bal
 ```
 
 - Port can also be specified by its number:
 
 ```sh
-balafon play --port 2 examples/bonham
+balafon play --port 2 examples/bonham.bal
 ```
 
 - Enter live mode:
 
 ```sh
-balafon live --port hydro examples/live_drumset
+balafon live --port hydro examples/live_drumset.bal
 ```
 
 Live mode is an unbuffered input mode in the shell. Whenever an assigned key is pressed,
@@ -52,7 +52,7 @@ a note on message is sent to the port.
 - Lint a file:
 
 ```sh
-balafon lint examples/bonham
+balafon lint examples/bonham.bal
 ```
 
 - Help.
@@ -256,32 +256,32 @@ The bar is executed with the `play` command.
 
 ### The Bonham Half Time Shuffle
 
-[examples/bonham](examples/bonham)
+[examples/bonham.bal](examples/bonham.bal)
 
 To play into the default port, run
 
 ```sh
-balafon play examples/bonham
+balafon play examples/bonham.bal
 ```
 
 ### J.S. Bach - Musikalisches Opfer - 6. Canon A 2 Per Tonos
 
-[examples/bach](examples/bach)
+[examples/bach.bal](examples/bach.bal)
 
 To play into the default port, run
 
 ```sh
-balafon play examples/bach
+balafon play examples/bach.bal
 ```
 
 ### Multichannel
 
-[examples/multichannel](examples/multichannel)
+[examples/multichannel.bal](examples/multichannel.bal)
 
 To play into the default port, run
 
 ```sh
-balafon play examples/bach
+balafon play examples/bach.bal
 ```
 
 ## Possible features in the future
