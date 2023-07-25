@@ -252,6 +252,35 @@ The bar is executed with the `play` command.
 :play RockBeat
 ```
 
+## Neovim configuration
+
+### Filetype detection:
+
+```lua
+vim.api.nvim_create_autocmd({ "BufNewFile", "BufRead" }, {
+    pattern = "*.bal",
+    callback = function()
+        vim.bo.filetype = "balafon"
+    end,
+})
+```
+
+### Treesitter
+
+TODO
+
+### Neomake
+
+```lua
+vim.g.neomake_balafon_lint_maker = {
+    exe = "balafon",
+    args = "lint",
+    errorformat = "%f:%l:%c: error: %m",
+}
+
+vim.g.neomake_balafon_enabled_makers = { "lint" }
+```
+
 ## Examples
 
 ### The Bonham Half Time Shuffle
