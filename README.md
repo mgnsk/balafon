@@ -265,10 +265,6 @@ vim.api.nvim_create_autocmd({ "BufNewFile", "BufRead" }, {
 })
 ```
 
-### Treesitter
-
-TODO
-
 ### Neomake
 
 ```lua
@@ -279,6 +275,33 @@ vim.g.neomake_balafon_lint_maker = {
 }
 
 vim.g.neomake_balafon_enabled_makers = { "lint" }
+```
+
+### Treesitter
+
+Example configuration for lazy.nvim:
+
+```lua
+{
+    "mgnsk/tree-sitter-balafon",
+    dependencies = {
+        "nvim-treesitter/nvim-treesitter",
+    },
+    build = function()
+        local parser_config = require("nvim-treesitter.parsers").get_parser_configs()
+        parser_config.balafon = {
+            install_info = {
+                url = "https://github.com/mgnsk/tree-sitter-balafon",
+                files = { "src/parser.c" },
+                branch = "main",
+                generate_requires_npm = true,
+                requires_generate_from_grammar = false,
+            },
+            filetype = "bal",
+        }
+        vim.cmd("TSUpdate balafon")
+	end,
+},
 ```
 
 ## Examples
