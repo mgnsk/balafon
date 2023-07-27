@@ -57,7 +57,7 @@ import (
 >>
 
 SourceFile
-    : RepeatTerminator TopLevelDeclList << $1, nil >>
+    : RepeatTerminator DeclList << $1, nil >>
     ;
 
 RepeatTerminator
@@ -65,31 +65,20 @@ RepeatTerminator
     | terminator RepeatTerminator
     ;
 
-TopLevelDeclList
-    : TopLevelDecl terminator RepeatTerminator TopLevelDeclList    << ast.NewNodeList($0.(ast.Node), $3.(ast.NodeList)), nil >>
-    | TopLevelDecl RepeatTerminator                                << ast.NewNodeList($0.(ast.Node), nil), nil >>
+DeclList
+    : Decl terminator RepeatTerminator DeclList            << ast.NewNodeList($0.(ast.Node), $3.(ast.NodeList)), nil >>
+    | Decl RepeatTerminator                                << ast.NewNodeList($0.(ast.Node), nil), nil >>
     ;
 
-BarBodyDeclList
-    : BarBodyDecl terminator RepeatTerminator BarBodyDeclList      << ast.NewNodeList($0.(ast.Node), $3.(ast.NodeList)), nil >>
-    | BarBodyDecl RepeatTerminator                                 << ast.NewNodeList($0.(ast.Node), nil), nil >>
-    ;
-
-TopLevelDecl
+Decl
     : Bar
-    | TopLevelCommand
-    | NoteList
-    | Comment
-    ;
-
-BarBodyDecl
-    : BarBodyCommand
+    | Command
     | NoteList
     | Comment
     ;
 
 Bar
-    : cmdBar RepeatTerminator BarBodyDeclList cmdEnd    << ast.NewBar($T0.Pos, string($T0.Lit[len(":bar "):]), $2.(ast.NodeList)), nil >>
+    : cmdBar RepeatTerminator DeclList cmdEnd           << ast.NewBar($T0.Pos, string($T0.Lit[len(":bar "):]), $2.(ast.NodeList)), nil >>
     ;
 
 NoteList
@@ -125,14 +114,10 @@ Property
     | propLetRing
     ;
 
-TopLevelCommand
+Command
     : cmdAssign symbol uint          << ast.NewCmdAssign($T0.Pos, []rune(string($T1.Lit))[0], ast.Must($T2.Int64Value())) >>
     | cmdPlay                        << ast.NewCmdPlay($T0.Pos, string($T0.Lit[len(":play "):])) >>
-    | BarBodyCommand
-    ;
-
-BarBodyCommand
-    : cmdTempo uint                  << ast.NewCmdTempo($T0.Pos, ast.Must($T1.Int64Value())) >>
+    | cmdTempo uint                  << ast.NewCmdTempo($T0.Pos, ast.Must($T1.Int64Value())) >>
     | cmdTimesig uint uint           << ast.NewCmdTimeSig($T0.Pos, ast.Must($T1.Int64Value()), ast.Must($T2.Int64Value())) >>
     | cmdVelocity uint               << ast.NewCmdVelocity($T0.Pos, ast.Must($T1.Int64Value())) >>
     | cmdChannel uint                << ast.NewCmdChannel($T0.Pos, ast.Must($T1.Int64Value())) >>

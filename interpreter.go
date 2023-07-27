@@ -192,6 +192,24 @@ func (it *Interpreter) parseBar(declList ast.NodeList) (*Bar, error) {
 
 	for _, decl := range declList {
 		switch decl := decl.(type) {
+		case ast.CmdAssign:
+			return nil, &EvalError{
+				Err: fmt.Errorf("command 'assign' not allowed in bar"),
+				Pos: decl.Pos,
+			}
+
+		case ast.CmdPlay:
+			return nil, &EvalError{
+				Err: fmt.Errorf("command 'play' not allowed in bar"),
+				Pos: decl.Pos,
+			}
+
+		case ast.Bar:
+			return nil, &EvalError{
+				Err: fmt.Errorf("command 'bar' not allowed in bar"),
+				Pos: decl.Pos,
+			}
+
 		case ast.CmdTempo:
 			bar.Events = append(bar.Events, Event{
 				Message: smf.MetaTempo(decl.Value()),

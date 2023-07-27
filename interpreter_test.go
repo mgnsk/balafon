@@ -790,3 +790,24 @@ func TestLetRing(t *testing.T) {
 		// No note off event.
 	))
 }
+
+func TestCommandsForbiddenInBar(t *testing.T) {
+	for _, input := range []string{
+		":assign c 60",
+		`:bar inner :start :end`,
+		`:play test`,
+	} {
+		t.Run(input, func(t *testing.T) {
+			g := NewGomegaWithT(t)
+
+			it := balafon.New()
+
+			err := it.EvalString(fmt.Sprintf(`:bar outer %s; :end`, input))
+			g.Expect(err).To(HaveOccurred())
+
+			var perr *balafon.EvalError
+			g.Expect(errors.As(err, &perr)).To(BeTrue())
+			g.Expect(perr.Error()).To(HaveSuffix("not allowed in bar"))
+		})
+	}
+}

@@ -2,7 +2,6 @@ package ast_test
 
 import (
 	"bytes"
-	"fmt"
 	"strings"
 	"testing"
 
@@ -71,22 +70,6 @@ func TestBarIdentifierAllowedNumeric(t *testing.T) {
 
 			_, err := parse(input)
 			g.Expect(err).NotTo(HaveOccurred())
-		})
-	}
-}
-
-func TestCommandsForbiddenInBar(t *testing.T) {
-	for _, input := range []string{
-		":assign c 60",
-		`:bar inner :start :end`,
-		`:play test`,
-	} {
-		t.Run(input, func(t *testing.T) {
-			g := NewGomegaWithT(t)
-
-			_, err := parse(fmt.Sprintf(`:bar outer %s; :end`, input))
-			g.Expect(err).To(HaveOccurred())
-			g.Expect(err.Error()).To(ContainSubstring(`got:`))
 		})
 	}
 }
