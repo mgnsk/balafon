@@ -16,9 +16,7 @@ func (c BlockComment) WriteTo(w io.Writer) (int64, error) {
 	ew := newErrWriter(w)
 	var n int
 
-	n += ew.WriteString("/*\n")
 	n += ew.WriteString(c.Text)
-	n += ew.WriteString("\n*/")
 
 	return int64(n), ew.Flush()
 }

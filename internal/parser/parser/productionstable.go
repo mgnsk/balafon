@@ -43,23 +43,23 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `RepeatTerminator : empty	<<  >>`,
+		String: `RepeatTerminator : empty	<< ast.RepeatTerminator(nil), nil >>`,
 		Id:         "RepeatTerminator",
 		NTType:     2,
 		Index:      2,
 		NumSymbols: 0,
 		ReduceFunc: func(X []Attrib, C interface{}) (Attrib, error) {
-			return nil, nil
+			return ast.RepeatTerminator(nil), nil
 		},
 	},
 	ProdTabEntry{
-		String: `RepeatTerminator : terminator RepeatTerminator	<<  >>`,
+		String: `RepeatTerminator : terminator RepeatTerminator	<< ast.NewRepeatTerminator(string(X[0].(*token.Token).Lit), X[1].(ast.RepeatTerminator)), nil >>`,
 		Id:         "RepeatTerminator",
 		NTType:     2,
 		Index:      3,
 		NumSymbols: 2,
 		ReduceFunc: func(X []Attrib, C interface{}) (Attrib, error) {
-			return X[0], nil
+			return ast.NewRepeatTerminator(string(X[0].(*token.Token).Lit), X[1].(ast.RepeatTerminator)), nil
 		},
 	},
 	ProdTabEntry{
