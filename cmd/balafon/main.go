@@ -48,6 +48,7 @@ func main() {
 	root.AddCommand(createCmdLive())
 	root.AddCommand(createCmdPlay())
 	root.AddCommand(createCmdLint())
+	root.AddCommand(createCmdFmt())
 
 	if err := root.Execute(); err != nil {
 		log.Fatal(err)
@@ -140,6 +141,59 @@ func createCmdLint() *cobra.Command {
 			return nil
 		},
 	}
+	return cmd
+}
+
+func createCmdFmt() *cobra.Command {
+	var write bool
+
+	cmd := &cobra.Command{
+		Use:   "fmt [file]",
+		Short: "Format a file",
+		Args:  cobra.ExactArgs(1),
+		RunE: func(c *cobra.Command, args []string) error {
+			f, err := os.Open(args[0])
+			if err != nil {
+				return err
+			}
+			defer f.Close()
+
+			stat, err := f.Stat()
+			if err != nil {
+				return err
+			}
+
+			b, err := io.ReadAll(f)
+			if err != nil {
+				return err
+			}
+
+			if err := f.Close(); err != nil {
+				return err
+			}
+
+			result, err := balafon.Format(b)
+			if err != nil {
+				if _, e := io.WriteString(os.Stderr, err.Error()); e != nil {
+					return e
+				}
+				os.Exit(1)
+			}
+
+			if write {
+				return os.WriteFile(args[0], result, stat.Mode())
+			}
+
+			if _, err := os.Stdout.Write(result); err != nil {
+				return err
+			}
+
+			return nil
+		},
+	}
+
+	cmd.PersistentFlags().BoolVarP(&write, "write", "w", false, "write result to (source) file instead of stdout")
+
 	return cmd
 }
 
