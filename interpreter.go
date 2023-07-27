@@ -250,6 +250,8 @@ func (it *Interpreter) parseBar(declList ast.NodeList) (*Bar, error) {
 				return nil, err
 			}
 
+		case ast.LineComment, ast.BlockComment:
+
 		default:
 			panic(fmt.Sprintf("parse: invalid node %T", decl))
 		}

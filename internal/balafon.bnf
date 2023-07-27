@@ -40,11 +40,9 @@ propDot          : '.' ;
 propTuplet       : '/' '3' | '/' '5' ;
 propLetRing      : '*' ;
 
-_lineComment  : '/' '/' { . } '\n' ;
+lineComment  : '/' '/' { . } '\n' ;
 blockComment : '/' '*' { . | '*' } '*' '/' ;
 
-
-!comment: _lineComment ;
 !whitespace : ' ' | '\t' | '\r' ;
 
 /* Syntax Part */
@@ -128,5 +126,6 @@ Command
     ;
 
 Comment
-    : blockComment                   << ast.NewBlockComment($T0.Pos, string($T0.Lit)), nil >>
+    : lineComment                    << ast.NewLineComment($T0.Pos, string($T0.Lit)), nil >>
+    | blockComment                   << ast.NewBlockComment($T0.Pos, string($T0.Lit)), nil >>
     ;

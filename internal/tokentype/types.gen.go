@@ -24,6 +24,7 @@ var (
 	CmdTimesig   = token.TokMap.Type("cmdTimesig")
 	CmdVelocity  = token.TokMap.Type("cmdVelocity")
 	Empty        = token.TokMap.Type("empty")
+	LineComment  = token.TokMap.Type("lineComment")
 	PropAccent   = token.TokMap.Type("propAccent")
 	PropDot      = token.TokMap.Type("propDot")
 	PropFlat     = token.TokMap.Type("propFlat")
