@@ -127,13 +127,17 @@ func createCmdLint() *cobra.Command {
 		Use:   "lint [file]",
 		Short: "Lint a file",
 		Args:  cobra.ExactArgs(1),
-		Run: func(c *cobra.Command, args []string) {
+		RunE: func(c *cobra.Command, args []string) error {
 			it := balafon.New()
 
 			if err := it.EvalFile(args[0]); err != nil {
-				fmt.Println(err)
+				if _, e := io.WriteString(os.Stderr, err.Error()); e != nil {
+					return e
+				}
 				os.Exit(1)
 			}
+
+			return nil
 		},
 	}
 	return cmd
