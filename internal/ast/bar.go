@@ -22,9 +22,12 @@ func (b Bar) WriteTo(w io.Writer) (int64, error) {
 	n += ew.WriteString("\n")
 
 	for _, stmt := range b.DeclList {
-		n += ew.WriteString("\t")
+		switch stmt.(type) {
+		case RepeatTerminator:
+		default:
+			n += ew.WriteString("\t")
+		}
 		n += ew.WriteFrom(stmt)
-		n += ew.WriteString("\n")
 	}
 
 	n += ew.WriteString(":end")

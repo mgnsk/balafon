@@ -2,6 +2,8 @@ package ast
 
 import (
 	"io"
+	"regexp"
+	"strings"
 )
 
 type Node interface {
@@ -13,9 +15,10 @@ type RepeatTerminator []string
 func (t RepeatTerminator) WriteTo(w io.Writer) (n int64, err error) {
 	ew := newErrWriter(w)
 
-	for _, s := range t {
-		n += int64(ew.WriteString(s))
-	}
+	val := strings.Join(t, "")
+	val = newlines.ReplaceAllLiteralString(val, "\n")
+
+	n += int64(ew.WriteString(val))
 
 	return n, ew.Flush()
 }
@@ -47,3 +50,5 @@ func Must[T any](result T, err error) T {
 	}
 	return result
 }
+
+var newlines = regexp.MustCompile(`\n+`)
