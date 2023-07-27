@@ -172,6 +172,7 @@ func (it *Interpreter) parse(declList ast.NodeList) ([]*Bar, error) {
 			bars = append(bars, savedBar)
 
 		case ast.BlockComment:
+		case ast.RepeatTerminator:
 
 		default:
 			bar, err := it.parseBar(ast.NodeList{decl})
@@ -253,6 +254,7 @@ func (it *Interpreter) parseBar(declList ast.NodeList) (*Bar, error) {
 			}
 
 		case ast.BlockComment:
+		case ast.RepeatTerminator:
 
 		default:
 			panic(fmt.Sprintf("parse: invalid node %T", decl))

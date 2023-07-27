@@ -27,7 +27,10 @@ block comment
 		g.Expect(err).NotTo(HaveOccurred())
 		g.Expect(res).To(ConsistOf(
 			BeAssignableToTypeOf(ast.BlockComment{}),
+			BeAssignableToTypeOf(ast.RepeatTerminator{}),
+			BeAssignableToTypeOf(ast.RepeatTerminator{}),
 			BeAssignableToTypeOf(ast.CmdAssign{}),
+			BeAssignableToTypeOf(ast.RepeatTerminator{}),
 		))
 	}
 }

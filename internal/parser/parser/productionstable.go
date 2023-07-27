@@ -53,33 +53,33 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `RepeatTerminator : terminator RepeatTerminator	<< ast.NewRepeatTerminator(string(X[0].(*token.Token).Lit), X[1].(ast.RepeatTerminator)), nil >>`,
+		String: `RepeatTerminator : terminator RepeatTerminator	<< ast.NewRepeatTerminator(string(X[0].(*token.Token).Lit), X[1].(ast.RepeatTerminator)...), nil >>`,
 		Id:         "RepeatTerminator",
 		NTType:     2,
 		Index:      3,
 		NumSymbols: 2,
 		ReduceFunc: func(X []Attrib, C interface{}) (Attrib, error) {
-			return ast.NewRepeatTerminator(string(X[0].(*token.Token).Lit), X[1].(ast.RepeatTerminator)), nil
+			return ast.NewRepeatTerminator(string(X[0].(*token.Token).Lit), X[1].(ast.RepeatTerminator)...), nil
 		},
 	},
 	ProdTabEntry{
-		String: `DeclList : Decl terminator RepeatTerminator DeclList	<< ast.NewNodeList(X[0].(ast.Node), X[3].(ast.NodeList)), nil >>`,
+		String: `DeclList : Decl terminator RepeatTerminator DeclList	<< ast.NewNodeList(X[0].(ast.Node), append([]ast.Node{ast.RepeatTerminator{string(X[1].(*token.Token).Lit)}, X[2].(ast.RepeatTerminator)}, X[3].(ast.NodeList)...)...), nil >>`,
 		Id:         "DeclList",
 		NTType:     3,
 		Index:      4,
 		NumSymbols: 4,
 		ReduceFunc: func(X []Attrib, C interface{}) (Attrib, error) {
-			return ast.NewNodeList(X[0].(ast.Node), X[3].(ast.NodeList)), nil
+			return ast.NewNodeList(X[0].(ast.Node), append([]ast.Node{ast.RepeatTerminator{string(X[1].(*token.Token).Lit)}, X[2].(ast.RepeatTerminator)}, X[3].(ast.NodeList)...)...), nil
 		},
 	},
 	ProdTabEntry{
-		String: `DeclList : Decl RepeatTerminator	<< ast.NewNodeList(X[0].(ast.Node), nil), nil >>`,
+		String: `DeclList : Decl RepeatTerminator	<< ast.NewNodeList(X[0].(ast.Node), X[1].(ast.RepeatTerminator)), nil >>`,
 		Id:         "DeclList",
 		NTType:     3,
 		Index:      5,
 		NumSymbols: 2,
 		ReduceFunc: func(X []Attrib, C interface{}) (Attrib, error) {
-			return ast.NewNodeList(X[0].(ast.Node), nil), nil
+			return ast.NewNodeList(X[0].(ast.Node), X[1].(ast.RepeatTerminator)), nil
 		},
 	},
 	ProdTabEntry{

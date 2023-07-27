@@ -20,7 +20,7 @@ func (t RepeatTerminator) WriteTo(w io.Writer) (n int64, err error) {
 	return n, ew.Flush()
 }
 
-func NewRepeatTerminator(terminator string, inner RepeatTerminator) RepeatTerminator {
+func NewRepeatTerminator(terminator string, inner ...string) RepeatTerminator {
 	return append(RepeatTerminator{terminator}, inner...)
 }
 
@@ -36,7 +36,7 @@ func (list NodeList) WriteTo(w io.Writer) (n int64, err error) {
 	return n, ew.Flush()
 }
 
-func NewNodeList(stmt Node, inner NodeList) (song NodeList) {
+func NewNodeList(stmt Node, inner ...Node) (song NodeList) {
 	return append(NodeList{stmt}, inner...)
 }
 
