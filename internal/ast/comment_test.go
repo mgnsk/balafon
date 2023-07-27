@@ -31,21 +31,3 @@ block comment
 		))
 	}
 }
-
-func TestLineComment(t *testing.T) {
-	g := NewGomegaWithT(t)
-
-	for _, input := range []string{
-		`
-// this is a line comment
-:assign c 60
-`,
-	} {
-		res, err := parse(input)
-		g.Expect(err).NotTo(HaveOccurred())
-		g.Expect(res).To(ConsistOf(
-			BeAssignableToTypeOf(ast.LineComment{}),
-			BeAssignableToTypeOf(ast.CmdAssign{}),
-		))
-	}
-}

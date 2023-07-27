@@ -459,7 +459,7 @@ func TestTimeSignature(t *testing.T) {
 
 :play bar
 
-// Expect time signature to be restored to 3 4 in next bar.
+/* Expect time signature to be restored to 3 4 in next bar. */
 c
 `)
 	g.Expect(err).NotTo(HaveOccurred())
@@ -481,7 +481,7 @@ func TestBarTooLong(t *testing.T) {
 	err := it.EvalString(`
 :assign c 60
 :tempo 60
-// Default timesig 4 4.
+/* Default timesig 4 4. */
 
 ccccc
 `)
@@ -588,14 +588,14 @@ func TestPendingGlobalCommands(t *testing.T) {
 	:program 2
 	:control 1 2
 
-	// on channel 1:
+	/* on channel 1: */
 	c
 
 	:channel 2
 	d
 :end
 
-// timesig 1 4
+/* timesig 1 4 */
 :bar two
 	:tempo 120
 	c
@@ -604,9 +604,11 @@ func TestPendingGlobalCommands(t *testing.T) {
 :play one
 :play two
 
-// Channel is 1, timesig 1 4, velocity 50 but tempo is 120.
-// Only timesig, velocity and channel are local to bars.
-// tempo, program, control, start, stop are global commands.
+/*
+Channel is 1, timesig 1 4, velocity 50 but tempo is 120.
+Only timesig, velocity and channel are local to bars.
+tempo, program, control, start, stop are global commands.
+*/
 c
 `)
 	g.Expect(err).NotTo(HaveOccurred())
@@ -692,7 +694,7 @@ func TestTempoIsGlobal(t *testing.T) {
 :tempo 60
 :timesig 1 4
 
-// Tempo 60 4th rest == 1s.
+/* Tempo 60 4th rest == 1s. */
 -
 
 :bar two

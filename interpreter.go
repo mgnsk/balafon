@@ -171,6 +171,8 @@ func (it *Interpreter) parse(declList ast.NodeList) ([]*Bar, error) {
 			}
 			bars = append(bars, savedBar)
 
+		case ast.BlockComment:
+
 		default:
 			bar, err := it.parseBar(ast.NodeList{decl})
 			if err != nil {
@@ -250,7 +252,7 @@ func (it *Interpreter) parseBar(declList ast.NodeList) (*Bar, error) {
 				return nil, err
 			}
 
-		case ast.LineComment, ast.BlockComment:
+		case ast.BlockComment:
 
 		default:
 			panic(fmt.Sprintf("parse: invalid node %T", decl))

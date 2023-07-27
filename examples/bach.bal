@@ -1,6 +1,6 @@
-// J.S. Bach - Musikalisches Opfer - 6. Canon A 2 Per Tonos
+/* J.S. Bach - Musikalisches Opfer - 6. Canon A 2 Per Tonos */
 
-// C3
+/* C3 */
 :assign C 48
 :assign D 50
 :assign E 52
@@ -9,7 +9,7 @@
 :assign A 57
 :assign B 59
 
-// C4 (middle C)
+/* C4 (middle C) */
 :assign c 60
 :assign d 62
 :assign e 64
@@ -26,7 +26,7 @@
 	[-CE$G]16 c2          [B$A]8
 :end
 
-// 16th rests instead of ties (unimplemented).
+/* 16th rests instead of ties (unimplemented). */
 :bar bar2
 	:timesig 4 4
 	g2                  a$      [-fd$c]16

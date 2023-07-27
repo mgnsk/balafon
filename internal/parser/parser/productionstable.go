@@ -413,20 +413,10 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `Comment : lineComment	<< ast.NewLineComment(X[0].(*token.Token).Pos, string(X[0].(*token.Token).Lit)), nil >>`,
-		Id:         "Comment",
-		NTType:     12,
-		Index:      39,
-		NumSymbols: 1,
-		ReduceFunc: func(X []Attrib, C interface{}) (Attrib, error) {
-			return ast.NewLineComment(X[0].(*token.Token).Pos, string(X[0].(*token.Token).Lit)), nil
-		},
-	},
-	ProdTabEntry{
 		String: `Comment : blockComment	<< ast.NewBlockComment(X[0].(*token.Token).Pos, string(X[0].(*token.Token).Lit)), nil >>`,
 		Id:         "Comment",
 		NTType:     12,
-		Index:      40,
+		Index:      39,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib, C interface{}) (Attrib, error) {
 			return ast.NewBlockComment(X[0].(*token.Token).Pos, string(X[0].(*token.Token).Lit)), nil

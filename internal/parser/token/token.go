@@ -166,7 +166,6 @@ var TokMap = TokenMap{
 		"cmdControl",
 		"cmdStart",
 		"cmdStop",
-		"lineComment",
 		"blockComment",
 	},
 
@@ -201,7 +200,6 @@ var TokMap = TokenMap{
 		"cmdControl":   27,
 		"cmdStart":     28,
 		"cmdStop":      29,
-		"lineComment":  30,
-		"blockComment": 31,
+		"blockComment": 30,
 	},
 }

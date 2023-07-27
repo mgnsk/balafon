@@ -1,33 +1,33 @@
 :channel 10
 
-// Kick drum.
+/* Kick drum. */
 :assign a 36
 :assign s 36
-// Acoustic snare drum.
+/* Acoustic snare drum. */
 :assign d 38
 
-// Hi-Hat open.
+/* Hi-Hat open. */
 :assign j 46
-// Hi-Hat closed.
+/* Hi-Hat closed. */
 :assign k 42
-// Hi-Hat foot.
+/* Hi-Hat foot. */
 :assign l 44
 
-// Ride 1.
+/* Ride 1. */
 :assign u 51
-// Ride 2.
+/* Ride 2. */
 :assign y 59
-// Ride bell.
+/* Ride bell. */
 :assign t 53
 
-// Crash 1.
+/* Crash 1. */
 :assign i 49
-// Crash 2.
+/* Crash 2. */
 :assign o 57
-// China.
+/* China. */
 :assign p 52
 
-// Toms.
+/* Toms. */
 :assign m 50
 :assign n 48
 :assign b 47

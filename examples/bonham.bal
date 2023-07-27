@@ -1,30 +1,30 @@
-// A simplified Bonham half time shuffle
+/* A simplified Bonham half time shuffle */
 
-// Percussion channel.
+/* Percussion channel. */
 :channel 10
 
-// Kick drum.
+/* Kick drum. */
 :assign k 36
-// Acoustic snare drum.
+/* Acoustic snare drum. */
 :assign s 38
-// Hi-Hat closed.
+/* Hi-Hat closed. */
 :assign x 42
-// Hi-Hat open.
+/* Hi-Hat open. */
 :assign o 46
-// Hi-Hat foot.
+/* Hi-Hat foot. */
 :assign X 44
-// Crash cymbal.
+/* Crash cymbal. */
 :assign c 49
-// Low tom.
+/* Low tom. */
 :assign q 45
-// Floor tom 2.
+/* Floor tom 2. */
 :assign g 41
 
 :tempo 132
 :timesig 4 4
 :velocity 100
 
-// Start the first bar with a crash cymbal and let it ring.
+/* Start the first bar with a crash cymbal and let it ring. */
 :bar bonham1
 	[[c*-o]   [x>-x]    [x^-x] [x>-x]]8/3
 	-         [-s)-]8/3 s^     [-s)-]8/3
@@ -45,10 +45,10 @@
 	-       X     X     X
 :end
 
-// Count in.
+/* Count in. */
 xxxo
 
-// Play 8 :bars of the Bonham groove.
+/* Play 8 :bars of the Bonham groove. */
 :play bonham1
 :play bonham2
 :play bonham2
