@@ -425,8 +425,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `Comment : blockComment	<< ast.NewBlockComment(X[0].(*token.Token).Pos, string(X[0].(*token.Token).Lit)), nil >>`,
 		Id:         "Comment",
-		NTType:     15,
-		Index:      46,
+		NTType:     12,
+		Index:      40,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib, C interface{}) (Attrib, error) {
 			return ast.NewBlockComment(X[0].(*token.Token).Pos, string(X[0].(*token.Token).Lit)), nil
