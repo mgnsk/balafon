@@ -8,6 +8,7 @@ import (
 
 // Language tokens.
 var (
+	BlockComment = token.TokMap.Type("blockComment")
 	BracketBegin = token.TokMap.Type("bracketBegin")
 	BracketEnd   = token.TokMap.Type("bracketEnd")
 	CmdAssign    = token.TokMap.Type("cmdAssign")

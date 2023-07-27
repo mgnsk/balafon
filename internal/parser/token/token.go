@@ -166,6 +166,7 @@ var TokMap = TokenMap{
 		"cmdControl",
 		"cmdStart",
 		"cmdStop",
+		"blockComment",
 	},
 
 	idMap: map[string]Type{
@@ -199,5 +200,6 @@ var TokMap = TokenMap{
 		"cmdControl":   27,
 		"cmdStart":     28,
 		"cmdStop":      29,
+		"blockComment": 30,
 	},
 }

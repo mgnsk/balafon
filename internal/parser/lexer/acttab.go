@@ -197,8 +197,8 @@ var ActTab = ActionTable{
 		Ignore: "",
 	},
 	ActionRow{ // S44
-		Accept: -1,
-		Ignore: "!comment",
+		Accept: 30,
+		Ignore: "",
 	},
 	ActionRow{ // S45
 		Accept: 0,

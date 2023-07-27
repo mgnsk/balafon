@@ -41,9 +41,10 @@ propTuplet       : '/' '3' | '/' '5' ;
 propLetRing      : '*' ;
 
 _lineComment  : '/' '/' { . } '\n' ;
-_blockComment : '/' '*' { . | '*' } '*' '/' ;
+blockComment : '/' '*' { . | '*' } '*' '/' ;
 
-!comment    : _lineComment | _blockComment ;
+
+!comment: _lineComment ;
 !whitespace : ' ' | '\t' | '\r' ;
 
 /* Syntax Part */
@@ -78,11 +79,13 @@ TopLevelDecl
     : Bar
     | TopLevelCommand
     | NoteList
+    | Comment
     ;
 
 BarBodyDecl
     : BarBodyCommand
     | NoteList
+    | Comment
     ;
 
 Bar
@@ -137,4 +140,8 @@ BarBodyCommand
     | cmdControl uint uint           << ast.NewCmdControl($T0.Pos, ast.Must($T1.Int64Value()), ast.Must($T2.Int64Value())) >>
     | cmdStart                       << ast.CmdStart{}, nil >>
     | cmdStop                        << ast.CmdStop{}, nil >>
+    ;
+
+Comment
+    : blockComment                   << ast.NewBlockComment($T0.Pos, string($T0.Lit)), nil >>
     ;
