@@ -25,7 +25,7 @@ block comment
 	} {
 		res, err := parse(input)
 		g.Expect(err).NotTo(HaveOccurred())
-		g.Expect(res).To(ConsistOf(
+		g.Expect(res).To(HaveExactElements(
 			BeAssignableToTypeOf(ast.BlockComment{}),
 			BeAssignableToTypeOf(ast.CmdAssign{}),
 		))

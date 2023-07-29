@@ -322,7 +322,7 @@ func TestNoteLengths(t *testing.T) {
 			bars := it.Flush()
 			g.Expect(bars).To(HaveLen(1))
 			g.Expect(bars[0].TimeSig).To(Equal([2]uint8{4, 4}))
-			g.Expect(bars[0].Events).To(ConsistOf(
+			g.Expect(bars[0].Events).To(HaveExactElements(
 				balafon.Event{
 					Pos:      0,
 					Duration: 0,
@@ -397,7 +397,7 @@ c
 
 		g.Expect(bars).To(HaveLen(1))
 		g.Expect(bars[0].Cap()).To(Equal(uint32(constants.TicksPerWhole)))
-		g.Expect(bars[0].Events).To(ConsistOf(
+		g.Expect(bars[0].Events).To(HaveExactElements(
 			balafon.Event{
 				Message:  smf.Message(midi.NoteOn(0, 60, constants.DefaultVelocity)),
 				Pos:      0,
@@ -427,7 +427,7 @@ c
 
 		g.Expect(bars).To(HaveLen(1))
 		g.Expect(bars[0].Cap()).To(Equal(uint32(constants.TicksPerWhole)))
-		g.Expect(bars[0].Events).To(ConsistOf(
+		g.Expect(bars[0].Events).To(HaveExactElements(
 			balafon.Event{
 				Message:  smf.Message(midi.NoteOn(0, 60, constants.DefaultVelocity)),
 				Pos:      uint32(3 * constants.TicksPerQuarter),
@@ -500,7 +500,7 @@ func TestFlushSkipsTooLongBar(t *testing.T) {
 
 	bars := it.Flush()
 
-	g.Expect(bars).To(ConsistOf(&balafon.Bar{
+	g.Expect(bars).To(HaveExactElements(&balafon.Bar{
 		TimeSig: [2]uint8{4, 4},
 		Events: []balafon.Event{
 			{
@@ -615,7 +615,7 @@ c
 
 	bars := it.Flush()
 
-	g.Expect(bars).To(ConsistOf(
+	g.Expect(bars).To(HaveExactElements(
 		&balafon.Bar{
 			TimeSig: [2]uint8{2, 8},
 			Events: []balafon.Event{
@@ -723,7 +723,7 @@ c
 
 	bars := it.Flush()
 
-	g.Expect(bars).To(ConsistOf(
+	g.Expect(bars).To(HaveExactElements(
 		&balafon.Bar{
 			TimeSig: [2]uint8{1, 4},
 			Events: []balafon.Event{
@@ -791,7 +791,7 @@ func TestLetRing(t *testing.T) {
 
 	bars := it.Flush()
 	g.Expect(bars).To(HaveLen(1))
-	g.Expect(bars[0].Events).To(ConsistOf(
+	g.Expect(bars[0].Events).To(HaveExactElements(
 		balafon.Event{
 			Message:  smf.Message(midi.NoteOn(0, 36, constants.DefaultVelocity)),
 			Pos:      0,
