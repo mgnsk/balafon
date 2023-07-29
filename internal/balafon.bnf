@@ -62,13 +62,13 @@ SourceFile
     ;
 
 RepeatTerminator
-    : empty                                                << ast.RepeatTerminator(nil), nil >>
-    | terminator RepeatTerminator                          << ast.NewRepeatTerminator(string($T0.Lit), $1.(ast.RepeatTerminator)...), nil >>
+    : empty
+    | terminator RepeatTerminator
     ;
 
 DeclList
-    : Decl terminator RepeatTerminator DeclList            << ast.NewNodeList($0.(ast.Node), append([]ast.Node{ast.RepeatTerminator{string($T1.Lit)}, $2.(ast.RepeatTerminator)}, $3.(ast.NodeList)...)...), nil >>
-    | Decl RepeatTerminator                                << ast.NewNodeList($0.(ast.Node), $1.(ast.RepeatTerminator)), nil >>
+    : Decl terminator RepeatTerminator DeclList            << ast.NewNodeList($0.(ast.Node), $3.(ast.NodeList)...), nil >>
+    | Decl RepeatTerminator                                << ast.NewNodeList($0.(ast.Node)), nil >>
     ;
 
 Decl

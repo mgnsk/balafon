@@ -622,9 +622,11 @@ c
 				{Message: smf.MetaTempo(60)},
 				{Message: smf.Message(midi.ProgramChange(1, 1))},
 				{Message: smf.Message(midi.ControlChange(1, 1, 1))},
+				{Message: smf.MetaText("/* timesig 1 4 */")},
 				{Message: smf.MetaTempo(120)},
 				{Message: smf.Message(midi.ProgramChange(1, 2))},
 				{Message: smf.Message(midi.ControlChange(1, 1, 2))},
+				{Message: smf.MetaText("/* on channel 1: */")},
 				{
 					Pos:      0,
 					Duration: uint32(constants.TicksPerQuarter),
@@ -668,6 +670,11 @@ c
 		&balafon.Bar{
 			TimeSig: [2]uint8{1, 4},
 			Events: []balafon.Event{
+				{Message: smf.MetaText(`/*
+Channel is 1, timesig 1 4, velocity 50 but tempo is 120.
+Only timesig, velocity and channel are local to bars.
+tempo, program, control, start, stop are global commands.
+*/`)},
 				{
 					Pos:      0,
 					Duration: uint32(constants.TicksPerQuarter),
@@ -722,11 +729,13 @@ c
 			Events: []balafon.Event{
 				{Message: smf.MetaTempo(120)},
 				{Message: smf.MetaTempo(60)},
+				{Message: smf.MetaText("/* Tempo 60 4th rest == 1s. */")},
 			},
 		},
 		&balafon.Bar{
 			TimeSig: [2]uint8{2, 8},
 			Events: []balafon.Event{
+				{Message: smf.MetaTempo(120)},
 				{
 					Pos:      0,
 					Duration: uint32(constants.TicksPerQuarter),
@@ -742,7 +751,6 @@ c
 		&balafon.Bar{
 			TimeSig: [2]uint8{2, 8},
 			Events: []balafon.Event{
-				{Message: smf.MetaTempo(120)},
 				{
 					Pos:      0,
 					Duration: uint32(constants.TicksPerQuarter),

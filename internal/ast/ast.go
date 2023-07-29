@@ -3,28 +3,10 @@ package ast
 import (
 	"io"
 	"regexp"
-	"strings"
 )
 
 type Node interface {
 	io.WriterTo
-}
-
-type RepeatTerminator []string
-
-func (t RepeatTerminator) WriteTo(w io.Writer) (n int64, err error) {
-	ew := newErrWriter(w)
-
-	val := strings.Join(t, "")
-	val = newlines.ReplaceAllLiteralString(val, "\n")
-
-	n += int64(ew.WriteString(val))
-
-	return n, ew.Flush()
-}
-
-func NewRepeatTerminator(terminator string, inner ...string) RepeatTerminator {
-	return append(RepeatTerminator{terminator}, inner...)
 }
 
 type NodeList []Node

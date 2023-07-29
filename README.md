@@ -85,8 +85,14 @@ The language consists of commands and note lists.
 
 ### Comments
 
+Only block comments are supported for now.
+
 ```
-// This is a line comment.
+/* This is a block comment. */
+
+/*
+This is a multi line block comment.
+*/
 ```
 
 ### Commands
