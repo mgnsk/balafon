@@ -25,7 +25,9 @@
 :timesig 4 4
 :velocity 100
 
-/* Start the first bar with a crash cymbal and let it ring. */
+/*
+Start the first bar with a crash cymbal and let it ring.
+*/
 :bar bonham1
 	[[c*-o]   [x>-x]    [x^-x] [x>-x]]8/3
 	-         [-s)-]8/3 s^     [-s)-]8/3
@@ -46,7 +48,9 @@
 	-       X     X     X
 :end
 
-/* Count in. */
+/*
+Count in.
+*/
 xxxo
 
 /* Play 8 :bars of the Bonham groove. */

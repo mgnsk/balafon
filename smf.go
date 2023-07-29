@@ -37,7 +37,6 @@ func Convert(input []byte) (*smf.SMF, error) {
 
 	metaTrack := &track{}
 	tracks := map[uint8]*track{}
-	songLen := uint32(0)
 
 	for _, ev := range events {
 		var ch uint8
@@ -49,19 +48,18 @@ func Convert(input []byte) (*smf.SMF, error) {
 		} else {
 			metaTrack.Add(ev)
 		}
-		songLen = ev.AbsTicks
 	}
 
 	smfTracks := make([]channelTrack, 0, len(tracks)+1)
 
-	metaTrack.track.Close(songLen)
+	metaTrack.track.Close(0)
 	smfTracks = append(smfTracks, channelTrack{
 		channel: -1,
 		track:   metaTrack.track,
 	})
 
 	for ch, t := range tracks {
-		t.track.Close(songLen)
+		t.track.Close(0)
 		smfTracks = append(smfTracks, channelTrack{
 			channel: int(ch),
 			track:   t.track,

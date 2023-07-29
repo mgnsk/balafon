@@ -3,6 +3,7 @@ package balafon
 import (
 	"fmt"
 	"math"
+	"strings"
 
 	"github.com/mgnsk/balafon/internal/ast"
 	"github.com/mgnsk/balafon/internal/constants"
@@ -257,7 +258,7 @@ func (it *Interpreter) parseBar(declList ast.NodeList) (*Bar, error) {
 
 		case ast.BlockComment:
 			bar.Events = append(bar.Events, Event{
-				Message: smf.MetaText(decl.Text),
+				Message: smf.MetaText(strings.TrimSpace(decl.Text)),
 			})
 
 		default:
