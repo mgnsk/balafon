@@ -74,3 +74,28 @@ func TestFmtCommand(t *testing.T) {
 	g.Expect(err).NotTo(HaveOccurred())
 	g.Expect(string(res)).To(Equal(":assign c 60\n"))
 }
+
+func TestFmtBarCommand(t *testing.T) {
+	g := NewWithT(t)
+
+	input := `
+:bar	  a
+:end
+`
+
+	res, err := balafon.Format([]byte(input))
+	g.Expect(err).NotTo(HaveOccurred())
+	g.Expect(string(res)).To(Equal(":bar a\n:end\n"))
+}
+
+func TestFmtPlayCommand(t *testing.T) {
+	g := NewWithT(t)
+
+	input := `
+:play	  a
+`
+
+	res, err := balafon.Format([]byte(input))
+	g.Expect(err).NotTo(HaveOccurred())
+	g.Expect(string(res)).To(Equal(":play a\n"))
+}

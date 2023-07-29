@@ -74,12 +74,27 @@ func Format(input []byte) ([]byte, error) {
 
 			barBuffer.WriteTo(&output)
 			barBuffer.Reset()
-		} else if bytes.HasPrefix(line, []byte(":bar")) {
+		} else if pref := []byte(":bar"); bytes.HasPrefix(line, pref) {
 			isBar = true
-			barBuffer.Write(line)
+
+			barName := bytes.TrimPrefix(line, pref)
+			barName = bytes.TrimSpace(barName)
+
+			barBuffer.Write(pref)
+			barBuffer.WriteString(" ")
+			barBuffer.Write(barName)
 			barBuffer.Write(lf)
+		} else if pref := []byte(":play"); bytes.HasPrefix(line, pref) {
+			barName := bytes.TrimPrefix(line, pref)
+			barName = bytes.TrimSpace(barName)
+
+			output.Write(pref)
+			output.WriteString(" ")
+			output.Write(barName)
+			output.Write(lf)
 		} else if isBar {
 			barBuffer.WriteString("\t")
+
 			if bytes.HasPrefix(line, []byte(":")) {
 				// Parse the command line and print.
 				node, err := p.Parse(lexer.NewLexer(line))
@@ -91,6 +106,7 @@ func Format(input []byte) ([]byte, error) {
 				// Print note list raw.
 				barBuffer.Write(line)
 			}
+
 			barBuffer.Write(lf)
 		} else {
 			if bytes.HasPrefix(line, []byte(":")) {
@@ -104,6 +120,7 @@ func Format(input []byte) ([]byte, error) {
 				// Print note list raw.
 				output.Write(line)
 			}
+
 			output.Write(lf)
 		}
 	}

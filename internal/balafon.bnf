@@ -14,13 +14,13 @@ symbol     : _char ;
 rest       : '-' ;
 
 // Note: can't have standalone ident due to ambiguity with symbols.
-_ident     : ( _char | _uint ) { _char | _uint } ;
-_space     : ' ' ;
-_prefix    : ':' ;
+_ident          : ( _char | _uint ) { _char | _uint } ;
+_repeatSpace    : ( ' ' | '\t' ) { ' ' | '\t' } ;
+_prefix         : ':' ;
 
-cmdBar        : _prefix 'b' 'a' 'r' _space _ident ;
+cmdBar        : _prefix 'b' 'a' 'r' _repeatSpace _ident ;
 cmdEnd        : _prefix 'e' 'n' 'd' ;
-cmdPlay       : _prefix 'p' 'l' 'a' 'y' _space _ident ;
+cmdPlay       : _prefix 'p' 'l' 'a' 'y' _repeatSpace _ident ;
 cmdAssign     : _prefix 'a' 's' 's' 'i' 'g' 'n' ;
 cmdTempo      : _prefix 't' 'e' 'm' 'p' 'o' ;
 cmdTimesig    : _prefix 't' 'i' 'm' 'e' 's' 'i' 'g' ;
