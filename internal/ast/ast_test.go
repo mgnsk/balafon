@@ -3,15 +3,22 @@ package ast_test
 import (
 	"testing"
 
+	"github.com/mgnsk/balafon/internal/ast"
 	"github.com/mgnsk/balafon/internal/parser/lexer"
 	"github.com/mgnsk/balafon/internal/parser/parser"
 	. "github.com/onsi/gomega"
 )
 
-func parse(input string) (interface{}, error) {
+func parse(input string) (ast.NodeList, error) {
 	lex := lexer.NewLexer([]byte(input))
 	p := parser.NewParser()
-	return p.Parse(lex)
+
+	v, err := p.Parse(lex)
+	if err != nil {
+		return nil, err
+	}
+
+	return v.(ast.NodeList), nil
 }
 
 func TestSyntaxNotAmbigous(t *testing.T) {
@@ -67,6 +74,59 @@ func TestPlayNotAmbigous(t *testing.T) {
 
 	_, err := parse(input)
 	g.Expect(err).NotTo(HaveOccurred())
+}
+
+func TestWalkNotesUniqueProperties(t *testing.T) {
+	g := NewWithT(t)
+
+	input := `
+:assign c 60
+[c4/5*]8/3*
+`
+
+	nodeList, err := parse(input)
+	g.Expect(err).NotTo(HaveOccurred())
+
+	var notes []*ast.Note
+	ast.WalkNotes(nodeList, nil, func(note *ast.Note) error {
+		notes = append(notes, note)
+		return nil
+	})
+
+	g.Expect(notes).To(HaveLen(1))
+	n := notes[0]
+
+	g.Expect(n.Props).To(HaveLen(3))
+	g.Expect(n.Props.Value()).To(Equal(uint8(8)))
+	g.Expect(n.Props.Tuplet()).To(Equal(3))
+	g.Expect(n.Props.IsLetRing()).To(BeTrue())
+}
+
+func TestAdditiveProperties(t *testing.T) {
+	g := NewWithT(t)
+
+	input := ":assign c 60; [c#$`>^).]#$`>^)."
+
+	nodeList, err := parse(input)
+	g.Expect(err).NotTo(HaveOccurred())
+
+	var notes []*ast.Note
+	ast.WalkNotes(nodeList, nil, func(note *ast.Note) error {
+		notes = append(notes, note)
+		return nil
+	})
+
+	g.Expect(notes).To(HaveLen(1))
+	n := notes[0]
+
+	g.Expect(n.Props).To(HaveLen(14))
+	g.Expect(n.Props.NumSharp()).To(Equal(2))
+	g.Expect(n.Props.NumFlat()).To(Equal(2))
+	g.Expect(n.Props.NumStaccato()).To(Equal(2))
+	g.Expect(n.Props.NumAccent()).To(Equal(2))
+	g.Expect(n.Props.NumMarcato()).To(Equal(2))
+	g.Expect(n.Props.NumGhost()).To(Equal(2))
+	g.Expect(n.Props.NumDot()).To(Equal(2))
 }
 
 func BenchmarkParser(b *testing.B) {

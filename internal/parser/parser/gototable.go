@@ -2,7 +2,7 @@
 
 package parser
 
-const numNTSymbols = 13
+const numNTSymbols = 14
 
 type (
 	gotoTable [numStates]gotoRow
@@ -19,6 +19,7 @@ var gotoTab = gotoTable{
 		-1, // Bar
 		-1, // NoteList
 		-1, // NoteObject
+		-1, // NoteGroup
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
@@ -34,6 +35,7 @@ var gotoTab = gotoTable{
 		-1, // Bar
 		-1, // NoteList
 		-1, // NoteObject
+		-1, // NoteGroup
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
@@ -49,6 +51,7 @@ var gotoTab = gotoTable{
 		6,  // Bar
 		8,  // NoteList
 		11, // NoteObject
+		13, // NoteGroup
 		12, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
@@ -58,12 +61,13 @@ var gotoTab = gotoTable{
 	gotoRow{ // S3
 		-1, // S'
 		-1, // SourceFile
-		27, // RepeatTerminator
+		28, // RepeatTerminator
 		-1, // DeclList
 		-1, // Decl
 		-1, // Bar
 		-1, // NoteList
 		-1, // NoteObject
+		-1, // NoteGroup
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
@@ -79,6 +83,7 @@ var gotoTab = gotoTable{
 		-1, // Bar
 		-1, // NoteList
 		-1, // NoteObject
+		-1, // NoteGroup
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
@@ -88,12 +93,13 @@ var gotoTab = gotoTable{
 	gotoRow{ // S5
 		-1, // S'
 		-1, // SourceFile
-		28, // RepeatTerminator
+		29, // RepeatTerminator
 		-1, // DeclList
 		-1, // Decl
 		-1, // Bar
 		-1, // NoteList
 		-1, // NoteObject
+		-1, // NoteGroup
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
@@ -109,6 +115,7 @@ var gotoTab = gotoTable{
 		-1, // Bar
 		-1, // NoteList
 		-1, // NoteObject
+		-1, // NoteGroup
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
@@ -124,6 +131,7 @@ var gotoTab = gotoTable{
 		-1, // Bar
 		-1, // NoteList
 		-1, // NoteObject
+		-1, // NoteGroup
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
@@ -139,6 +147,7 @@ var gotoTab = gotoTable{
 		-1, // Bar
 		-1, // NoteList
 		-1, // NoteObject
+		-1, // NoteGroup
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
@@ -154,6 +163,7 @@ var gotoTab = gotoTable{
 		-1, // Bar
 		-1, // NoteList
 		-1, // NoteObject
+		-1, // NoteGroup
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
@@ -163,12 +173,13 @@ var gotoTab = gotoTable{
 	gotoRow{ // S10
 		-1, // S'
 		-1, // SourceFile
-		30, // RepeatTerminator
+		31, // RepeatTerminator
 		-1, // DeclList
 		-1, // Decl
 		-1, // Bar
 		-1, // NoteList
 		-1, // NoteObject
+		-1, // NoteGroup
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
@@ -182,8 +193,9 @@ var gotoTab = gotoTable{
 		-1, // DeclList
 		-1, // Decl
 		-1, // Bar
-		31, // NoteList
+		32, // NoteList
 		11, // NoteObject
+		13, // NoteGroup
 		12, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
@@ -199,9 +211,10 @@ var gotoTab = gotoTable{
 		-1, // Bar
 		-1, // NoteList
 		-1, // NoteObject
+		-1, // NoteGroup
 		-1, // NoteSymbol
-		32, // PropertyList
-		33, // Property
+		33, // PropertyList
+		34, // Property
 		-1, // Command
 		-1, // Comment
 	},
@@ -212,9 +225,10 @@ var gotoTab = gotoTable{
 		-1, // DeclList
 		-1, // Decl
 		-1, // Bar
-		44, // NoteList
-		45, // NoteObject
-		46, // NoteSymbol
+		-1, // NoteList
+		-1, // NoteObject
+		-1, // NoteGroup
+		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
 		-1, // Command
@@ -227,9 +241,10 @@ var gotoTab = gotoTable{
 		-1, // DeclList
 		-1, // Decl
 		-1, // Bar
-		-1, // NoteList
-		-1, // NoteObject
-		-1, // NoteSymbol
+		45, // NoteList
+		46, // NoteObject
+		48, // NoteGroup
+		47, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
 		-1, // Command
@@ -244,6 +259,7 @@ var gotoTab = gotoTable{
 		-1, // Bar
 		-1, // NoteList
 		-1, // NoteObject
+		-1, // NoteGroup
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
@@ -259,6 +275,7 @@ var gotoTab = gotoTable{
 		-1, // Bar
 		-1, // NoteList
 		-1, // NoteObject
+		-1, // NoteGroup
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
@@ -274,6 +291,7 @@ var gotoTab = gotoTable{
 		-1, // Bar
 		-1, // NoteList
 		-1, // NoteObject
+		-1, // NoteGroup
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
@@ -289,6 +307,7 @@ var gotoTab = gotoTable{
 		-1, // Bar
 		-1, // NoteList
 		-1, // NoteObject
+		-1, // NoteGroup
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
@@ -304,6 +323,7 @@ var gotoTab = gotoTable{
 		-1, // Bar
 		-1, // NoteList
 		-1, // NoteObject
+		-1, // NoteGroup
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
@@ -319,6 +339,7 @@ var gotoTab = gotoTable{
 		-1, // Bar
 		-1, // NoteList
 		-1, // NoteObject
+		-1, // NoteGroup
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
@@ -334,6 +355,7 @@ var gotoTab = gotoTable{
 		-1, // Bar
 		-1, // NoteList
 		-1, // NoteObject
+		-1, // NoteGroup
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
@@ -349,6 +371,7 @@ var gotoTab = gotoTable{
 		-1, // Bar
 		-1, // NoteList
 		-1, // NoteObject
+		-1, // NoteGroup
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
@@ -364,6 +387,7 @@ var gotoTab = gotoTable{
 		-1, // Bar
 		-1, // NoteList
 		-1, // NoteObject
+		-1, // NoteGroup
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
@@ -379,6 +403,7 @@ var gotoTab = gotoTable{
 		-1, // Bar
 		-1, // NoteList
 		-1, // NoteObject
+		-1, // NoteGroup
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
@@ -394,6 +419,7 @@ var gotoTab = gotoTable{
 		-1, // Bar
 		-1, // NoteList
 		-1, // NoteObject
+		-1, // NoteGroup
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
@@ -409,6 +435,7 @@ var gotoTab = gotoTable{
 		-1, // Bar
 		-1, // NoteList
 		-1, // NoteObject
+		-1, // NoteGroup
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
@@ -424,6 +451,7 @@ var gotoTab = gotoTable{
 		-1, // Bar
 		-1, // NoteList
 		-1, // NoteObject
+		-1, // NoteGroup
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
@@ -439,6 +467,7 @@ var gotoTab = gotoTable{
 		-1, // Bar
 		-1, // NoteList
 		-1, // NoteObject
+		-1, // NoteGroup
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
@@ -448,12 +477,13 @@ var gotoTab = gotoTable{
 	gotoRow{ // S29
 		-1, // S'
 		-1, // SourceFile
-		57, // RepeatTerminator
+		-1, // RepeatTerminator
 		-1, // DeclList
 		-1, // Decl
 		-1, // Bar
 		-1, // NoteList
 		-1, // NoteObject
+		-1, // NoteGroup
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
@@ -463,32 +493,34 @@ var gotoTab = gotoTable{
 	gotoRow{ // S30
 		-1, // S'
 		-1, // SourceFile
-		-1, // RepeatTerminator
-		59, // DeclList
-		60, // Decl
-		61, // Bar
-		63, // NoteList
-		66, // NoteObject
-		67, // NoteSymbol
-		-1, // PropertyList
-		-1, // Property
-		62, // Command
-		64, // Comment
-	},
-	gotoRow{ // S31
-		-1, // S'
-		-1, // SourceFile
-		-1, // RepeatTerminator
+		59, // RepeatTerminator
 		-1, // DeclList
 		-1, // Decl
 		-1, // Bar
 		-1, // NoteList
 		-1, // NoteObject
+		-1, // NoteGroup
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
 		-1, // Command
 		-1, // Comment
+	},
+	gotoRow{ // S31
+		-1, // S'
+		-1, // SourceFile
+		-1, // RepeatTerminator
+		61, // DeclList
+		62, // Decl
+		63, // Bar
+		65, // NoteList
+		68, // NoteObject
+		70, // NoteGroup
+		69, // NoteSymbol
+		-1, // PropertyList
+		-1, // Property
+		64, // Command
+		66, // Comment
 	},
 	gotoRow{ // S32
 		-1, // S'
@@ -499,6 +531,7 @@ var gotoTab = gotoTable{
 		-1, // Bar
 		-1, // NoteList
 		-1, // NoteObject
+		-1, // NoteGroup
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
@@ -514,9 +547,10 @@ var gotoTab = gotoTable{
 		-1, // Bar
 		-1, // NoteList
 		-1, // NoteObject
+		-1, // NoteGroup
 		-1, // NoteSymbol
-		82, // PropertyList
-		33, // Property
+		-1, // PropertyList
+		-1, // Property
 		-1, // Command
 		-1, // Comment
 	},
@@ -529,9 +563,10 @@ var gotoTab = gotoTable{
 		-1, // Bar
 		-1, // NoteList
 		-1, // NoteObject
+		-1, // NoteGroup
 		-1, // NoteSymbol
-		-1, // PropertyList
-		-1, // Property
+		85, // PropertyList
+		34, // Property
 		-1, // Command
 		-1, // Comment
 	},
@@ -544,6 +579,7 @@ var gotoTab = gotoTable{
 		-1, // Bar
 		-1, // NoteList
 		-1, // NoteObject
+		-1, // NoteGroup
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
@@ -559,6 +595,7 @@ var gotoTab = gotoTable{
 		-1, // Bar
 		-1, // NoteList
 		-1, // NoteObject
+		-1, // NoteGroup
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
@@ -574,6 +611,7 @@ var gotoTab = gotoTable{
 		-1, // Bar
 		-1, // NoteList
 		-1, // NoteObject
+		-1, // NoteGroup
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
@@ -589,6 +627,7 @@ var gotoTab = gotoTable{
 		-1, // Bar
 		-1, // NoteList
 		-1, // NoteObject
+		-1, // NoteGroup
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
@@ -604,6 +643,7 @@ var gotoTab = gotoTable{
 		-1, // Bar
 		-1, // NoteList
 		-1, // NoteObject
+		-1, // NoteGroup
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
@@ -619,6 +659,7 @@ var gotoTab = gotoTable{
 		-1, // Bar
 		-1, // NoteList
 		-1, // NoteObject
+		-1, // NoteGroup
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
@@ -634,6 +675,7 @@ var gotoTab = gotoTable{
 		-1, // Bar
 		-1, // NoteList
 		-1, // NoteObject
+		-1, // NoteGroup
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
@@ -649,6 +691,7 @@ var gotoTab = gotoTable{
 		-1, // Bar
 		-1, // NoteList
 		-1, // NoteObject
+		-1, // NoteGroup
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
@@ -664,6 +707,7 @@ var gotoTab = gotoTable{
 		-1, // Bar
 		-1, // NoteList
 		-1, // NoteObject
+		-1, // NoteGroup
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
@@ -679,6 +723,7 @@ var gotoTab = gotoTable{
 		-1, // Bar
 		-1, // NoteList
 		-1, // NoteObject
+		-1, // NoteGroup
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
@@ -692,9 +737,10 @@ var gotoTab = gotoTable{
 		-1, // DeclList
 		-1, // Decl
 		-1, // Bar
-		84, // NoteList
-		45, // NoteObject
-		46, // NoteSymbol
+		-1, // NoteList
+		-1, // NoteObject
+		-1, // NoteGroup
+		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
 		-1, // Command
@@ -707,11 +753,12 @@ var gotoTab = gotoTable{
 		-1, // DeclList
 		-1, // Decl
 		-1, // Bar
-		-1, // NoteList
-		-1, // NoteObject
-		-1, // NoteSymbol
-		85, // PropertyList
-		86, // Property
+		87, // NoteList
+		46, // NoteObject
+		48, // NoteGroup
+		47, // NoteSymbol
+		-1, // PropertyList
+		-1, // Property
 		-1, // Command
 		-1, // Comment
 	},
@@ -722,11 +769,12 @@ var gotoTab = gotoTable{
 		-1, // DeclList
 		-1, // Decl
 		-1, // Bar
-		97, // NoteList
-		45, // NoteObject
-		46, // NoteSymbol
-		-1, // PropertyList
-		-1, // Property
+		-1, // NoteList
+		-1, // NoteObject
+		-1, // NoteGroup
+		-1, // NoteSymbol
+		88, // PropertyList
+		89, // Property
 		-1, // Command
 		-1, // Comment
 	},
@@ -739,6 +787,7 @@ var gotoTab = gotoTable{
 		-1, // Bar
 		-1, // NoteList
 		-1, // NoteObject
+		-1, // NoteGroup
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
@@ -746,19 +795,20 @@ var gotoTab = gotoTable{
 		-1, // Comment
 	},
 	gotoRow{ // S49
-		-1, // S'
-		-1, // SourceFile
-		-1, // RepeatTerminator
-		-1, // DeclList
-		-1, // Decl
-		-1, // Bar
-		-1, // NoteList
-		-1, // NoteObject
-		-1, // NoteSymbol
-		-1, // PropertyList
-		-1, // Property
-		-1, // Command
-		-1, // Comment
+		-1,  // S'
+		-1,  // SourceFile
+		-1,  // RepeatTerminator
+		-1,  // DeclList
+		-1,  // Decl
+		-1,  // Bar
+		100, // NoteList
+		46,  // NoteObject
+		48,  // NoteGroup
+		47,  // NoteSymbol
+		-1,  // PropertyList
+		-1,  // Property
+		-1,  // Command
+		-1,  // Comment
 	},
 	gotoRow{ // S50
 		-1, // S'
@@ -769,6 +819,7 @@ var gotoTab = gotoTable{
 		-1, // Bar
 		-1, // NoteList
 		-1, // NoteObject
+		-1, // NoteGroup
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
@@ -784,6 +835,7 @@ var gotoTab = gotoTable{
 		-1, // Bar
 		-1, // NoteList
 		-1, // NoteObject
+		-1, // NoteGroup
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
@@ -799,6 +851,7 @@ var gotoTab = gotoTable{
 		-1, // Bar
 		-1, // NoteList
 		-1, // NoteObject
+		-1, // NoteGroup
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
@@ -814,6 +867,7 @@ var gotoTab = gotoTable{
 		-1, // Bar
 		-1, // NoteList
 		-1, // NoteObject
+		-1, // NoteGroup
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
@@ -829,6 +883,7 @@ var gotoTab = gotoTable{
 		-1, // Bar
 		-1, // NoteList
 		-1, // NoteObject
+		-1, // NoteGroup
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
@@ -844,6 +899,7 @@ var gotoTab = gotoTable{
 		-1, // Bar
 		-1, // NoteList
 		-1, // NoteObject
+		-1, // NoteGroup
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
@@ -859,6 +915,7 @@ var gotoTab = gotoTable{
 		-1, // Bar
 		-1, // NoteList
 		-1, // NoteObject
+		-1, // NoteGroup
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
@@ -866,36 +923,6 @@ var gotoTab = gotoTable{
 		-1, // Comment
 	},
 	gotoRow{ // S57
-		-1,  // S'
-		-1,  // SourceFile
-		-1,  // RepeatTerminator
-		101, // DeclList
-		5,   // Decl
-		6,   // Bar
-		8,   // NoteList
-		11,  // NoteObject
-		12,  // NoteSymbol
-		-1,  // PropertyList
-		-1,  // Property
-		7,   // Command
-		9,   // Comment
-	},
-	gotoRow{ // S58
-		-1,  // S'
-		-1,  // SourceFile
-		102, // RepeatTerminator
-		-1,  // DeclList
-		-1,  // Decl
-		-1,  // Bar
-		-1,  // NoteList
-		-1,  // NoteObject
-		-1,  // NoteSymbol
-		-1,  // PropertyList
-		-1,  // Property
-		-1,  // Command
-		-1,  // Comment
-	},
-	gotoRow{ // S59
 		-1, // S'
 		-1, // SourceFile
 		-1, // RepeatTerminator
@@ -904,21 +931,55 @@ var gotoTab = gotoTable{
 		-1, // Bar
 		-1, // NoteList
 		-1, // NoteObject
+		-1, // NoteGroup
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
 		-1, // Command
 		-1, // Comment
 	},
+	gotoRow{ // S58
+		-1, // S'
+		-1, // SourceFile
+		-1, // RepeatTerminator
+		-1, // DeclList
+		-1, // Decl
+		-1, // Bar
+		-1, // NoteList
+		-1, // NoteObject
+		-1, // NoteGroup
+		-1, // NoteSymbol
+		-1, // PropertyList
+		-1, // Property
+		-1, // Command
+		-1, // Comment
+	},
+	gotoRow{ // S59
+		-1,  // S'
+		-1,  // SourceFile
+		-1,  // RepeatTerminator
+		104, // DeclList
+		5,   // Decl
+		6,   // Bar
+		8,   // NoteList
+		11,  // NoteObject
+		13,  // NoteGroup
+		12,  // NoteSymbol
+		-1,  // PropertyList
+		-1,  // Property
+		7,   // Command
+		9,   // Comment
+	},
 	gotoRow{ // S60
 		-1,  // S'
 		-1,  // SourceFile
-		104, // RepeatTerminator
+		105, // RepeatTerminator
 		-1,  // DeclList
 		-1,  // Decl
 		-1,  // Bar
 		-1,  // NoteList
 		-1,  // NoteObject
+		-1,  // NoteGroup
 		-1,  // NoteSymbol
 		-1,  // PropertyList
 		-1,  // Property
@@ -934,6 +995,7 @@ var gotoTab = gotoTable{
 		-1, // Bar
 		-1, // NoteList
 		-1, // NoteObject
+		-1, // NoteGroup
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
@@ -941,19 +1003,20 @@ var gotoTab = gotoTable{
 		-1, // Comment
 	},
 	gotoRow{ // S62
-		-1, // S'
-		-1, // SourceFile
-		-1, // RepeatTerminator
-		-1, // DeclList
-		-1, // Decl
-		-1, // Bar
-		-1, // NoteList
-		-1, // NoteObject
-		-1, // NoteSymbol
-		-1, // PropertyList
-		-1, // Property
-		-1, // Command
-		-1, // Comment
+		-1,  // S'
+		-1,  // SourceFile
+		107, // RepeatTerminator
+		-1,  // DeclList
+		-1,  // Decl
+		-1,  // Bar
+		-1,  // NoteList
+		-1,  // NoteObject
+		-1,  // NoteGroup
+		-1,  // NoteSymbol
+		-1,  // PropertyList
+		-1,  // Property
+		-1,  // Command
+		-1,  // Comment
 	},
 	gotoRow{ // S63
 		-1, // S'
@@ -964,6 +1027,7 @@ var gotoTab = gotoTable{
 		-1, // Bar
 		-1, // NoteList
 		-1, // NoteObject
+		-1, // NoteGroup
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
@@ -979,6 +1043,7 @@ var gotoTab = gotoTable{
 		-1, // Bar
 		-1, // NoteList
 		-1, // NoteObject
+		-1, // NoteGroup
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
@@ -986,47 +1051,50 @@ var gotoTab = gotoTable{
 		-1, // Comment
 	},
 	gotoRow{ // S65
-		-1,  // S'
-		-1,  // SourceFile
-		106, // RepeatTerminator
-		-1,  // DeclList
-		-1,  // Decl
-		-1,  // Bar
-		-1,  // NoteList
-		-1,  // NoteObject
-		-1,  // NoteSymbol
-		-1,  // PropertyList
-		-1,  // Property
-		-1,  // Command
-		-1,  // Comment
+		-1, // S'
+		-1, // SourceFile
+		-1, // RepeatTerminator
+		-1, // DeclList
+		-1, // Decl
+		-1, // Bar
+		-1, // NoteList
+		-1, // NoteObject
+		-1, // NoteGroup
+		-1, // NoteSymbol
+		-1, // PropertyList
+		-1, // Property
+		-1, // Command
+		-1, // Comment
 	},
 	gotoRow{ // S66
-		-1,  // S'
-		-1,  // SourceFile
-		-1,  // RepeatTerminator
-		-1,  // DeclList
-		-1,  // Decl
-		-1,  // Bar
-		107, // NoteList
-		66,  // NoteObject
-		67,  // NoteSymbol
-		-1,  // PropertyList
-		-1,  // Property
-		-1,  // Command
-		-1,  // Comment
+		-1, // S'
+		-1, // SourceFile
+		-1, // RepeatTerminator
+		-1, // DeclList
+		-1, // Decl
+		-1, // Bar
+		-1, // NoteList
+		-1, // NoteObject
+		-1, // NoteGroup
+		-1, // NoteSymbol
+		-1, // PropertyList
+		-1, // Property
+		-1, // Command
+		-1, // Comment
 	},
 	gotoRow{ // S67
 		-1,  // S'
 		-1,  // SourceFile
-		-1,  // RepeatTerminator
+		109, // RepeatTerminator
 		-1,  // DeclList
 		-1,  // Decl
 		-1,  // Bar
 		-1,  // NoteList
 		-1,  // NoteObject
+		-1,  // NoteGroup
 		-1,  // NoteSymbol
-		108, // PropertyList
-		109, // Property
+		-1,  // PropertyList
+		-1,  // Property
 		-1,  // Command
 		-1,  // Comment
 	},
@@ -1037,28 +1105,30 @@ var gotoTab = gotoTable{
 		-1,  // DeclList
 		-1,  // Decl
 		-1,  // Bar
-		120, // NoteList
-		45,  // NoteObject
-		46,  // NoteSymbol
+		110, // NoteList
+		68,  // NoteObject
+		70,  // NoteGroup
+		69,  // NoteSymbol
 		-1,  // PropertyList
 		-1,  // Property
 		-1,  // Command
 		-1,  // Comment
 	},
 	gotoRow{ // S69
-		-1, // S'
-		-1, // SourceFile
-		-1, // RepeatTerminator
-		-1, // DeclList
-		-1, // Decl
-		-1, // Bar
-		-1, // NoteList
-		-1, // NoteObject
-		-1, // NoteSymbol
-		-1, // PropertyList
-		-1, // Property
-		-1, // Command
-		-1, // Comment
+		-1,  // S'
+		-1,  // SourceFile
+		-1,  // RepeatTerminator
+		-1,  // DeclList
+		-1,  // Decl
+		-1,  // Bar
+		-1,  // NoteList
+		-1,  // NoteObject
+		-1,  // NoteGroup
+		-1,  // NoteSymbol
+		111, // PropertyList
+		112, // Property
+		-1,  // Command
+		-1,  // Comment
 	},
 	gotoRow{ // S70
 		-1, // S'
@@ -1069,6 +1139,7 @@ var gotoTab = gotoTable{
 		-1, // Bar
 		-1, // NoteList
 		-1, // NoteObject
+		-1, // NoteGroup
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
@@ -1076,19 +1147,20 @@ var gotoTab = gotoTable{
 		-1, // Comment
 	},
 	gotoRow{ // S71
-		-1, // S'
-		-1, // SourceFile
-		-1, // RepeatTerminator
-		-1, // DeclList
-		-1, // Decl
-		-1, // Bar
-		-1, // NoteList
-		-1, // NoteObject
-		-1, // NoteSymbol
-		-1, // PropertyList
-		-1, // Property
-		-1, // Command
-		-1, // Comment
+		-1,  // S'
+		-1,  // SourceFile
+		-1,  // RepeatTerminator
+		-1,  // DeclList
+		-1,  // Decl
+		-1,  // Bar
+		123, // NoteList
+		46,  // NoteObject
+		48,  // NoteGroup
+		47,  // NoteSymbol
+		-1,  // PropertyList
+		-1,  // Property
+		-1,  // Command
+		-1,  // Comment
 	},
 	gotoRow{ // S72
 		-1, // S'
@@ -1099,6 +1171,7 @@ var gotoTab = gotoTable{
 		-1, // Bar
 		-1, // NoteList
 		-1, // NoteObject
+		-1, // NoteGroup
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
@@ -1114,6 +1187,7 @@ var gotoTab = gotoTable{
 		-1, // Bar
 		-1, // NoteList
 		-1, // NoteObject
+		-1, // NoteGroup
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
@@ -1129,6 +1203,7 @@ var gotoTab = gotoTable{
 		-1, // Bar
 		-1, // NoteList
 		-1, // NoteObject
+		-1, // NoteGroup
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
@@ -1144,6 +1219,7 @@ var gotoTab = gotoTable{
 		-1, // Bar
 		-1, // NoteList
 		-1, // NoteObject
+		-1, // NoteGroup
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
@@ -1159,6 +1235,7 @@ var gotoTab = gotoTable{
 		-1, // Bar
 		-1, // NoteList
 		-1, // NoteObject
+		-1, // NoteGroup
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
@@ -1174,6 +1251,7 @@ var gotoTab = gotoTable{
 		-1, // Bar
 		-1, // NoteList
 		-1, // NoteObject
+		-1, // NoteGroup
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
@@ -1189,6 +1267,7 @@ var gotoTab = gotoTable{
 		-1, // Bar
 		-1, // NoteList
 		-1, // NoteObject
+		-1, // NoteGroup
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
@@ -1204,6 +1283,7 @@ var gotoTab = gotoTable{
 		-1, // Bar
 		-1, // NoteList
 		-1, // NoteObject
+		-1, // NoteGroup
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
@@ -1219,6 +1299,7 @@ var gotoTab = gotoTable{
 		-1, // Bar
 		-1, // NoteList
 		-1, // NoteObject
+		-1, // NoteGroup
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
@@ -1234,6 +1315,7 @@ var gotoTab = gotoTable{
 		-1, // Bar
 		-1, // NoteList
 		-1, // NoteObject
+		-1, // NoteGroup
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
@@ -1249,6 +1331,7 @@ var gotoTab = gotoTable{
 		-1, // Bar
 		-1, // NoteList
 		-1, // NoteObject
+		-1, // NoteGroup
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
@@ -1256,19 +1339,20 @@ var gotoTab = gotoTable{
 		-1, // Comment
 	},
 	gotoRow{ // S83
-		-1,  // S'
-		-1,  // SourceFile
-		-1,  // RepeatTerminator
-		-1,  // DeclList
-		-1,  // Decl
-		-1,  // Bar
-		-1,  // NoteList
-		-1,  // NoteObject
-		-1,  // NoteSymbol
-		128, // PropertyList
-		33,  // Property
-		-1,  // Command
-		-1,  // Comment
+		-1, // S'
+		-1, // SourceFile
+		-1, // RepeatTerminator
+		-1, // DeclList
+		-1, // Decl
+		-1, // Bar
+		-1, // NoteList
+		-1, // NoteObject
+		-1, // NoteGroup
+		-1, // NoteSymbol
+		-1, // PropertyList
+		-1, // Property
+		-1, // Command
+		-1, // Comment
 	},
 	gotoRow{ // S84
 		-1, // S'
@@ -1279,6 +1363,7 @@ var gotoTab = gotoTable{
 		-1, // Bar
 		-1, // NoteList
 		-1, // NoteObject
+		-1, // NoteGroup
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
@@ -1294,6 +1379,7 @@ var gotoTab = gotoTable{
 		-1, // Bar
 		-1, // NoteList
 		-1, // NoteObject
+		-1, // NoteGroup
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
@@ -1309,9 +1395,10 @@ var gotoTab = gotoTable{
 		-1,  // Bar
 		-1,  // NoteList
 		-1,  // NoteObject
+		-1,  // NoteGroup
 		-1,  // NoteSymbol
-		129, // PropertyList
-		86,  // Property
+		131, // PropertyList
+		34,  // Property
 		-1,  // Command
 		-1,  // Comment
 	},
@@ -1324,6 +1411,7 @@ var gotoTab = gotoTable{
 		-1, // Bar
 		-1, // NoteList
 		-1, // NoteObject
+		-1, // NoteGroup
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
@@ -1339,6 +1427,7 @@ var gotoTab = gotoTable{
 		-1, // Bar
 		-1, // NoteList
 		-1, // NoteObject
+		-1, // NoteGroup
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
@@ -1346,19 +1435,20 @@ var gotoTab = gotoTable{
 		-1, // Comment
 	},
 	gotoRow{ // S89
-		-1, // S'
-		-1, // SourceFile
-		-1, // RepeatTerminator
-		-1, // DeclList
-		-1, // Decl
-		-1, // Bar
-		-1, // NoteList
-		-1, // NoteObject
-		-1, // NoteSymbol
-		-1, // PropertyList
-		-1, // Property
-		-1, // Command
-		-1, // Comment
+		-1,  // S'
+		-1,  // SourceFile
+		-1,  // RepeatTerminator
+		-1,  // DeclList
+		-1,  // Decl
+		-1,  // Bar
+		-1,  // NoteList
+		-1,  // NoteObject
+		-1,  // NoteGroup
+		-1,  // NoteSymbol
+		132, // PropertyList
+		89,  // Property
+		-1,  // Command
+		-1,  // Comment
 	},
 	gotoRow{ // S90
 		-1, // S'
@@ -1369,6 +1459,7 @@ var gotoTab = gotoTable{
 		-1, // Bar
 		-1, // NoteList
 		-1, // NoteObject
+		-1, // NoteGroup
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
@@ -1384,6 +1475,7 @@ var gotoTab = gotoTable{
 		-1, // Bar
 		-1, // NoteList
 		-1, // NoteObject
+		-1, // NoteGroup
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
@@ -1399,6 +1491,7 @@ var gotoTab = gotoTable{
 		-1, // Bar
 		-1, // NoteList
 		-1, // NoteObject
+		-1, // NoteGroup
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
@@ -1414,6 +1507,7 @@ var gotoTab = gotoTable{
 		-1, // Bar
 		-1, // NoteList
 		-1, // NoteObject
+		-1, // NoteGroup
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
@@ -1429,6 +1523,7 @@ var gotoTab = gotoTable{
 		-1, // Bar
 		-1, // NoteList
 		-1, // NoteObject
+		-1, // NoteGroup
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
@@ -1444,6 +1539,7 @@ var gotoTab = gotoTable{
 		-1, // Bar
 		-1, // NoteList
 		-1, // NoteObject
+		-1, // NoteGroup
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
@@ -1459,6 +1555,7 @@ var gotoTab = gotoTable{
 		-1, // Bar
 		-1, // NoteList
 		-1, // NoteObject
+		-1, // NoteGroup
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
@@ -1474,6 +1571,7 @@ var gotoTab = gotoTable{
 		-1, // Bar
 		-1, // NoteList
 		-1, // NoteObject
+		-1, // NoteGroup
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
@@ -1489,6 +1587,7 @@ var gotoTab = gotoTable{
 		-1, // Bar
 		-1, // NoteList
 		-1, // NoteObject
+		-1, // NoteGroup
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
@@ -1504,6 +1603,7 @@ var gotoTab = gotoTable{
 		-1, // Bar
 		-1, // NoteList
 		-1, // NoteObject
+		-1, // NoteGroup
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
@@ -1519,6 +1619,7 @@ var gotoTab = gotoTable{
 		-1, // Bar
 		-1, // NoteList
 		-1, // NoteObject
+		-1, // NoteGroup
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
@@ -1534,6 +1635,7 @@ var gotoTab = gotoTable{
 		-1, // Bar
 		-1, // NoteList
 		-1, // NoteObject
+		-1, // NoteGroup
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
@@ -1549,6 +1651,7 @@ var gotoTab = gotoTable{
 		-1, // Bar
 		-1, // NoteList
 		-1, // NoteObject
+		-1, // NoteGroup
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
@@ -1564,6 +1667,7 @@ var gotoTab = gotoTable{
 		-1, // Bar
 		-1, // NoteList
 		-1, // NoteObject
+		-1, // NoteGroup
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
@@ -1579,6 +1683,7 @@ var gotoTab = gotoTable{
 		-1, // Bar
 		-1, // NoteList
 		-1, // NoteObject
+		-1, // NoteGroup
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
@@ -1586,34 +1691,36 @@ var gotoTab = gotoTable{
 		-1, // Comment
 	},
 	gotoRow{ // S105
-		-1,  // S'
-		-1,  // SourceFile
-		131, // RepeatTerminator
-		-1,  // DeclList
-		-1,  // Decl
-		-1,  // Bar
-		-1,  // NoteList
-		-1,  // NoteObject
-		-1,  // NoteSymbol
-		-1,  // PropertyList
-		-1,  // Property
-		-1,  // Command
-		-1,  // Comment
+		-1, // S'
+		-1, // SourceFile
+		-1, // RepeatTerminator
+		-1, // DeclList
+		-1, // Decl
+		-1, // Bar
+		-1, // NoteList
+		-1, // NoteObject
+		-1, // NoteGroup
+		-1, // NoteSymbol
+		-1, // PropertyList
+		-1, // Property
+		-1, // Command
+		-1, // Comment
 	},
 	gotoRow{ // S106
-		-1,  // S'
-		-1,  // SourceFile
-		-1,  // RepeatTerminator
-		133, // DeclList
-		60,  // Decl
-		61,  // Bar
-		63,  // NoteList
-		66,  // NoteObject
-		67,  // NoteSymbol
-		-1,  // PropertyList
-		-1,  // Property
-		62,  // Command
-		64,  // Comment
+		-1, // S'
+		-1, // SourceFile
+		-1, // RepeatTerminator
+		-1, // DeclList
+		-1, // Decl
+		-1, // Bar
+		-1, // NoteList
+		-1, // NoteObject
+		-1, // NoteGroup
+		-1, // NoteSymbol
+		-1, // PropertyList
+		-1, // Property
+		-1, // Command
+		-1, // Comment
 	},
 	gotoRow{ // S107
 		-1, // S'
@@ -1624,6 +1731,7 @@ var gotoTab = gotoTable{
 		-1, // Bar
 		-1, // NoteList
 		-1, // NoteObject
+		-1, // NoteGroup
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
@@ -1631,34 +1739,36 @@ var gotoTab = gotoTable{
 		-1, // Comment
 	},
 	gotoRow{ // S108
-		-1, // S'
-		-1, // SourceFile
-		-1, // RepeatTerminator
-		-1, // DeclList
-		-1, // Decl
-		-1, // Bar
-		-1, // NoteList
-		-1, // NoteObject
-		-1, // NoteSymbol
-		-1, // PropertyList
-		-1, // Property
-		-1, // Command
-		-1, // Comment
-	},
-	gotoRow{ // S109
 		-1,  // S'
 		-1,  // SourceFile
-		-1,  // RepeatTerminator
+		134, // RepeatTerminator
 		-1,  // DeclList
 		-1,  // Decl
 		-1,  // Bar
 		-1,  // NoteList
 		-1,  // NoteObject
+		-1,  // NoteGroup
 		-1,  // NoteSymbol
-		134, // PropertyList
-		109, // Property
+		-1,  // PropertyList
+		-1,  // Property
 		-1,  // Command
 		-1,  // Comment
+	},
+	gotoRow{ // S109
+		-1,  // S'
+		-1,  // SourceFile
+		-1,  // RepeatTerminator
+		136, // DeclList
+		62,  // Decl
+		63,  // Bar
+		65,  // NoteList
+		68,  // NoteObject
+		70,  // NoteGroup
+		69,  // NoteSymbol
+		-1,  // PropertyList
+		-1,  // Property
+		64,  // Command
+		66,  // Comment
 	},
 	gotoRow{ // S110
 		-1, // S'
@@ -1669,6 +1779,7 @@ var gotoTab = gotoTable{
 		-1, // Bar
 		-1, // NoteList
 		-1, // NoteObject
+		-1, // NoteGroup
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
@@ -1684,6 +1795,7 @@ var gotoTab = gotoTable{
 		-1, // Bar
 		-1, // NoteList
 		-1, // NoteObject
+		-1, // NoteGroup
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
@@ -1691,19 +1803,20 @@ var gotoTab = gotoTable{
 		-1, // Comment
 	},
 	gotoRow{ // S112
-		-1, // S'
-		-1, // SourceFile
-		-1, // RepeatTerminator
-		-1, // DeclList
-		-1, // Decl
-		-1, // Bar
-		-1, // NoteList
-		-1, // NoteObject
-		-1, // NoteSymbol
-		-1, // PropertyList
-		-1, // Property
-		-1, // Command
-		-1, // Comment
+		-1,  // S'
+		-1,  // SourceFile
+		-1,  // RepeatTerminator
+		-1,  // DeclList
+		-1,  // Decl
+		-1,  // Bar
+		-1,  // NoteList
+		-1,  // NoteObject
+		-1,  // NoteGroup
+		-1,  // NoteSymbol
+		137, // PropertyList
+		112, // Property
+		-1,  // Command
+		-1,  // Comment
 	},
 	gotoRow{ // S113
 		-1, // S'
@@ -1714,6 +1827,7 @@ var gotoTab = gotoTable{
 		-1, // Bar
 		-1, // NoteList
 		-1, // NoteObject
+		-1, // NoteGroup
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
@@ -1729,6 +1843,7 @@ var gotoTab = gotoTable{
 		-1, // Bar
 		-1, // NoteList
 		-1, // NoteObject
+		-1, // NoteGroup
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
@@ -1744,6 +1859,7 @@ var gotoTab = gotoTable{
 		-1, // Bar
 		-1, // NoteList
 		-1, // NoteObject
+		-1, // NoteGroup
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
@@ -1759,6 +1875,7 @@ var gotoTab = gotoTable{
 		-1, // Bar
 		-1, // NoteList
 		-1, // NoteObject
+		-1, // NoteGroup
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
@@ -1774,6 +1891,7 @@ var gotoTab = gotoTable{
 		-1, // Bar
 		-1, // NoteList
 		-1, // NoteObject
+		-1, // NoteGroup
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
@@ -1789,6 +1907,7 @@ var gotoTab = gotoTable{
 		-1, // Bar
 		-1, // NoteList
 		-1, // NoteObject
+		-1, // NoteGroup
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
@@ -1804,6 +1923,7 @@ var gotoTab = gotoTable{
 		-1, // Bar
 		-1, // NoteList
 		-1, // NoteObject
+		-1, // NoteGroup
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
@@ -1819,6 +1939,7 @@ var gotoTab = gotoTable{
 		-1, // Bar
 		-1, // NoteList
 		-1, // NoteObject
+		-1, // NoteGroup
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
@@ -1834,6 +1955,7 @@ var gotoTab = gotoTable{
 		-1, // Bar
 		-1, // NoteList
 		-1, // NoteObject
+		-1, // NoteGroup
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
@@ -1849,6 +1971,7 @@ var gotoTab = gotoTable{
 		-1, // Bar
 		-1, // NoteList
 		-1, // NoteObject
+		-1, // NoteGroup
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
@@ -1864,6 +1987,7 @@ var gotoTab = gotoTable{
 		-1, // Bar
 		-1, // NoteList
 		-1, // NoteObject
+		-1, // NoteGroup
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
@@ -1879,6 +2003,7 @@ var gotoTab = gotoTable{
 		-1, // Bar
 		-1, // NoteList
 		-1, // NoteObject
+		-1, // NoteGroup
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
@@ -1894,6 +2019,7 @@ var gotoTab = gotoTable{
 		-1, // Bar
 		-1, // NoteList
 		-1, // NoteObject
+		-1, // NoteGroup
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
@@ -1909,6 +2035,7 @@ var gotoTab = gotoTable{
 		-1, // Bar
 		-1, // NoteList
 		-1, // NoteObject
+		-1, // NoteGroup
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
@@ -1924,6 +2051,7 @@ var gotoTab = gotoTable{
 		-1, // Bar
 		-1, // NoteList
 		-1, // NoteObject
+		-1, // NoteGroup
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
@@ -1939,6 +2067,7 @@ var gotoTab = gotoTable{
 		-1, // Bar
 		-1, // NoteList
 		-1, // NoteObject
+		-1, // NoteGroup
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
@@ -1954,6 +2083,7 @@ var gotoTab = gotoTable{
 		-1, // Bar
 		-1, // NoteList
 		-1, // NoteObject
+		-1, // NoteGroup
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
@@ -1961,92 +2091,98 @@ var gotoTab = gotoTable{
 		-1, // Comment
 	},
 	gotoRow{ // S130
-		-1,  // S'
-		-1,  // SourceFile
-		-1,  // RepeatTerminator
-		-1,  // DeclList
-		-1,  // Decl
-		-1,  // Bar
-		-1,  // NoteList
-		-1,  // NoteObject
-		-1,  // NoteSymbol
-		139, // PropertyList
-		86,  // Property
-		-1,  // Command
-		-1,  // Comment
+		-1, // S'
+		-1, // SourceFile
+		-1, // RepeatTerminator
+		-1, // DeclList
+		-1, // Decl
+		-1, // Bar
+		-1, // NoteList
+		-1, // NoteObject
+		-1, // NoteGroup
+		-1, // NoteSymbol
+		-1, // PropertyList
+		-1, // Property
+		-1, // Command
+		-1, // Comment
 	},
 	gotoRow{ // S131
+		-1, // S'
+		-1, // SourceFile
+		-1, // RepeatTerminator
+		-1, // DeclList
+		-1, // Decl
+		-1, // Bar
+		-1, // NoteList
+		-1, // NoteObject
+		-1, // NoteGroup
+		-1, // NoteSymbol
+		-1, // PropertyList
+		-1, // Property
+		-1, // Command
+		-1, // Comment
+	},
+	gotoRow{ // S132
+		-1, // S'
+		-1, // SourceFile
+		-1, // RepeatTerminator
+		-1, // DeclList
+		-1, // Decl
+		-1, // Bar
+		-1, // NoteList
+		-1, // NoteObject
+		-1, // NoteGroup
+		-1, // NoteSymbol
+		-1, // PropertyList
+		-1, // Property
+		-1, // Command
+		-1, // Comment
+	},
+	gotoRow{ // S133
 		-1,  // S'
 		-1,  // SourceFile
 		-1,  // RepeatTerminator
-		140, // DeclList
-		60,  // Decl
-		61,  // Bar
-		63,  // NoteList
-		66,  // NoteObject
-		67,  // NoteSymbol
-		-1,  // PropertyList
-		-1,  // Property
-		62,  // Command
-		64,  // Comment
-	},
-	gotoRow{ // S132
-		-1,  // S'
-		-1,  // SourceFile
-		141, // RepeatTerminator
 		-1,  // DeclList
 		-1,  // Decl
 		-1,  // Bar
 		-1,  // NoteList
 		-1,  // NoteObject
+		-1,  // NoteGroup
 		-1,  // NoteSymbol
-		-1,  // PropertyList
-		-1,  // Property
+		142, // PropertyList
+		89,  // Property
 		-1,  // Command
 		-1,  // Comment
 	},
-	gotoRow{ // S133
-		-1, // S'
-		-1, // SourceFile
-		-1, // RepeatTerminator
-		-1, // DeclList
-		-1, // Decl
-		-1, // Bar
-		-1, // NoteList
-		-1, // NoteObject
-		-1, // NoteSymbol
-		-1, // PropertyList
-		-1, // Property
-		-1, // Command
-		-1, // Comment
-	},
 	gotoRow{ // S134
-		-1, // S'
-		-1, // SourceFile
-		-1, // RepeatTerminator
-		-1, // DeclList
-		-1, // Decl
-		-1, // Bar
-		-1, // NoteList
-		-1, // NoteObject
-		-1, // NoteSymbol
-		-1, // PropertyList
-		-1, // Property
-		-1, // Command
-		-1, // Comment
+		-1,  // S'
+		-1,  // SourceFile
+		-1,  // RepeatTerminator
+		143, // DeclList
+		62,  // Decl
+		63,  // Bar
+		65,  // NoteList
+		68,  // NoteObject
+		70,  // NoteGroup
+		69,  // NoteSymbol
+		-1,  // PropertyList
+		-1,  // Property
+		64,  // Command
+		66,  // Comment
 	},
 	gotoRow{ // S135
 		-1,  // S'
 		-1,  // SourceFile
-		-1,  // RepeatTerminator
+		144, // RepeatTerminator
 		-1,  // DeclList
 		-1,  // Decl
 		-1,  // Bar
 		-1,  // NoteList
 		-1,  // NoteObject
+		-1,  // NoteGroup
 		-1,  // NoteSymbol
-		143, // PropertyList
-		109, // Property
+		-1,  // PropertyList
+		-1,  // Property
 		-1,  // Command
 		-1,  // Comment
 	},
@@ -2059,6 +2195,7 @@ var gotoTab = gotoTable{
 		-1, // Bar
 		-1, // NoteList
 		-1, // NoteObject
+		-1, // NoteGroup
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
@@ -2074,6 +2211,7 @@ var gotoTab = gotoTable{
 		-1, // Bar
 		-1, // NoteList
 		-1, // NoteObject
+		-1, // NoteGroup
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
@@ -2081,19 +2219,20 @@ var gotoTab = gotoTable{
 		-1, // Comment
 	},
 	gotoRow{ // S138
-		-1, // S'
-		-1, // SourceFile
-		-1, // RepeatTerminator
-		-1, // DeclList
-		-1, // Decl
-		-1, // Bar
-		-1, // NoteList
-		-1, // NoteObject
-		-1, // NoteSymbol
-		-1, // PropertyList
-		-1, // Property
-		-1, // Command
-		-1, // Comment
+		-1,  // S'
+		-1,  // SourceFile
+		-1,  // RepeatTerminator
+		-1,  // DeclList
+		-1,  // Decl
+		-1,  // Bar
+		-1,  // NoteList
+		-1,  // NoteObject
+		-1,  // NoteGroup
+		-1,  // NoteSymbol
+		146, // PropertyList
+		112, // Property
+		-1,  // Command
+		-1,  // Comment
 	},
 	gotoRow{ // S139
 		-1, // S'
@@ -2104,6 +2243,7 @@ var gotoTab = gotoTable{
 		-1, // Bar
 		-1, // NoteList
 		-1, // NoteObject
+		-1, // NoteGroup
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
@@ -2119,6 +2259,7 @@ var gotoTab = gotoTable{
 		-1, // Bar
 		-1, // NoteList
 		-1, // NoteObject
+		-1, // NoteGroup
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
@@ -2134,6 +2275,7 @@ var gotoTab = gotoTable{
 		-1, // Bar
 		-1, // NoteList
 		-1, // NoteObject
+		-1, // NoteGroup
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
@@ -2149,6 +2291,7 @@ var gotoTab = gotoTable{
 		-1, // Bar
 		-1, // NoteList
 		-1, // NoteObject
+		-1, // NoteGroup
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property
@@ -2164,6 +2307,55 @@ var gotoTab = gotoTable{
 		-1, // Bar
 		-1, // NoteList
 		-1, // NoteObject
+		-1, // NoteGroup
+		-1, // NoteSymbol
+		-1, // PropertyList
+		-1, // Property
+		-1, // Command
+		-1, // Comment
+	},
+	gotoRow{ // S144
+		-1, // S'
+		-1, // SourceFile
+		-1, // RepeatTerminator
+		-1, // DeclList
+		-1, // Decl
+		-1, // Bar
+		-1, // NoteList
+		-1, // NoteObject
+		-1, // NoteGroup
+		-1, // NoteSymbol
+		-1, // PropertyList
+		-1, // Property
+		-1, // Command
+		-1, // Comment
+	},
+	gotoRow{ // S145
+		-1, // S'
+		-1, // SourceFile
+		-1, // RepeatTerminator
+		-1, // DeclList
+		-1, // Decl
+		-1, // Bar
+		-1, // NoteList
+		-1, // NoteObject
+		-1, // NoteGroup
+		-1, // NoteSymbol
+		-1, // PropertyList
+		-1, // Property
+		-1, // Command
+		-1, // Comment
+	},
+	gotoRow{ // S146
+		-1, // S'
+		-1, // SourceFile
+		-1, // RepeatTerminator
+		-1, // DeclList
+		-1, // Decl
+		-1, // Bar
+		-1, // NoteList
+		-1, // NoteObject
+		-1, // NoteGroup
 		-1, // NoteSymbol
 		-1, // PropertyList
 		-1, // Property

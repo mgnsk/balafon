@@ -61,12 +61,8 @@ func TestValidCommands(t *testing.T) {
 			res, err := parse(tc.input)
 			g.Expect(err).NotTo(HaveOccurred())
 
-			var s ast.NodeList
-			g.Expect(res).To(BeAssignableToTypeOf(ast.NodeList{}))
-			s = res.(ast.NodeList)
-
 			var buf bytes.Buffer
-			s.WriteTo(&buf)
+			res.WriteTo(&buf)
 			g.Expect(buf.String()).To(Equal(tc.input))
 		})
 	}

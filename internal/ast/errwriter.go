@@ -24,7 +24,18 @@ func (w *errWriter) Flush() error {
 	return w.w.Flush()
 }
 
-func (w *errWriter) Write(b []byte) int {
+func (w *errWriter) Write(b []byte) (int, error) {
+	if w.err != nil {
+		return 0, w.err
+	}
+	n, err := w.w.Write(b)
+	if err != nil {
+		w.err = err
+	}
+	return n, err
+}
+
+func (w *errWriter) WriteBytes(b []byte) int {
 	if w.err != nil {
 		return 0
 	}

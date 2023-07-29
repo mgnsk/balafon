@@ -53,7 +53,9 @@ func TestFmtBar(t *testing.T) {
 	g.Expect(err).NotTo(HaveOccurred())
 	g.Expect(string(res)).To(Equal(`:bar bar1
 	:timesig 4 4
-	c.d8e$8e8f8f#8
-	-16C16E$16G16c2B$8A8
+	c.d8[e$eff#]8
+	[-CE$G]16c2[B$A]8
 :end`))
+
+	// TODO: tabs between notes
 }

@@ -41,7 +41,6 @@ func NewCmdAssign(pos token.Pos, note rune, key int64) (CmdAssign, error) {
 
 // CmdTempo is a tempo command.
 type CmdTempo struct {
-	Pos token.Pos
 	BPM uint16
 }
 
@@ -61,20 +60,18 @@ func (c CmdTempo) WriteTo(w io.Writer) (int64, error) {
 }
 
 // NewCmdTempo creates a tempo command.
-func NewCmdTempo(pos token.Pos, bpm int64) (CmdTempo, error) {
+func NewCmdTempo(bpm int64) (CmdTempo, error) {
 	if err := validateRange(bpm, 1, math.MaxUint16); err != nil {
 		return CmdTempo{}, err
 	}
 
 	return CmdTempo{
-		Pos: pos,
 		BPM: uint16(bpm),
 	}, nil
 }
 
 // CmdTimeSig is a time signature change command.
 type CmdTimeSig struct {
-	Pos   token.Pos
 	Num   uint8
 	Denom uint8
 }
@@ -92,7 +89,7 @@ func (c CmdTimeSig) WriteTo(w io.Writer) (int64, error) {
 }
 
 // NewCmdTimeSig creates a time signature change command.
-func NewCmdTimeSig(pos token.Pos, num, denom int64) (CmdTimeSig, error) {
+func NewCmdTimeSig(num, denom int64) (CmdTimeSig, error) {
 	if err := validateRange(num, 1, constants.MaxBeatsPerBar); err != nil {
 		return CmdTimeSig{}, err
 	}
@@ -102,7 +99,6 @@ func NewCmdTimeSig(pos token.Pos, num, denom int64) (CmdTimeSig, error) {
 	}
 
 	return CmdTimeSig{
-		Pos:   pos,
 		Num:   uint8(num),
 		Denom: uint8(denom),
 	}, nil
@@ -110,7 +106,6 @@ func NewCmdTimeSig(pos token.Pos, num, denom int64) (CmdTimeSig, error) {
 
 // CmdChannel is a channel change command.
 type CmdChannel struct {
-	Pos     token.Pos
 	Channel uint8
 }
 
@@ -125,20 +120,18 @@ func (c CmdChannel) WriteTo(w io.Writer) (int64, error) {
 }
 
 // NewCmdChannel creates a channel change command.
-func NewCmdChannel(pos token.Pos, value int64) (CmdChannel, error) {
+func NewCmdChannel(value int64) (CmdChannel, error) {
 	if err := validateRange(value, 0, constants.MaxChannel); err != nil {
 		return CmdChannel{}, err
 	}
 
 	return CmdChannel{
-		Pos:     pos,
 		Channel: uint8(value),
 	}, nil
 }
 
 // CmdVelocity is a velocity change command.
 type CmdVelocity struct {
-	Pos      token.Pos
 	Velocity int
 }
 
@@ -153,20 +146,18 @@ func (c CmdVelocity) WriteTo(w io.Writer) (int64, error) {
 }
 
 // NewCmdVelocity creates a velocity change command.
-func NewCmdVelocity(pos token.Pos, value int64) (CmdVelocity, error) {
+func NewCmdVelocity(value int64) (CmdVelocity, error) {
 	if err := validateRange(value, 0, constants.MaxValue); err != nil {
 		return CmdVelocity{}, err
 	}
 
 	return CmdVelocity{
-		Pos:      pos,
 		Velocity: int(value),
 	}, nil
 }
 
 // CmdProgram is a program change command.
 type CmdProgram struct {
-	Pos     token.Pos
 	Program uint8
 }
 
@@ -181,20 +172,18 @@ func (c CmdProgram) WriteTo(w io.Writer) (int64, error) {
 }
 
 // NewCmdProgram creates a program change command.
-func NewCmdProgram(pos token.Pos, value int64) (CmdProgram, error) {
+func NewCmdProgram(value int64) (CmdProgram, error) {
 	if err := validateRange(value, 0, constants.MaxValue); err != nil {
 		return CmdProgram{}, err
 	}
 
 	return CmdProgram{
-		Pos:     pos,
 		Program: uint8(value),
 	}, nil
 }
 
 // CmdControl is a control change command.
 type CmdControl struct {
-	Pos       token.Pos
 	Control   uint8
 	Parameter uint8
 }
@@ -212,7 +201,7 @@ func (c CmdControl) WriteTo(w io.Writer) (int64, error) {
 }
 
 // NewCmdControl creates a control change command.
-func NewCmdControl(pos token.Pos, control, value int64) (CmdControl, error) {
+func NewCmdControl(control, value int64) (CmdControl, error) {
 	if err := validateRange(control, 0, constants.MaxValue); err != nil {
 		return CmdControl{}, err
 	}
@@ -222,7 +211,6 @@ func NewCmdControl(pos token.Pos, control, value int64) (CmdControl, error) {
 	}
 
 	return CmdControl{
-		Pos:       pos,
 		Control:   uint8(control),
 		Parameter: uint8(value),
 	}, nil

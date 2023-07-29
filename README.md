@@ -143,8 +143,8 @@ The available properties are
 - accent (`>`) +5 velocity
 - marcato (`^`) +10 velocity
 - ghost (`)`) -5 velocity
-- numeric note value (`1`, `2`, `4`, `8` and so on)
 - dot (`.`)
+- numeric note value (`1`, `2`, `4`, `8` and so on)
 - tuplet (`/3`) (only triplet `/3` or quintuplet `/5`)
 - let ring (`*`)
 
@@ -223,6 +223,26 @@ x8/3 x8/3 x8/3
 // Expands to
 f8 c8 g8 f#8 c#8 g#8
 ```
+
+### Additive properties
+
+When used on note groups, these properties are added to the notes' already existing properties:
+
+- sharp (`#`)
+- flat (`$`)
+- staccato (`` ` ``)
+- accent (`>`)
+- marcato (`^`)
+- ghost (`)`)
+- dot (`.`)
+
+### Unique properties
+
+When used on note groups, these properties override the notes' existing properties of the same type:
+
+- numeric note value (`1`, `2`, `4`, `8` and so on)
+- tuplet (`/3`) (only triplet `/3` or quintuplet `/5`)
+- let ring (`*`)
 
 ### Bars
 

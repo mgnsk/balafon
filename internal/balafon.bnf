@@ -1,3 +1,7 @@
+/*
+# vim: tabstop=4 shiftwidth=4 expandtab
+*/
+
 /* Lexical Part */
 
 terminator : ';' | '\n' ;
@@ -79,13 +83,17 @@ Bar
     ;
 
 NoteList
-    : NoteObject                                        << ast.NewNoteList($0.(ast.Node), nil), nil >>
-    | NoteObject NoteList                               << ast.NewNoteList($0.(ast.Node), $1.(ast.NoteList)), nil >>
+    : NoteObject                                        << ast.NewNodeList($0.(ast.Node)), nil >>
+    | NoteObject NoteList                               << ast.NewNodeList($0.(ast.Node), $1.(ast.NodeList)...), nil >>
     ;
 
 NoteObject
     : NoteSymbol PropertyList                           << ast.NewNote($T0.Pos, []rune(string($T0.Lit))[0], $1.(ast.PropertyList)), nil >>
-    | bracketBegin NoteList bracketEnd PropertyList     << ast.NewNoteListFromGroup($1.(ast.NoteList), $3.(ast.PropertyList)) >>
+    | NoteGroup
+    ;
+
+NoteGroup
+    : bracketBegin NoteList bracketEnd PropertyList     << ast.NewNoteGroup($1.(ast.NodeList), $3.(ast.PropertyList)) >>
     ;
 
 NoteSymbol
@@ -114,16 +122,16 @@ Property
 Command
     : cmdAssign symbol uint          << ast.NewCmdAssign($T0.Pos, []rune(string($T1.Lit))[0], ast.Must($T2.Int64Value())) >>
     | cmdPlay                        << ast.NewCmdPlay($T0.Pos, string($T0.Lit[len(":play "):])) >>
-    | cmdTempo uint                  << ast.NewCmdTempo($T0.Pos, ast.Must($T1.Int64Value())) >>
-    | cmdTimesig uint uint           << ast.NewCmdTimeSig($T0.Pos, ast.Must($T1.Int64Value()), ast.Must($T2.Int64Value())) >>
-    | cmdVelocity uint               << ast.NewCmdVelocity($T0.Pos, ast.Must($T1.Int64Value())) >>
-    | cmdChannel uint                << ast.NewCmdChannel($T0.Pos, ast.Must($T1.Int64Value())) >>
-    | cmdProgram uint                << ast.NewCmdProgram($T0.Pos, ast.Must($T1.Int64Value())) >>
-    | cmdControl uint uint           << ast.NewCmdControl($T0.Pos, ast.Must($T1.Int64Value()), ast.Must($T2.Int64Value())) >>
+    | cmdTempo uint                  << ast.NewCmdTempo(ast.Must($T1.Int64Value())) >>
+    | cmdTimesig uint uint           << ast.NewCmdTimeSig(ast.Must($T1.Int64Value()), ast.Must($T2.Int64Value())) >>
+    | cmdVelocity uint               << ast.NewCmdVelocity(ast.Must($T1.Int64Value())) >>
+    | cmdChannel uint                << ast.NewCmdChannel(ast.Must($T1.Int64Value())) >>
+    | cmdProgram uint                << ast.NewCmdProgram(ast.Must($T1.Int64Value())) >>
+    | cmdControl uint uint           << ast.NewCmdControl(ast.Must($T1.Int64Value()), ast.Must($T2.Int64Value())) >>
     | cmdStart                       << ast.CmdStart{}, nil >>
     | cmdStop                        << ast.CmdStop{}, nil >>
     ;
 
 Comment
-    : blockComment                   << ast.NewBlockComment($T0.Pos, string($T0.Lit)), nil >>
+    : blockComment                   << ast.NewBlockComment(string($T0.Lit)), nil >>
     ;

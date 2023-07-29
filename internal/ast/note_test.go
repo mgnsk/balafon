@@ -2,7 +2,6 @@ package ast_test
 
 import (
 	"bytes"
-	"io"
 	"testing"
 
 	"github.com/mgnsk/balafon/internal/ast"
@@ -39,27 +38,27 @@ func TestNoteList(t *testing.T) {
 		},
 		{
 			"[kk.]8", // Group properties apply to all notes in the group.
-			"k8k8.",
+			"[kk.]8",
 		},
 		{
 			"[k.].", // Group properties are appended.
-			"k..",
+			"[k.].",
 		},
 		{
 			"[k]",
-			"k",
+			"[k]",
 		},
 		{
 			"[k][k].",
-			"kk.",
+			"[k][k].",
 		},
 		{
 			"kk[kk]kk[kk]kk",
-			"kkkkkkkkkk",
+			"kk[kk]kk[kk]kk",
 		},
 		{
 			"[[k]]8",
-			"k8",
+			"[[k]]8",
 		},
 		{
 			"k8kk16kkkk16",
@@ -67,7 +66,7 @@ func TestNoteList(t *testing.T) {
 		},
 		{
 			"k8 [kk]16 [kkkk]32",
-			"k8k16k16k32k32k32k32",
+			"k8[kk]16[kkkk]32",
 		},
 		{
 			"-", // Pause.
@@ -83,11 +82,11 @@ func TestNoteList(t *testing.T) {
 		},
 		{
 			"[[[[[k]/3].]#]8]>>^^``", // Testing the ordering of properties.
-			"k#``>>^^8./3",
+			"[[[[[k]/3].]#]8]``>>^^",
 		},
 		{
 			"[[[[[k*]/3].]$].8]))", // Testing the ordering of properties.
-			"k$))8../3*",
+			"[[[[[k*]/3].]$]8.]))",
 		},
 	} {
 		t.Run(tc.input, func(t *testing.T) {
@@ -96,12 +95,8 @@ func TestNoteList(t *testing.T) {
 			res, err := parse(tc.input)
 			g.Expect(err).NotTo(HaveOccurred())
 
-			wt, ok := res.(io.WriterTo)
-			g.Expect(ok).To(BeTrue())
-			_ = wt
-
 			var buf bytes.Buffer
-			_, err = wt.WriteTo(&buf)
+			_, err = res.WriteTo(&buf)
 			g.Expect(err).NotTo(HaveOccurred())
 
 			g.Expect(buf.String()).To(Equal(tc.expected))
@@ -161,8 +156,9 @@ func TestNoteLengths(t *testing.T) {
 			res, err := parse(tc.input)
 			g.Expect(err).NotTo(HaveOccurred())
 
-			note := res.(ast.NodeList)[0].(ast.NoteList)[0]
-			g.Expect(note.Len()).To(Equal(tc.offAt))
+			note := res[0].(ast.NodeList)[0]
+			g.Expect(note).To(BeAssignableToTypeOf(&ast.Note{}))
+			g.Expect(note.(*ast.Note).Props.NoteLen()).To(Equal(tc.offAt))
 		})
 	}
 }

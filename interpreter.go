@@ -248,8 +248,13 @@ func (it *Interpreter) parseBar(declList ast.NodeList) (*Bar, error) {
 				Message: smf.Message(midi.Stop()),
 			})
 
-		case ast.NoteList:
-			if err := it.parseNoteList(bar, decl); err != nil {
+		case ast.NodeList:
+			if err := it.parseNoteList(bar, nil, decl); err != nil {
+				return nil, err
+			}
+
+		case ast.NoteGroup:
+			if err := it.parseNoteList(bar, decl.Props, decl.Nodes); err != nil {
 				return nil, err
 			}
 
@@ -270,15 +275,21 @@ func (it *Interpreter) parseBar(declList ast.NodeList) (*Bar, error) {
 }
 
 // parseNoteList parses a note list into messages with relative ticks.
-func (it *Interpreter) parseNoteList(bar *Bar, noteList ast.NoteList) error {
+func (it *Interpreter) parseNoteList(bar *Bar, properties ast.PropertyList, nodes ast.NodeList) error {
 	it.pos = 0
 
-	for _, note := range noteList {
-		noteLen := note.Len()
+	var firstNote *ast.Note
+
+	err := ast.WalkNotes(nodes, nil, func(note *ast.Note) error {
+		if firstNote == nil {
+			firstNote = note
+		}
+
+		noteLen := note.Props.NoteLen()
 
 		if note.IsPause() {
 			it.pos += noteLen
-			continue
+			return nil
 		}
 
 		key, ok := it.keymap.Get(it.channel, note.Name)
@@ -289,8 +300,8 @@ func (it *Interpreter) parseNoteList(bar *Bar, noteList ast.NoteList) error {
 			}
 		}
 
-		key += note.NumSharp()
-		key -= note.NumFlat()
+		key += note.Props.NumSharp()
+		key -= note.Props.NumFlat()
 		if key < 0 || key > constants.MaxValue {
 			return &EvalError{
 				Err: fmt.Errorf("note key must be in range [%d, %d], got: %d", 0, constants.MaxValue, key),
@@ -299,9 +310,9 @@ func (it *Interpreter) parseNoteList(bar *Bar, noteList ast.NoteList) error {
 		}
 
 		v := it.velocity
-		v += note.NumAccent() * 5
-		v += note.NumMarcato() * 10
-		v -= note.NumGhosts() * 5
+		v += note.Props.NumAccent() * 5
+		v += note.Props.NumMarcato() * 10
+		v -= note.Props.NumGhost() * 5
 		if v < 0 {
 			v = 0
 		} else if v > constants.MaxValue {
@@ -309,7 +320,7 @@ func (it *Interpreter) parseNoteList(bar *Bar, noteList ast.NoteList) error {
 		}
 
 		actualNoteLen := noteLen
-		if n := uint32(note.NumStaccato()); n > 0 {
+		if n := uint32(note.Props.NumStaccato()); n > 0 {
 			actualNoteLen = actualNoteLen / (2 * n)
 		}
 
@@ -319,7 +330,7 @@ func (it *Interpreter) parseNoteList(bar *Bar, noteList ast.NoteList) error {
 			Message:  smf.Message(midi.NoteOn(it.channel, uint8(key), uint8(v))),
 		})
 
-		if !note.IsLetRing() {
+		if !note.Props.IsLetRing() {
 			bar.Events = append(bar.Events, Event{
 				Pos:      it.pos + actualNoteLen,
 				Duration: 0,
@@ -328,12 +339,18 @@ func (it *Interpreter) parseNoteList(bar *Bar, noteList ast.NoteList) error {
 		}
 
 		it.pos += noteLen
+
+		return nil
+	})
+
+	if err != nil {
+		return err
 	}
 
 	if it.pos > bar.Cap() {
 		return &EvalError{
-			Err: fmt.Errorf("bar too long, timesig is %d/%d", it.timesig[0], it.timesig[1]),
-			Pos: noteList[0].Pos,
+			Err: fmt.Errorf("bar too long by %d ticks, timesig is %d/%d", it.pos-bar.Cap(), it.timesig[0], it.timesig[1]),
+			Pos: firstNote.Pos,
 		}
 	}
 
