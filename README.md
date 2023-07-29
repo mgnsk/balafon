@@ -67,6 +67,7 @@ Usage:
 
 Available Commands:
   completion  Generate the autocompletion script for the specified shell
+  convert     Convert a file to SMF2
   fmt         Format a file
   help        Help about any command
   lint        Lint a file

@@ -49,6 +49,7 @@ func main() {
 	root.AddCommand(createCmdPlay())
 	root.AddCommand(createCmdLint())
 	root.AddCommand(createCmdFmt())
+	root.AddCommand(createCmdConvert())
 
 	if err := root.Execute(); err != nil {
 		log.Fatal(err)
@@ -179,6 +180,37 @@ func createCmdFmt() *cobra.Command {
 	}
 
 	cmd.PersistentFlags().BoolVarP(&write, "write", "w", false, "write result to (source) file instead of stdout")
+
+	return cmd
+}
+
+func createCmdConvert() *cobra.Command {
+	var outputFile string
+
+	cmd := &cobra.Command{
+		Use:   "convert [file]",
+		Short: "Convert a file to SMF2",
+		Args:  cobra.ExactArgs(1),
+		RunE: func(c *cobra.Command, args []string) error {
+			if outputFile == "" {
+				outputFile = strings.TrimSuffix(args[0], ".bal") + ".mid"
+			}
+
+			b, err := os.ReadFile(args[0])
+			if err != nil {
+				return err
+			}
+
+			s, err := balafon.Convert(b)
+			if err != nil {
+				return err
+			}
+
+			return s.WriteFile(outputFile)
+		},
+	}
+
+	cmd.PersistentFlags().StringVarP(&outputFile, "output", "o", "", "output file")
 
 	return cmd
 }
