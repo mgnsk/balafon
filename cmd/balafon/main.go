@@ -150,38 +150,24 @@ func createCmdFmt() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "fmt [file]",
 		Short: "Format a file",
-		Args:  cobra.ExactArgs(1),
+		Args:  cobra.MaximumNArgs(1),
 		RunE: func(c *cobra.Command, args []string) error {
-			f, err := os.Open(args[0])
-			if err != nil {
-				return err
-			}
-			defer f.Close()
+			if write {
+				if err := cobra.ExactArgs(1)(c, args); err != nil {
+					return err
+				}
 
-			stat, err := f.Stat()
-			if err != nil {
-				return err
+				return balafon.FormatFile(args[0])
 			}
 
-			b, err := io.ReadAll(f)
+			b, err := io.ReadAll(os.Stdin)
 			if err != nil {
-				return err
-			}
-
-			if err := f.Close(); err != nil {
 				return err
 			}
 
 			result, err := balafon.Format(b)
 			if err != nil {
-				if _, e := io.WriteString(os.Stderr, err.Error()); e != nil {
-					return e
-				}
-				os.Exit(1)
-			}
-
-			if write {
-				return os.WriteFile(args[0], result, stat.Mode())
+				return err
 			}
 
 			if _, err := os.Stdout.Write(result); err != nil {

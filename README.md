@@ -67,6 +67,7 @@ Usage:
 
 Available Commands:
   completion  Generate the autocompletion script for the specified shell
+  fmt         Format a file
   help        Help about any command
   lint        Lint a file
   live        Load a file and continue in a live shell
