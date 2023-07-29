@@ -6,6 +6,8 @@ import (
 	"io"
 	"os"
 
+	"github.com/mgnsk/balafon/internal/ast"
+	"github.com/mgnsk/balafon/internal/parser/lexer"
 	"github.com/mgnsk/balafon/internal/parser/parser"
 )
 
@@ -72,35 +74,36 @@ func Format(input []byte) ([]byte, error) {
 
 			barBuffer.WriteTo(&output)
 			barBuffer.Reset()
-
-			_ = p
-			// TODO
-			// node, err := p.Parse(lexer.NewLexer(barBuffer.Bytes()))
-			// barBuffer.Reset()
-			// if err != nil {
-			// 	var perr *ParseError
-			// 	if errors.As(err, &perr) && perr.ErrorToken.Type == token.EOF {
-			// 		continue
-			// 	}
-			// 	return nil, err
-			// }
-
-			// nodeList, ok := node.(ast.NodeList)
-			// if !ok {
-			// 	panic(fmt.Sprintf("expected %T, got %T", ast.NodeList{}, node))
-			// }
-
-			// nodeList.WriteTo(&output)
 		} else if bytes.HasPrefix(line, []byte(":bar")) {
 			isBar = true
 			barBuffer.Write(line)
 			barBuffer.Write(lf)
 		} else if isBar {
 			barBuffer.WriteString("\t")
-			barBuffer.Write(line)
+			if bytes.HasPrefix(line, []byte(":")) {
+				// Parse the command line and print.
+				node, err := p.Parse(lexer.NewLexer(line))
+				if err != nil {
+					return nil, err
+				}
+				node.(ast.NodeList).WriteTo(&barBuffer)
+			} else {
+				// Print note list raw.
+				barBuffer.Write(line)
+			}
 			barBuffer.Write(lf)
 		} else {
-			output.Write(line)
+			if bytes.HasPrefix(line, []byte(":")) {
+				// Parse the command line and print.
+				node, err := p.Parse(lexer.NewLexer(line))
+				if err != nil {
+					return nil, err
+				}
+				node.(ast.NodeList).WriteTo(&output)
+			} else {
+				// Print note list raw.
+				output.Write(line)
+			}
 			output.Write(lf)
 		}
 	}

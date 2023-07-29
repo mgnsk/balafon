@@ -7,12 +7,11 @@ import (
 	. "github.com/onsi/gomega"
 )
 
-func TestFmtNewlines(t *testing.T) {
+func TestTrailingNewlineIsAdded(t *testing.T) {
 	g := NewWithT(t)
 
 	input := `:assign c 60
-:assign d 62
-`
+:assign d 62`
 
 	res, err := balafon.Format([]byte(input))
 	g.Expect(err).NotTo(HaveOccurred())
@@ -38,7 +37,7 @@ func TestFmtCollapseEmptyLines(t *testing.T) {
 `))
 }
 
-func TestFmtBar(t *testing.T) {
+func TestFmtBarIndent(t *testing.T) {
 	g := NewWithT(t)
 
 	input := `
@@ -64,4 +63,14 @@ func TestFmtBar(t *testing.T) {
 	[-CE$G]16 c2          [B$A]8
 :end
 `))
+}
+
+func TestFmtCommand(t *testing.T) {
+	g := NewWithT(t)
+
+	input := `:assign  c  60;`
+
+	res, err := balafon.Format([]byte(input))
+	g.Expect(err).NotTo(HaveOccurred())
+	g.Expect(string(res)).To(Equal(":assign c 60\n"))
 }
