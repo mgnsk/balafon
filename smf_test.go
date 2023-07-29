@@ -1,10 +1,10 @@
 package balafon_test
 
 import (
+	"bytes"
 	_ "embed"
 	"testing"
 
-	"github.com/davecgh/go-spew/spew"
 	"github.com/mgnsk/balafon"
 	. "github.com/onsi/gomega"
 )
@@ -12,18 +12,17 @@ import (
 //go:embed examples/bonham.bal
 var input []byte
 
+//go:embed testdata/bonham.mid
+var actualSMF []byte
+
 func TestSMFConvert(t *testing.T) {
 	g := NewWithT(t)
 
 	song, err := balafon.Convert(input)
 	g.Expect(err).NotTo(HaveOccurred())
 
-	spew.Dump(song)
+	var buf bytes.Buffer
+	song.WriteTo(&buf)
 
-	// g.Expect(it.Eval(input)).To(Succeed())
-
-	// bars := it.Flush()
-
-	// _ = bars
-	// _ = spew.Dump
+	g.Expect(buf.Bytes()).To(Equal(actualSMF))
 }

@@ -1,7 +1,8 @@
 /* A simplified Bonham half time shuffle */
 
 /* Percussion channel. */
-:channel 10
+/* TODO: off by one? channel 9 is percussion instead of 10. */
+:channel 9
 
 /* Kick drum. */
 :assign k 36

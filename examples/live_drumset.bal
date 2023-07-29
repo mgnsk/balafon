@@ -1,4 +1,4 @@
-:channel 10
+:channel 9
 
 /* Kick drum. */
 :assign a 36
