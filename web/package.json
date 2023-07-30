@@ -1,0 +1,25 @@
+{
+  "name": "balafon-web",
+  "version": "0.0.1",
+  "author": "Magnus Kokk",
+  "description": "Web interface for balafon",
+  "license": "MIT",
+  "dependencies": {
+    "normalize.css": "^8.0.1"
+  },
+  "devDependencies": {
+    "@chialab/esbuild-plugin-html": "^0.17.3",
+    "@chialab/esbuild-plugin-meta-url": "^0.17.7",
+    "@typescript-eslint/eslint-plugin": "^6.2.0",
+    "autoprefixer": "^10.4.14",
+    "esbuild": "^0.18.17",
+    "postcss": "^8.4.27",
+    "postcss-cli": "^10.1.0"
+  },
+  "scripts": {
+    "prebuild": "npx tsc --noEmit",
+    "build": "node build.mjs && GOARCH=wasm GOOS=js go build -o dist/balafon.wasm src/main.go",
+    "postbuild": "npx postcss public/*.css --no-map --use autoprefixer -d public && gzip -vk ./public/*.{css,html,js} && brotli -vk ./public/*.{css,html,js}",
+    "clean": "rm -rf public .cache"
+  }
+}
