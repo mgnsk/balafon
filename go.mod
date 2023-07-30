@@ -3,6 +3,8 @@ module github.com/mgnsk/balafon
 go 1.19
 
 require (
+	github.com/davecgh/go-spew v1.1.1
+	github.com/eliothedeman/mxl v0.0.0-20160926055315-b83d6af9e788
 	github.com/iancoleman/strcase v0.2.0
 	github.com/moznion/gowrtr v1.7.0
 	github.com/onsi/gomega v1.27.6
@@ -13,7 +15,6 @@ require (
 )
 
 require (
-	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/google/go-cmp v0.5.9 // indirect
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
 	github.com/kr/pretty v0.1.0 // indirect
