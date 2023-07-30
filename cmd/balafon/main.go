@@ -49,7 +49,7 @@ func main() {
 	root.AddCommand(createCmdPlay())
 	root.AddCommand(createCmdLint())
 	root.AddCommand(createCmdFmt())
-	root.AddCommand(createCmdConvert())
+	root.AddCommand(createCmdSMF())
 
 	if err := root.Execute(); err != nil {
 		log.Fatal(err)
@@ -184,11 +184,11 @@ func createCmdFmt() *cobra.Command {
 	return cmd
 }
 
-func createCmdConvert() *cobra.Command {
+func createCmdSMF() *cobra.Command {
 	var outputFile string
 
 	cmd := &cobra.Command{
-		Use:   "convert [file]",
+		Use:   "smf [file]",
 		Short: "Convert a file to SMF2",
 		Args:  cobra.ExactArgs(1),
 		RunE: func(c *cobra.Command, args []string) error {
@@ -201,7 +201,7 @@ func createCmdConvert() *cobra.Command {
 				return err
 			}
 
-			s, err := balafon.Convert(b)
+			s, err := balafon.ToSMF(b)
 			if err != nil {
 				return err
 			}

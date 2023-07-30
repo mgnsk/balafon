@@ -20,8 +20,8 @@ func (a *track) Add(ev TrackEvent) {
 	a.lastPos = ev.AbsTicks
 }
 
-// Convert a balafon script to SMF2.
-func Convert(input []byte) (*smf.SMF, error) {
+// ToSMF converts a balafon script to SMF2.
+func ToSMF(input []byte) (*smf.SMF, error) {
 	it := New()
 
 	if err := it.Eval(input); err != nil {

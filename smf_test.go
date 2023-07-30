@@ -18,7 +18,7 @@ var actualSMF []byte
 func TestSMFConvert(t *testing.T) {
 	g := NewWithT(t)
 
-	song, err := balafon.Convert(input)
+	song, err := balafon.ToSMF(input)
 	g.Expect(err).NotTo(HaveOccurred())
 
 	var buf bytes.Buffer
