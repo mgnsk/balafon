@@ -39,6 +39,10 @@ func ToSMF(input []byte) (*smf.SMF, error) {
 	tracks := map[uint8]*track{}
 
 	for _, ev := range events {
+		if ev.Message == nil {
+			continue
+		}
+
 		var ch uint8
 		if ev.Message.GetChannel(&ch) {
 			if tracks[ch] == nil {

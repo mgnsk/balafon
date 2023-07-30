@@ -343,43 +343,6 @@ func TestNoteLengths(t *testing.T) {
 	}
 }
 
-func TestZeroDurationBarCollapse(t *testing.T) {
-	g := NewWithT(t)
-
-	it := balafon.New()
-
-	err := it.EvalString(`
-:timesig 1 4
-
-:bar one
-	-
-:end
-
-:bar two
-	:program 1
-:end
-
-:bar three
-	-
-:end
-
-:play one
-:play two
--
-`)
-	g.Expect(err).NotTo(HaveOccurred())
-
-	bars := it.Flush()
-
-	g.Expect(bars).To(HaveLen(2))
-	g.Expect(bars[0].TimeSig).To(Equal([2]uint8{1, 4}))
-	g.Expect(bars[0].Events).To(HaveLen(0))
-
-	g.Expect(bars[1].TimeSig).To(Equal([2]uint8{1, 4}))
-	g.Expect(bars[1].Events).To(HaveLen(1))
-	g.Expect(bars[1].Events[0].Message).To(BeEquivalentTo(midi.ProgramChange(0, 1)))
-}
-
 func TestSilence(t *testing.T) {
 	t.Run("end of bar", func(t *testing.T) {
 		g := NewWithT(t)
@@ -409,6 +372,7 @@ c
 				Duration: 0,
 			},
 		))
+		// TODO: fill with rests?
 	})
 
 	t.Run("beginning of bar", func(t *testing.T) {
@@ -428,6 +392,9 @@ c
 		g.Expect(bars).To(HaveLen(1))
 		g.Expect(bars[0].Cap()).To(Equal(uint32(constants.TicksPerWhole)))
 		g.Expect(bars[0].Events).To(HaveExactElements(
+			balafon.Event{Pos: 0, Duration: 960},
+			balafon.Event{Pos: 960, Duration: 960},
+			balafon.Event{Pos: 1920, Duration: 960},
 			balafon.Event{
 				Message:  smf.Message(midi.NoteOn(0, 60, constants.DefaultVelocity)),
 				Pos:      uint32(3 * constants.TicksPerQuarter),
@@ -728,6 +695,7 @@ c
 				{Message: smf.MetaTempo(120)},
 				{Message: smf.MetaTempo(60)},
 				{Message: smf.MetaText("Tempo 60 4th rest == 1s.")},
+				{Duration: uint32(constants.TicksPerQuarter)}, // pause
 			},
 		},
 		&balafon.Bar{

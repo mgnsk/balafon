@@ -287,55 +287,59 @@ func (it *Interpreter) parseNoteList(bar *Bar, properties ast.PropertyList, node
 
 		noteLen := note.Props.NoteLen()
 
-		if note.IsPause() {
-			it.pos += noteLen
-			return nil
-		}
-
-		key, ok := it.keymap.Get(it.channel, note.Name)
-		if !ok {
-			return &EvalError{
-				Err: fmt.Errorf("note '%c' undefined", note.Name),
-				Pos: note.Pos,
-			}
-		}
-
-		key += note.Props.NumSharp()
-		key -= note.Props.NumFlat()
-		if key < 0 || key > constants.MaxValue {
-			return &EvalError{
-				Err: fmt.Errorf("note key must be in range [%d, %d], got: %d", 0, constants.MaxValue, key),
-				Pos: note.Pos,
-			}
-		}
-
-		v := it.velocity
-		v += note.Props.NumAccent() * 5
-		v += note.Props.NumMarcato() * 10
-		v -= note.Props.NumGhost() * 5
-		if v < 0 {
-			v = 0
-		} else if v > constants.MaxValue {
-			v = math.MaxUint8
-		}
-
 		actualNoteLen := noteLen
 		if n := uint32(note.Props.NumStaccato()); n > 0 {
 			actualNoteLen = actualNoteLen / (2 * n)
 		}
 
-		bar.Events = append(bar.Events, Event{
-			Pos:      it.pos,
-			Duration: actualNoteLen,
-			Message:  smf.Message(midi.NoteOn(it.channel, uint8(key), uint8(v))),
-		})
-
-		if !note.Props.IsLetRing() {
+		switch note.IsPause() {
+		case true:
 			bar.Events = append(bar.Events, Event{
-				Pos:      it.pos + actualNoteLen,
-				Duration: 0,
-				Message:  smf.Message(midi.NoteOff(it.channel, uint8(key))),
+				Pos:      it.pos,
+				Duration: actualNoteLen,
 			})
+
+		case false:
+			k, ok := it.keymap.Get(it.channel, note.Name)
+			if !ok {
+				return &EvalError{
+					Err: fmt.Errorf("note '%c' undefined", note.Name),
+					Pos: note.Pos,
+				}
+			}
+
+			k += note.Props.NumSharp()
+			k -= note.Props.NumFlat()
+			if k < 0 || k > constants.MaxValue {
+				return &EvalError{
+					Err: fmt.Errorf("note key must be in range [%d, %d], got: %d", 0, constants.MaxValue, k),
+					Pos: note.Pos,
+				}
+			}
+
+			v := it.velocity
+			v += note.Props.NumAccent() * 5
+			v += note.Props.NumMarcato() * 10
+			v -= note.Props.NumGhost() * 5
+			if v < 0 {
+				v = 0
+			} else if v > constants.MaxValue {
+				v = math.MaxUint8
+			}
+
+			bar.Events = append(bar.Events, Event{
+				Pos:      it.pos,
+				Duration: actualNoteLen,
+				Message:  smf.Message(midi.NoteOn(it.channel, uint8(k), uint8(v))),
+			})
+
+			if !note.Props.IsLetRing() {
+				bar.Events = append(bar.Events, Event{
+					Pos:      it.pos + actualNoteLen,
+					Duration: 0,
+					Message:  smf.Message(midi.NoteOff(it.channel, uint8(k))),
+				})
+			}
 		}
 
 		it.pos += noteLen
