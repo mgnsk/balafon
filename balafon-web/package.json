@@ -1,0 +1,31 @@
+{
+  "name": "balafon-web",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "setup": "cp \"$(go env GOROOT)/misc/wasm/wasm_exec.js\" src/wasm_exec.js",
+    "wasm": "GOARCH=wasm GOOS=js go build -o src/main.wasm src/main.go",
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "check": "svelte-check --tsconfig ./tsconfig.json"
+  },
+  "devDependencies": {
+    "@sveltejs/vite-plugin-svelte": "^2.4.2",
+    "@tsconfig/svelte": "^5.0.0",
+    "eslint": "^8.46.0",
+    "eslint-plugin-svelte": "^2.32.4",
+    "prettier": "^3.0.0",
+    "prettier-plugin-svelte": "^3.0.3",
+    "svelte": "^4.0.5",
+    "svelte-check": "^3.4.6",
+    "tslib": "^2.6.0",
+    "typescript": "^5.0.2",
+    "vite": "^4.4.5"
+  },
+  "dependencies": {
+    "normalize.css": "^8.0.1",
+    "svelte-codemirror-editor": "^1.1.0"
+  }
+}
