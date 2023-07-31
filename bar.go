@@ -31,13 +31,7 @@ func (b *Bar) String() string {
 }
 
 // IsZeroDuration returns whether the bar consists of only zero duration events.
-// TODO: is this needed now that rests are events?
 func (b *Bar) IsZeroDuration() bool {
-	if len(b.Events) == 0 {
-		// A bar that consists of rests only.
-		return false
-	}
-
 	for _, ev := range b.Events {
 		if ev.Duration > 0 {
 			return false
