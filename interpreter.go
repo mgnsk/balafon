@@ -213,6 +213,7 @@ func (it *Interpreter) parseBar(declList ast.NodeList) (*Bar, error) {
 
 		case ast.CmdTempo:
 			bar.Events = append(bar.Events, Event{
+				Track:   it.channel,
 				Message: smf.MetaTempo(decl.Value()),
 			})
 
@@ -228,21 +229,25 @@ func (it *Interpreter) parseBar(declList ast.NodeList) (*Bar, error) {
 
 		case ast.CmdProgram:
 			bar.Events = append(bar.Events, Event{
+				Track:   it.channel,
 				Message: smf.Message(midi.ProgramChange(it.channel, decl.Program)),
 			})
 
 		case ast.CmdControl:
 			bar.Events = append(bar.Events, Event{
+				Track:   it.channel,
 				Message: smf.Message(midi.ControlChange(it.channel, decl.Control, decl.Parameter)),
 			})
 
 		case ast.CmdStart:
 			bar.Events = append(bar.Events, Event{
+				Track:   it.channel,
 				Message: smf.Message(midi.Start()),
 			})
 
 		case ast.CmdStop:
 			bar.Events = append(bar.Events, Event{
+				Track:   it.channel,
 				Message: smf.Message(midi.Stop()),
 			})
 
@@ -258,6 +263,7 @@ func (it *Interpreter) parseBar(declList ast.NodeList) (*Bar, error) {
 
 		case ast.BlockComment:
 			bar.Events = append(bar.Events, Event{
+				Track:   it.channel,
 				Message: smf.MetaText(strings.TrimSpace(decl.Text)),
 			})
 
@@ -295,6 +301,7 @@ func (it *Interpreter) parseNoteList(bar *Bar, properties ast.PropertyList, node
 		switch note.IsPause() {
 		case true:
 			bar.Events = append(bar.Events, Event{
+				Track:    it.channel,
 				Note:     note,
 				Pos:      it.pos,
 				Duration: actualNoteLen,
@@ -329,6 +336,7 @@ func (it *Interpreter) parseNoteList(bar *Bar, properties ast.PropertyList, node
 			}
 
 			bar.Events = append(bar.Events, Event{
+				Track:    it.channel,
 				Note:     note,
 				Pos:      it.pos,
 				Duration: actualNoteLen,
@@ -336,7 +344,10 @@ func (it *Interpreter) parseNoteList(bar *Bar, properties ast.PropertyList, node
 			})
 
 			if !note.Props.IsLetRing() {
+				// TODO: for let ring notes do we need a virtual "note off"
+				// so that fill with rests could be implemented?
 				bar.Events = append(bar.Events, Event{
+					Track:    it.channel,
 					Pos:      it.pos + actualNoteLen,
 					Duration: 0,
 					Message:  smf.Message(midi.NoteOff(it.channel, uint8(k))),

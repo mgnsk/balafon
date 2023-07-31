@@ -14,12 +14,13 @@ type Event struct {
 	Message  smf.Message
 	Pos      uint32 // in relative ticks from beginning of bar
 	Duration uint32 // in ticks
+	Track    uint8  // equivalent to channel
 }
 
 func (e *Event) String() string {
 	var s strings.Builder
 
-	s.WriteString(fmt.Sprintf("pos: %d dur: %d", e.Pos, e.Duration))
+	s.WriteString(fmt.Sprintf("track: %d pos: %d dur: %d", e.Track, e.Pos, e.Duration))
 
 	if e.Note != nil {
 		s.WriteString(" note: ")

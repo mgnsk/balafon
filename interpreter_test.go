@@ -359,8 +359,8 @@ c
 		// TODO: fill with rests?
 		g.Expect(bars[0].String()).To(Equal(`timesig: 4/4
 events:
-pos: 0 dur: 960 note: c message: NoteOn channel: 0 key: 60 velocity: 100
-pos: 960 dur: 0 message: NoteOff channel: 0 key: 60
+track: 0 pos: 0 dur: 960 note: c message: NoteOn channel: 0 key: 60 velocity: 100
+track: 0 pos: 960 dur: 0 message: NoteOff channel: 0 key: 60
 `))
 	})
 
@@ -382,11 +382,11 @@ pos: 960 dur: 0 message: NoteOff channel: 0 key: 60
 		g.Expect(bars[0].Cap()).To(Equal(uint32(constants.TicksPerWhole)))
 		g.Expect(bars[0].String()).To(Equal(`timesig: 4/4
 events:
-pos: 0 dur: 960 note: - message: UnknownType
-pos: 960 dur: 960 note: - message: UnknownType
-pos: 1920 dur: 960 note: - message: UnknownType
-pos: 2880 dur: 960 note: c message: NoteOn channel: 0 key: 60 velocity: 100
-pos: 3840 dur: 0 message: NoteOff channel: 0 key: 60
+track: 0 pos: 0 dur: 960 note: - message: UnknownType
+track: 0 pos: 960 dur: 960 note: - message: UnknownType
+track: 0 pos: 1920 dur: 960 note: - message: UnknownType
+track: 0 pos: 2880 dur: 960 note: c message: NoteOn channel: 0 key: 60 velocity: 100
+track: 0 pos: 3840 dur: 0 message: NoteOff channel: 0 key: 60
 `))
 	})
 }
@@ -452,8 +452,8 @@ func TestFlushSkipsTooLongBar(t *testing.T) {
 
 	g.Expect(bars[0].String()).To(Equal(`timesig: 4/4
 events:
-pos: 0 dur: 960 note: c message: NoteOn channel: 0 key: 60 velocity: 100
-pos: 960 dur: 0 message: NoteOff channel: 0 key: 60
+track: 0 pos: 0 dur: 960 note: c message: NoteOn channel: 0 key: 60 velocity: 100
+track: 0 pos: 960 dur: 0 message: NoteOff channel: 0 key: 60
 `))
 }
 
@@ -558,32 +558,32 @@ c
 
 	g.Expect(bars[0].String()).To(Equal(`timesig: 2/8
 events:
-pos: 0 dur: 0 message: MetaTempo bpm: 60.00
-pos: 0 dur: 0 message: ProgramChange channel: 1 program: 1
-pos: 0 dur: 0 message: ControlChange channel: 1 controller: 1 value: 1
-pos: 0 dur: 0 message: MetaText text: "timesig 1 4"
-pos: 0 dur: 0 message: MetaTempo bpm: 120.00
-pos: 0 dur: 0 message: ProgramChange channel: 1 program: 2
-pos: 0 dur: 0 message: ControlChange channel: 1 controller: 1 value: 2
-pos: 0 dur: 0 message: MetaText text: "on channel 1:"
-pos: 0 dur: 960 note: c message: NoteOn channel: 1 key: 60 velocity: 25
-pos: 0 dur: 960 note: d message: NoteOn channel: 2 key: 62 velocity: 25
-pos: 960 dur: 0 message: NoteOff channel: 1 key: 60
-pos: 960 dur: 0 message: NoteOff channel: 2 key: 62
+track: 1 pos: 0 dur: 0 message: MetaTempo bpm: 60.00
+track: 1 pos: 0 dur: 0 message: ProgramChange channel: 1 program: 1
+track: 1 pos: 0 dur: 0 message: ControlChange channel: 1 controller: 1 value: 1
+track: 1 pos: 0 dur: 0 message: MetaText text: "timesig 1 4"
+track: 1 pos: 0 dur: 0 message: MetaTempo bpm: 120.00
+track: 1 pos: 0 dur: 0 message: ProgramChange channel: 1 program: 2
+track: 1 pos: 0 dur: 0 message: ControlChange channel: 1 controller: 1 value: 2
+track: 1 pos: 0 dur: 0 message: MetaText text: "on channel 1:"
+track: 1 pos: 0 dur: 960 note: c message: NoteOn channel: 1 key: 60 velocity: 25
+track: 2 pos: 0 dur: 960 note: d message: NoteOn channel: 2 key: 62 velocity: 25
+track: 1 pos: 960 dur: 0 message: NoteOff channel: 1 key: 60
+track: 2 pos: 960 dur: 0 message: NoteOff channel: 2 key: 62
 `))
 
 	g.Expect(bars[1].String()).To(Equal(`timesig: 1/4
 events:
-pos: 0 dur: 0 message: MetaTempo bpm: 120.00
-pos: 0 dur: 960 note: c message: NoteOn channel: 1 key: 60 velocity: 50
-pos: 960 dur: 0 message: NoteOff channel: 1 key: 60
+track: 1 pos: 0 dur: 0 message: MetaTempo bpm: 120.00
+track: 1 pos: 0 dur: 960 note: c message: NoteOn channel: 1 key: 60 velocity: 50
+track: 1 pos: 960 dur: 0 message: NoteOff channel: 1 key: 60
 `))
 
 	g.Expect(bars[2].String()).To(Equal(`timesig: 1/4
 events:
-pos: 0 dur: 0 message: MetaText text: "Channel is 1, timesig 1 4, velocity 50 but tempo is 120.\nOnly timesig, velocity and channel are local to bars.\ntempo, program, control, start, stop are global commands."
-pos: 0 dur: 960 note: c message: NoteOn channel: 1 key: 60 velocity: 50
-pos: 960 dur: 0 message: NoteOff channel: 1 key: 60
+track: 1 pos: 0 dur: 0 message: MetaText text: "Channel is 1, timesig 1 4, velocity 50 but tempo is 120.\nOnly timesig, velocity and channel are local to bars.\ntempo, program, control, start, stop are global commands."
+track: 1 pos: 0 dur: 960 note: c message: NoteOn channel: 1 key: 60 velocity: 50
+track: 1 pos: 960 dur: 0 message: NoteOff channel: 1 key: 60
 `))
 }
 
@@ -624,29 +624,29 @@ c
 
 	g.Expect(bars[0].String()).To(Equal(`timesig: 1/4
 events:
-pos: 0 dur: 0 message: MetaTempo bpm: 120.00
-pos: 0 dur: 0 message: MetaTempo bpm: 60.00
-pos: 0 dur: 0 message: MetaText text: "Tempo 60 4th rest == 1s."
-pos: 0 dur: 960 note: - message: UnknownType
+track: 1 pos: 0 dur: 0 message: MetaTempo bpm: 120.00
+track: 1 pos: 0 dur: 0 message: MetaTempo bpm: 60.00
+track: 1 pos: 0 dur: 0 message: MetaText text: "Tempo 60 4th rest == 1s."
+track: 1 pos: 0 dur: 960 note: - message: UnknownType
 `))
 
 	g.Expect(bars[1].String()).To(Equal(`timesig: 2/8
 events:
-pos: 0 dur: 0 message: MetaTempo bpm: 120.00
-pos: 0 dur: 960 note: c message: NoteOn channel: 1 key: 60 velocity: 100
-pos: 960 dur: 0 message: NoteOff channel: 1 key: 60
+track: 1 pos: 0 dur: 0 message: MetaTempo bpm: 120.00
+track: 1 pos: 0 dur: 960 note: c message: NoteOn channel: 1 key: 60 velocity: 100
+track: 1 pos: 960 dur: 0 message: NoteOff channel: 1 key: 60
 `))
 
 	g.Expect(bars[2].String()).To(Equal(`timesig: 2/8
 events:
-pos: 0 dur: 960 note: c message: NoteOn channel: 1 key: 60 velocity: 100
-pos: 960 dur: 0 message: NoteOff channel: 1 key: 60
+track: 1 pos: 0 dur: 960 note: c message: NoteOn channel: 1 key: 60 velocity: 100
+track: 1 pos: 960 dur: 0 message: NoteOff channel: 1 key: 60
 `))
 
 	g.Expect(bars[3].String()).To(Equal(`timesig: 1/4
 events:
-pos: 0 dur: 960 note: c message: NoteOn channel: 1 key: 60 velocity: 100
-pos: 960 dur: 0 message: NoteOff channel: 1 key: 60
+track: 1 pos: 0 dur: 960 note: c message: NoteOn channel: 1 key: 60 velocity: 100
+track: 1 pos: 960 dur: 0 message: NoteOff channel: 1 key: 60
 `))
 }
 
@@ -663,7 +663,7 @@ func TestLetRing(t *testing.T) {
 	// No note off event.
 	g.Expect(bars[0].String()).To(Equal(`timesig: 4/4
 events:
-pos: 0 dur: 960 note: k* message: NoteOn channel: 0 key: 36 velocity: 100
+track: 0 pos: 0 dur: 960 note: k* message: NoteOn channel: 0 key: 36 velocity: 100
 `))
 }
 
