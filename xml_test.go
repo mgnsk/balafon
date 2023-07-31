@@ -1,30 +1,22 @@
 package balafon_test
 
 import (
-	_ "embed"
+	"encoding/xml"
+	"fmt"
 	"testing"
 
-	"github.com/davecgh/go-spew/spew"
 	"github.com/mgnsk/balafon"
 	. "github.com/onsi/gomega"
 )
 
-//go:embed testdata/bonham.xml
-var actualXML []byte
-
 func TestXMLConvert(t *testing.T) {
 	g := NewWithT(t)
 
-	xml, err := balafon.ToXML(input)
+	doc, err := balafon.ToXML(input)
 	g.Expect(err).NotTo(HaveOccurred())
 
-	_ = xml
-	_ = spew.Dump
-	// spew.Dump(xml)
-	_ = actualXML
+	b, err := xml.MarshalIndent(doc, "", "    ")
+	g.Expect(err).NotTo(HaveOccurred())
 
-	// var buf bytes.Buffer
-	// song.WriteTo(&buf)
-
-	// g.Expect(buf.Bytes()).To(Equal(actualSMF))
+	fmt.Println(string(b))
 }
