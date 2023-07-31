@@ -1,12 +1,26 @@
 <script lang="ts">
   import { Balafon } from "./balafon";
   import CodeMirror from "svelte-codemirror-editor";
+  import { OpenSheetMusicDisplay } from "opensheetmusicdisplay";
+  import { tick } from "svelte";
 
   const balafon = new Balafon();
   let value = "";
   let error = "";
 
-  function onInput() {
+  let osmd: OpenSheetMusicDisplay = null;
+
+  async function onInput() {
+    if (osmd === null) {
+      //        await tick();
+      osmd = new OpenSheetMusicDisplay("osmdContainer");
+      osmd.setOptions({
+        backend: "svg",
+        drawTitle: true,
+        // drawingParameters: "compacttight" // don't display title, composer etc., smaller margins
+      });
+    }
+
     let input = value;
 
     if (input.trim().length === 0) {
@@ -17,9 +31,13 @@
     try {
       const result = balafon.convert(input);
       error = "";
-      console.log(result);
+
+      //    osmd.clear();
+      await osmd.load(result);
+      osmd.render();
     } catch (err) {
       error = err.message;
+      console.error(err);
     }
   }
 </script>
@@ -47,7 +65,9 @@
           System error: {err.message}.
         {/await}
       </div>
-      <div class="col">This is the right.</div>
+      <div class="col">
+        <div id="osmdContainer"></div>
+      </div>
     </div>
     <div class="row">
       <div class="error">{error}</div>
@@ -88,6 +108,11 @@
   }
 
   #editor {
+    flex-grow: 1;
+    height: 100%;
+  }
+
+  #osmdContainer {
     flex-grow: 1;
     height: 100%;
   }

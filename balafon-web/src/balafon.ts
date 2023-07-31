@@ -4,7 +4,7 @@ const go = new globalThis.Go();
 
 enum ResponseKind {
   Error = "error",
-  SMF = "smf",
+  XML = "xml",
 }
 
 type ErrorResponse = {
@@ -12,12 +12,12 @@ type ErrorResponse = {
   message: string;
 };
 
-type SMFResponse = {
-  kind: ResponseKind.SMF;
+type XMLResponse = {
+  kind: ResponseKind.XML;
   message: string;
 };
 
-type ConvertFunction = (input: string) => ErrorResponse | SMFResponse;
+type ConvertFunction = (input: string) => ErrorResponse | XMLResponse;
 
 export class Balafon {
   private fn: ConvertFunction;
@@ -41,7 +41,7 @@ export class Balafon {
       case ResponseKind.Error:
         throw new Error(result.message);
 
-      case ResponseKind.SMF:
+      case ResponseKind.XML:
         return result.message;
     }
   }

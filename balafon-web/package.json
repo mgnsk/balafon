@@ -26,6 +26,7 @@
   },
   "dependencies": {
     "normalize.css": "^8.0.1",
+    "opensheetmusicdisplay": "^1.8.2",
     "svelte-codemirror-editor": "^1.1.0"
   }
 }
