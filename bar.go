@@ -1,6 +1,8 @@
 package balafon
 
 import (
+	"fmt"
+	"strings"
 	"time"
 
 	"github.com/mgnsk/balafon/internal/constants"
@@ -12,7 +14,24 @@ type Bar struct {
 	TimeSig [2]uint8
 }
 
+func (b *Bar) String() string {
+	var s strings.Builder
+
+	s.WriteString(fmt.Sprintf("timesig: %d/%d", b.TimeSig[0], b.TimeSig[1]))
+
+	if len(b.Events) > 0 {
+		s.WriteString("\nevents:\n")
+		for _, ev := range b.Events {
+			s.WriteString(ev.String())
+			s.WriteString("\n")
+		}
+	}
+
+	return s.String()
+}
+
 // IsZeroDuration returns whether the bar consists of only zero duration events.
+// TODO: is this needed now that rests are events?
 func (b *Bar) IsZeroDuration() bool {
 	if len(b.Events) == 0 {
 		// A bar that consists of rests only.

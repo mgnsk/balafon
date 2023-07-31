@@ -321,23 +321,18 @@ func TestNoteLengths(t *testing.T) {
 
 			bars := it.Flush()
 			g.Expect(bars).To(HaveLen(1))
+
 			g.Expect(bars[0].TimeSig).To(Equal([2]uint8{4, 4}))
 			g.Expect(bars[0].Events).To(HaveExactElements(
-				balafon.Event{
-					Pos:      0,
-					Duration: 0,
-					Message:  smf.MetaTempo(float64(tempo)),
-				},
-				balafon.Event{
-					Pos:      0,
-					Duration: tc.offAt,
-					Message:  smf.Message(midi.NoteOn(0, 36, constants.DefaultVelocity)),
-				},
-				balafon.Event{
-					Pos:      tc.offAt,
-					Duration: 0,
-					Message:  smf.Message(midi.NoteOff(0, 36)),
-				},
+				HaveField("Message", smf.MetaTempo(float64(tempo))),
+				SatisfyAll(
+					HaveField("Pos", uint32(0)),
+					HaveField("Duration", uint32(tc.offAt)),
+				),
+				SatisfyAll(
+					HaveField("Pos", uint32(tc.offAt)),
+					HaveField("Duration", uint32(0)),
+				),
 			))
 		})
 	}
@@ -360,19 +355,13 @@ c
 
 		g.Expect(bars).To(HaveLen(1))
 		g.Expect(bars[0].Cap()).To(Equal(uint32(constants.TicksPerWhole)))
-		g.Expect(bars[0].Events).To(HaveExactElements(
-			balafon.Event{
-				Message:  smf.Message(midi.NoteOn(0, 60, constants.DefaultVelocity)),
-				Pos:      0,
-				Duration: uint32(constants.TicksPerQuarter),
-			},
-			balafon.Event{
-				Message:  smf.Message(midi.NoteOff(0, 60)),
-				Pos:      uint32(constants.TicksPerQuarter),
-				Duration: 0,
-			},
-		))
+
 		// TODO: fill with rests?
+		g.Expect(bars[0].String()).To(Equal(`timesig: 4/4
+events:
+pos: 0 dur: 960 note: c message: NoteOn channel: 0 key: 60 velocity: 100
+pos: 960 dur: 0 message: NoteOff channel: 0 key: 60
+`))
 	})
 
 	t.Run("beginning of bar", func(t *testing.T) {
@@ -391,21 +380,14 @@ c
 
 		g.Expect(bars).To(HaveLen(1))
 		g.Expect(bars[0].Cap()).To(Equal(uint32(constants.TicksPerWhole)))
-		g.Expect(bars[0].Events).To(HaveExactElements(
-			balafon.Event{Pos: 0, Duration: 960},
-			balafon.Event{Pos: 960, Duration: 960},
-			balafon.Event{Pos: 1920, Duration: 960},
-			balafon.Event{
-				Message:  smf.Message(midi.NoteOn(0, 60, constants.DefaultVelocity)),
-				Pos:      uint32(3 * constants.TicksPerQuarter),
-				Duration: uint32(constants.TicksPerQuarter),
-			},
-			balafon.Event{
-				Message:  smf.Message(midi.NoteOff(0, 60)),
-				Pos:      uint32(constants.TicksPerWhole),
-				Duration: 0,
-			},
-		))
+		g.Expect(bars[0].String()).To(Equal(`timesig: 4/4
+events:
+pos: 0 dur: 960 note: - message: UnknownType
+pos: 960 dur: 960 note: - message: UnknownType
+pos: 1920 dur: 960 note: - message: UnknownType
+pos: 2880 dur: 960 note: c message: NoteOn channel: 0 key: 60 velocity: 100
+pos: 3840 dur: 0 message: NoteOff channel: 0 key: 60
+`))
 	})
 }
 
@@ -466,22 +448,13 @@ func TestFlushSkipsTooLongBar(t *testing.T) {
 	g.Expect(it.EvalString("c")).To(Succeed())
 
 	bars := it.Flush()
+	g.Expect(bars).To(HaveLen(1))
 
-	g.Expect(bars).To(HaveExactElements(&balafon.Bar{
-		TimeSig: [2]uint8{4, 4},
-		Events: []balafon.Event{
-			{
-				Message:  smf.Message(midi.NoteOn(0, 60, constants.DefaultVelocity)),
-				Pos:      0,
-				Duration: uint32(constants.TicksPerQuarter),
-			},
-			{
-				Message:  smf.Message(midi.NoteOff(0, 60)),
-				Pos:      uint32(constants.TicksPerQuarter),
-				Duration: 0,
-			},
-		},
-	}))
+	g.Expect(bars[0].String()).To(Equal(`timesig: 4/4
+events:
+pos: 0 dur: 960 note: c message: NoteOn channel: 0 key: 60 velocity: 100
+pos: 960 dur: 0 message: NoteOff channel: 0 key: 60
+`))
 }
 
 func TestMultiTrackNotesAreSortedPairs(t *testing.T) {
@@ -581,78 +554,37 @@ c
 	g.Expect(err).NotTo(HaveOccurred())
 
 	bars := it.Flush()
+	g.Expect(bars).To(HaveLen(3))
 
-	g.Expect(bars).To(HaveExactElements(
-		&balafon.Bar{
-			TimeSig: [2]uint8{2, 8},
-			Events: []balafon.Event{
-				{Message: smf.MetaTempo(60)},
-				{Message: smf.Message(midi.ProgramChange(1, 1))},
-				{Message: smf.Message(midi.ControlChange(1, 1, 1))},
-				{Message: smf.MetaText("timesig 1 4")},
-				{Message: smf.MetaTempo(120)},
-				{Message: smf.Message(midi.ProgramChange(1, 2))},
-				{Message: smf.Message(midi.ControlChange(1, 1, 2))},
-				{Message: smf.MetaText("on channel 1:")},
-				{
-					Pos:      0,
-					Duration: uint32(constants.TicksPerQuarter),
-					Message:  smf.Message(midi.NoteOn(1, 60, 25)),
-				},
-				{
-					Pos:      0,
-					Duration: uint32(constants.TicksPerQuarter),
-					Message:  smf.Message(midi.NoteOn(2, 62, 25)),
-				},
-				{
-					Pos:      uint32(constants.TicksPerQuarter),
-					Duration: 0,
-					Message:  smf.Message(midi.NoteOff(1, 60)),
-				},
-				{
-					Pos:      uint32(constants.TicksPerQuarter),
-					Duration: 0,
-					Message:  smf.Message(midi.NoteOff(2, 62)),
-				},
-			},
-		},
-		&balafon.Bar{
-			TimeSig: [2]uint8{1, 4},
-			Events: []balafon.Event{
-				{
-					Message: smf.MetaTempo(120),
-				},
-				{
-					Pos:      0,
-					Duration: uint32(constants.TicksPerQuarter),
-					Message:  smf.Message(midi.NoteOn(1, 60, 50)),
-				},
-				{
-					Pos:      uint32(constants.TicksPerQuarter),
-					Duration: 0,
-					Message:  smf.Message(midi.NoteOff(1, 60)),
-				},
-			},
-		},
-		&balafon.Bar{
-			TimeSig: [2]uint8{1, 4},
-			Events: []balafon.Event{
-				{Message: smf.MetaText(`Channel is 1, timesig 1 4, velocity 50 but tempo is 120.
-Only timesig, velocity and channel are local to bars.
-tempo, program, control, start, stop are global commands.`)},
-				{
-					Pos:      0,
-					Duration: uint32(constants.TicksPerQuarter),
-					Message:  smf.Message(midi.NoteOn(1, 60, 50)),
-				},
-				{
-					Pos:      uint32(constants.TicksPerQuarter),
-					Duration: 0,
-					Message:  smf.Message(midi.NoteOff(1, 60)),
-				},
-			},
-		},
-	))
+	g.Expect(bars[0].String()).To(Equal(`timesig: 2/8
+events:
+pos: 0 dur: 0 message: MetaTempo bpm: 60.00
+pos: 0 dur: 0 message: ProgramChange channel: 1 program: 1
+pos: 0 dur: 0 message: ControlChange channel: 1 controller: 1 value: 1
+pos: 0 dur: 0 message: MetaText text: "timesig 1 4"
+pos: 0 dur: 0 message: MetaTempo bpm: 120.00
+pos: 0 dur: 0 message: ProgramChange channel: 1 program: 2
+pos: 0 dur: 0 message: ControlChange channel: 1 controller: 1 value: 2
+pos: 0 dur: 0 message: MetaText text: "on channel 1:"
+pos: 0 dur: 960 note: c message: NoteOn channel: 1 key: 60 velocity: 25
+pos: 0 dur: 960 note: d message: NoteOn channel: 2 key: 62 velocity: 25
+pos: 960 dur: 0 message: NoteOff channel: 1 key: 60
+pos: 960 dur: 0 message: NoteOff channel: 2 key: 62
+`))
+
+	g.Expect(bars[1].String()).To(Equal(`timesig: 1/4
+events:
+pos: 0 dur: 0 message: MetaTempo bpm: 120.00
+pos: 0 dur: 960 note: c message: NoteOn channel: 1 key: 60 velocity: 50
+pos: 960 dur: 0 message: NoteOff channel: 1 key: 60
+`))
+
+	g.Expect(bars[2].String()).To(Equal(`timesig: 1/4
+events:
+pos: 0 dur: 0 message: MetaText text: "Channel is 1, timesig 1 4, velocity 50 but tempo is 120.\nOnly timesig, velocity and channel are local to bars.\ntempo, program, control, start, stop are global commands."
+pos: 0 dur: 960 note: c message: NoteOn channel: 1 key: 60 velocity: 50
+pos: 960 dur: 0 message: NoteOff channel: 1 key: 60
+`))
 }
 
 func TestTempoIsGlobal(t *testing.T) {
@@ -688,63 +620,34 @@ c
 
 	bars := it.Flush()
 
-	g.Expect(bars).To(HaveExactElements(
-		&balafon.Bar{
-			TimeSig: [2]uint8{1, 4},
-			Events: []balafon.Event{
-				{Message: smf.MetaTempo(120)},
-				{Message: smf.MetaTempo(60)},
-				{Message: smf.MetaText("Tempo 60 4th rest == 1s.")},
-				{Duration: uint32(constants.TicksPerQuarter)}, // pause
-			},
-		},
-		&balafon.Bar{
-			TimeSig: [2]uint8{2, 8},
-			Events: []balafon.Event{
-				{Message: smf.MetaTempo(120)},
-				{
-					Pos:      0,
-					Duration: uint32(constants.TicksPerQuarter),
-					Message:  smf.Message(midi.NoteOn(1, 60, constants.DefaultVelocity)),
-				},
-				{
-					Pos:      uint32(constants.TicksPerQuarter),
-					Duration: 0,
-					Message:  smf.Message(midi.NoteOff(1, 60)),
-				},
-			},
-		},
-		&balafon.Bar{
-			TimeSig: [2]uint8{2, 8},
-			Events: []balafon.Event{
-				{
-					Pos:      0,
-					Duration: uint32(constants.TicksPerQuarter),
-					Message:  smf.Message(midi.NoteOn(1, 60, constants.DefaultVelocity)),
-				},
-				{
-					Pos:      uint32(constants.TicksPerQuarter),
-					Duration: 0,
-					Message:  smf.Message(midi.NoteOff(1, 60)),
-				},
-			},
-		},
-		&balafon.Bar{
-			TimeSig: [2]uint8{1, 4},
-			Events: []balafon.Event{
-				{
-					Pos:      0,
-					Duration: uint32(constants.TicksPerQuarter),
-					Message:  smf.Message(midi.NoteOn(1, 60, constants.DefaultVelocity)),
-				},
-				{
-					Pos:      uint32(constants.TicksPerQuarter),
-					Duration: 0,
-					Message:  smf.Message(midi.NoteOff(1, 60)),
-				},
-			},
-		},
-	))
+	g.Expect(bars).To(HaveLen(4))
+
+	g.Expect(bars[0].String()).To(Equal(`timesig: 1/4
+events:
+pos: 0 dur: 0 message: MetaTempo bpm: 120.00
+pos: 0 dur: 0 message: MetaTempo bpm: 60.00
+pos: 0 dur: 0 message: MetaText text: "Tempo 60 4th rest == 1s."
+pos: 0 dur: 960 note: - message: UnknownType
+`))
+
+	g.Expect(bars[1].String()).To(Equal(`timesig: 2/8
+events:
+pos: 0 dur: 0 message: MetaTempo bpm: 120.00
+pos: 0 dur: 960 note: c message: NoteOn channel: 1 key: 60 velocity: 100
+pos: 960 dur: 0 message: NoteOff channel: 1 key: 60
+`))
+
+	g.Expect(bars[2].String()).To(Equal(`timesig: 2/8
+events:
+pos: 0 dur: 960 note: c message: NoteOn channel: 1 key: 60 velocity: 100
+pos: 960 dur: 0 message: NoteOff channel: 1 key: 60
+`))
+
+	g.Expect(bars[3].String()).To(Equal(`timesig: 1/4
+events:
+pos: 0 dur: 960 note: c message: NoteOn channel: 1 key: 60 velocity: 100
+pos: 960 dur: 0 message: NoteOff channel: 1 key: 60
+`))
 }
 
 func TestLetRing(t *testing.T) {
@@ -757,14 +660,11 @@ func TestLetRing(t *testing.T) {
 
 	bars := it.Flush()
 	g.Expect(bars).To(HaveLen(1))
-	g.Expect(bars[0].Events).To(HaveExactElements(
-		balafon.Event{
-			Message:  smf.Message(midi.NoteOn(0, 36, constants.DefaultVelocity)),
-			Pos:      0,
-			Duration: uint32(constants.TicksPerQuarter),
-		},
-		// No note off event.
-	))
+	// No note off event.
+	g.Expect(bars[0].String()).To(Equal(`timesig: 4/4
+events:
+pos: 0 dur: 960 note: k* message: NoteOn channel: 0 key: 36 velocity: 100
+`))
 }
 
 func TestCommandsForbiddenInBar(t *testing.T) {

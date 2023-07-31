@@ -295,6 +295,7 @@ func (it *Interpreter) parseNoteList(bar *Bar, properties ast.PropertyList, node
 		switch note.IsPause() {
 		case true:
 			bar.Events = append(bar.Events, Event{
+				Note:     note,
 				Pos:      it.pos,
 				Duration: actualNoteLen,
 			})
@@ -328,6 +329,7 @@ func (it *Interpreter) parseNoteList(bar *Bar, properties ast.PropertyList, node
 			}
 
 			bar.Events = append(bar.Events, Event{
+				Note:     note,
 				Pos:      it.pos,
 				Duration: actualNoteLen,
 				Message:  smf.Message(midi.NoteOn(it.channel, uint8(k), uint8(v))),
