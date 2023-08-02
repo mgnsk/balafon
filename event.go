@@ -8,6 +8,13 @@ import (
 	"gitlab.com/gomidi/midi/v2/smf"
 )
 
+// Channel is a MIDI channel.
+type Channel uint8
+
+func (c Channel) Uint8() uint8 {
+	return uint8(c)
+}
+
 // Event is a MIDI event.
 type Event struct {
 	Note     *ast.Note // only for note on messages and rests
@@ -15,14 +22,14 @@ type Event struct {
 	IsFlat   bool   // if the midi note was lowered due to key sig
 	Pos      uint32 // in relative ticks from beginning of bar
 	Duration uint32 // in ticks
-	Track    uint8  // equivalent to MIDI channel + 1, (TODO)
+	Channel  Channel
 	Voice    uint8
 }
 
 func (e *Event) String() string {
 	var s strings.Builder
 
-	s.WriteString(fmt.Sprintf("track: %d pos: %d dur: %d", e.Track, e.Pos, e.Duration))
+	s.WriteString(fmt.Sprintf("track: %d pos: %d dur: %d", e.Channel, e.Pos, e.Duration))
 
 	if e.Voice > 0 {
 		s.WriteString(fmt.Sprintf(" voice: %d", e.Voice))

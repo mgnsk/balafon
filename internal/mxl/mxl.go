@@ -11,10 +11,12 @@ type Score struct {
 	Parts          []Part          `xml:"part,omitempty"`
 }
 
+// PartList specifies part-list.
 type PartList struct {
 	Parts []ScorePart `xml:"score-part,omitempty"`
 }
 
+// ScorePart is part of part-list.
 type ScorePart struct {
 	ID   string `xml:"id,attr"`
 	Name string `xml:"part-name"`
@@ -37,23 +39,23 @@ type Encoding struct {
 
 // Part represents a part in a piece of music
 type Part struct {
-	Id       string    `xml:"id,attr"`
+	ID       string    `xml:"id,attr"`
 	Measures []Measure `xml:"measure"`
 }
 
 // Measure represents a measure in a piece of music
 type Measure struct {
-	Number int           `xml:"number,attr"`
 	Atters Attributes    `xml:"attributes"`
 	Notes  []interface{} // Note or Backup
+	Number int           `xml:"number,attr"`
 }
 
 // Attributes represents
 type Attributes struct {
 	Key       *Key  `xml:"key,omitempty"`
 	Time      *Time `xml:"time,omitempty"`
-	Divisions int   `xml:"divisions,omitempty"`
 	Clef      *Clef `xml:"clef,omitempty"`
+	Divisions int   `xml:"divisions,omitempty"`
 }
 
 // Clef represents a clef change
@@ -64,8 +66,8 @@ type Clef struct {
 
 // Key represents a key signature change
 type Key struct {
-	Fifths int    `xml:"fifths"`
 	Mode   string `xml:"mode"`
+	Fifths int    `xml:"fifths"`
 }
 
 // Time represents a time signature change
@@ -78,12 +80,12 @@ type Time struct {
 type Note struct {
 	XMLName  xml.Name  `xml:"note"`
 	Pitch    *Pitch    `xml:"pitch,omitempty"`
-	Duration int       `xml:"duration"`
-	Voice    int       `xml:"voice,omitempty"`
-	Type     string    `xml:"type,omitempty"`
 	Rest     *xml.Name `xml:"rest,omitempty"`
 	Chord    *xml.Name `xml:"chord,omitempty"`
 	Tie      *Tie      `xml:"tie,omitempty"`
+	Type     string    `xml:"type,omitempty"`
+	Duration int       `xml:"duration"`
+	Voice    int       `xml:"voice,omitempty"`
 }
 
 // Backup represents the backup element.
@@ -94,9 +96,9 @@ type Backup struct {
 
 // Pitch represents the pitch of a note
 type Pitch struct {
-	Accidental int8   `xml:"alter"`
 	Step       string `xml:"step"`
 	Octave     int    `xml:"octave"`
+	Accidental int8   `xml:"alter"`
 }
 
 // Tie represents whether or not a note is tied.

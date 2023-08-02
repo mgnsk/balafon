@@ -20,7 +20,7 @@ type Interpreter struct {
 	barBuffer []*Bar
 
 	velocity int
-	channel  uint8
+	channel  Channel
 	voice    uint8
 
 	pos     uint32
@@ -28,7 +28,7 @@ type Interpreter struct {
 
 	keymap *keyMap
 	bars   map[string]*Bar
-	scales map[uint8]string
+	scales map[Channel]string
 }
 
 // EvalFile evaluates a file.
@@ -217,7 +217,7 @@ func (it *Interpreter) parseBar(declList ast.NodeList) (*Bar, error) {
 
 		case ast.CmdTempo:
 			bar.Events = append(bar.Events, Event{
-				Track:   it.channel,
+				Channel: it.channel,
 				Message: smf.MetaTempo(decl.Value()),
 			})
 
@@ -226,7 +226,7 @@ func (it *Interpreter) parseBar(declList ast.NodeList) (*Bar, error) {
 			makeMessage, _, _ := getScale(decl.Key)
 
 			bar.Events = append(bar.Events, Event{
-				Track:   it.channel,
+				Channel: it.channel,
 				Message: makeMessage(),
 			})
 
@@ -243,32 +243,32 @@ func (it *Interpreter) parseBar(declList ast.NodeList) (*Bar, error) {
 			it.velocity = decl.Velocity
 
 		case ast.CmdChannel:
-			it.channel = decl.Channel
+			it.channel = Channel(decl.Channel)
 
 		case ast.CmdVoice:
 			it.voice = decl.Voice
 
 		case ast.CmdProgram:
 			bar.Events = append(bar.Events, Event{
-				Track:   it.channel,
-				Message: smf.Message(midi.ProgramChange(it.channel, decl.Program)),
+				Channel: it.channel,
+				Message: smf.Message(midi.ProgramChange(it.channel.Uint8(), decl.Program)),
 			})
 
 		case ast.CmdControl:
 			bar.Events = append(bar.Events, Event{
-				Track:   it.channel,
-				Message: smf.Message(midi.ControlChange(it.channel, decl.Control, decl.Parameter)),
+				Channel: it.channel,
+				Message: smf.Message(midi.ControlChange(it.channel.Uint8(), decl.Control, decl.Parameter)),
 			})
 
 		case ast.CmdStart:
 			bar.Events = append(bar.Events, Event{
-				Track:   it.channel,
+				Channel: it.channel,
 				Message: smf.Message(midi.Start()),
 			})
 
 		case ast.CmdStop:
 			bar.Events = append(bar.Events, Event{
-				Track:   it.channel,
+				Channel: it.channel,
 				Message: smf.Message(midi.Stop()),
 			})
 
@@ -284,7 +284,7 @@ func (it *Interpreter) parseBar(declList ast.NodeList) (*Bar, error) {
 
 		case ast.BlockComment:
 			bar.Events = append(bar.Events, Event{
-				Track:   it.channel,
+				Channel: it.channel,
 				Message: smf.MetaText(strings.TrimSpace(decl.Text)),
 			})
 
@@ -322,7 +322,7 @@ func (it *Interpreter) parseNoteList(bar *Bar, properties ast.PropertyList, node
 		switch note.IsPause() {
 		case true:
 			bar.Events = append(bar.Events, Event{
-				Track:    it.channel,
+				Channel:  it.channel,
 				Voice:    it.voice,
 				Note:     note,
 				Pos:      it.pos,
@@ -359,23 +359,23 @@ func (it *Interpreter) parseNoteList(bar *Bar, properties ast.PropertyList, node
 			}
 
 			bar.Events = append(bar.Events, Event{
-				Track:    it.channel,
+				Channel:  it.channel,
 				Voice:    it.voice,
 				Note:     note,
 				Pos:      it.pos,
 				Duration: actualNoteLen,
 				IsFlat:   isFlat,
-				Message:  smf.Message(midi.NoteOn(it.channel, uint8(key), uint8(v))),
+				Message:  smf.Message(midi.NoteOn(it.channel.Uint8(), uint8(key), uint8(v))),
 			})
 
 			if !note.Props.IsLetRing() {
 				// TODO: for let ring notes do we need a virtual "note off"
 				// so that fill with rests could be implemented?
 				bar.Events = append(bar.Events, Event{
-					Track:    it.channel,
+					Channel:  it.channel,
 					Pos:      it.pos + actualNoteLen,
 					Duration: 0,
-					Message:  smf.Message(midi.NoteOff(it.channel, uint8(key))),
+					Message:  smf.Message(midi.NoteOff(it.channel.Uint8(), uint8(key))),
 				})
 			}
 		}
@@ -404,6 +404,7 @@ func (it *Interpreter) modifyKey(key int, note *ast.Note, scale string) (newKey 
 
 	if strings.HasSuffix(step, "#") && (note.Props.IsSharp() || note.Props.IsFlat()) {
 		old, _ := it.keymap.Get(it.channel, note.Name)
+		// TODO: add tests
 		return 0, false, &EvalError{
 			Err: fmt.Errorf("cannot use sharp/flat on note '%c' assigned to key '%d' on channel '%d'", note.Name, old, it.channel),
 			Pos: note.Pos,
@@ -473,6 +474,6 @@ func New() *Interpreter {
 		timesig:  [2]uint8{4, 4},
 		keymap:   newKeyMap(),
 		bars:     map[string]*Bar{},
-		scales:   map[uint8]string{},
+		scales:   map[Channel]string{},
 	}
 }

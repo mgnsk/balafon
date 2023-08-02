@@ -2,8 +2,8 @@ package balafon
 
 import (
 	"encoding/xml"
+	"fmt"
 	"io"
-	"strconv"
 	"strings"
 
 	"github.com/mgnsk/balafon/internal/constants"
@@ -11,11 +11,6 @@ import (
 	"gitlab.com/gomidi/midi/v2/smf"
 	"golang.org/x/exp/slices"
 )
-
-type xmlTrack struct {
-	channel int
-	bars    []Bar
-}
 
 // ToXML converts a balafon script to MusicXML.
 func ToXML(w io.Writer, input []byte) error {
@@ -27,31 +22,37 @@ func ToXML(w io.Writer, input []byte) error {
 
 	bars := it.Flush()
 
-	channels := map[uint8]*xmlTrack{}
-	for _, bar := range bars {
-		for _, ev := range bar.Events {
-			t, ok := channels[ev.Track]
-			if !ok {
-				t = &xmlTrack{}
-				channels[ev.Track] = t
+	var channels []Channel
+	{
+		seen := map[Channel]struct{}{}
+		for _, bar := range bars {
+			for _, ev := range bar.Events {
+				seen[ev.Channel] = struct{}{}
 			}
 		}
-	}
 
-	parts := map[uint8]*mxl.Part{}
-
-	for i, bar := range bars {
-		events := map[uint8][]Event{}
-
-		for _, ev := range bar.Events {
-			events[ev.Track] = append(events[ev.Track], ev)
+		for ch := range seen {
+			channels = append(channels, ch)
 		}
 
-		for ch := range channels {
+		slices.Sort(channels)
+	}
+
+	// The partwise MusicXML structure.
+	parts := map[Channel]*mxl.Part{}
+
+	for i, bar := range bars {
+		events := map[Channel][]Event{}
+
+		for _, ev := range bar.Events {
+			events[ev.Channel] = append(events[ev.Channel], ev)
+		}
+
+		for _, ch := range channels {
 			p, ok := parts[ch]
 			if !ok {
 				p = &mxl.Part{
-					Id: strconv.Itoa(int(ch)),
+					ID: fmt.Sprintf("ch%d", ch),
 				}
 				parts[ch] = p
 			}
@@ -266,7 +267,7 @@ func ToXML(w io.Writer, input []byte) error {
 	}
 
 	type trackPart struct {
-		ch   uint8
+		ch   Channel
 		part *mxl.Part
 	}
 	tps := make([]trackPart, 0, len(parts))
@@ -292,8 +293,8 @@ func ToXML(w io.Writer, input []byte) error {
 
 	for _, p := range parts {
 		score.PartList.Parts = append(score.PartList.Parts, mxl.ScorePart{
-			ID:   p.Id,
-			Name: p.Id,
+			ID:   p.ID,
+			Name: p.ID,
 		})
 	}
 

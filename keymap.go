@@ -1,7 +1,7 @@
 package balafon
 
 type midiKey struct {
-	channel uint8
+	channel Channel
 	note    rune
 }
 
@@ -18,20 +18,20 @@ func newKeyMap() *keyMap {
 }
 
 // Range loops over the mapped keys.
-func (m *keyMap) Range(f func(channel uint8, note rune, key int)) {
+func (m *keyMap) Range(f func(channel Channel, note rune, key int)) {
 	for k, v := range m.m {
 		f(k.channel, k.note, v)
 	}
 }
 
 // Get a note key on channel.
-func (m *keyMap) Get(channel uint8, note rune) (key int, exists bool) {
+func (m *keyMap) Get(channel Channel, note rune) (key int, exists bool) {
 	key, ok := m.m[midiKey{channel, note}]
 	return key, ok
 }
 
 // Set a note key on channel.
-func (m *keyMap) Set(channel uint8, note rune, key int) (success bool) {
+func (m *keyMap) Set(channel Channel, note rune, key int) (success bool) {
 	if _, exists := m.m[midiKey{channel, note}]; exists {
 		return false
 	}
