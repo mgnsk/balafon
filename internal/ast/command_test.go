@@ -23,12 +23,16 @@ func TestValidCommands(t *testing.T) {
 			Equal(ast.CmdTempo{BPM: 120}),
 		},
 		{
-			`:timesig 1 1`,
-			Equal(ast.CmdTimeSig{Num: 1, Denom: 1}),
+			`:time 1 1`,
+			Equal(ast.CmdTime{Num: 1, Denom: 1}),
 		},
 		{
 			`:channel 15`,
 			Equal(ast.CmdChannel{Channel: 15}),
+		},
+		{
+			`:voice 16`,
+			Equal(ast.CmdVoice{Voice: 16}),
 		},
 		{
 			`:velocity 127`,
@@ -73,11 +77,12 @@ func TestInvalidArgumentRange(t *testing.T) {
 		`:assign k 128`,
 		`:tempo 0`,
 		`:tempo 65536`,
-		`:timesig 0 1`,
-		`:timesig 1 0`,
-		`:timesig 1 129`,
-		`:timesig 129 1`,
+		`:time 0 1`,
+		`:time 1 0`,
+		`:time 1 129`,
+		`:time 129 1`,
 		`:channel 16`,
+		`:voice 17`,
 		`:velocity 128`,
 		`:program 128`,
 		`:control 0 128`,
@@ -95,8 +100,8 @@ func TestInvalidArgumentRange(t *testing.T) {
 
 func TestInvalidTimeSig(t *testing.T) {
 	for _, input := range []string{
-		`:timesig 4 5`,
-		`:timesig 2 3`,
+		`:time 4 5`,
+		`:time 2 3`,
 	} {
 		t.Run(input, func(t *testing.T) {
 			g := NewGomegaWithT(t)

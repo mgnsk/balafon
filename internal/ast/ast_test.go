@@ -31,7 +31,7 @@ func TestSyntaxNotAmbigous(t *testing.T) {
 :assign p 3
 :assign o 4
 :bar bar
-	:timesig 5 4
+	:time 5 4
 	tempo
 :end
 :play bar
@@ -76,12 +76,12 @@ func TestPlayNotAmbigous(t *testing.T) {
 	g.Expect(err).NotTo(HaveOccurred())
 }
 
-func TestWalkNotesUniqueProperties(t *testing.T) {
+func TestUniqueProperties(t *testing.T) {
 	g := NewWithT(t)
 
 	input := `
 :assign c 60
-[c4/5*]8/3*
+[c#4/5*]#8/3*
 `
 
 	nodeList, err := parse(input)
@@ -96,7 +96,8 @@ func TestWalkNotesUniqueProperties(t *testing.T) {
 	g.Expect(notes).To(HaveLen(1))
 	n := notes[0]
 
-	g.Expect(n.Props).To(HaveLen(3))
+	g.Expect(n.Props).To(HaveLen(4))
+	g.Expect(n.Props.NumSharp()).To(Equal(1))
 	g.Expect(n.Props.Value()).To(Equal(uint8(8)))
 	g.Expect(n.Props.Tuplet()).To(Equal(3))
 	g.Expect(n.Props.IsLetRing()).To(BeTrue())
@@ -105,7 +106,7 @@ func TestWalkNotesUniqueProperties(t *testing.T) {
 func TestAdditiveProperties(t *testing.T) {
 	g := NewWithT(t)
 
-	input := ":assign c 60; [c#$`>^).]#$`>^)."
+	input := ":assign c 60; [c`>^).]`>^)."
 
 	nodeList, err := parse(input)
 	g.Expect(err).NotTo(HaveOccurred())
@@ -119,9 +120,7 @@ func TestAdditiveProperties(t *testing.T) {
 	g.Expect(notes).To(HaveLen(1))
 	n := notes[0]
 
-	g.Expect(n.Props).To(HaveLen(14))
-	g.Expect(n.Props.NumSharp()).To(Equal(2))
-	g.Expect(n.Props.NumFlat()).To(Equal(2))
+	g.Expect(n.Props).To(HaveLen(10))
 	g.Expect(n.Props.NumStaccato()).To(Equal(2))
 	g.Expect(n.Props.NumAccent()).To(Equal(2))
 	g.Expect(n.Props.NumMarcato()).To(Equal(2))

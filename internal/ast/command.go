@@ -70,17 +70,17 @@ func NewCmdTempo(bpm int64) (CmdTempo, error) {
 	}, nil
 }
 
-// CmdTimeSig is a time signature change command.
-type CmdTimeSig struct {
+// CmdTime is a time signature change command.
+type CmdTime struct {
 	Num   uint8
 	Denom uint8
 }
 
-func (c CmdTimeSig) WriteTo(w io.Writer) (int64, error) {
+func (c CmdTime) WriteTo(w io.Writer) (int64, error) {
 	ew := newErrWriter(w)
 	var n int
 
-	n += ew.WriteString(":timesig ")
+	n += ew.WriteString(":time ")
 	n += ew.WriteInt(int(c.Num))
 	n += ew.WriteString(" ")
 	n += ew.WriteInt(int(c.Denom))
@@ -88,17 +88,17 @@ func (c CmdTimeSig) WriteTo(w io.Writer) (int64, error) {
 	return int64(n), ew.Flush()
 }
 
-// NewCmdTimeSig creates a time signature change command.
-func NewCmdTimeSig(num, denom int64) (CmdTimeSig, error) {
+// NewCmdTime creates a time signature change command.
+func NewCmdTime(num, denom int64) (CmdTime, error) {
 	if err := validateRange(num, 1, constants.MaxBeatsPerBar); err != nil {
-		return CmdTimeSig{}, err
+		return CmdTime{}, err
 	}
 
 	if err := validateNoteValue(int(denom)); err != nil {
-		return CmdTimeSig{}, err
+		return CmdTime{}, err
 	}
 
-	return CmdTimeSig{
+	return CmdTime{
 		Num:   uint8(num),
 		Denom: uint8(denom),
 	}, nil
@@ -127,6 +127,32 @@ func NewCmdChannel(value int64) (CmdChannel, error) {
 
 	return CmdChannel{
 		Channel: uint8(value),
+	}, nil
+}
+
+// CmdVoice is a voice change command.
+type CmdVoice struct {
+	Voice uint8
+}
+
+func (c CmdVoice) WriteTo(w io.Writer) (int64, error) {
+	ew := newErrWriter(w)
+	var n int
+
+	n += ew.WriteString(":voice ")
+	n += ew.WriteInt(int(c.Voice))
+
+	return int64(n), ew.Flush()
+}
+
+// NewCmdVoice creates a voice change command.
+func NewCmdVoice(value int64) (CmdVoice, error) {
+	if err := validateRange(value, 1, 16); err != nil {
+		return CmdVoice{}, err
+	}
+
+	return CmdVoice{
+		Voice: uint8(value),
 	}, nil
 }
 

@@ -1,23 +1,16 @@
 package balafon
 
 import (
-	"bytes"
 	"encoding/xml"
+	"io"
 	"strconv"
+	"strings"
 
 	"github.com/mgnsk/balafon/internal/constants"
+	"github.com/mgnsk/balafon/internal/mxl"
+	"gitlab.com/gomidi/midi/v2/smf"
 	"golang.org/x/exp/slices"
 )
-
-var notes = []string{"C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"}
-
-// GetPitch returns the step and octave for MIDI note.
-func GetPitch(note uint8) (step string, octave uint8) {
-	octave = (note / 12) - 1
-	noteIndex := note % 12
-
-	return notes[noteIndex], octave
-}
 
 type xmlTrack struct {
 	channel int
@@ -25,11 +18,11 @@ type xmlTrack struct {
 }
 
 // ToXML converts a balafon script to MusicXML.
-func ToXML(input []byte) ([]byte, error) {
+func ToXML(w io.Writer, input []byte) error {
 	it := New()
 
 	if err := it.Eval(input); err != nil {
-		return nil, err
+		return err
 	}
 
 	bars := it.Flush()
@@ -45,7 +38,7 @@ func ToXML(input []byte) ([]byte, error) {
 		}
 	}
 
-	parts := map[uint8]*Part{}
+	parts := map[uint8]*mxl.Part{}
 
 	for i, bar := range bars {
 		events := map[uint8][]Event{}
@@ -57,68 +50,212 @@ func ToXML(input []byte) ([]byte, error) {
 		for ch := range channels {
 			p, ok := parts[ch]
 			if !ok {
-				p = &Part{
+				p = &mxl.Part{
 					Id: strconv.Itoa(int(ch)),
 				}
 				parts[ch] = p
 			}
 
-			measure := Measure{
-				Number: i,
-				Atters: Attributes{
-					Time: &Time{
+			var key *mxl.Key
+			if i == 0 {
+				// Set default CMaj on each channel's first bar.
+				key = &mxl.Key{
+					Fifths: 0,
+					Mode:   "major",
+				}
+			}
+
+			measure := mxl.Measure{
+				Number: i + 1,
+				Atters: mxl.Attributes{
+					Time: &mxl.Time{
 						Beats:    int(bar.TimeSig[0]),
 						BeatType: int(bar.TimeSig[1]),
 					},
-					Divisions: int(constants.TicksPerWhole),
-					// Key       Key  `xml:"key"`
-					// Time      Time `xml:"time"`
-					// Divisions int  `xml:"divisions"`
+					Divisions: int(constants.TicksPerWhole) / int(bar.TimeSig[1]),
+					Key:       key,
 					// Clef      Clef `xml:"clef"`
-
 				},
 			}
 
 			if barEvents, ok := events[ch]; ok {
+				// Treat notes of the same voice on the same position as chords.
+				chords := map[uint32][]Event{}
+				uniqPositions := map[uint32]struct{}{}
+				uniqVoices := map[uint8]struct{}{}
 				for _, ev := range barEvents {
-					if ev.Note != nil {
-						if ev.Note.IsPause() {
-							measure.Notes = append(measure.Notes, Note{
-								// Pitch: mxl.Pitch{
-								// 	// Accidental int8   `xml:"alter"`
-								// 	Step:   "C",
-								// 	Octave: 4,
-								// },
-								Duration: int(ev.Note.Props.NoteLen()),
-								// Voice    int      `xml:"voice"`
-								// Type     string   `xml:"type"`
-								Rest: &xml.Name{
-									Local: "rest",
-								},
-								// Chord    xml.Name `xml:"chord"`
-								// Tie      Tie      `xml:"tie"`
+					chords[ev.Pos] = append(chords[ev.Pos], ev)
+					uniqPositions[ev.Pos] = struct{}{}
+					uniqVoices[ev.Voice] = struct{}{}
+				}
 
-							})
-						} else {
-							var c, k, v uint8
-							if !ev.Message.GetNoteStart(&c, &k, &v) {
-								panic("expected GetNoteStart() to succeed")
+				positions := make([]uint32, 0, len(uniqPositions))
+				for pos := range uniqPositions {
+					positions = append(positions, pos)
+				}
+
+				voices := make([]uint8, 0, len(uniqVoices))
+				for voice := range uniqVoices {
+					voices = append(voices, voice)
+				}
+
+				slices.Sort(positions)
+				slices.Sort(voices)
+
+				prevVoiceDur := 0
+
+				for i, voice := range voices {
+					if i > 0 && prevVoiceDur > 0 {
+						measure.Notes = append(measure.Notes, mxl.Backup{
+							Duration: prevVoiceDur,
+						})
+						prevVoiceDur = 0
+					}
+
+					for i, pos := range positions {
+						if i == 0 && pos != 0 {
+							panic("first position in bar must be zero")
+						}
+
+						hasMultipleVoicesInPosition := false
+						{
+							prevVoice := uint8(0)
+							for i, ev := range chords[pos] {
+								if i == 0 {
+									prevVoice = ev.Voice
+								} else if ev.Voice != prevVoice {
+									hasMultipleVoicesInPosition = true
+									break
+								}
+							}
+						}
+
+						prevNoteDur := 0
+						noteCount := 0
+
+						for _, ev := range chords[pos] {
+							if ev.Voice != voice {
+								continue
 							}
 
-							step, octave := GetPitch(k)
+							if ev.Note == nil {
+								// Meta event.
+								var smfKey smf.Key
+								if ev.Message.GetMetaKey(&smfKey) {
+									var fifths int
+									{
+										_, sharps, flats := getScale(smfKey.String())
+										fifths += len(sharps)
+										fifths -= len(flats)
+									}
 
-							measure.Notes = append(measure.Notes, Note{
-								Pitch: Pitch{
-									// Accidental int8   `xml:"alter"`
-									Step:   step,
-									Octave: int(octave),
-								},
-								Duration: int(ev.Note.Props.NoteLen()),
-								// Voice    int      `xml:"voice"`
-								// Type     string   `xml:"type"`
-								// Chord    xml.Name `xml:"chord"`
-								// Tie      Tie      `xml:"tie"`
-							})
+									mode := "major"
+									if !smfKey.IsMajor {
+										mode = "minor"
+									}
+
+									measure.Atters.Key = &mxl.Key{
+										Fifths: fifths,
+										Mode:   mode,
+									}
+								}
+							} else {
+								// Note event.
+
+								var chord *xml.Name
+								if noteCount > 0 && !hasMultipleVoicesInPosition {
+									chord = &xml.Name{}
+								}
+
+								if noteCount > 0 && prevNoteDur > 0 {
+									// Multiple notes on same position, same voice, need to back up.
+									measure.Notes = append(measure.Notes, mxl.Backup{
+										Duration: prevNoteDur,
+									})
+								}
+
+								dur := int(ev.Note.Props.NoteLen())
+								prevVoiceDur += dur
+								prevNoteDur = dur
+
+								if ev.Note.IsPause() {
+									measure.Notes = append(measure.Notes, mxl.Note{
+										// Pitch: mxl.Pitch{
+										// 	// Accidental int8   `xml:"alter"`
+										// 	Step:   "C",
+										// 	Octave: 4,
+										// },
+										Duration: dur,
+										Voice:    int(ev.Voice),
+										// Voice    int      `xml:"voice"`
+										// Type     string   `xml:"type"`
+										Rest: &xml.Name{
+											Local: "rest",
+										},
+										Chord: chord,
+										// Chord    xml.Name `xml:"chord"`
+										// Tie      Tie      `xml:"tie"`
+									})
+								} else {
+									var c, k, v uint8
+									if !ev.Message.GetNoteStart(&c, &k, &v) {
+										panic("expected GetNoteStart() to succeed")
+									}
+
+									step, octave := getPitch(int(k))
+									if len(step) == 1 && ev.IsFlat {
+										panic("invariant failure: natural note cannot be flat")
+									}
+
+									pitch := &mxl.Pitch{
+										Step:   step,
+										Octave: octave,
+									}
+
+									setSharp := func() {
+										tmpStep, tmpOctave := getPitch(int(k - 1))
+										pitch.Accidental = 1
+										pitch.Step = tmpStep
+										pitch.Octave = tmpOctave
+									}
+
+									setFlat := func() {
+										tmpStep, tmpOctave := getPitch(int(k + 1))
+										pitch.Accidental = -1
+										pitch.Step = tmpStep
+										pitch.Octave = tmpOctave
+									}
+
+									if strings.HasSuffix(step, "#") {
+										if ev.IsFlat {
+											setFlat()
+										} else {
+											setSharp()
+										}
+									} else {
+										// Note: by interpreter not allowing sharp/flat properties
+										// on notes that are assigned to a non-natural key,
+										// we avoid an ambiguity here.
+										if ev.Note.Props.IsSharp() {
+											setSharp()
+										} else if ev.Note.Props.IsFlat() {
+											setFlat()
+										}
+									}
+
+									measure.Notes = append(measure.Notes, mxl.Note{
+										Pitch:    pitch,
+										Duration: dur,
+										Voice:    int(ev.Voice),
+										Chord:    chord,
+										// Type     string   `xml:"type"`
+										// Chord    xml.Name `xml:"chord"`
+										// Tie      Tie      `xml:"tie"`
+									})
+								}
+
+								noteCount++
+							}
 						}
 					}
 				}
@@ -130,7 +267,7 @@ func ToXML(input []byte) ([]byte, error) {
 
 	type trackPart struct {
 		ch   uint8
-		part *Part
+		part *mxl.Part
 	}
 	tps := make([]trackPart, 0, len(parts))
 	for ch, p := range parts {
@@ -143,131 +280,32 @@ func ToXML(input []byte) ([]byte, error) {
 		return a.ch < b.ch
 	})
 
-	finalParts := make([]Part, len(tps))
+	finalParts := make([]mxl.Part, len(tps))
 	for i := 0; i < len(tps); i++ {
 		finalParts[i] = *tps[i].part
 	}
 
-	score := Score{
+	score := mxl.Score{
 		Version: "4.0",
 		Parts:   finalParts,
 	}
 
 	for _, p := range parts {
-		score.PartList.Parts = append(score.PartList.Parts, ScorePart{
+		score.PartList.Parts = append(score.PartList.Parts, mxl.ScorePart{
 			ID:   p.Id,
 			Name: p.Id,
 		})
 	}
 
-	var buf bytes.Buffer
-
-	buf.WriteString(`<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-	<!DOCTYPE score-partwise PUBLIC
-	"-//Recordare//DTD MusicXML 4.0 Partwise//EN"
-	"http://www.musicxml.org/dtds/partwise.dtd">
-	`)
-
-	enc := xml.NewEncoder(&buf)
-	enc.Indent("", "    ")
-	if err := enc.Encode(score); err != nil {
-		return nil, err
+	if _, err := io.WriteString(w, `<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+    <!DOCTYPE score-partwise PUBLIC
+    "-//Recordare//DTD MusicXML 4.0 Partwise//EN"
+    "http://www.musicxml.org/dtds/partwise.dtd">
+`); err != nil {
+		return err
 	}
 
-	return buf.Bytes(), nil
-}
-
-// Score holds all data for a music xml file
-type Score struct {
-	XMLName        xml.Name        `xml:"score-partwise"`
-	Version        string          `xml:"version,attr"`
-	Identification *Identification `xml:"identification,omitempty"`
-	PartList       PartList        `xml:"part-list,omitempty"`
-	Parts          []Part          `xml:"part,omitempty"`
-}
-
-type PartList struct {
-	Parts []ScorePart `xml:"score-part,omitempty"`
-}
-
-type ScorePart struct {
-	ID   string `xml:"id,attr"`
-	Name string `xml:"part-name"`
-}
-
-// Identification holds all of the ident information for a music xml file
-type Identification struct {
-	Composer string    `xml:"creator,omitempty"`
-	Encoding *Encoding `xml:"encoding,omitempty"`
-	Rights   string    `xml:"rights,omitempty"`
-	Source   string    `xml:"source,omitempty"`
-	Title    string    `xml:"movement-title,omitempty"`
-}
-
-// Encoding holds encoding info
-type Encoding struct {
-	Software string `xml:"software,omitempty"`
-	Date     string `xml:"encoding-date,omitempty"`
-}
-
-// Part represents a part in a piece of music
-type Part struct {
-	Id       string    `xml:"id,attr"`
-	Measures []Measure `xml:"measure"`
-}
-
-// Measure represents a measure in a piece of music
-type Measure struct {
-	Number int        `xml:"number,attr"`
-	Atters Attributes `xml:"attributes"`
-	Notes  []Note     `xml:"note"`
-}
-
-// Attributes represents
-type Attributes struct {
-	Key       *Key  `xml:"key,omitempty"`
-	Time      *Time `xml:"time,omitempty"`
-	Divisions int   `xml:"divisions,omitempty"`
-	Clef      *Clef `xml:"clef,omitempty"`
-}
-
-// Clef represents a clef change
-type Clef struct {
-	Sign string `xml:"sign"`
-	Line int    `xml:"line"`
-}
-
-// Key represents a key signature change
-type Key struct {
-	Fifths int    `xml:"fifths"`
-	Mode   string `xml:"mode"`
-}
-
-// Time represents a time signature change
-type Time struct {
-	Beats    int `xml:"beats"`
-	BeatType int `xml:"beat-type"`
-}
-
-// Note represents a note in a measure
-type Note struct {
-	Pitch    Pitch     `xml:"pitch"`
-	Duration int       `xml:"duration"`
-	Voice    int       `xml:"voice,omitempty"`
-	Type     string    `xml:"type,omitempty"`
-	Rest     *xml.Name `xml:"rest,omitempty"`
-	Chord    *xml.Name `xml:"chord,omitempty"`
-	Tie      *Tie      `xml:"tie,omitempty"`
-}
-
-// Pitch represents the pitch of a note
-type Pitch struct {
-	Accidental int8   `xml:"alter,omitempty"`
-	Step       string `xml:"step"`
-	Octave     int    `xml:"octave"`
-}
-
-// Tie represents whether or not a note is tied.
-type Tie struct {
-	Type string `xml:"type,attr"`
+	enc := xml.NewEncoder(w)
+	enc.Indent("", "    ")
+	return enc.Encode(score)
 }

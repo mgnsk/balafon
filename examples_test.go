@@ -2,6 +2,7 @@ package balafon_test
 
 import (
 	"embed"
+	"fmt"
 	"io/fs"
 	"testing"
 
@@ -22,6 +23,12 @@ func TestExamples(t *testing.T) {
 		}
 
 		it := balafon.New()
+
+		defer func() {
+			if r := recover(); r != nil {
+				panic(fmt.Sprintf("panic in file %s: %v", path, r))
+			}
+		}()
 
 		return it.EvalFile(path)
 	}); err != nil {

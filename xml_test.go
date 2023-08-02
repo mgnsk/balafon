@@ -1,57 +1,80 @@
 package balafon_test
 
 import (
-	"fmt"
+	"bytes"
 	"testing"
 
 	"github.com/mgnsk/balafon"
 	. "github.com/onsi/gomega"
 )
 
-func TestGetPitch(t *testing.T) {
-	g := NewWithT(t)
+func TestXMLSharpNotes(t *testing.T) {
+	t.Run("natural base note plus sharp", func(t *testing.T) {
+		g := NewWithT(t)
 
-	step, octave := balafon.GetPitch(60)
-	g.Expect(step).To(Equal("C"))
-	g.Expect(octave).To(Equal(uint8(4)))
-}
-
-func TestXMLConvert(t *testing.T) {
-	g := NewWithT(t)
-
-	b, err := balafon.ToXML([]byte(`
-:channel 9
-:assign k 36
-:assign s 38
-
-:channel 0
+		var buf bytes.Buffer
+		err := balafon.ToXML(&buf, []byte(`
 :assign c 60
-
-:timesig 4 4
-
-:bar one
-	:channel 9
-	[- s - s]
-	[k k k k]
-
-	:channel 0
-	c2   c2
-:end
-
-:bar two
-	:channel 9
-	-8 s.      s8. s16
-	[k    k    k  k]
-
-	:channel 0
-	c2.    c
-:end
-
-:play one
-:play two
+c#
 `))
 
-	g.Expect(err).NotTo(HaveOccurred())
+		g.Expect(err).NotTo(HaveOccurred())
+		g.Expect(buf.String()).To(ContainSubstring("<alter>1</alter>"))
+		g.Expect(buf.String()).To(ContainSubstring("<step>C</step>"))
+		g.Expect(buf.String()).To(ContainSubstring("<octave>4</octave>"))
+	})
 
-	fmt.Println(string(b))
+	t.Run("sharp base note", func(t *testing.T) {
+		g := NewWithT(t)
+
+		var buf bytes.Buffer
+		err := balafon.ToXML(&buf, []byte(`
+:assign c 61
+c
+`))
+
+		g.Expect(err).NotTo(HaveOccurred())
+		g.Expect(buf.String()).To(ContainSubstring("<alter>1</alter>"))
+		g.Expect(buf.String()).To(ContainSubstring("<step>C</step>"))
+		g.Expect(buf.String()).To(ContainSubstring("<octave>4</octave>"))
+	})
+}
+
+func TestXMLChords(t *testing.T) {
+	t.Run("single voice can chord", func(t *testing.T) {
+		g := NewWithT(t)
+
+		var buf bytes.Buffer
+		err := balafon.ToXML(&buf, []byte(`
+:assign c 60
+:bar one
+	c
+	c
+:end
+:play one
+`))
+
+		g.Expect(err).NotTo(HaveOccurred())
+		g.Expect(buf.String()).To(ContainSubstring("<chord>"))
+	})
+
+	t.Run("multiple voice cannot chord", func(t *testing.T) {
+		g := NewWithT(t)
+
+		var buf bytes.Buffer
+		err := balafon.ToXML(&buf, []byte(`
+
+	:assign c 60
+	:bar one
+	:voice 1
+	c
+	:voice 2
+	c
+	:end
+	:play one
+	`))
+
+		g.Expect(err).NotTo(HaveOccurred())
+		g.Expect(buf.String()).NotTo(ContainSubstring("<chord>"))
+	})
 }

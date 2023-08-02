@@ -3,7 +3,7 @@
 :channel 2
 :assign k 36
 :tempo 60
-:timesig 4 4
+:time 4 4
 :bar test
 	:channel 9
 	xxxx

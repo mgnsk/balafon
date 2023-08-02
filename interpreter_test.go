@@ -6,7 +6,7 @@ import (
 	"testing"
 	"time"
 
-	balafon "github.com/mgnsk/balafon"
+	"github.com/mgnsk/balafon"
 	"github.com/mgnsk/balafon/internal/constants"
 	. "github.com/onsi/gomega"
 	"gitlab.com/gomidi/midi/v2"
@@ -62,7 +62,7 @@ func TestCommands(t *testing.T) {
 			},
 		},
 		{
-			":timesig 1 4",
+			":time 1 4",
 			[2]uint8{1, 4},
 			nil, // Nil bar.
 		},
@@ -107,7 +107,7 @@ func TestCommands(t *testing.T) {
 			},
 		},
 		{
-			`:assign c 60; :bar bar :timesig 1 4; c :end; :play bar`,
+			`:assign c 60; :bar bar :time 1 4; c :end; :play bar`,
 			[2]uint8{1, 4},
 			[][]byte{
 				midi.NoteOn(0, 60, constants.DefaultVelocity),
@@ -177,11 +177,7 @@ func TestSharpFlatNote(t *testing.T) {
 			key   uint8
 		}{
 			{":assign c 125; c#", 126},
-			{":assign c 125; c##", 127},
-			{":assign c 125; c#$", 125},
 			{":assign c 2; c$", 1},
-			{":assign c 2; c$$", 0},
-			{":assign c 2; c$#", 2},
 		} {
 			t.Run(tc.input, func(t *testing.T) {
 				g := NewWithT(t)
@@ -203,15 +199,20 @@ func TestSharpFlatNote(t *testing.T) {
 		for _, tc := range []struct {
 			input string
 		}{
-			{":assign c 125; c###"},
-			{":assign c 2; c$$$"},
+			{":assign c 127; c#"},
+			{":assign c 0; c$"},
 		} {
 			t.Run(tc.input, func(t *testing.T) {
 				g := NewWithT(t)
 
 				it := balafon.New()
 
-				g.Expect(it.EvalString(tc.input)).NotTo(Succeed())
+				err := it.EvalString(tc.input)
+				g.Expect(err).To(HaveOccurred())
+
+				var perr *balafon.EvalError
+				g.Expect(errors.As(err, &perr)).To(BeTrue())
+				g.Expect(perr.Error()).To(ContainSubstring("note key must be in range"))
 			})
 		}
 	})
@@ -257,9 +258,9 @@ func TestStaccatoNote(t *testing.T) {
 		input string
 		offAt uint32
 	}{
-		{":timesig 1 4; :assign c 60; c", uint32(constants.TicksPerQuarter)},
-		{":timesig 1 4; :assign c 60; c`", uint32(constants.TicksPerQuarter / 2)},
-		{":timesig 1 4; :assign c 60; c``", uint32(constants.TicksPerQuarter / 4)},
+		{":time 1 4; :assign c 60; c", uint32(constants.TicksPerQuarter)},
+		{":time 1 4; :assign c 60; c`", uint32(constants.TicksPerQuarter / 2)},
+		{":time 1 4; :assign c 60; c``", uint32(constants.TicksPerQuarter / 4)},
 	} {
 		t.Run(tc.input, func(t *testing.T) {
 			g := NewWithT(t)
@@ -315,7 +316,7 @@ func TestNoteLengths(t *testing.T) {
 			tempo := 60
 
 			g.Expect(it.EvalString(fmt.Sprintf(":tempo %d", tempo))).To(Succeed())
-			g.Expect(it.EvalString(":timesig 4 4")).To(Succeed())
+			g.Expect(it.EvalString(":time 4 4")).To(Succeed())
 			g.Expect(it.EvalString(":assign k 36")).To(Succeed())
 			g.Expect(it.EvalString(tc.input)).To(Succeed())
 
@@ -345,7 +346,7 @@ func TestSilence(t *testing.T) {
 		it := balafon.New()
 
 		err := it.EvalString(`
-:timesig 4 4
+:time 4 4
 :assign c 60
 c
 `)
@@ -357,7 +358,7 @@ c
 		g.Expect(bars[0].Cap()).To(Equal(uint32(constants.TicksPerWhole)))
 
 		// TODO: fill with rests?
-		g.Expect(bars[0].String()).To(Equal(`timesig: 4/4
+		g.Expect(bars[0].String()).To(Equal(`time: 4/4
 events:
 track: 0 pos: 0 dur: 960 note: c message: NoteOn channel: 0 key: 60 velocity: 100
 track: 0 pos: 960 dur: 0 message: NoteOff channel: 0 key: 60
@@ -370,7 +371,7 @@ track: 0 pos: 960 dur: 0 message: NoteOff channel: 0 key: 60
 		it := balafon.New()
 
 		err := it.EvalString(`
-:timesig 4 4
+:time 4 4
 :assign c 60
 ---c
 `)
@@ -380,7 +381,7 @@ track: 0 pos: 960 dur: 0 message: NoteOff channel: 0 key: 60
 
 		g.Expect(bars).To(HaveLen(1))
 		g.Expect(bars[0].Cap()).To(Equal(uint32(constants.TicksPerWhole)))
-		g.Expect(bars[0].String()).To(Equal(`timesig: 4/4
+		g.Expect(bars[0].String()).To(Equal(`time: 4/4
 events:
 track: 0 pos: 0 dur: 960 note: - message: UnknownType
 track: 0 pos: 960 dur: 960 note: - message: UnknownType
@@ -399,10 +400,10 @@ func TestTimeSignature(t *testing.T) {
 	err := it.EvalString(`
 :assign c 60
 
-:timesig 3 4
+:time 3 4
 
 :bar bar
-	:timesig 1 4
+	:time 1 4
     c
 :end
 
@@ -430,7 +431,7 @@ func TestBarTooLong(t *testing.T) {
 	err := it.EvalString(`
 :assign c 60
 :tempo 60
-/* Default timesig 4 4. */
+/* Default time 4 4. */
 
 ccccc
 `)
@@ -443,14 +444,14 @@ func TestFlushSkipsTooLongBar(t *testing.T) {
 	it := balafon.New()
 
 	g.Expect(it.EvalString(":assign c 60")).To(Succeed())
-	g.Expect(it.EvalString(":timesig 4 4")).To(Succeed())
+	g.Expect(it.EvalString(":time 4 4")).To(Succeed())
 	g.Expect(it.EvalString(":ccccc")).NotTo(Succeed())
 	g.Expect(it.EvalString("c")).To(Succeed())
 
 	bars := it.Flush()
 	g.Expect(bars).To(HaveLen(1))
 
-	g.Expect(bars[0].String()).To(Equal(`timesig: 4/4
+	g.Expect(bars[0].String()).To(Equal(`time: 4/4
 events:
 track: 0 pos: 0 dur: 960 note: c message: NoteOn channel: 0 key: 60 velocity: 100
 track: 0 pos: 960 dur: 0 message: NoteOff channel: 0 key: 60
@@ -476,7 +477,7 @@ func TestMultiTrackNotesAreSortedPairs(t *testing.T) {
 :assign d 3
 
 :tempo 60
-:timesig 4 4
+:time 4 4
 
 :bar test
 	:channel 1
@@ -515,27 +516,30 @@ func TestPendingGlobalCommands(t *testing.T) {
 :channel 2; :assign d 62
 :channel 1; :assign c 60
 :tempo 60
-:timesig 1 4
+:time 1 4
 :velocity 50
 :program 1
 :control 1 1
 
 :bar one
+	:key Cm
 	:tempo 120
-	:timesig 2 8
+	:time 2 8
 	:velocity 25
 
 	:program 2
 	:control 1 2
 
 	/* on channel 1: */
+	:voice 1
 	c
 
 	:channel 2
+	:voice 2
 	d
 :end
 
-/* timesig 1 4 */
+/* time 1 4 */
 :bar two
 	:tempo 120
 	c
@@ -545,9 +549,9 @@ func TestPendingGlobalCommands(t *testing.T) {
 :play two
 
 /*
-Channel is 1, timesig 1 4, velocity 50 but tempo is 120.
-Only timesig, velocity and channel are local to bars.
-tempo, program, control, start, stop are global commands.
+Channel is 1, voice is 1, time 1 4, velocity 50 but tempo is 120 and key is Cm.
+Only time, velocity, channel and voice are local to bars.
+tempo, key, program, control, start, stop are global commands.
 */
 c
 `)
@@ -556,32 +560,33 @@ c
 	bars := it.Flush()
 	g.Expect(bars).To(HaveLen(3))
 
-	g.Expect(bars[0].String()).To(Equal(`timesig: 2/8
+	g.Expect(bars[0].String()).To(Equal(`time: 2/8
 events:
 track: 1 pos: 0 dur: 0 message: MetaTempo bpm: 60.00
 track: 1 pos: 0 dur: 0 message: ProgramChange channel: 1 program: 1
 track: 1 pos: 0 dur: 0 message: ControlChange channel: 1 controller: 1 value: 1
-track: 1 pos: 0 dur: 0 message: MetaText text: "timesig 1 4"
+track: 1 pos: 0 dur: 0 message: MetaText text: "time 1 4"
+track: 1 pos: 0 dur: 0 message: MetaKeySig key: CMin
 track: 1 pos: 0 dur: 0 message: MetaTempo bpm: 120.00
 track: 1 pos: 0 dur: 0 message: ProgramChange channel: 1 program: 2
 track: 1 pos: 0 dur: 0 message: ControlChange channel: 1 controller: 1 value: 2
 track: 1 pos: 0 dur: 0 message: MetaText text: "on channel 1:"
-track: 1 pos: 0 dur: 960 note: c message: NoteOn channel: 1 key: 60 velocity: 25
-track: 2 pos: 0 dur: 960 note: d message: NoteOn channel: 2 key: 62 velocity: 25
+track: 1 pos: 0 dur: 960 voice: 1 note: c message: NoteOn channel: 1 key: 60 velocity: 25
+track: 2 pos: 0 dur: 960 voice: 2 note: d message: NoteOn channel: 2 key: 62 velocity: 25
 track: 1 pos: 960 dur: 0 message: NoteOff channel: 1 key: 60
 track: 2 pos: 960 dur: 0 message: NoteOff channel: 2 key: 62
 `))
 
-	g.Expect(bars[1].String()).To(Equal(`timesig: 1/4
+	g.Expect(bars[1].String()).To(Equal(`time: 1/4
 events:
 track: 1 pos: 0 dur: 0 message: MetaTempo bpm: 120.00
 track: 1 pos: 0 dur: 960 note: c message: NoteOn channel: 1 key: 60 velocity: 50
 track: 1 pos: 960 dur: 0 message: NoteOff channel: 1 key: 60
 `))
 
-	g.Expect(bars[2].String()).To(Equal(`timesig: 1/4
+	g.Expect(bars[2].String()).To(Equal(`time: 1/4
 events:
-track: 1 pos: 0 dur: 0 message: MetaText text: "Channel is 1, timesig 1 4, velocity 50 but tempo is 120.\nOnly timesig, velocity and channel are local to bars.\ntempo, program, control, start, stop are global commands."
+track: 1 pos: 0 dur: 0 message: MetaText text: "Channel is 1, voice is 1, time 1 4, velocity 50 but tempo is 120 and key is Cm.\nOnly time, velocity, channel and voice are local to bars.\ntempo, key, program, control, start, stop are global commands."
 track: 1 pos: 0 dur: 960 note: c message: NoteOn channel: 1 key: 60 velocity: 50
 track: 1 pos: 960 dur: 0 message: NoteOff channel: 1 key: 60
 `))
@@ -596,19 +601,19 @@ func TestTempoIsGlobal(t *testing.T) {
 :channel 1; :assign c 60
 :tempo 120
 :tempo 60
-:timesig 1 4
+:time 1 4
 
 /* Tempo 60 4th rest == 1s. */
 -
 
 :bar two
-	:timesig 2 8
+	:time 2 8
 	c
 :end
 
 :bar one
 	:tempo 120
-	:timesig 2 8
+	:time 2 8
 	c
 :end
 
@@ -622,7 +627,7 @@ c
 
 	g.Expect(bars).To(HaveLen(4))
 
-	g.Expect(bars[0].String()).To(Equal(`timesig: 1/4
+	g.Expect(bars[0].String()).To(Equal(`time: 1/4
 events:
 track: 1 pos: 0 dur: 0 message: MetaTempo bpm: 120.00
 track: 1 pos: 0 dur: 0 message: MetaTempo bpm: 60.00
@@ -630,20 +635,20 @@ track: 1 pos: 0 dur: 0 message: MetaText text: "Tempo 60 4th rest == 1s."
 track: 1 pos: 0 dur: 960 note: - message: UnknownType
 `))
 
-	g.Expect(bars[1].String()).To(Equal(`timesig: 2/8
+	g.Expect(bars[1].String()).To(Equal(`time: 2/8
 events:
 track: 1 pos: 0 dur: 0 message: MetaTempo bpm: 120.00
 track: 1 pos: 0 dur: 960 note: c message: NoteOn channel: 1 key: 60 velocity: 100
 track: 1 pos: 960 dur: 0 message: NoteOff channel: 1 key: 60
 `))
 
-	g.Expect(bars[2].String()).To(Equal(`timesig: 2/8
+	g.Expect(bars[2].String()).To(Equal(`time: 2/8
 events:
 track: 1 pos: 0 dur: 960 note: c message: NoteOn channel: 1 key: 60 velocity: 100
 track: 1 pos: 960 dur: 0 message: NoteOff channel: 1 key: 60
 `))
 
-	g.Expect(bars[3].String()).To(Equal(`timesig: 1/4
+	g.Expect(bars[3].String()).To(Equal(`time: 1/4
 events:
 track: 1 pos: 0 dur: 960 note: c message: NoteOn channel: 1 key: 60 velocity: 100
 track: 1 pos: 960 dur: 0 message: NoteOff channel: 1 key: 60
@@ -661,7 +666,7 @@ func TestLetRing(t *testing.T) {
 	bars := it.Flush()
 	g.Expect(bars).To(HaveLen(1))
 	// No note off event.
-	g.Expect(bars[0].String()).To(Equal(`timesig: 4/4
+	g.Expect(bars[0].String()).To(Equal(`time: 4/4
 events:
 track: 0 pos: 0 dur: 960 note: k* message: NoteOn channel: 0 key: 36 velocity: 100
 `))
@@ -686,4 +691,29 @@ func TestCommandsForbiddenInBar(t *testing.T) {
 			g.Expect(perr.Error()).To(HaveSuffix("not allowed in bar"))
 		})
 	}
+}
+
+func TestVoice(t *testing.T) {
+	g := NewWithT(t)
+
+	it := balafon.New()
+
+	g.Expect(it.EvalString(":assign k 36")).To(Succeed())
+	g.Expect(it.EvalString(":voice 1; k")).To(Succeed())
+	g.Expect(it.EvalString(":voice 2; k")).To(Succeed())
+
+	bars := it.Flush()
+	g.Expect(bars).To(HaveLen(2))
+
+	g.Expect(bars[0].String()).To(Equal(`time: 4/4
+events:
+track: 0 pos: 0 dur: 960 voice: 1 note: k message: NoteOn channel: 0 key: 36 velocity: 100
+track: 0 pos: 960 dur: 0 message: NoteOff channel: 0 key: 36
+`))
+
+	g.Expect(bars[1].String()).To(Equal(`time: 4/4
+events:
+track: 0 pos: 0 dur: 960 voice: 2 note: k message: NoteOn channel: 0 key: 36 velocity: 100
+track: 0 pos: 960 dur: 0 message: NoteOff channel: 0 key: 36
+`))
 }

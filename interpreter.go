@@ -21,12 +21,14 @@ type Interpreter struct {
 
 	velocity int
 	channel  uint8
+	voice    uint8
 
 	pos     uint32
 	timesig [2]uint8
 
 	keymap *keyMap
 	bars   map[string]*Bar
+	scales map[uint8]string
 }
 
 // EvalFile evaluates a file.
@@ -73,7 +75,8 @@ func (it *Interpreter) eval(scanner parser.Scanner) error {
 // Flush the parsed bar queue.
 func (it *Interpreter) Flush() []*Bar {
 	var (
-		timesig      [2]uint8
+		timesig [2]uint8
+
 		buf          []Event
 		playableBars = make([]*Bar, 0, len(it.barBuffer))
 	)
@@ -99,8 +102,8 @@ func (it *Interpreter) Flush() []*Bar {
 	if len(buf) > 0 {
 		// Append the remaining meta events to a new bar.
 		playableBars = append(playableBars, &Bar{
-			TimeSig: timesig,
 			Events:  buf,
+			TimeSig: timesig,
 		})
 	}
 
@@ -125,6 +128,7 @@ func (it *Interpreter) beginBar() *Interpreter {
 
 		keymap: it.keymap,
 		bars:   it.bars,
+		scales: it.scales,
 	}
 }
 
@@ -217,15 +221,32 @@ func (it *Interpreter) parseBar(declList ast.NodeList) (*Bar, error) {
 				Message: smf.MetaTempo(decl.Value()),
 			})
 
-		case ast.CmdTimeSig:
+		case ast.CmdKey:
+			it.scales[it.channel] = decl.Key
+			makeMessage, _, _ := getScale(decl.Key)
+
+			bar.Events = append(bar.Events, Event{
+				Track:   it.channel,
+				Message: makeMessage(),
+			})
+
+		case ast.CmdTime:
 			it.timesig = [2]uint8{decl.Num, decl.Denom}
+
 			bar.TimeSig = it.timesig
+			// bar.Events = append(bar.Events, Event{
+			// 	Track:   it.channel,
+			// 	Message: smf.MetaMeter(decl.Num, decl.Denom),
+			// })
 
 		case ast.CmdVelocity:
 			it.velocity = decl.Velocity
 
 		case ast.CmdChannel:
 			it.channel = decl.Channel
+
+		case ast.CmdVoice:
+			it.voice = decl.Voice
 
 		case ast.CmdProgram:
 			bar.Events = append(bar.Events, Event{
@@ -302,6 +323,7 @@ func (it *Interpreter) parseNoteList(bar *Bar, properties ast.PropertyList, node
 		case true:
 			bar.Events = append(bar.Events, Event{
 				Track:    it.channel,
+				Voice:    it.voice,
 				Note:     note,
 				Pos:      it.pos,
 				Duration: actualNoteLen,
@@ -316,13 +338,14 @@ func (it *Interpreter) parseNoteList(bar *Bar, properties ast.PropertyList, node
 				}
 			}
 
-			k += note.Props.NumSharp()
-			k -= note.Props.NumFlat()
-			if k < 0 || k > constants.MaxValue {
-				return &EvalError{
-					Err: fmt.Errorf("note key must be in range [%d, %d], got: %d", 0, constants.MaxValue, k),
-					Pos: note.Pos,
-				}
+			scale, ok := it.scales[it.channel]
+			if !ok {
+				scale = "C"
+			}
+
+			key, isFlat, err := it.modifyKey(k, note, scale)
+			if err != nil {
+				return err
 			}
 
 			v := it.velocity
@@ -337,10 +360,12 @@ func (it *Interpreter) parseNoteList(bar *Bar, properties ast.PropertyList, node
 
 			bar.Events = append(bar.Events, Event{
 				Track:    it.channel,
+				Voice:    it.voice,
 				Note:     note,
 				Pos:      it.pos,
 				Duration: actualNoteLen,
-				Message:  smf.Message(midi.NoteOn(it.channel, uint8(k), uint8(v))),
+				IsFlat:   isFlat,
+				Message:  smf.Message(midi.NoteOn(it.channel, uint8(key), uint8(v))),
 			})
 
 			if !note.Props.IsLetRing() {
@@ -350,7 +375,7 @@ func (it *Interpreter) parseNoteList(bar *Bar, properties ast.PropertyList, node
 					Track:    it.channel,
 					Pos:      it.pos + actualNoteLen,
 					Duration: 0,
-					Message:  smf.Message(midi.NoteOff(it.channel, uint8(k))),
+					Message:  smf.Message(midi.NoteOff(it.channel, uint8(key))),
 				})
 			}
 		}
@@ -374,6 +399,70 @@ func (it *Interpreter) parseNoteList(bar *Bar, properties ast.PropertyList, node
 	return nil
 }
 
+func (it *Interpreter) modifyKey(key int, note *ast.Note, scale string) (newKey int, isFlat bool, err error) {
+	step, _ := getPitch(key)
+
+	if strings.HasSuffix(step, "#") && (note.Props.IsSharp() || note.Props.IsFlat()) {
+		old, _ := it.keymap.Get(it.channel, note.Name)
+		return 0, false, &EvalError{
+			Err: fmt.Errorf("cannot use sharp/flat on note '%c' assigned to key '%d' on channel '%d'", note.Name, old, it.channel),
+			Pos: note.Pos,
+		}
+	}
+
+	_, sharps, flats := getScale(scale)
+
+	// Detect whether we have Bb rather than A#.
+	if strings.HasSuffix(step, "#") {
+		tmpStep, _ := getPitch(key + 1)
+		if slices.Contains(flats, tmpStep) {
+			isFlat = true
+		}
+	}
+
+	// Apply the key signature.
+	isSharp := false
+	{
+		for _, sharp := range sharps {
+			// Let flat accidental override sharp.
+			if step == sharp && !note.Props.IsFlat() {
+				key++
+				isSharp = true
+				break
+			}
+		}
+
+		for _, flat := range flats {
+			// Let sharp accidental override flat.
+			if step == flat && !note.Props.IsSharp() {
+				key--
+				isFlat = true
+				break
+			}
+		}
+	}
+
+	// Apply accidentals (courtesy accidentals don't modify the MIDI key).
+	{
+		if note.Props.IsSharp() && !isSharp {
+			key++
+		}
+
+		if note.Props.IsFlat() && !isFlat {
+			key--
+		}
+	}
+
+	if key < 0 || key > constants.MaxValue {
+		return 0, false, &EvalError{
+			Err: fmt.Errorf("note key must be in range [%d, %d], got: %d", 0, constants.MaxValue, key),
+			Pos: note.Pos,
+		}
+	}
+
+	return key, isFlat, nil
+}
+
 // New creates a balafon interpreter.
 func New() *Interpreter {
 	return &Interpreter{
@@ -384,5 +473,6 @@ func New() *Interpreter {
 		timesig:  [2]uint8{4, 4},
 		keymap:   newKeyMap(),
 		bars:     map[string]*Bar{},
+		scales:   map[uint8]string{},
 	}
 }

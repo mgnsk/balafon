@@ -2,22 +2,19 @@ import init from "./main.wasm?init";
 import "./wasm_exec.js";
 const go = new globalThis.Go();
 
-enum ResponseKind {
-  Error = "error",
-  XML = "xml",
-}
-
-type ErrorResponse = {
-  kind: ResponseKind.Error;
-  message: string;
+type Pos = {
+  offset: number;
+  line: number;
+  column: number;
 };
 
-type XMLResponse = {
-  kind: ResponseKind.XML;
-  message: string;
+export type Response = {
+  written?: number;
+  err: string;
+  pos: Pos;
 };
 
-type ConvertFunction = (input: string) => ErrorResponse | XMLResponse;
+type ConvertFunction = (dst: Uint8Array, input: string) => Response;
 
 export class Balafon {
   private fn: ConvertFunction;
@@ -27,22 +24,13 @@ export class Balafon {
       init(go.importObject).then((instance) => {
         go.run(instance);
 
-        // console.log("Result:", globalThis.convert(":assign c 60")); // call the 'add' function defined in the Go program
-
         this.fn = globalThis.convert;
         resolve(this);
       });
     });
   }
 
-  convert(input: string): string {
-    let result = this.fn(input);
-    switch (result.kind) {
-      case ResponseKind.Error:
-        throw new Error(result.message);
-
-      case ResponseKind.XML:
-        return result.message;
-    }
+  convert(dst: Uint8Array, input: string): Response {
+    return this.fn(dst, input);
   }
 }

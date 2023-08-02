@@ -37,11 +37,11 @@ func TestZeroDurationBar(t *testing.T) {
 		dur   time.Duration
 	}{
 		{
-			input: ":timesig 1 1; :tempo 60; :bar 1 :program 1; :end; :play 1",
+			input: ":time 1 1; :tempo 60; :bar 1 :program 1; :end; :play 1",
 			dur:   0,
 		},
 		{
-			input: ":timesig 1 1; :tempo 60; :assign c 60; :bar 1 c :end; :play 1",
+			input: ":time 1 1; :tempo 60; :assign c 60; :bar 1 c :end; :play 1",
 			dur:   4 * time.Second,
 		},
 	} {
@@ -91,12 +91,12 @@ func TestBarDurationTimeSignatures(t *testing.T) {
 			input:   "c",
 		},
 	} {
-		t.Run(fmt.Sprintf(":timesig %s", tc.timesig), func(t *testing.T) {
+		t.Run(fmt.Sprintf(":time %s", tc.timesig), func(t *testing.T) {
 			g := NewWithT(t)
 
 			it := balafon.New()
 
-			g.Expect(it.EvalString(fmt.Sprintf(":timesig %s", tc.timesig))).To(Succeed())
+			g.Expect(it.EvalString(fmt.Sprintf(":time %s", tc.timesig))).To(Succeed())
 			g.Expect(it.EvalString(":assign c 60")).To(Succeed())
 			g.Expect(it.EvalString(tc.input)).To(Succeed())
 
@@ -112,7 +112,7 @@ func TestEmptyBarIsInvalid(t *testing.T) {
 
 	input := `
 :bar mybar
-:timesig 1 1
+:time 1 1
 :velocity 1
 :channel 1
 :end

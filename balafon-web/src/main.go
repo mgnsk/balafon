@@ -3,41 +3,65 @@
 package main
 
 import (
+	"bytes"
 	"errors"
+	"fmt"
 	"syscall/js"
 
 	"github.com/mgnsk/balafon"
 )
 
-func newErrorResponse(err error) map[string]interface{} {
+func newResponse(written int, err error) map[string]interface{} {
+	if err != nil {
+		var (
+			msg string
+			pos balafon.Pos
+		)
+
+		if perr := new(balafon.ParseError); errors.As(err, &perr) {
+			msg = perr.Error()
+			pos = perr.ErrorToken.Pos
+		} else if perr := new(balafon.EvalError); errors.As(err, &perr) {
+			msg = perr.Error()
+			pos = perr.Pos
+		} else {
+			panic(err)
+		}
+
+		return map[string]interface{}{
+			"err": msg,
+			"pos": map[string]interface{}{
+				"offset": pos.Offset,
+				"line":   pos.Line,
+				"column": pos.Column,
+			},
+		}
+	}
+
 	return map[string]interface{}{
-		"kind":    "error",
-		"message": err.Error(),
+		"written": written,
 	}
 }
 
-func newXMLResponse(data string) map[string]interface{} {
-	return map[string]interface{}{
-		"kind":    "xml",
-		"message": data,
-	}
-}
+var buf bytes.Buffer
 
 func convert(_ js.Value, args []js.Value) any {
-	if len(args) != 1 {
-		return newErrorResponse(errors.New("expected 1 argument"))
+	if len(args) != 2 {
+		panic("expected 2 argument")
 	}
 
-	// TODO: CopyBytesToGo from array buffer
+	input := []byte(args[1].String())
 
-	input := []byte(args[0].String())
-
-	b, err := balafon.ToXML(input)
-	if err != nil {
-		return newErrorResponse(err)
+	buf.Reset()
+	if err := balafon.ToXML(&buf, input); err != nil {
+		return newResponse(0, err)
 	}
 
-	return newXMLResponse(string(b))
+	if n := js.CopyBytesToJS(args[0], buf.Bytes()); n != buf.Len() {
+		panic(fmt.Errorf("copied: %d, expected: %d bytes", n, buf.Len()))
+	}
+
+	return newResponse(buf.Len(), nil)
 }
 
 func main() {

@@ -17,7 +17,7 @@ type Bar struct {
 func (b *Bar) String() string {
 	var s strings.Builder
 
-	s.WriteString(fmt.Sprintf("timesig: %d/%d", b.TimeSig[0], b.TimeSig[1]))
+	s.WriteString(fmt.Sprintf("time: %d/%d", b.TimeSig[0], b.TimeSig[1]))
 
 	if len(b.Events) > 0 {
 		s.WriteString("\nevents:\n")

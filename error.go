@@ -10,10 +10,13 @@ import (
 // ParseError is a parse error.
 type ParseError = parseError.Error
 
+// Pos is a token position.
+type Pos = token.Pos
+
 // EvalError is an eval error.
 type EvalError struct {
 	Err error
-	Pos token.Pos
+	Pos Pos
 }
 
 func (e *EvalError) Error() string {

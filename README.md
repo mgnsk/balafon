@@ -49,12 +49,6 @@ balafon live --port hydro examples/live_drumset.bal
 Live mode is an unbuffered input mode in the shell. Whenever an assigned key is pressed,
 a note on message is sent to the port.
 
-- Lint a file:
-
-```sh
-balafon lint examples/bonham.bal
-```
-
 - Help.
 
 ```sh
@@ -110,14 +104,20 @@ Commands begin with a `:`.
 // Stop message.
 :stop
 
+// Key signature change on the current channel.
+:Key Cmaj
+
 // Set time signature.
-:timesig 4 4
+:time 4 4
 
 // Set tempo.
 :tempo 120
 
 // Set channel.
 :channel 10
+
+// Set voice.
+:voice 1
 
 // Set velocity.
 :velocity 127
@@ -236,8 +236,6 @@ f8 c8 g8 f#8 c#8 g#8
 
 When used on note groups, these properties are added to the notes' already existing properties:
 
-- sharp (`#`)
-- flat (`$`)
 - staccato (`` ` ``)
 - accent (`>`)
 - marcato (`^`)
@@ -248,23 +246,27 @@ When used on note groups, these properties are added to the notes' already exist
 
 When used on note groups, these properties override the notes' existing properties of the same type:
 
+- sharp (`#`)
+- flat (`$`)
 - numeric note value (`1`, `2`, `4`, `8` and so on)
 - tuplet (`/3`) (only triplet `/3` or quintuplet `/5`)
 - let ring (`*`)
 
+The sharp and flat properties are mutually exclusive and may appear only once per note.
+
 ### Bars
 
 Bars are used to specify multiple tracks playing at once.
-Only `timesig`, `velocity` and `channel` commands are scoped to the bar.
+Only `time`, `velocity`, `channel` and `voice` commands are scoped to the bar.
 Other commands, when used inside a bar, have global effect when the bar is played back.
 The bar is executed with the `play` command.
 
 ```
 // Define a bar.
 :bar RockBeat
-// Setting timesig makes the interpreter validate the bar length.
+// Setting `time` makes the interpreter validate the bar length.
 // Incomplete bars are filled with silence.
-:timesig 4 4
+:time 4 4
   [xx xx xx xx]8
   // Using braces for nice alignment.
   [k  s  k  s]

@@ -18,14 +18,60 @@ _ident          : ( _char | _uint ) { _char | _uint } ;
 _repeatSpace    : ( ' ' | '\t' ) { ' ' | '\t' } ;
 _prefix         : ':' ;
 
+_majorScaleSharps
+    : 'C'
+    | 'G'
+    | 'D'
+    | 'A'
+    | 'E'
+    | 'B'
+    | 'F' '#'
+    ;
+
+_majorScaleFlats
+    : 'F'
+    | 'B' 'b'
+    | 'E' 'b'
+    | 'A' 'b'
+    | 'D' 'b'
+    | 'G' 'b'
+    ;
+
+_majorScale : _majorScaleSharps | _majorScaleFlats ;
+
+_minorScaleSharps
+    : 'A' 'm'
+    | 'E' 'm'
+    | 'B' 'm'
+    | 'F' '#' 'm'
+    | 'C' '#' 'm'
+    | 'G' '#' 'm'
+    | 'D' '#' 'm'
+    ;
+
+_minorScaleFlats
+    : 'D' 'm'
+    | 'G' 'm'
+    | 'C' 'm'
+    | 'F' 'm'
+    | 'B' 'b' 'm'
+    | 'E' 'b' 'm'
+    ;
+
+_minorScale : _minorScaleSharps | _minorScaleFlats ;
+
+_scale: _majorScale | _minorScale ;
+
 cmdBar        : _prefix 'b' 'a' 'r' _repeatSpace _ident ;
 cmdEnd        : _prefix 'e' 'n' 'd' ;
 cmdPlay       : _prefix 'p' 'l' 'a' 'y' _repeatSpace _ident ;
 cmdAssign     : _prefix 'a' 's' 's' 'i' 'g' 'n' ;
 cmdTempo      : _prefix 't' 'e' 'm' 'p' 'o' ;
-cmdTimesig    : _prefix 't' 'i' 'm' 'e' 's' 'i' 'g' ;
+cmdKey        : _prefix 'k' 'e' 'y' _repeatSpace _scale ;
+cmdTime       : _prefix 't' 'i' 'm' 'e' ;
 cmdVelocity   : _prefix 'v' 'e' 'l' 'o' 'c' 'i' 't' 'y' ;
 cmdChannel    : _prefix 'c' 'h' 'a' 'n' 'n' 'e' 'l' ;
+cmdVoice      : _prefix 'v' 'o' 'i' 'c' 'e' ;
 cmdProgram    : _prefix 'p' 'r' 'o' 'g' 'r' 'a' 'm' ;
 cmdControl    : _prefix 'c' 'o' 'n' 't' 'r' 'o' 'l' ;
 cmdStart      : _prefix 's' 't' 'a' 'r' 't' ;
@@ -123,9 +169,11 @@ Command
     : cmdAssign symbol uint          << ast.NewCmdAssign($T0.Pos, []rune(string($T1.Lit))[0], ast.Must($T2.Int64Value())) >>
     | cmdPlay                        << ast.NewCmdPlay($T0.Pos, string($T0.Lit[len(":play "):])) >>
     | cmdTempo uint                  << ast.NewCmdTempo(ast.Must($T1.Int64Value())) >>
-    | cmdTimesig uint uint           << ast.NewCmdTimeSig(ast.Must($T1.Int64Value()), ast.Must($T2.Int64Value())) >>
+    | cmdKey                         << ast.NewCmdKey(string($T0.Lit[len(":key "):])) >>
+    | cmdTime uint uint              << ast.NewCmdTime(ast.Must($T1.Int64Value()), ast.Must($T2.Int64Value())) >>
     | cmdVelocity uint               << ast.NewCmdVelocity(ast.Must($T1.Int64Value())) >>
     | cmdChannel uint                << ast.NewCmdChannel(ast.Must($T1.Int64Value())) >>
+    | cmdVoice uint                  << ast.NewCmdVoice(ast.Must($T1.Int64Value())) >>
     | cmdProgram uint                << ast.NewCmdProgram(ast.Must($T1.Int64Value())) >>
     | cmdControl uint uint           << ast.NewCmdControl(ast.Must($T1.Int64Value()), ast.Must($T2.Int64Value())) >>
     | cmdStart                       << ast.CmdStart{}, nil >>

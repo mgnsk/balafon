@@ -22,7 +22,7 @@
 :assign g 41
 
 :tempo 132
-:timesig 4 4
+:time 4 4
 :velocity 100
 
 /*

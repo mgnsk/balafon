@@ -353,20 +353,30 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `Command : cmdTimesig uint uint	<< ast.NewCmdTimeSig(ast.Must(X[1].(*token.Token).Int64Value()), ast.Must(X[2].(*token.Token).Int64Value())) >>`,
+		String: `Command : cmdKey	<< ast.NewCmdKey(string(X[0].(*token.Token).Lit[len(":key "):])) >>`,
 		Id:         "Command",
 		NTType:     12,
 		Index:      33,
+		NumSymbols: 1,
+		ReduceFunc: func(X []Attrib, C interface{}) (Attrib, error) {
+			return ast.NewCmdKey(string(X[0].(*token.Token).Lit[len(":key "):]))
+		},
+	},
+	ProdTabEntry{
+		String: `Command : cmdTime uint uint	<< ast.NewCmdTime(ast.Must(X[1].(*token.Token).Int64Value()), ast.Must(X[2].(*token.Token).Int64Value())) >>`,
+		Id:         "Command",
+		NTType:     12,
+		Index:      34,
 		NumSymbols: 3,
 		ReduceFunc: func(X []Attrib, C interface{}) (Attrib, error) {
-			return ast.NewCmdTimeSig(ast.Must(X[1].(*token.Token).Int64Value()), ast.Must(X[2].(*token.Token).Int64Value()))
+			return ast.NewCmdTime(ast.Must(X[1].(*token.Token).Int64Value()), ast.Must(X[2].(*token.Token).Int64Value()))
 		},
 	},
 	ProdTabEntry{
 		String: `Command : cmdVelocity uint	<< ast.NewCmdVelocity(ast.Must(X[1].(*token.Token).Int64Value())) >>`,
 		Id:         "Command",
 		NTType:     12,
-		Index:      34,
+		Index:      35,
 		NumSymbols: 2,
 		ReduceFunc: func(X []Attrib, C interface{}) (Attrib, error) {
 			return ast.NewCmdVelocity(ast.Must(X[1].(*token.Token).Int64Value()))
@@ -376,17 +386,27 @@ var productionsTable = ProdTab{
 		String: `Command : cmdChannel uint	<< ast.NewCmdChannel(ast.Must(X[1].(*token.Token).Int64Value())) >>`,
 		Id:         "Command",
 		NTType:     12,
-		Index:      35,
+		Index:      36,
 		NumSymbols: 2,
 		ReduceFunc: func(X []Attrib, C interface{}) (Attrib, error) {
 			return ast.NewCmdChannel(ast.Must(X[1].(*token.Token).Int64Value()))
 		},
 	},
 	ProdTabEntry{
+		String: `Command : cmdVoice uint	<< ast.NewCmdVoice(ast.Must(X[1].(*token.Token).Int64Value())) >>`,
+		Id:         "Command",
+		NTType:     12,
+		Index:      37,
+		NumSymbols: 2,
+		ReduceFunc: func(X []Attrib, C interface{}) (Attrib, error) {
+			return ast.NewCmdVoice(ast.Must(X[1].(*token.Token).Int64Value()))
+		},
+	},
+	ProdTabEntry{
 		String: `Command : cmdProgram uint	<< ast.NewCmdProgram(ast.Must(X[1].(*token.Token).Int64Value())) >>`,
 		Id:         "Command",
 		NTType:     12,
-		Index:      36,
+		Index:      38,
 		NumSymbols: 2,
 		ReduceFunc: func(X []Attrib, C interface{}) (Attrib, error) {
 			return ast.NewCmdProgram(ast.Must(X[1].(*token.Token).Int64Value()))
@@ -396,7 +416,7 @@ var productionsTable = ProdTab{
 		String: `Command : cmdControl uint uint	<< ast.NewCmdControl(ast.Must(X[1].(*token.Token).Int64Value()), ast.Must(X[2].(*token.Token).Int64Value())) >>`,
 		Id:         "Command",
 		NTType:     12,
-		Index:      37,
+		Index:      39,
 		NumSymbols: 3,
 		ReduceFunc: func(X []Attrib, C interface{}) (Attrib, error) {
 			return ast.NewCmdControl(ast.Must(X[1].(*token.Token).Int64Value()), ast.Must(X[2].(*token.Token).Int64Value()))
@@ -406,7 +426,7 @@ var productionsTable = ProdTab{
 		String: `Command : cmdStart	<< ast.CmdStart{}, nil >>`,
 		Id:         "Command",
 		NTType:     12,
-		Index:      38,
+		Index:      40,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib, C interface{}) (Attrib, error) {
 			return ast.CmdStart{}, nil
@@ -416,7 +436,7 @@ var productionsTable = ProdTab{
 		String: `Command : cmdStop	<< ast.CmdStop{}, nil >>`,
 		Id:         "Command",
 		NTType:     12,
-		Index:      39,
+		Index:      41,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib, C interface{}) (Attrib, error) {
 			return ast.CmdStop{}, nil
@@ -426,7 +446,7 @@ var productionsTable = ProdTab{
 		String: `Comment : blockComment	<< ast.NewBlockComment(string(X[0].(*token.Token).Lit)), nil >>`,
 		Id:         "Comment",
 		NTType:     13,
-		Index:      40,
+		Index:      42,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib, C interface{}) (Attrib, error) {
 			return ast.NewBlockComment(string(X[0].(*token.Token).Lit)), nil

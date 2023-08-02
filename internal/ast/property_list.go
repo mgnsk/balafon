@@ -1,6 +1,7 @@
 package ast
 
 import (
+	"fmt"
 	"io"
 	"sort"
 	"strconv"
@@ -13,39 +14,49 @@ import (
 // PropertyList is a list of note properties.
 type PropertyList []*token.Token
 
+func isUniqueProperty(typ token.Type) bool {
+	switch typ {
+	case tokentype.PropSharp,
+		tokentype.PropFlat,
+		tokentype.Uint,
+		tokentype.PropTuplet,
+		tokentype.PropLetRing:
+		return true
+	default:
+		return false
+	}
+}
+
 // Merge merges list into a copy of p and returns the merged result.
 // Unique properties are overwritten while additive properties are added.
-func (p PropertyList) Merge(list PropertyList) PropertyList {
+func (l PropertyList) Merge(list PropertyList) PropertyList {
 	var result PropertyList
-	result = append(result, p...)
+	result = append(result, l...)
 
 	for _, prop := range list {
-		switch prop.Type {
-		case tokentype.Uint, tokentype.PropTuplet, tokentype.PropLetRing:
+		if isUniqueProperty(prop.Type) {
 			if idx := result.find(prop.Type); idx != -1 {
 				result[idx] = prop
-			} else {
-				result = append(result, prop)
+				continue
 			}
-		default:
-			result = append(result, prop)
 		}
+		result = append(result, prop)
 	}
 
 	return result
 }
 
-func (p PropertyList) Len() int      { return len(p) }
-func (p PropertyList) Swap(i, j int) { p[i], p[j] = p[j], p[i] }
-func (p PropertyList) Less(i, j int) bool {
-	return p[i].Type < p[j].Type
+func (l PropertyList) Len() int      { return len(l) }
+func (l PropertyList) Swap(i, j int) { l[i], l[j] = l[j], l[i] }
+func (l PropertyList) Less(i, j int) bool {
+	return l[i].Type < l[j].Type
 }
 
-func (p PropertyList) WriteTo(w io.Writer) (int64, error) {
+func (l PropertyList) WriteTo(w io.Writer) (int64, error) {
 	ew := newErrWriter(w)
 	var n int
 
-	for _, t := range p {
+	for _, t := range l {
 		n += ew.WriteBytes(t.Lit)
 	}
 
@@ -65,6 +76,16 @@ func (l PropertyList) NoteLen() uint32 {
 		newLength = newLength * 2 / division
 	}
 	return newLength
+}
+
+// IsSharp reports whether the list contains a sharp property.
+func (l PropertyList) IsSharp() bool {
+	return l.find(tokentype.PropSharp) != -1
+}
+
+// IsFlat reports whether the list contains a flat property.
+func (l PropertyList) IsFlat() bool {
+	return l.find(tokentype.PropFlat) != -1
 }
 
 // NumSharp returns the number of sharp signs.
@@ -135,6 +156,15 @@ func (l PropertyList) IsLetRing() bool {
 	return l.find(tokentype.PropLetRing) != -1
 }
 
+func (l PropertyList) has(types ...token.Type) bool {
+	for _, typ := range types {
+		if l.find(typ) != -1 {
+			return true
+		}
+	}
+	return false
+}
+
 func (l PropertyList) find(typ token.Type) int {
 	for i, tok := range l {
 		if tok.Type == typ {
@@ -176,6 +206,13 @@ func NewPropertyList(t *token.Token, inner interface{}) (PropertyList, error) {
 	}
 
 	if props, ok := inner.(PropertyList); ok {
+		switch t.Type {
+		case tokentype.PropSharp, tokentype.PropFlat:
+			if props.has(tokentype.PropSharp, tokentype.PropFlat) {
+				return nil, fmt.Errorf("duplicate sharp or flat property")
+			}
+		}
+
 		p := make(PropertyList, len(props)+1)
 		p[0] = t
 		copy(p[1:], props)

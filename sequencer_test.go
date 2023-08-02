@@ -18,15 +18,15 @@ func TestSequencerTiming(t *testing.T) {
 		absTicks uint32
 	}{
 		{
-			input:    ":timesig 1 4; :tempo 60; :assign c 60; c",
+			input:    ":time 1 4; :tempo 60; :assign c 60; c",
 			absTicks: uint32(constants.TicksPerQuarter),
 		},
 		{
-			input:    ":timesig 2 8; :tempo 60; :assign c 60; c",
+			input:    ":time 2 8; :tempo 60; :assign c 60; c",
 			absTicks: uint32(constants.TicksPerQuarter),
 		},
 		{
-			input:    ":timesig 2 4; :tempo 120; :assign c 60; c2",
+			input:    ":time 2 4; :tempo 120; :assign c 60; c2",
 			absTicks: uint32(2 * constants.TicksPerQuarter),
 		},
 	} {
@@ -68,7 +68,7 @@ func TestSequencerMultiTrackTiming(t *testing.T) {
 :channel 2
 :assign k 36
 :tempo 60
-:timesig 4 4
+:time 4 4
 :bar test
 	:channel 1
 	xxxx
@@ -103,7 +103,7 @@ func TestSilenceBetweenBars(t *testing.T) {
 	input := `
 :assign x 42
 :tempo 60
-:timesig 2 4
+:time 2 4
 
 :bar one
 	x-
@@ -166,13 +166,13 @@ func TestTempoChange(t *testing.T) {
 :assign x 42
 
 :bar one
-	:timesig 1 4
+	:time 1 4
 	:tempo 60
 	x
 :end
 
 :bar two
-	:timesig 2 4
+	:time 2 4
 	:tempo 120
 	xx
 :end
@@ -203,7 +203,7 @@ func TestZeroDurationBarCollapse(t *testing.T) {
 
 	err := it.EvalString(`
 :tempo 60
-:timesig 1 4
+:time 1 4
 
 :bar one
 	-

@@ -93,7 +93,9 @@ func Format(input []byte) ([]byte, error) {
 			output.Write(barName)
 			output.Write(lf)
 		} else if isBar {
-			barBuffer.WriteString("\t")
+			if len(line) > 0 {
+				barBuffer.WriteString("\t")
+			}
 
 			if bytes.HasPrefix(line, []byte(":")) {
 				// Parse the command line and print.

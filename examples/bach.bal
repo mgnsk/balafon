@@ -21,16 +21,26 @@
 :velocity 100
 
 :bar bar1
-	:timesig 4 4
+	:time 4 4
+
+	:voice 1
 	c.            d8 [e$ e f f#]8
+
+	:voice 2
 	[-CE$G]16 c2          [B$A]8
 :end
 
 /* 16th rests instead of ties (unimplemented). */
 :bar bar2
-	:timesig 4 4
+	:time 4 4
+
+	:voice 1
 	g2                  a$      [-fd$c]16
+
+	:voice 2
 	[-GB$d]16  g2               [f e]8
+
+	:voice 3
 	B$        [-EDE]16 [FCFG]16  A$
 :end
 
