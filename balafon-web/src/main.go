@@ -9,9 +9,11 @@ import (
 	"syscall/js"
 
 	"github.com/mgnsk/balafon"
+	// "gitlab.com/gomidi/midi/v2/drivers"
+	// _ "gitlab.com/gomidi/midi/v2/drivers/webmididrv"
 )
 
-func newResponse(written int, err error) map[string]interface{} {
+func newConvertResponse(written int, err error) map[string]interface{} {
 	if err != nil {
 		var (
 			msg string
@@ -54,17 +56,43 @@ func convert(_ js.Value, args []js.Value) any {
 
 	buf.Reset()
 	if err := balafon.ToXML(&buf, input); err != nil {
-		return newResponse(0, err)
+		return newConvertResponse(0, err)
 	}
 
 	if n := js.CopyBytesToJS(args[0], buf.Bytes()); n != buf.Len() {
 		panic(fmt.Errorf("copied: %d, expected: %d bytes", n, buf.Len()))
 	}
 
-	return newResponse(buf.Len(), nil)
+	return newConvertResponse(buf.Len(), nil)
 }
+
+func newPlayResponse(err error) map[string]interface{} {
+	if err != nil {
+		return map[string]interface{}{
+			"err": err.Error(),
+		}
+	}
+
+	return map[string]interface{}{}
+}
+
+// func play(_ js.Value, args []js.Value) any {
+// 	outs, err := drivers.Outs()
+// 	if err != nil {
+// 		return newPlayResponse(err)
+// 	}
+//
+// 	fmt.Println("Available MIDI ports:")
+// 	for _, out := range outs {
+// 		fmt.Printf("%d: %s\n", out.Number(), out.String())
+// 	}
+//
+// 	return newPlayResponse(nil)
+// }
 
 func main() {
 	js.Global().Set("convert", js.FuncOf(convert))
+	// js.Global().Set("play", js.FuncOf(play))
+
 	select {} // keep running
 }

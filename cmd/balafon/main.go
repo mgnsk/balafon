@@ -37,11 +37,18 @@ func main() {
 
 	root := &cobra.Command{
 		Short: "balafon is a MIDI control language and interpreter.",
-		Run: func(c *cobra.Command, args []string) {
+		RunE: func(c *cobra.Command, args []string) error {
+			outs, err := drivers.Outs()
+			if err != nil {
+				return err
+			}
+
 			fmt.Println("Available MIDI ports:")
-			for _, out := range midi.GetOutPorts() {
+			for _, out := range outs {
 				fmt.Printf("%d: %s\n", out.Number(), out.String())
 			}
+
+			return nil
 		},
 	}
 

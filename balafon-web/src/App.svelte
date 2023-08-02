@@ -42,8 +42,7 @@
       alignRests: AlignRestOption.Auto,
       autoBeam: true,
       backend: "svg",
-      drawTitle: true,
-      // drawingParameters: "compacttight" // don't display title, composer etc., smaller margins
+      drawTitle: false,
     });
 
     let cachedInput = localStorage.getItem(cacheKey);
@@ -85,45 +84,30 @@
 </script>
 
 <main>
-  <div class="div1">
-    <!-- <h1>Balafon</h1> -->
-    <!-- <div id="editor"> -->
-    <CodeMirror
-      bind:value
-      extensions={[balafonLinter]}
-      on:change={onInput}
-      styles={{
-        "&": {
-          height: "100%",
-          // "flex-grow": "1",
-        },
-      }}
-    />
-    <!-- </div> -->
+  <div class="container">
+    <div class="error">{errorMessage}</div>
+    <div class="toolbar">Play Stop buttons</div>
+    <div class="editor">
+      <CodeMirror
+        bind:value
+        extensions={[balafonLinter]}
+        on:change={onInput}
+        styles={{
+          "&": {
+            height: "100%",
+            // "flex-grow": "1",
+          },
+        }}
+      />
+    </div>
+    <div class="score" id="osmdContainer"></div>
   </div>
-  <div class="div2" id="osmdContainer"></div>
-
-  <div class="div3">{errorMessage}</div>
-
-  <!-- <div id="container"> -->
-  <!--   <div class="row text-input"> -->
-  <!--     <div class="col"> -->
-  <!--     </div> -->
-  <!--     <div class="col"> -->
-  <!--       <div id="osmdContainer"></div> -->
-  <!--     </div> -->
-  <!--   </div> -->
-  <!-- </div> -->
 </main>
 
 <style>
   @import "normalize.css";
 
-  /* main { */
-  /*   height: 100%; */
-  /* } */
-
-  main {
+  .container {
     position: absolute;
     top: 0;
     left: 0;
@@ -131,59 +115,39 @@
     bottom: 0;
     /* height: 100vh; */
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    grid-template-rows: repeat(2, 1fr);
-    grid-column-gap: 0px;
-    grid-row-gap: 0px;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 0.1fr 2.8fr 0.1fr;
+    grid-auto-columns: 1fr;
+    gap: 0px 0px;
+    grid-auto-flow: row;
+    grid-template-areas:
+      "toolbar toolbar"
+      "editor score"
+      "error error";
   }
 
-  .div1 {
-    grid-area: 1 / 1 / 2 / 2;
-    border: 1px solid gray;
-  }
-  .div2 {
-    grid-area: 1 / 2 / 2 / 3;
-    border: 1px solid gray;
-  }
-  .div3 {
-    grid-area: 2 / 1 / 3 / 3;
-    border: 1px solid gray;
+  .error {
+    grid-area: error;
+    color: red;
+    font-weight: bold;
   }
 
-  /* #container { */
-  /*   display: flex; */
-  /*   flex-direction: column; */
-  /*   height: 100%; */
-  /* } */
-  /**/
-  /* .row { */
-  /*   display: flex; */
-  /*   flex-direction: row; */
-  /* } */
-  /**/
-  /* .row.text-input { */
-  /*   flex-grow: 1; */
-  /* } */
-  /**/
-  /* .row.text-input > .col { */
-  /*   display: flex; */
-  /*   flex-direction: column; */
-  /* } */
-  /**/
-  /* .col { */
-  /*   flex: 1; */
-  /*   border: 1px solid grey; */
-  /* } */
+  .toolbar {
+    grid-area: toolbar;
+  }
 
-  /* #editor { */
+  .editor {
+    grid-area: editor;
+  }
+
+  .score {
+    grid-area: score;
+  }
+
+  /* #osmdContainer { */
   /*   flex-grow: 1; */
   /*   height: 100%; */
   /* } */
-
-  #osmdContainer {
-    flex-grow: 1;
-    height: 100%;
-  }
 
   /* .error { */
   /*   color: red; */

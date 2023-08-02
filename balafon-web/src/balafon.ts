@@ -8,29 +8,40 @@ type Pos = {
   column: number;
 };
 
-export type Response = {
+export type ConvertResponse = {
   written?: number;
   err: string;
   pos: Pos;
 };
 
-type ConvertFunction = (dst: Uint8Array, input: string) => Response;
+export type PlayResponse = {
+  err: string;
+};
+
+type ConvertFunction = (dst: Uint8Array, input: string) => ConvertResponse;
+type PlayFunction = () => ConvertResponse;
 
 export class Balafon {
-  private fn: ConvertFunction;
+  private convertFn: ConvertFunction;
+  private playFn: PlayFunction;
 
   async init(): Promise<Balafon> {
     return new Promise((resolve) => {
       init(go.importObject).then((instance) => {
         go.run(instance);
 
-        this.fn = globalThis.convert;
+        this.convertFn = globalThis.convert;
+        this.playFn = globalThis.play;
         resolve(this);
       });
     });
   }
 
-  convert(dst: Uint8Array, input: string): Response {
-    return this.fn(dst, input);
+  convert(dst: Uint8Array, input: string): ConvertResponse {
+    return this.convertFn(dst, input);
+  }
+
+  play(): PlayResponse {
+    return this.playFn();
   }
 }
