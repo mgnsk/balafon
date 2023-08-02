@@ -26,7 +26,8 @@ func TestBarCapTimeSignatures(t *testing.T) {
 	} {
 		g := NewWithT(t)
 
-		bar := balafon.Bar{TimeSig: tc.timesig}
+		bar := balafon.Bar{}
+		bar.SetTimeSig(tc.timesig[0], tc.timesig[1])
 		g.Expect(bar.Cap()).To(Equal(tc.capacity))
 	}
 }
@@ -63,7 +64,6 @@ func TestBarDurationMultiTrack(t *testing.T) {
 	g := NewWithT(t)
 
 	bar := balafon.Bar{
-		TimeSig: [2]uint8{1, 4},
 		Events: []balafon.Event{
 			{
 				Duration: uint32(constants.TicksPerQuarter),
@@ -73,6 +73,8 @@ func TestBarDurationMultiTrack(t *testing.T) {
 			},
 		},
 	}
+
+	bar.SetTimeSig(1, 4)
 
 	g.Expect(bar.Duration(60)).To(Equal(time.Second))
 }

@@ -70,10 +70,10 @@ func ToXML(w io.Writer, input []byte) error {
 				Number: i + 1,
 				Atters: mxl.Attributes{
 					Time: &mxl.Time{
-						Beats:    int(bar.TimeSig[0]),
-						BeatType: int(bar.TimeSig[1]),
+						Beats:    int(bar.timeSig[0]),
+						BeatType: int(bar.timeSig[1]),
 					},
-					Divisions: int(constants.TicksPerWhole) / int(bar.TimeSig[1]),
+					Divisions: int(constants.TicksPerWhole) / int(bar.timeSig[1]),
 					Key:       key,
 					// Clef      Clef `xml:"clef"`
 				},

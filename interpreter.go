@@ -83,7 +83,7 @@ func (it *Interpreter) Flush() []*Bar {
 
 	// Defer virtual bars and concatenate them forward.
 	for _, bar := range it.barBuffer {
-		timesig = bar.TimeSig
+		timesig = bar.timeSig
 
 		if bar.IsZeroDuration() {
 			buf = append(buf, bar.Events...)
@@ -103,7 +103,7 @@ func (it *Interpreter) Flush() []*Bar {
 		// Append the remaining meta events to a new bar.
 		playableBars = append(playableBars, &Bar{
 			Events:  buf,
-			TimeSig: timesig,
+			timeSig: timesig,
 		})
 	}
 
@@ -192,7 +192,7 @@ func (it *Interpreter) parse(declList ast.NodeList) ([]*Bar, error) {
 
 func (it *Interpreter) parseBar(declList ast.NodeList) (*Bar, error) {
 	bar := &Bar{
-		TimeSig: it.timesig,
+		timeSig: it.timesig,
 	}
 
 	for _, decl := range declList {
@@ -233,7 +233,7 @@ func (it *Interpreter) parseBar(declList ast.NodeList) (*Bar, error) {
 		case ast.CmdTime:
 			it.timesig = [2]uint8{decl.Num, decl.Denom}
 
-			bar.TimeSig = it.timesig
+			bar.timeSig = it.timesig
 			// bar.Events = append(bar.Events, Event{
 			// 	Track:   it.channel,
 			// 	Message: smf.MetaMeter(decl.Num, decl.Denom),

@@ -143,7 +143,7 @@ func TestCommands(t *testing.T) {
 				g.Expect(bars).To(HaveLen(0))
 			default:
 				g.Expect(bars).To(HaveLen(1))
-				g.Expect(bars[0].TimeSig).To(Equal(tc.timesig))
+				g.Expect(bars[0].Cap()).To(Equal(uint32(tc.timesig[0]) * (uint32(constants.TicksPerWhole) / uint32(tc.timesig[1]))))
 				g.Expect(bars[0].Events).To(HaveLen(len(tc.messages)))
 				for i, msg := range tc.messages {
 					g.Expect(bars[0].Events[i].Message).To(BeEquivalentTo(msg))
@@ -271,7 +271,7 @@ func TestStaccatoNote(t *testing.T) {
 
 			bars := it.Flush()
 			g.Expect(bars).To(HaveLen(1))
-			g.Expect(bars[0].TimeSig).To(Equal([2]uint8{1, 4}))
+			g.Expect(bars[0].Cap()).To(Equal(uint32(1) * (uint32(constants.TicksPerWhole) / uint32(4))))
 			g.Expect(bars[0].Events[0].Duration).To(Equal(tc.offAt))
 			g.Expect(bars[0].Events[1].Pos).To(Equal(tc.offAt))
 		})
@@ -323,7 +323,7 @@ func TestNoteLengths(t *testing.T) {
 			bars := it.Flush()
 			g.Expect(bars).To(HaveLen(1))
 
-			g.Expect(bars[0].TimeSig).To(Equal([2]uint8{4, 4}))
+			g.Expect(bars[0].Cap()).To(Equal(uint32(4) * (uint32(constants.TicksPerWhole) / uint32(4))))
 			g.Expect(bars[0].Events).To(HaveExactElements(
 				HaveField("Message", smf.MetaTempo(float64(tempo))),
 				SatisfyAll(
@@ -416,10 +416,11 @@ c
 
 	bars := it.Flush()
 	g.Expect(bars).To(HaveLen(2))
-	g.Expect(bars[0].TimeSig).To(Equal([2]uint8{1, 4}))
+
+	g.Expect(bars[0].Cap()).To(Equal(uint32(1) * (uint32(constants.TicksPerWhole) / uint32(4))))
 	g.Expect(bars[0].Cap()).To(BeEquivalentTo(constants.TicksPerQuarter))
 
-	g.Expect(bars[1].TimeSig).To(Equal([2]uint8{3, 4}))
+	g.Expect(bars[1].Cap()).To(Equal(uint32(3) * (uint32(constants.TicksPerWhole) / uint32(4))))
 	g.Expect(bars[1].Cap()).To(BeEquivalentTo(3 * constants.TicksPerQuarter))
 }
 

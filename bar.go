@@ -11,13 +11,18 @@ import (
 // Bar is a single bar of events.
 type Bar struct {
 	Events  []Event
-	TimeSig [2]uint8
+	timeSig [2]uint8
+}
+
+// SetTimeSig sets the timesig for testing.
+func (b *Bar) SetTimeSig(num, denom uint8) {
+	b.timeSig = [2]uint8{num, denom}
 }
 
 func (b *Bar) String() string {
 	var s strings.Builder
 
-	s.WriteString(fmt.Sprintf("time: %d/%d", b.TimeSig[0], b.TimeSig[1]))
+	s.WriteString(fmt.Sprintf("time: %d/%d", b.timeSig[0], b.timeSig[1]))
 
 	if len(b.Events) > 0 {
 		s.WriteString("\nevents:\n")
@@ -43,7 +48,7 @@ func (b *Bar) IsZeroDuration() bool {
 
 // Cap returns the bar's capacity in ticks.
 func (b *Bar) Cap() uint32 {
-	return uint32(b.TimeSig[0]) * (uint32(constants.TicksPerWhole) / uint32(b.TimeSig[1]))
+	return uint32(b.timeSig[0]) * (uint32(constants.TicksPerWhole) / uint32(b.timeSig[1]))
 }
 
 // Duration returns the bar's duration.
