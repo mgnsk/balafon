@@ -21,7 +21,7 @@ type Interpreter struct {
 
 	velocity int
 	channel  Channel
-	voice    uint8
+	voice    Voice
 
 	pos     uint32
 	timesig [2]uint8
@@ -246,7 +246,7 @@ func (it *Interpreter) parseBar(declList ast.NodeList) (*Bar, error) {
 			it.channel = Channel(decl.Channel)
 
 		case ast.CmdVoice:
-			it.voice = decl.Voice
+			it.voice = Voice(decl.Voice)
 
 		case ast.CmdProgram:
 			bar.Events = append(bar.Events, Event{

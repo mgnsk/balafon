@@ -15,6 +15,13 @@ func (c Channel) Uint8() uint8 {
 	return uint8(c)
 }
 
+// Voice is a score voice.
+type Voice uint8
+
+func (v Voice) Uint8() uint8 {
+	return uint8(v)
+}
+
 // Event is a MIDI event.
 type Event struct {
 	Note     *ast.Note // only for note on messages and rests
@@ -23,7 +30,7 @@ type Event struct {
 	Pos      uint32 // in relative ticks from beginning of bar
 	Duration uint32 // in ticks
 	Channel  Channel
-	Voice    uint8
+	Voice    Voice
 }
 
 func (e *Event) String() string {
