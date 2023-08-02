@@ -9,8 +9,8 @@ import (
 	"syscall/js"
 
 	"github.com/mgnsk/balafon"
-	// "gitlab.com/gomidi/midi/v2/drivers"
-	// _ "gitlab.com/gomidi/midi/v2/drivers/webmididrv"
+	"gitlab.com/gomidi/midi/v2/drivers"
+	_ "gitlab.com/gomidi/midi/v2/drivers/webmididrv"
 )
 
 func newConvertResponse(written int, err error) map[string]interface{} {
@@ -66,8 +66,67 @@ func convert(_ js.Value, args []js.Value) any {
 	return newConvertResponse(buf.Len(), nil)
 }
 
-func newPlayResponse(err error) map[string]interface{} {
+func listPorts(_ js.Value, _ []js.Value) any {
+	outs, err := drivers.Outs()
 	if err != nil {
+		return map[string]interface{}{
+			"err": err.Error(),
+		}
+	}
+
+	ports := make([]interface{}, len(outs))
+
+	for i, out := range outs {
+		ports[i] = map[string]interface{}{
+			"number": out.Number(),
+			"name":   out.String(),
+		}
+	}
+
+	return map[string]interface{}{
+		"ports": ports,
+	}
+}
+
+var out drivers.Out
+
+func selectPort(_ js.Value, args []js.Value) any {
+	if len(args) != 1 {
+		panic("expected 1 argument")
+	}
+
+	port, err := drivers.OutByNumber(args[0].Int())
+	if err != nil {
+		return map[string]interface{}{
+			"err": err.Error(),
+		}
+	}
+
+	out = port
+
+	return map[string]interface{}{}
+}
+
+func play(_ js.Value, args []js.Value) any {
+	if len(args) != 1 {
+		panic("expected 1 argument")
+	}
+
+	it := balafon.New()
+	if err := it.EvalString(args[0].String()); err != nil {
+		return map[string]interface{}{
+			"err": err.Error(),
+		}
+	}
+
+	s := balafon.NewSequencer()
+	s.AddBars(it.Flush()...)
+
+	events := s.Flush()
+
+	p := balafon.NewPlayer(out)
+
+	if err := p.Play(events...); err != nil {
 		return map[string]interface{}{
 			"err": err.Error(),
 		}
@@ -76,23 +135,11 @@ func newPlayResponse(err error) map[string]interface{} {
 	return map[string]interface{}{}
 }
 
-// func play(_ js.Value, args []js.Value) any {
-// 	outs, err := drivers.Outs()
-// 	if err != nil {
-// 		return newPlayResponse(err)
-// 	}
-//
-// 	fmt.Println("Available MIDI ports:")
-// 	for _, out := range outs {
-// 		fmt.Printf("%d: %s\n", out.Number(), out.String())
-// 	}
-//
-// 	return newPlayResponse(nil)
-// }
-
 func main() {
 	js.Global().Set("convert", js.FuncOf(convert))
-	// js.Global().Set("play", js.FuncOf(play))
+	js.Global().Set("listPorts", js.FuncOf(listPorts))
+	js.Global().Set("selectPort", js.FuncOf(selectPort))
+	js.Global().Set("play", js.FuncOf(play))
 
 	select {} // keep running
 }

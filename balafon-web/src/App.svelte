@@ -1,8 +1,7 @@
 <script lang="ts">
-  import { Balafon, type Response } from "./balafon";
+  import { Balafon, type Port, type ConvertResponse } from "./balafon";
   import { onMount } from "svelte";
   import CodeMirror from "../node_modules/svelte-codemirror-editor/src/lib";
-  // import { syntaxTree } from "@codemirror/language";
   import { linter, type Diagnostic } from "@codemirror/lint";
   import {
     AlignRestOption,
@@ -11,13 +10,15 @@
 
   const balafon = new Balafon();
   let osmd: OpenSheetMusicDisplay = null;
-  const cacheKey = "balafon-web-input";
   const cache = new Uint8Array(1 << 20); // 1M
 
-  let value = "";
+  let inputValue = "";
   let errorMessage = "";
 
-  let response: Response = null;
+  let ports: Port[] = [];
+  let selectedPort = 0;
+
+  let response: ConvertResponse = null;
 
   const balafonLinter = linter(() => {
     let diagnostics: Diagnostic[] = [];
@@ -36,6 +37,12 @@
 
   onMount(async () => {
     await balafon.init();
+    const portsResponse = balafon.listPorts();
+    if (portsResponse.err) {
+      showError(portsResponse.err);
+    } else {
+      ports = portsResponse.ports;
+    }
 
     osmd = new OpenSheetMusicDisplay("osmdContainer");
     osmd.setOptions({
@@ -45,18 +52,23 @@
       drawTitle: false,
     });
 
-    let cachedInput = localStorage.getItem(cacheKey);
+    let cachedInput = localStorage.getItem("balafon-web-input");
     if (cachedInput !== null) {
-      value = cachedInput;
+      inputValue = cachedInput;
+      await onInput();
     }
 
-    await onInput();
+    let cachedPort = localStorage.getItem("balafon-web-port");
+    if (cachedPort !== null) {
+      selectedPort = parseInt(cachedPort);
+      onSelectPort();
+    }
   });
 
   async function onInput() {
-    localStorage.setItem(cacheKey, value);
+    localStorage.setItem("balafon-web-input", inputValue);
 
-    let input = value;
+    let input = inputValue;
 
     if (input.trim().length === 0) {
       errorMessage = "";
@@ -77,8 +89,27 @@
       if (osmd.Drawer) {
         osmd.clear();
       }
-      console.error(response);
-      errorMessage = response.err;
+      showError(response.err);
+    }
+  }
+
+  function showError(err: string) {
+    console.error(response);
+    errorMessage = err;
+  }
+
+  function onSelectPort() {
+    localStorage.setItem("balafon-web-port", selectedPort.toString());
+    const resp = balafon.selectPort(selectedPort);
+    if (resp.err) {
+      showError(resp.err);
+    }
+  }
+
+  async function onPlay() {
+    const resp = balafon.play(inputValue);
+    if (resp.err) {
+      showError(resp.err);
     }
   }
 </script>
@@ -86,18 +117,27 @@
 <main>
   <div class="container">
     <div class="error">{errorMessage}</div>
-    <div class="toolbar">Play Stop buttons</div>
+    <div class="toolbar">
+      <div>
+        <label for="ports">Choose MIDI out port:</label>
+        <select
+          name="ports"
+          id="ports"
+          bind:value={selectedPort}
+          on:change={onSelectPort}
+        >
+          {#each ports as port}
+            <option value={port.number}>{port.number}: {port.name}</option>
+          {/each}
+        </select>
+      </div>
+      <a href="#" on:click={onPlay} title="Play">Play</a>
+    </div>
     <div class="editor">
       <CodeMirror
-        bind:value
+        bind:value={inputValue}
         extensions={[balafonLinter]}
         on:change={onInput}
-        styles={{
-          "&": {
-            height: "100%",
-            // "flex-grow": "1",
-          },
-        }}
       />
     </div>
     <div class="score" id="osmdContainer"></div>
@@ -113,7 +153,6 @@
     left: 0;
     right: 0;
     bottom: 0;
-    /* height: 100vh; */
     display: grid;
     grid-template-columns: 1fr 1fr;
     grid-template-rows: 0.1fr 2.8fr 0.1fr;
@@ -143,14 +182,4 @@
   .score {
     grid-area: score;
   }
-
-  /* #osmdContainer { */
-  /*   flex-grow: 1; */
-  /*   height: 100%; */
-  /* } */
-
-  /* .error { */
-  /*   color: red; */
-  /*   font-weight: bold; */
-  /* } */
 </style>
