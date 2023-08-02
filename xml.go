@@ -266,32 +266,36 @@ func ToXML(w io.Writer, input []byte) error {
 		}
 	}
 
-	type trackPart struct {
-		ch   Channel
-		part *mxl.Part
-	}
-	tps := make([]trackPart, 0, len(parts))
-	for ch, p := range parts {
-		tps = append(tps, trackPart{
-			ch:   ch,
-			part: p,
-		})
-	}
-	slices.SortFunc(tps, func(a, b trackPart) bool {
-		return a.ch < b.ch
-	})
+	tps := make([]mxl.Part, 0, len(parts))
+	{
+		type channelPart struct {
+			part    *mxl.Part
+			channel Channel
+		}
 
-	finalParts := make([]mxl.Part, len(tps))
-	for i := 0; i < len(tps); i++ {
-		finalParts[i] = *tps[i].part
+		tmpParts := make([]channelPart, 0, len(parts))
+		for ch, p := range parts {
+			tmpParts = append(tmpParts, channelPart{
+				channel: ch,
+				part:    p,
+			})
+		}
+
+		slices.SortFunc(tmpParts, func(a, b channelPart) bool {
+			return a.channel < b.channel
+		})
+
+		for _, p := range tmpParts {
+			tps = append(tps, *p.part)
+		}
 	}
 
 	score := mxl.Score{
 		Version: "4.0",
-		Parts:   finalParts,
+		Parts:   tps,
 	}
 
-	for _, p := range parts {
+	for _, p := range tps {
 		score.PartList.Parts = append(score.PartList.Parts, mxl.ScorePart{
 			ID:   p.ID,
 			Name: p.ID,
