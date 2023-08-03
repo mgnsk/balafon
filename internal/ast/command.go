@@ -121,7 +121,7 @@ func (c CmdChannel) WriteTo(w io.Writer) (int64, error) {
 
 // NewCmdChannel creates a channel change command.
 func NewCmdChannel(value int64) (CmdChannel, error) {
-	if err := validateRange(value, 0, constants.MaxChannel); err != nil {
+	if err := validateRange(value, constants.MinHumanChannel, constants.MaxHumanChannel); err != nil {
 		return CmdChannel{}, err
 	}
 
@@ -147,7 +147,7 @@ func (c CmdVoice) WriteTo(w io.Writer) (int64, error) {
 
 // NewCmdVoice creates a voice change command.
 func NewCmdVoice(value int64) (CmdVoice, error) {
-	if err := validateRange(value, 1, 16); err != nil {
+	if err := validateRange(value, constants.MinVoice, constants.MaxVoice); err != nil {
 		return CmdVoice{}, err
 	}
 

@@ -27,11 +27,11 @@ func TestValidCommands(t *testing.T) {
 			Equal(ast.CmdTime{Num: 1, Denom: 1}),
 		},
 		{
-			`:channel 15`,
+			`:channel 16`,
 			Equal(ast.CmdChannel{Channel: 15}),
 		},
 		{
-			`:voice 16`,
+			`:voice 4`,
 			Equal(ast.CmdVoice{Voice: 16}),
 		},
 		{
@@ -81,8 +81,8 @@ func TestInvalidArgumentRange(t *testing.T) {
 		`:time 1 0`,
 		`:time 1 129`,
 		`:time 129 1`,
-		`:channel 16`,
-		`:voice 17`,
+		`:channel 17`,
+		`:voice 5`,
 		`:velocity 128`,
 		`:program 128`,
 		`:control 0 128`,

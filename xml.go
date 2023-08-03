@@ -22,40 +22,40 @@ func ToXML(w io.Writer, input []byte) error {
 
 	bars := it.Flush()
 
-	var channels []Channel
+	var tracks []uint8
 	{
-		seen := map[Channel]struct{}{}
+		seen := map[uint8]struct{}{}
 		for _, bar := range bars {
 			for _, ev := range bar.Events {
-				seen[ev.Channel] = struct{}{}
+				seen[ev.Track] = struct{}{}
 			}
 		}
 
 		for ch := range seen {
-			channels = append(channels, ch)
+			tracks = append(tracks, ch)
 		}
 
-		slices.Sort(channels)
+		slices.Sort(tracks)
 	}
 
 	// The partwise MusicXML structure.
-	parts := map[Channel]*mxl.Part{}
+	parts := make(map[uint8]*mxl.Part, len(tracks))
 	timesig := [2]uint8{4, 4}
 
 	for i, bar := range bars {
-		events := map[Channel][]Event{}
+		events := map[uint8][]Event{}
 
 		for _, ev := range bar.Events {
-			events[ev.Channel] = append(events[ev.Channel], ev)
+			events[ev.Track] = append(events[ev.Track], ev)
 		}
 
-		for _, ch := range channels {
-			p, ok := parts[ch]
+		for _, tr := range tracks {
+			p, ok := parts[tr]
 			if !ok {
 				p = &mxl.Part{
-					ID: fmt.Sprintf("ch%d", ch),
+					ID: fmt.Sprintf("%d", tr),
 				}
-				parts[ch] = p
+				parts[tr] = p
 			}
 
 			var key *mxl.Key
@@ -76,7 +76,7 @@ func ToXML(w io.Writer, input []byte) error {
 				},
 			}
 
-			if barEvents, ok := events[ch]; ok {
+			if barEvents, ok := events[tr]; ok {
 				// Treat notes of the same voice on the same position as chords.
 				chords := map[uint32][]Event{}
 				uniqPositions := map[uint32]struct{}{}
@@ -271,21 +271,21 @@ func ToXML(w io.Writer, input []byte) error {
 
 	tps := make([]mxl.Part, 0, len(parts))
 	{
-		type channelPart struct {
-			part    *mxl.Part
-			channel Channel
+		type trackPart struct {
+			part  *mxl.Part
+			track uint8
 		}
 
-		tmpParts := make([]channelPart, 0, len(parts))
-		for ch, p := range parts {
-			tmpParts = append(tmpParts, channelPart{
-				channel: ch,
-				part:    p,
+		tmpParts := make([]trackPart, 0, len(parts))
+		for tr, p := range parts {
+			tmpParts = append(tmpParts, trackPart{
+				part:  p,
+				track: tr,
 			})
 		}
 
-		slices.SortFunc(tmpParts, func(a, b channelPart) bool {
-			return a.channel < b.channel
+		slices.SortFunc(tmpParts, func(a, b trackPart) bool {
+			return a.track < b.track
 		})
 
 		for _, p := range tmpParts {

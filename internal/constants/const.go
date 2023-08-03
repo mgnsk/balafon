@@ -10,5 +10,8 @@ const (
 	DefaultVelocity                 = 100
 	MaxValue                        = 127
 	MaxBeatsPerBar                  = 128
-	MaxChannel                      = 15
+	MinHumanChannel                 = 1
+	MaxHumanChannel                 = 16
+	MinVoice                        = 1
+	MaxVoice                        = 4
 )

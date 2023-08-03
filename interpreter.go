@@ -231,7 +231,6 @@ func (it *Interpreter) parseBar(declList ast.NodeList) (*Bar, error) {
 
 		case ast.CmdTempo:
 			bar.Events = append(bar.Events, Event{
-				Channel: it.channel,
 				Message: smf.MetaTempo(decl.Value()),
 			})
 
@@ -240,7 +239,7 @@ func (it *Interpreter) parseBar(declList ast.NodeList) (*Bar, error) {
 			makeMessage, _, _ := getScale(decl.Key)
 
 			bar.Events = append(bar.Events, Event{
-				Channel: it.channel,
+				Track:   it.channel.Human(),
 				Message: makeMessage(),
 			})
 
@@ -256,32 +255,30 @@ func (it *Interpreter) parseBar(declList ast.NodeList) (*Bar, error) {
 			it.velocity = decl.Velocity
 
 		case ast.CmdChannel:
-			it.channel = Channel(decl.Channel)
+			it.channel = NewChannelFromHuman(decl.Channel)
 
 		case ast.CmdVoice:
 			it.voice = Voice(decl.Voice)
 
 		case ast.CmdProgram:
 			bar.Events = append(bar.Events, Event{
-				Channel: it.channel,
+				Track:   it.channel.Human(),
 				Message: smf.Message(midi.ProgramChange(it.channel.Uint8(), decl.Program)),
 			})
 
 		case ast.CmdControl:
 			bar.Events = append(bar.Events, Event{
-				Channel: it.channel,
+				Track:   it.channel.Human(),
 				Message: smf.Message(midi.ControlChange(it.channel.Uint8(), decl.Control, decl.Parameter)),
 			})
 
 		case ast.CmdStart:
 			bar.Events = append(bar.Events, Event{
-				Channel: it.channel,
 				Message: smf.Message(midi.Start()),
 			})
 
 		case ast.CmdStop:
 			bar.Events = append(bar.Events, Event{
-				Channel: it.channel,
 				Message: smf.Message(midi.Stop()),
 			})
 
@@ -297,7 +294,7 @@ func (it *Interpreter) parseBar(declList ast.NodeList) (*Bar, error) {
 
 		case ast.BlockComment:
 			bar.Events = append(bar.Events, Event{
-				Channel: it.channel,
+				Track:   it.channel.Human(),
 				Message: smf.MetaText(strings.TrimSpace(decl.Text)),
 			})
 
@@ -341,7 +338,7 @@ func (it *Interpreter) parseNoteList(bar *Bar, properties ast.PropertyList, node
 		switch note.IsPause() {
 		case true:
 			bar.Events = append(bar.Events, Event{
-				Channel:  it.channel,
+				Track:    it.channel.Human(),
 				Voice:    it.voice,
 				Note:     note,
 				Pos:      it.pos,
@@ -378,7 +375,7 @@ func (it *Interpreter) parseNoteList(bar *Bar, properties ast.PropertyList, node
 			}
 
 			bar.Events = append(bar.Events, Event{
-				Channel:  it.channel,
+				Track:    it.channel.Human(),
 				Voice:    it.voice,
 				Note:     note,
 				Pos:      it.pos,
@@ -391,7 +388,7 @@ func (it *Interpreter) parseNoteList(bar *Bar, properties ast.PropertyList, node
 				// TODO: for let ring notes do we need a virtual "note off"
 				// so that fill with rests could be implemented?
 				bar.Events = append(bar.Events, Event{
-					Channel:  it.channel,
+					Track:    it.channel.Human(),
 					Pos:      it.pos + actualNoteLen,
 					Duration: 0,
 					Message:  smf.Message(midi.NoteOff(it.channel.Uint8(), uint8(key))),
@@ -488,8 +485,6 @@ func New() *Interpreter {
 	return &Interpreter{
 		parser:   parser.NewParser(),
 		velocity: constants.DefaultVelocity,
-		channel:  0,
-		pos:      0,
 		timesig:  [2]uint8{4, 4},
 		keymap:   newKeyMap(),
 		bars:     map[string]*Bar{},
