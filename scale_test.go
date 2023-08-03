@@ -40,11 +40,8 @@ func TestKeyAccidentalsPitch(t *testing.T) {
 				bars := it.Flush()
 				g.Expect(bars).To(HaveLen(1))
 
-				ev := bars[0].Events[1]
-
-				var ch, key, velocity uint8
-				g.Expect(ev.Message.GetNoteOn(&ch, &key, &velocity)).To(BeTrue())
-
+				_, key, _, ok := FindNote(bars[0])
+				g.Expect(ok).To(BeTrue())
 				g.Expect(key).To(Equal(tc.key))
 			}
 

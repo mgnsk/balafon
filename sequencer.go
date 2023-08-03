@@ -1,10 +1,27 @@
 package balafon
 
 import (
+	"fmt"
+	"strings"
+
 	"github.com/mgnsk/balafon/internal/constants"
 	"gitlab.com/gomidi/midi/v2/smf"
 	"golang.org/x/exp/slices"
 )
+
+// Song is an SMF song.
+type Song []TrackEvent
+
+func (song Song) String() string {
+	var s strings.Builder
+
+	for _, ev := range song {
+		s.WriteString(ev.String())
+		s.WriteString("\n")
+	}
+
+	return s.String()
+}
 
 // TrackEvent is an SMF track event.
 type TrackEvent struct {
@@ -13,9 +30,13 @@ type TrackEvent struct {
 	AbsNanoseconds int64
 }
 
+func (s *TrackEvent) String() string {
+	return fmt.Sprintf("pos: %d ns: %d message: %s", s.AbsTicks, s.AbsNanoseconds, s.Message.String())
+}
+
 // Sequencer is a MIDI sequencer.
 type Sequencer struct {
-	events         []TrackEvent
+	song           Song
 	pos            uint32
 	tempo          float64
 	absNanoseconds int64
@@ -31,7 +52,7 @@ func (s *Sequencer) AddBars(bars ...*Bar) {
 				AbsNanoseconds: s.absNanoseconds + constants.TicksPerQuarter.Duration(s.tempo, ev.Pos).Nanoseconds(),
 			}
 
-			s.events = append(s.events, te)
+			s.song = append(s.song, te)
 
 			var newTempo float64
 			if ev.Message.GetMetaTempo(&newTempo) {
@@ -44,20 +65,20 @@ func (s *Sequencer) AddBars(bars ...*Bar) {
 		s.absNanoseconds += constants.TicksPerQuarter.Duration(s.tempo, ticks).Nanoseconds()
 	}
 
-	slices.SortStableFunc(s.events, func(a, b TrackEvent) bool {
+	slices.SortStableFunc(s.song, func(a, b TrackEvent) bool {
 		return a.AbsTicks < b.AbsTicks
 	})
 }
 
 // Flush emits the accumulated SMF tracks.
-func (s *Sequencer) Flush() []TrackEvent {
-	events := make([]TrackEvent, len(s.events))
-	copy(events, s.events)
-	s.events = s.events[:0]
-	return events
+func (s *Sequencer) Flush() Song {
+	song := make(Song, len(s.song))
+	copy(song, s.song)
+	s.song = s.song[:0]
+	return song
 }
 
-// New creates an SMF sequencer.
+// NewSequencer creates an SMF sequencer.
 func NewSequencer() *Sequencer {
 	return &Sequencer{
 		tempo: constants.DefaultTempo,

@@ -22,7 +22,7 @@ func (v Voice) Uint8() uint8 {
 	return uint8(v)
 }
 
-// Event is a MIDI event.
+// Event is a balafon event.
 type Event struct {
 	Note     *ast.Note // only for note on messages and rests
 	Message  smf.Message

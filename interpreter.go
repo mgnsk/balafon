@@ -81,22 +81,34 @@ func (it *Interpreter) Flush() []*Bar {
 		playableBars = make([]*Bar, 0, len(it.barBuffer))
 	)
 
-	// Defer virtual bars and concatenate them forward.
 	for _, bar := range it.barBuffer {
-		timesig = bar.timeSig
-
+		// Defer virtual bars and concatenate them forward.
 		if bar.IsZeroDuration() {
 			buf = append(buf, bar.Events...)
+			timesig = bar.timeSig
 			continue
 		}
 
 		barEvs := make([]Event, 0, len(buf)+len(bar.Events))
-		barEvs = append(barEvs, buf...)
+		barContainsMetaMeter := false
+		for _, ev := range bar.Events {
+			if ev.Message.Is(smf.MetaTimeSigMsg) {
+				barContainsMetaMeter = true
+				break
+			}
+		}
+		for _, ev := range buf {
+			if barContainsMetaMeter && ev.Message.Is(smf.MetaTimeSigMsg) {
+				continue
+			}
+			barEvs = append(barEvs, ev)
+		}
 		barEvs = append(barEvs, bar.Events...)
 		bar.Events = barEvs
 
 		buf = buf[:0]
 		playableBars = append(playableBars, bar)
+		timesig = bar.timeSig
 	}
 
 	if len(buf) > 0 {
@@ -195,6 +207,8 @@ func (it *Interpreter) parseBar(declList ast.NodeList) (*Bar, error) {
 		timeSig: it.timesig,
 	}
 
+	containsMetaMeter := false
+
 	for _, decl := range declList {
 		switch decl := decl.(type) {
 		case ast.CmdAssign:
@@ -232,12 +246,11 @@ func (it *Interpreter) parseBar(declList ast.NodeList) (*Bar, error) {
 
 		case ast.CmdTime:
 			it.timesig = [2]uint8{decl.Num, decl.Denom}
-
 			bar.timeSig = it.timesig
-			// bar.Events = append(bar.Events, Event{
-			// 	Track:   it.channel,
-			// 	Message: smf.MetaMeter(decl.Num, decl.Denom),
-			// })
+			bar.Events = append(bar.Events, Event{
+				Message: smf.MetaMeter(decl.Num, decl.Denom),
+			})
+			containsMetaMeter = true
 
 		case ast.CmdVelocity:
 			it.velocity = decl.Velocity
@@ -294,8 +307,14 @@ func (it *Interpreter) parseBar(declList ast.NodeList) (*Bar, error) {
 	}
 
 	if it.pos == 0 && len(bar.Events) == 0 {
-		// Bar that consists of only timesig, velocity or channel commands and no events.
+		// Bar that consists of only velocity, channel or voice commands and no events.
 		return nil, nil
+	}
+
+	if !containsMetaMeter && !bar.IsZeroDuration() {
+		bar.Events = append([]Event{{
+			Message: smf.MetaMeter(it.timesig[0], it.timesig[1]),
+		}}, bar.Events...)
 	}
 
 	return bar, nil

@@ -40,19 +40,23 @@ func TestSequencerTiming(t *testing.T) {
 			s.AddBars(it.Flush()...)
 
 			sm := s.Flush()
-			g.Expect(sm).To(HaveLen(3))
+			g.Expect(sm).To(HaveLen(4))
 
 			g.Expect(sm[0].Message.Type()).To(Equal(smf.MetaTempoMsg))
 			g.Expect(sm[0].AbsTicks).To(Equal(uint32(0)))
 			g.Expect(sm[0].AbsNanoseconds).To(Equal(int64(0)))
 
-			g.Expect(sm[1].Message.Type()).To(Equal(midi.NoteOnMsg))
+			g.Expect(sm[1].Message.Type()).To(Equal(smf.MetaTimeSigMsg))
 			g.Expect(sm[1].AbsTicks).To(Equal(uint32(0)))
 			g.Expect(sm[1].AbsNanoseconds).To(Equal(int64(0)))
 
-			g.Expect(sm[2].Message.Type()).To(Equal(midi.NoteOffMsg))
-			g.Expect(sm[2].AbsTicks).To(Equal(tc.absTicks))
-			g.Expect(sm[2].AbsNanoseconds).To(Equal(time.Second.Nanoseconds()))
+			g.Expect(sm[2].Message.Type()).To(Equal(midi.NoteOnMsg))
+			g.Expect(sm[2].AbsTicks).To(Equal(uint32(0)))
+			g.Expect(sm[2].AbsNanoseconds).To(Equal(int64(0)))
+
+			g.Expect(sm[3].Message.Type()).To(Equal(midi.NoteOffMsg))
+			g.Expect(sm[3].AbsTicks).To(Equal(tc.absTicks))
+			g.Expect(sm[3].AbsNanoseconds).To(Equal(time.Second.Nanoseconds()))
 		})
 	}
 }
@@ -84,15 +88,15 @@ func TestSequencerMultiTrackTiming(t *testing.T) {
 	s.AddBars(it.Flush()...)
 
 	sm := s.Flush()
-	g.Expect(sm).To(HaveLen(17))
-
-	g.Expect(sm[15].Message.Type()).To(Equal(midi.NoteOffMsg))
-	g.Expect(sm[15].AbsTicks).To(Equal(uint32(constants.TicksPerWhole)))
-	g.Expect(sm[15].AbsNanoseconds).To(Equal(4 * time.Second.Nanoseconds()))
+	g.Expect(sm).To(HaveLen(18))
 
 	g.Expect(sm[16].Message.Type()).To(Equal(midi.NoteOffMsg))
 	g.Expect(sm[16].AbsTicks).To(Equal(uint32(constants.TicksPerWhole)))
 	g.Expect(sm[16].AbsNanoseconds).To(Equal(4 * time.Second.Nanoseconds()))
+
+	g.Expect(sm[17].Message.Type()).To(Equal(midi.NoteOffMsg))
+	g.Expect(sm[17].AbsTicks).To(Equal(uint32(constants.TicksPerWhole)))
+	g.Expect(sm[17].AbsNanoseconds).To(Equal(4 * time.Second.Nanoseconds()))
 }
 
 func TestSilenceBetweenBars(t *testing.T) {
@@ -123,38 +127,16 @@ func TestSilenceBetweenBars(t *testing.T) {
 	s.AddBars(it.Flush()...)
 
 	sm := s.Flush()
-
-	g.Expect(sm).To(HaveExactElements(
-		balafon.TrackEvent{
-			Message: smf.MetaTempo(60),
-		},
-		balafon.TrackEvent{
-			Message: smf.Message(midi.NoteOn(0, 42, constants.DefaultVelocity)),
-		},
-		balafon.TrackEvent{
-			Message:        smf.Message(midi.NoteOff(0, 42)),
-			AbsTicks:       uint32(constants.TicksPerQuarter),
-			AbsNanoseconds: 1 * time.Second.Nanoseconds(),
-		},
-		balafon.TrackEvent{
-			AbsTicks:       uint32(1 * constants.TicksPerQuarter),
-			AbsNanoseconds: 1 * time.Second.Nanoseconds(),
-		},
-		balafon.TrackEvent{
-			AbsTicks:       uint32(2 * constants.TicksPerQuarter),
-			AbsNanoseconds: 2 * time.Second.Nanoseconds(),
-		},
-		balafon.TrackEvent{
-			Message:        smf.Message(midi.NoteOn(0, 42, constants.DefaultVelocity)),
-			AbsTicks:       uint32(3 * constants.TicksPerQuarter),
-			AbsNanoseconds: 3 * time.Second.Nanoseconds(),
-		},
-		balafon.TrackEvent{
-			Message:        smf.Message(midi.NoteOff(0, 42)),
-			AbsTicks:       uint32(4 * constants.TicksPerQuarter),
-			AbsNanoseconds: 4 * time.Second.Nanoseconds(),
-		},
-	))
+	g.Expect(sm.String()).To(Equal(`pos: 0 ns: 0 message: MetaTempo bpm: 60.00
+pos: 0 ns: 0 message: MetaTimeSig meter: 2/4
+pos: 0 ns: 0 message: NoteOn channel: 0 key: 42 velocity: 100
+pos: 960 ns: 1000000000 message: NoteOff channel: 0 key: 42
+pos: 960 ns: 1000000000 message: UnknownType
+pos: 1920 ns: 2000000000 message: MetaTimeSig meter: 2/4
+pos: 1920 ns: 2000000000 message: UnknownType
+pos: 2880 ns: 3000000000 message: NoteOn channel: 0 key: 42 velocity: 100
+pos: 3840 ns: 4000000000 message: NoteOff channel: 0 key: 42
+`))
 }
 
 func TestTempoChange(t *testing.T) {
@@ -187,9 +169,9 @@ func TestTempoChange(t *testing.T) {
 	s.AddBars(it.Flush()...)
 
 	sm := s.Flush()
-	g.Expect(sm).To(HaveLen(8))
+	g.Expect(sm).To(HaveLen(10))
 
-	g.Expect(sm[7]).To(Equal(balafon.TrackEvent{
+	g.Expect(sm[9]).To(Equal(balafon.TrackEvent{
 		Message:        smf.Message(midi.NoteOff(0, 42)),
 		AbsTicks:       uint32(3 * constants.TicksPerQuarter),
 		AbsNanoseconds: 2 * time.Second.Nanoseconds(),
@@ -228,24 +210,13 @@ func TestZeroDurationBarCollapse(t *testing.T) {
 	s.AddBars(it.Flush()...)
 
 	sm := s.Flush()
-
-	g.Expect(sm).To(HaveExactElements(
-		balafon.TrackEvent{
-			Message: smf.MetaTempo(60),
-		},
-		balafon.TrackEvent{},
-		balafon.TrackEvent{
-			Message:        smf.Message(midi.ProgramChange(0, 1)),
-			AbsTicks:       uint32(constants.TicksPerQuarter),
-			AbsNanoseconds: 1 * time.Second.Nanoseconds(),
-		},
-		balafon.TrackEvent{
-			AbsTicks:       uint32(constants.TicksPerQuarter),
-			AbsNanoseconds: 1 * time.Second.Nanoseconds(),
-		},
-		balafon.TrackEvent{
-			AbsTicks:       uint32(2 * constants.TicksPerQuarter),
-			AbsNanoseconds: 2 * time.Second.Nanoseconds(),
-		},
-	))
+	g.Expect(sm.String()).To(Equal(`pos: 0 ns: 0 message: MetaTempo bpm: 60.00
+pos: 0 ns: 0 message: MetaTimeSig meter: 1/4
+pos: 0 ns: 0 message: UnknownType
+pos: 960 ns: 1000000000 message: ProgramChange channel: 0 program: 1
+pos: 960 ns: 1000000000 message: MetaTimeSig meter: 1/4
+pos: 960 ns: 1000000000 message: UnknownType
+pos: 1920 ns: 2000000000 message: MetaTimeSig meter: 1/4
+pos: 1920 ns: 2000000000 message: UnknownType
+`))
 }

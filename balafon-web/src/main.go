@@ -95,6 +95,13 @@ func selectPort(_ js.Value, args []js.Value) any {
 		panic("expected 1 argument")
 	}
 
+	if out != nil {
+		if err := out.Close(); err != nil {
+			js.Global().Get("console").Call("error", err.Error())
+		}
+		out = nil
+	}
+
 	port, err := drivers.OutByNumber(args[0].Int())
 	if err != nil {
 		return map[string]interface{}{
@@ -126,11 +133,11 @@ func play(_ js.Value, args []js.Value) any {
 
 	p := balafon.NewPlayer(out)
 
-	if err := p.Play(events...); err != nil {
-		return map[string]interface{}{
-			"err": err.Error(),
+	go func() {
+		if err := p.Play(events...); err != nil {
+			js.Global().Get("console").Call("error", err.Error())
 		}
-	}
+	}()
 
 	return map[string]interface{}{}
 }

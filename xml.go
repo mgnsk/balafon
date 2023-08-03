@@ -40,6 +40,7 @@ func ToXML(w io.Writer, input []byte) error {
 
 	// The partwise MusicXML structure.
 	parts := map[Channel]*mxl.Part{}
+	timesig := [2]uint8{4, 4}
 
 	for i, bar := range bars {
 		events := map[Channel][]Event{}
@@ -59,7 +60,7 @@ func ToXML(w io.Writer, input []byte) error {
 
 			var key *mxl.Key
 			if i == 0 {
-				// Set default CMaj on each channel's first bar.
+				// Set default CMaj key on each channel's first bar.
 				key = &mxl.Key{
 					Fifths: 0,
 					Mode:   "major",
@@ -69,10 +70,6 @@ func ToXML(w io.Writer, input []byte) error {
 			measure := mxl.Measure{
 				Number: i + 1,
 				Atters: mxl.Attributes{
-					Time: &mxl.Time{
-						Beats:    int(bar.timeSig[0]),
-						BeatType: int(bar.timeSig[1]),
-					},
 					Divisions: int(constants.TicksPerWhole) / int(bar.timeSig[1]),
 					Key:       key,
 					// Clef      Clef `xml:"clef"`
@@ -118,21 +115,21 @@ func ToXML(w io.Writer, input []byte) error {
 							panic("first position in bar must be zero")
 						}
 
-						hasMultipleVoicesInPosition := false
+						hasMultipleVoicesInPos := false
 						{
 							var prevVoice Voice
 							for i, ev := range chords[pos] {
 								if i == 0 {
 									prevVoice = ev.Voice
 								} else if ev.Voice != prevVoice {
-									hasMultipleVoicesInPosition = true
+									hasMultipleVoicesInPos = true
 									break
 								}
 							}
 						}
 
 						prevNoteDur := 0
-						noteCount := 0
+						noteCountInPos := 0
 
 						for _, ev := range chords[pos] {
 							if ev.Voice != voice {
@@ -141,8 +138,7 @@ func ToXML(w io.Writer, input []byte) error {
 
 							if ev.Note == nil {
 								// Meta event.
-								var smfKey smf.Key
-								if ev.Message.GetMetaKey(&smfKey) {
+								if smfKey := (smf.Key{}); ev.Message.GetMetaKey(&smfKey) {
 									var fifths int
 									{
 										_, sharps, flats := getScale(smfKey.String())
@@ -159,16 +155,25 @@ func ToXML(w io.Writer, input []byte) error {
 										Fifths: fifths,
 										Mode:   mode,
 									}
+								} else if num, denom := uint8(0), uint8(0); ev.Message.GetMetaMeter(&num, &denom) {
+									if num != timesig[0] || denom != timesig[1] {
+										measure.Atters.Time = &mxl.Time{
+											Beats:    int(num),
+											BeatType: int(denom),
+										}
+										timesig[0] = num
+										timesig[1] = denom
+									}
 								}
 							} else {
 								// Note event.
 
 								var chord *xml.Name
-								if noteCount > 0 && !hasMultipleVoicesInPosition {
+								if noteCountInPos > 0 && !hasMultipleVoicesInPos {
 									chord = &xml.Name{}
 								}
 
-								if noteCount > 0 && prevNoteDur > 0 {
+								if noteCountInPos > 0 && prevNoteDur > 0 {
 									// Multiple notes on same position, same voice, need to back up.
 									measure.Notes = append(measure.Notes, mxl.Backup{
 										Duration: prevNoteDur,
@@ -188,13 +193,11 @@ func ToXML(w io.Writer, input []byte) error {
 										// },
 										Duration: dur,
 										Voice:    int(ev.Voice),
-										// Voice    int      `xml:"voice"`
 										// Type     string   `xml:"type"`
 										Rest: &xml.Name{
 											Local: "rest",
 										},
 										Chord: chord,
-										// Chord    xml.Name `xml:"chord"`
 										// Tie      Tie      `xml:"tie"`
 									})
 								} else {
@@ -255,7 +258,7 @@ func ToXML(w io.Writer, input []byte) error {
 									})
 								}
 
-								noteCount++
+								noteCountInPos++
 							}
 						}
 					}

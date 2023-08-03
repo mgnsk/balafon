@@ -50,6 +50,7 @@ func TestCommands(t *testing.T) {
 			":assign c 60; c",
 			[2]uint8{4, 4},
 			[][]byte{
+				smf.MetaMeter(4, 4),
 				midi.NoteOn(0, 60, constants.DefaultVelocity),
 				midi.NoteOff(0, 60),
 			},
@@ -58,13 +59,16 @@ func TestCommands(t *testing.T) {
 			":tempo 200",
 			[2]uint8{4, 4},
 			[][]byte{
+				// Note: missing MetaMeter since there are no notes.
 				smf.MetaTempo(200),
 			},
 		},
 		{
 			":time 1 4",
 			[2]uint8{1, 4},
-			nil, // Nil bar.
+			[][]byte{
+				smf.MetaMeter(1, 4),
+			},
 		},
 		{
 			":velocity 10",
@@ -77,9 +81,15 @@ func TestCommands(t *testing.T) {
 			nil, // Nil bar.
 		},
 		{
+			":voice 10",
+			[2]uint8{4, 4},
+			nil, // Nil bar.
+		},
+		{
 			":channel 10; :assign c 60; c",
 			[2]uint8{4, 4},
 			[][]byte{
+				smf.MetaMeter(4, 4),
 				midi.NoteOn(10, 60, constants.DefaultVelocity),
 				midi.NoteOff(10, 60),
 			},
@@ -88,6 +98,7 @@ func TestCommands(t *testing.T) {
 			":velocity 30; :assign c 60; c",
 			[2]uint8{4, 4},
 			[][]byte{
+				smf.MetaMeter(4, 4),
 				midi.NoteOn(0, 60, 30),
 				midi.NoteOff(0, 60),
 			},
@@ -110,6 +121,7 @@ func TestCommands(t *testing.T) {
 			`:assign c 60; :bar bar :time 1 4; c :end; :play bar`,
 			[2]uint8{1, 4},
 			[][]byte{
+				smf.MetaMeter(1, 4),
 				midi.NoteOn(0, 60, constants.DefaultVelocity),
 				midi.NoteOff(0, 60),
 			},
@@ -188,9 +200,10 @@ func TestSharpFlatNote(t *testing.T) {
 
 				bars := it.Flush()
 				g.Expect(bars).To(HaveLen(1))
-				g.Expect(bars[0].Events).To(HaveLen(2))
-				g.Expect(bars[0].Events[0].Message).To(BeEquivalentTo(midi.NoteOn(0, tc.key, constants.DefaultVelocity)))
-				g.Expect(bars[0].Events[1].Message).To(BeEquivalentTo(midi.NoteOff(0, tc.key)))
+
+				_, key, _, ok := FindNote(bars[0])
+				g.Expect(ok).To(BeTrue())
+				g.Expect(key).To(Equal(tc.key))
 			})
 		}
 	})
@@ -246,9 +259,10 @@ func TestAccentuatedAndGhostNote(t *testing.T) {
 
 			bars := it.Flush()
 			g.Expect(bars).To(HaveLen(1))
-			g.Expect(bars[0].Events).To(HaveLen(2))
-			g.Expect(bars[0].Events[0].Message).To(BeEquivalentTo(midi.NoteOn(0, 60, tc.velocity)))
-			g.Expect(bars[0].Events[1].Message).To(BeEquivalentTo(midi.NoteOff(0, 60)))
+
+			_, _, velocity, ok := FindNote(bars[0])
+			g.Expect(ok).To(BeTrue())
+			g.Expect(velocity).To(Equal(velocity))
 		})
 	}
 }
@@ -272,8 +286,8 @@ func TestStaccatoNote(t *testing.T) {
 			bars := it.Flush()
 			g.Expect(bars).To(HaveLen(1))
 			g.Expect(bars[0].Cap()).To(Equal(uint32(1) * (uint32(constants.TicksPerWhole) / uint32(4))))
-			g.Expect(bars[0].Events[0].Duration).To(Equal(tc.offAt))
-			g.Expect(bars[0].Events[1].Pos).To(Equal(tc.offAt))
+			g.Expect(bars[0].Events[1].Duration).To(Equal(tc.offAt))
+			g.Expect(bars[0].Events[2].Pos).To(Equal(tc.offAt))
 		})
 	}
 }
@@ -324,16 +338,19 @@ func TestNoteLengths(t *testing.T) {
 			g.Expect(bars).To(HaveLen(1))
 
 			g.Expect(bars[0].Cap()).To(Equal(uint32(4) * (uint32(constants.TicksPerWhole) / uint32(4))))
-			g.Expect(bars[0].Events).To(HaveExactElements(
-				HaveField("Message", smf.MetaTempo(float64(tempo))),
-				SatisfyAll(
-					HaveField("Pos", uint32(0)),
-					HaveField("Duration", uint32(tc.offAt)),
-				),
-				SatisfyAll(
-					HaveField("Pos", uint32(tc.offAt)),
-					HaveField("Duration", uint32(0)),
-				),
+
+			events := bars[0].Events
+			g.Expect(events).To(HaveLen(4))
+
+			g.Expect(events[0]).To(HaveField("Message", smf.MetaTempo(float64(tempo))))
+			g.Expect(events[1]).To(HaveField("Message", smf.MetaMeter(4, 4)))
+			g.Expect(events[2]).To(SatisfyAll(
+				HaveField("Pos", uint32(0)),
+				HaveField("Duration", uint32(tc.offAt)),
+			))
+			g.Expect(events[3]).To(SatisfyAll(
+				HaveField("Pos", uint32(tc.offAt)),
+				HaveField("Duration", uint32(0)),
 			))
 		})
 	}
@@ -360,6 +377,7 @@ c
 		// TODO: fill with rests?
 		g.Expect(bars[0].String()).To(Equal(`time: 4/4
 events:
+track: 0 pos: 0 dur: 0 message: MetaTimeSig meter: 4/4
 track: 0 pos: 0 dur: 960 note: c message: NoteOn channel: 0 key: 60 velocity: 100
 track: 0 pos: 960 dur: 0 message: NoteOff channel: 0 key: 60
 `))
@@ -383,6 +401,7 @@ track: 0 pos: 960 dur: 0 message: NoteOff channel: 0 key: 60
 		g.Expect(bars[0].Cap()).To(Equal(uint32(constants.TicksPerWhole)))
 		g.Expect(bars[0].String()).To(Equal(`time: 4/4
 events:
+track: 0 pos: 0 dur: 0 message: MetaTimeSig meter: 4/4
 track: 0 pos: 0 dur: 960 note: - message: UnknownType
 track: 0 pos: 960 dur: 960 note: - message: UnknownType
 track: 0 pos: 1920 dur: 960 note: - message: UnknownType
@@ -446,7 +465,7 @@ func TestFlushSkipsTooLongBar(t *testing.T) {
 
 	g.Expect(it.EvalString(":assign c 60")).To(Succeed())
 	g.Expect(it.EvalString(":time 4 4")).To(Succeed())
-	g.Expect(it.EvalString(":ccccc")).NotTo(Succeed())
+	g.Expect(it.EvalString("ccccc")).NotTo(Succeed())
 	g.Expect(it.EvalString("c")).To(Succeed())
 
 	bars := it.Flush()
@@ -454,6 +473,7 @@ func TestFlushSkipsTooLongBar(t *testing.T) {
 
 	g.Expect(bars[0].String()).To(Equal(`time: 4/4
 events:
+track: 0 pos: 0 dur: 0 message: MetaTimeSig meter: 4/4
 track: 0 pos: 0 dur: 960 note: c message: NoteOn channel: 0 key: 60 velocity: 100
 track: 0 pos: 960 dur: 0 message: NoteOff channel: 0 key: 60
 `))
@@ -494,10 +514,10 @@ func TestMultiTrackNotesAreSortedPairs(t *testing.T) {
 	bars := it.Flush()
 	g.Expect(bars).To(HaveLen(1))
 	g.Expect(bars[0].Duration(60)).To(Equal(4 * time.Second))
-	g.Expect(bars[0].Events).To(HaveLen(1 + 16)) // 1 tempo, 8 note on, 8 note off
+	g.Expect(bars[0].Events).To(HaveLen(2 + 16)) // 1 tempo, 1 timesig, 8 note on, 8 note off
 
 	pos := make([]uint32, 16)
-	for i, ev := range bars[0].Events[1:] { // skip first tempo msg
+	for i, ev := range bars[0].Events[2:] { // skip meta messages
 		pos[i] = ev.Pos
 	}
 
@@ -540,9 +560,8 @@ func TestPendingGlobalCommands(t *testing.T) {
 	d
 :end
 
-/* time 1 4 */
 :bar two
-	:tempo 120
+	/* time is 1 4 */
 	c
 :end
 
@@ -550,9 +569,11 @@ func TestPendingGlobalCommands(t *testing.T) {
 :play two
 
 /*
-Channel is 1, voice is 1, time 1 4, velocity 50 but tempo is 120 and key is Cm.
-Only time, velocity, channel and voice are local to bars.
-tempo, key, program, control, start, stop are global commands.
+Channel is 1, voice is 1, velocity 50
+but time is 1 4, tempo is 120 and key is Cm.
+Only velocity, channel and voice are local to bars.
+time, tempo, key, program, control, start, stop
+are global commands.
 */
 c
 `)
@@ -561,14 +582,18 @@ c
 	bars := it.Flush()
 	g.Expect(bars).To(HaveLen(3))
 
+	// Note: time 1 4 does not exist here. It is overridden by 2 8.
+	// time 1 4 is reintroduced in the next bar because
+	// bar captures the current timesig at the moment of
+	// :bar evaluation instead of :play evaluation.
 	g.Expect(bars[0].String()).To(Equal(`time: 2/8
 events:
 track: 1 pos: 0 dur: 0 message: MetaTempo bpm: 60.00
 track: 1 pos: 0 dur: 0 message: ProgramChange channel: 1 program: 1
 track: 1 pos: 0 dur: 0 message: ControlChange channel: 1 controller: 1 value: 1
-track: 1 pos: 0 dur: 0 message: MetaText text: "time 1 4"
 track: 1 pos: 0 dur: 0 message: MetaKeySig key: CMin
 track: 1 pos: 0 dur: 0 message: MetaTempo bpm: 120.00
+track: 0 pos: 0 dur: 0 message: MetaTimeSig meter: 2/8
 track: 1 pos: 0 dur: 0 message: ProgramChange channel: 1 program: 2
 track: 1 pos: 0 dur: 0 message: ControlChange channel: 1 controller: 1 value: 2
 track: 1 pos: 0 dur: 0 message: MetaText text: "on channel 1:"
@@ -578,29 +603,31 @@ track: 1 pos: 960 dur: 0 message: NoteOff channel: 1 key: 60
 track: 2 pos: 960 dur: 0 message: NoteOff channel: 2 key: 62
 `))
 
+	// Note: time is 1 4 now.
 	g.Expect(bars[1].String()).To(Equal(`time: 1/4
 events:
-track: 1 pos: 0 dur: 0 message: MetaTempo bpm: 120.00
+track: 0 pos: 0 dur: 0 message: MetaTimeSig meter: 1/4
+track: 1 pos: 0 dur: 0 message: MetaText text: "time is 1 4"
 track: 1 pos: 0 dur: 960 note: c message: NoteOn channel: 1 key: 60 velocity: 50
 track: 1 pos: 960 dur: 0 message: NoteOff channel: 1 key: 60
 `))
 
 	g.Expect(bars[2].String()).To(Equal(`time: 1/4
 events:
-track: 1 pos: 0 dur: 0 message: MetaText text: "Channel is 1, voice is 1, time 1 4, velocity 50 but tempo is 120 and key is Cm.\nOnly time, velocity, channel and voice are local to bars.\ntempo, key, program, control, start, stop are global commands."
+track: 1 pos: 0 dur: 0 message: MetaText text: "Channel is 1, voice is 1, velocity 50\nbut time is 1 4, tempo is 120 and key is Cm.\nOnly velocity, channel and voice are local to bars.\ntime, tempo, key, program, control, start, stop\nare global commands."
+track: 0 pos: 0 dur: 0 message: MetaTimeSig meter: 1/4
 track: 1 pos: 0 dur: 960 note: c message: NoteOn channel: 1 key: 60 velocity: 50
 track: 1 pos: 960 dur: 0 message: NoteOff channel: 1 key: 60
 `))
 }
 
-func TestTempoIsGlobal(t *testing.T) {
+func TestGlobalCommands(t *testing.T) {
 	g := NewWithT(t)
 
 	it := balafon.New()
 
 	err := it.EvalString(`
 :channel 1; :assign c 60
-:tempo 120
 :tempo 60
 :time 1 4
 
@@ -608,7 +635,6 @@ func TestTempoIsGlobal(t *testing.T) {
 -
 
 :bar two
-	:time 2 8
 	c
 :end
 
@@ -627,30 +653,34 @@ c
 	bars := it.Flush()
 
 	g.Expect(bars).To(HaveLen(4))
+	// TODO: forbid global time
 
 	g.Expect(bars[0].String()).To(Equal(`time: 1/4
 events:
-track: 1 pos: 0 dur: 0 message: MetaTempo bpm: 120.00
 track: 1 pos: 0 dur: 0 message: MetaTempo bpm: 60.00
 track: 1 pos: 0 dur: 0 message: MetaText text: "Tempo 60 4th rest == 1s."
+track: 0 pos: 0 dur: 0 message: MetaTimeSig meter: 1/4
 track: 1 pos: 0 dur: 960 note: - message: UnknownType
 `))
 
 	g.Expect(bars[1].String()).To(Equal(`time: 2/8
 events:
 track: 1 pos: 0 dur: 0 message: MetaTempo bpm: 120.00
+track: 0 pos: 0 dur: 0 message: MetaTimeSig meter: 2/8
 track: 1 pos: 0 dur: 960 note: c message: NoteOn channel: 1 key: 60 velocity: 100
 track: 1 pos: 960 dur: 0 message: NoteOff channel: 1 key: 60
 `))
 
-	g.Expect(bars[2].String()).To(Equal(`time: 2/8
+	g.Expect(bars[2].String()).To(Equal(`time: 1/4
 events:
+track: 0 pos: 0 dur: 0 message: MetaTimeSig meter: 1/4
 track: 1 pos: 0 dur: 960 note: c message: NoteOn channel: 1 key: 60 velocity: 100
 track: 1 pos: 960 dur: 0 message: NoteOff channel: 1 key: 60
 `))
 
 	g.Expect(bars[3].String()).To(Equal(`time: 1/4
 events:
+track: 0 pos: 0 dur: 0 message: MetaTimeSig meter: 1/4
 track: 1 pos: 0 dur: 960 note: c message: NoteOn channel: 1 key: 60 velocity: 100
 track: 1 pos: 960 dur: 0 message: NoteOff channel: 1 key: 60
 `))
@@ -669,6 +699,7 @@ func TestLetRing(t *testing.T) {
 	// No note off event.
 	g.Expect(bars[0].String()).To(Equal(`time: 4/4
 events:
+track: 0 pos: 0 dur: 0 message: MetaTimeSig meter: 4/4
 track: 0 pos: 0 dur: 960 note: k* message: NoteOn channel: 0 key: 36 velocity: 100
 `))
 }
@@ -708,12 +739,14 @@ func TestVoice(t *testing.T) {
 
 	g.Expect(bars[0].String()).To(Equal(`time: 4/4
 events:
+track: 0 pos: 0 dur: 0 message: MetaTimeSig meter: 4/4
 track: 0 pos: 0 dur: 960 voice: 1 note: k message: NoteOn channel: 0 key: 36 velocity: 100
 track: 0 pos: 960 dur: 0 message: NoteOff channel: 0 key: 36
 `))
 
 	g.Expect(bars[1].String()).To(Equal(`time: 4/4
 events:
+track: 0 pos: 0 dur: 0 message: MetaTimeSig meter: 4/4
 track: 0 pos: 0 dur: 960 voice: 2 note: k message: NoteOn channel: 0 key: 36 velocity: 100
 track: 0 pos: 960 dur: 0 message: NoteOff channel: 0 key: 36
 `))
