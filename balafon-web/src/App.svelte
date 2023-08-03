@@ -115,39 +115,37 @@
 </script>
 
 <main>
-  <div class="container">
-    <div class="error">{errorMessage}</div>
-    <div class="toolbar">
-      <div>
-        <label for="ports">Choose MIDI out port:</label>
-        <select
-          name="ports"
-          id="ports"
-          bind:value={selectedPort}
-          on:change={onSelectPort}
-        >
-          {#each ports as port}
-            <option value={port.number}>{port.number}: {port.name}</option>
-          {/each}
-        </select>
-      </div>
-      <a href="#" on:click={onPlay} title="Play">Play</a>
+  <div class="error">{errorMessage}</div>
+  <div class="toolbar">
+    <div>
+      <label for="ports">Choose MIDI out port:</label>
+      <select
+        name="ports"
+        id="ports"
+        bind:value={selectedPort}
+        on:change={onSelectPort}
+      >
+        {#each ports as port}
+          <option value={port.number}>{port.number}: {port.name}</option>
+        {/each}
+      </select>
     </div>
-    <div class="editor">
-      <CodeMirror
-        bind:value={inputValue}
-        extensions={[balafonLinter]}
-        on:change={onInput}
-      />
-    </div>
-    <div class="score" id="osmdContainer"></div>
+    <a href="#" on:click={onPlay} title="Play">Play</a>
   </div>
+  <div class="editor">
+    <CodeMirror
+      bind:value={inputValue}
+      extensions={[balafonLinter]}
+      on:change={onInput}
+    />
+  </div>
+  <div class="score" id="osmdContainer"></div>
 </main>
 
 <style>
   @import "normalize.css";
 
-  .container {
+  main {
     position: absolute;
     top: 0;
     left: 0;

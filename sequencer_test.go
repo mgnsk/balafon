@@ -42,11 +42,11 @@ func TestSequencerTiming(t *testing.T) {
 			sm := s.Flush()
 			g.Expect(sm).To(HaveLen(4))
 
-			g.Expect(sm[0].Message.Type()).To(Equal(smf.MetaTempoMsg))
+			g.Expect(sm[0].Message.Type()).To(Equal(smf.MetaTimeSigMsg))
 			g.Expect(sm[0].AbsTicks).To(Equal(uint32(0)))
 			g.Expect(sm[0].AbsNanoseconds).To(Equal(int64(0)))
 
-			g.Expect(sm[1].Message.Type()).To(Equal(smf.MetaTimeSigMsg))
+			g.Expect(sm[1].Message.Type()).To(Equal(smf.MetaTempoMsg))
 			g.Expect(sm[1].AbsTicks).To(Equal(uint32(0)))
 			g.Expect(sm[1].AbsNanoseconds).To(Equal(int64(0)))
 
@@ -88,15 +88,15 @@ func TestSequencerMultiTrackTiming(t *testing.T) {
 	s.AddBars(it.Flush()...)
 
 	sm := s.Flush()
-	g.Expect(sm).To(HaveLen(18))
+	g.Expect(sm).To(HaveLen(20))
 
-	g.Expect(sm[16].Message.Type()).To(Equal(midi.NoteOffMsg))
-	g.Expect(sm[16].AbsTicks).To(Equal(uint32(constants.TicksPerWhole)))
-	g.Expect(sm[16].AbsNanoseconds).To(Equal(4 * time.Second.Nanoseconds()))
+	g.Expect(sm[18].Message.Type()).To(Equal(midi.NoteOffMsg))
+	g.Expect(sm[18].AbsTicks).To(Equal(uint32(constants.TicksPerWhole)))
+	g.Expect(sm[18].AbsNanoseconds).To(Equal(4 * time.Second.Nanoseconds()))
 
-	g.Expect(sm[17].Message.Type()).To(Equal(midi.NoteOffMsg))
-	g.Expect(sm[17].AbsTicks).To(Equal(uint32(constants.TicksPerWhole)))
-	g.Expect(sm[17].AbsNanoseconds).To(Equal(4 * time.Second.Nanoseconds()))
+	g.Expect(sm[19].Message.Type()).To(Equal(midi.NoteOffMsg))
+	g.Expect(sm[19].AbsTicks).To(Equal(uint32(constants.TicksPerWhole)))
+	g.Expect(sm[19].AbsNanoseconds).To(Equal(4 * time.Second.Nanoseconds()))
 }
 
 func TestSilenceBetweenBars(t *testing.T) {

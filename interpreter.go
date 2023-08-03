@@ -14,13 +14,14 @@ import (
 	"golang.org/x/exp/slices"
 )
 
-// Interpreter evaluates text input and emits MIDI events.
+// Interpreter evaluates text input and emits events.
 type Interpreter struct {
 	parser    *parser.Parser
 	barBuffer []*Bar
 
 	velocity int
 	channel  Channel
+	channels []Channel
 	voice    Voice
 
 	pos     uint32
@@ -72,7 +73,7 @@ func (it *Interpreter) eval(scanner parser.Scanner) error {
 	return nil
 }
 
-// Flush the parsed bar queue.
+// Flush flushes the parsed bar queue and resets the interpreter.
 func (it *Interpreter) Flush() []*Bar {
 	var (
 		timesig [2]uint8
@@ -82,33 +83,64 @@ func (it *Interpreter) Flush() []*Bar {
 	)
 
 	for _, bar := range it.barBuffer {
+		timesig = bar.timeSig
+
 		// Defer virtual bars and concatenate them forward.
 		if bar.IsZeroDuration() {
 			buf = append(buf, bar.Events...)
-			timesig = bar.timeSig
 			continue
 		}
 
-		barEvs := make([]Event, 0, len(buf)+len(bar.Events))
-		barContainsMetaMeter := false
-		for _, ev := range bar.Events {
-			if ev.Message.Is(smf.MetaTimeSigMsg) {
-				barContainsMetaMeter = true
-				break
+		{
+			barEvs := make([]Event, 0, len(buf)+len(bar.Events))
+			add := func(ev Event) {
+				if ev.Track == 0 {
+					// Add the meta event to all known channels.
+					if len(it.channels) == 0 {
+						evCopy := ev
+						evCopy.Track = 1
+						barEvs = append(barEvs, evCopy)
+					} else {
+						for _, ch := range it.channels {
+							evCopy := ev
+							evCopy.Track = ch.Human()
+							barEvs = append(barEvs, evCopy)
+						}
+					}
+				} else {
+					barEvs = append(barEvs, ev)
+				}
 			}
-		}
-		for _, ev := range buf {
-			if barContainsMetaMeter && ev.Message.Is(smf.MetaTimeSigMsg) {
-				continue
+
+			barContainsTimeSig := false
+			for _, ev := range bar.Events {
+				if ev.Message.Is(smf.MetaTimeSigMsg) {
+					barContainsTimeSig = true
+					break
+				}
 			}
-			barEvs = append(barEvs, ev)
+			for _, ev := range buf {
+				if ev.Message.Is(smf.MetaTimeSigMsg) {
+					if barContainsTimeSig {
+						continue
+					}
+					barContainsTimeSig = true
+				}
+				add(ev)
+			}
+			if !barContainsTimeSig {
+				add(Event{
+					Message: smf.MetaMeter(bar.timeSig[0], bar.timeSig[1]),
+				})
+			}
+			for _, ev := range bar.Events {
+				add(ev)
+			}
+			bar.Events = barEvs
 		}
-		barEvs = append(barEvs, bar.Events...)
-		bar.Events = barEvs
 
 		buf = buf[:0]
 		playableBars = append(playableBars, bar)
-		timesig = bar.timeSig
 	}
 
 	if len(buf) > 0 {
@@ -134,6 +166,7 @@ func (it *Interpreter) beginBar() *Interpreter {
 	return &Interpreter{
 		velocity: it.velocity,
 		channel:  it.channel,
+		channels: it.channels,
 
 		pos:     it.pos,
 		timesig: it.timesig,
@@ -207,8 +240,6 @@ func (it *Interpreter) parseBar(declList ast.NodeList) (*Bar, error) {
 		timeSig: it.timesig,
 	}
 
-	containsMetaMeter := false
-
 	for _, decl := range declList {
 		switch decl := decl.(type) {
 		case ast.CmdAssign:
@@ -249,13 +280,17 @@ func (it *Interpreter) parseBar(declList ast.NodeList) (*Bar, error) {
 			bar.Events = append(bar.Events, Event{
 				Message: smf.MetaMeter(decl.Num, decl.Denom),
 			})
-			containsMetaMeter = true
 
 		case ast.CmdVelocity:
 			it.velocity = decl.Velocity
 
 		case ast.CmdChannel:
-			it.channel = NewChannelFromHuman(decl.Channel)
+			ch := NewChannelFromHuman(decl.Channel)
+			if !slices.Contains(it.channels, ch) {
+				it.channels = append(it.channels, ch)
+				slices.Sort(it.channels)
+			}
+			it.channel = ch
 
 		case ast.CmdVoice:
 			it.voice = Voice(decl.Voice)
@@ -306,12 +341,6 @@ func (it *Interpreter) parseBar(declList ast.NodeList) (*Bar, error) {
 	if it.pos == 0 && len(bar.Events) == 0 {
 		// Bar that consists of only velocity, channel or voice commands and no events.
 		return nil, nil
-	}
-
-	if !containsMetaMeter && !bar.IsZeroDuration() {
-		bar.Events = append([]Event{{
-			Message: smf.MetaMeter(it.timesig[0], it.timesig[1]),
-		}}, bar.Events...)
 	}
 
 	return bar, nil
