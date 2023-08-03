@@ -148,5 +148,7 @@ func main() {
 	js.Global().Set("selectPort", js.FuncOf(selectPort))
 	js.Global().Set("play", js.FuncOf(play))
 
+	js.Global().Call("resolveStartedPromise")
+
 	select {} // keep running
 }

@@ -66,8 +66,6 @@
   });
 
   async function onInput() {
-    localStorage.setItem("balafon-web-input", inputValue);
-
     let input = inputValue;
 
     if (input.trim().length === 0) {
@@ -85,6 +83,7 @@
       await osmd.load(url);
       osmd.render();
       errorMessage = "";
+      localStorage.setItem("balafon-web-input", inputValue);
     } else {
       if (osmd.Drawer) {
         osmd.clear();

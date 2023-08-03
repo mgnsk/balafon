@@ -9,10 +9,10 @@ import (
 	"golang.org/x/exp/slices"
 )
 
-// Song is an SMF song.
-type Song []TrackEvent
+// SMF is an SMF song.
+type SMF []TrackEvent
 
-func (song Song) String() string {
+func (song SMF) String() string {
 	var s strings.Builder
 
 	for _, ev := range song {
@@ -36,7 +36,7 @@ func (s *TrackEvent) String() string {
 
 // Sequencer is a MIDI sequencer.
 type Sequencer struct {
-	song           Song
+	song           SMF
 	pos            uint32
 	tempo          float64
 	absNanoseconds int64
@@ -71,8 +71,8 @@ func (s *Sequencer) AddBars(bars ...*Bar) {
 }
 
 // Flush emits the accumulated SMF tracks.
-func (s *Sequencer) Flush() Song {
-	song := make(Song, len(s.song))
+func (s *Sequencer) Flush() SMF {
+	song := make(SMF, len(s.song))
 	copy(song, s.song)
 	s.song = s.song[:0]
 	return song

@@ -37,28 +37,32 @@ type ListPortsFn = () => ListPortsResponse;
 type SelectPortFn = (port: number) => SelectPortResponse;
 type PlayFn = (input: string) => PlayResponse;
 
+const startedPromise = new Promise<void>((resolve) => {
+  globalThis.resolveStartedPromise = resolve;
+});
+
 export class Balafon {
+  started: Promise<void>;
   convert: ConvertFn;
   listPorts: ListPortsFn;
   selectPort: SelectPortFn;
   play: PlayFn;
 
-  async init(): Promise<Balafon> {
-    return new Promise((resolve) => {
-      init(go.importObject).then((instance) => {
-        go.run(instance).then(() => {
-          throw new Error("balafon instance exited");
-        });
-
-        // setTimeout hack to give go instance chance to set the globals first.
-        setTimeout(() => {
-          this.convert = globalThis.convert;
-          this.listPorts = globalThis.listPorts;
-          this.selectPort = globalThis.selectPort;
-          this.play = globalThis.play;
-          resolve(this);
-        }, 0);
+  constructor() {
+    init(go.importObject).then((instance) => {
+      go.run(instance).then(() => {
+        throw new Error("balafon instance exited");
       });
     });
   }
+
+  async init() {
+    await startedPromise;
+    this.convert = globalThis.convert;
+    this.listPorts = globalThis.listPorts;
+    this.selectPort = globalThis.selectPort;
+    this.play = globalThis.play;
+  }
 }
+
+export const balafon = new Balafon();

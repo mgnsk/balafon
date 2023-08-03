@@ -2,7 +2,7 @@
 
 /* Percussion channel. */
 /* TODO: off by one? channel 9 is percussion instead of 10. */
-:channel 9
+:channel 10
 
 /* Kick drum. */
 :assign k 36
