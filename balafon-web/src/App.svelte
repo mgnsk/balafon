@@ -52,6 +52,9 @@
       drawTitle: false,
     });
 
+    // https://github.com/opensheetmusicdisplay/opensheetmusicdisplay/issues/1254#issuecomment-1282613439
+    osmd.EngravingRules.PercussionOneLineCutoff = 0;
+
     let cachedInput = localStorage.getItem("balafon-web-input");
     if (cachedInput !== null) {
       inputValue = cachedInput;

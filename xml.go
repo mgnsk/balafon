@@ -58,8 +58,17 @@ func ToXML(w io.Writer, input []byte) error {
 				parts[tr] = p
 			}
 
-			var key *mxl.Key
-			if i == 0 {
+			var (
+				clef *mxl.Clef
+				key  *mxl.Key
+			)
+
+			if tr == constants.PercussionTrack {
+				clef = &mxl.Clef{
+					Sign: "percussion",
+					Line: 2,
+				}
+			} else if i == 0 {
 				// Set default CMaj key on each channel's first bar.
 				key = &mxl.Key{
 					Fifths: 0,
@@ -72,7 +81,7 @@ func ToXML(w io.Writer, input []byte) error {
 				Atters: mxl.Attributes{
 					Divisions: int(constants.TicksPerWhole) / int(bar.timeSig[1]),
 					Key:       key,
-					// Clef      Clef `xml:"clef"`
+					Clef:      clef,
 				},
 			}
 
@@ -206,56 +215,72 @@ func ToXML(w io.Writer, input []byte) error {
 										panic("expected GetNoteStart() to succeed")
 									}
 
-									step, octave := getPitch(int(k))
-									if len(step) == 1 && ev.IsFlat {
-										panic("invariant failure: natural note cannot be flat")
-									}
-
-									pitch := &mxl.Pitch{
-										Step:   step,
-										Octave: octave,
-									}
-
-									setSharp := func() {
-										tmpStep, tmpOctave := getPitch(int(k - 1))
-										pitch.Accidental = 1
-										pitch.Step = tmpStep
-										pitch.Octave = tmpOctave
-									}
-
-									setFlat := func() {
-										tmpStep, tmpOctave := getPitch(int(k + 1))
-										pitch.Accidental = -1
-										pitch.Step = tmpStep
-										pitch.Octave = tmpOctave
-									}
-
-									if strings.HasSuffix(step, "#") {
-										if ev.IsFlat {
-											setFlat()
-										} else {
-											setSharp()
-										}
-									} else {
-										// Note: by interpreter not allowing sharp/flat properties
-										// on notes that are assigned to a non-natural key,
-										// we avoid an ambiguity here.
-										if ev.Note.Props.IsSharp() {
-											setSharp()
-										} else if ev.Note.Props.IsFlat() {
-											setFlat()
-										}
-									}
-
-									measure.Notes = append(measure.Notes, mxl.Note{
-										Pitch:    pitch,
+									note := mxl.Note{
 										Duration: dur,
 										Voice:    int(ev.Voice),
 										Chord:    chord,
-										// Type     string   `xml:"type"`
-										// Chord    xml.Name `xml:"chord"`
-										// Tie      Tie      `xml:"tie"`
-									})
+										NoteHead: &mxl.NoteHead{
+											Filled:      "yes",
+											Parentheses: "no",
+											Value:       "normal",
+										},
+									}
+
+									// TODO: not working
+									if ev.Note.Props.NumGhost() > 0 {
+										note.NoteHead.Parentheses = "yes"
+									}
+
+									switch tr {
+									// case constants.PercussionTrack:
+									// get the pitch and notehead
+
+									default:
+										step, octave := getPitch(int(k))
+										if len(step) == 1 && ev.IsFlat {
+											panic("invariant failure: natural note cannot be flat")
+										}
+
+										pitch := &mxl.Pitch{
+											Step:   step,
+											Octave: octave,
+										}
+
+										setSharp := func() {
+											tmpStep, tmpOctave := getPitch(int(k - 1))
+											pitch.Accidental = 1
+											pitch.Step = tmpStep
+											pitch.Octave = tmpOctave
+										}
+
+										setFlat := func() {
+											tmpStep, tmpOctave := getPitch(int(k + 1))
+											pitch.Accidental = -1
+											pitch.Step = tmpStep
+											pitch.Octave = tmpOctave
+										}
+
+										if strings.HasSuffix(step, "#") {
+											if ev.IsFlat {
+												setFlat()
+											} else {
+												setSharp()
+											}
+										} else {
+											// Note: by interpreter not allowing sharp/flat properties
+											// on notes that are assigned to a non-natural key,
+											// we avoid an ambiguity here.
+											if ev.Note.Props.IsSharp() {
+												setSharp()
+											} else if ev.Note.Props.IsFlat() {
+												setFlat()
+											}
+										}
+
+										note.Pitch = pitch
+									}
+
+									measure.Notes = append(measure.Notes, note)
 								}
 
 								noteCountInPos++
@@ -299,9 +324,15 @@ func ToXML(w io.Writer, input []byte) error {
 	}
 
 	for _, p := range tps {
+		name := fmt.Sprintf("# %s", p.ID)
+
 		score.PartList.Parts = append(score.PartList.Parts, mxl.ScorePart{
 			ID:   p.ID,
-			Name: p.ID,
+			Name: name,
+			ScoreInstrument: &mxl.ScoreInstrument{
+				ID:   p.ID,
+				Name: name,
+			},
 		})
 	}
 

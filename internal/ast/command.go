@@ -121,7 +121,7 @@ func (c CmdChannel) WriteTo(w io.Writer) (int64, error) {
 
 // NewCmdChannel creates a channel change command.
 func NewCmdChannel(value int64) (CmdChannel, error) {
-	if err := validateRange(value, constants.MinHumanChannel, constants.MaxHumanChannel); err != nil {
+	if err := validateRange(value, constants.MinTrack, constants.MaxTrack); err != nil {
 		return CmdChannel{}, err
 	}
 

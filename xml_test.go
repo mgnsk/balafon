@@ -19,6 +19,7 @@ c#
 `))
 
 		g.Expect(err).NotTo(HaveOccurred())
+		g.Expect(buf.String()).To(ContainSubstring("<pitch>"))
 		g.Expect(buf.String()).To(ContainSubstring("<alter>1</alter>"))
 		g.Expect(buf.String()).To(ContainSubstring("<step>C</step>"))
 		g.Expect(buf.String()).To(ContainSubstring("<octave>4</octave>"))
@@ -34,6 +35,7 @@ c
 `))
 
 		g.Expect(err).NotTo(HaveOccurred())
+		g.Expect(buf.String()).To(ContainSubstring("<pitch>"))
 		g.Expect(buf.String()).To(ContainSubstring("<alter>1</alter>"))
 		g.Expect(buf.String()).To(ContainSubstring("<step>C</step>"))
 		g.Expect(buf.String()).To(ContainSubstring("<octave>4</octave>"))

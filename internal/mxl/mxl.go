@@ -18,8 +18,14 @@ type PartList struct {
 
 // ScorePart is part of part-list.
 type ScorePart struct {
+	ID              string           `xml:"id,attr"`
+	Name            string           `xml:"part-name"`
+	ScoreInstrument *ScoreInstrument `xml:"score-instrument"`
+}
+
+type ScoreInstrument struct {
 	ID   string `xml:"id,attr"`
-	Name string `xml:"part-name"`
+	Name string `xml:"instrument-name"`
 }
 
 // Identification holds all of the ident information for a music xml file
@@ -61,7 +67,7 @@ type Attributes struct {
 // Clef represents a clef change
 type Clef struct {
 	Sign string `xml:"sign"`
-	Line int    `xml:"line"`
+	Line int    `xml:"line,omitempty"`
 }
 
 // Key represents a key signature change
@@ -83,9 +89,18 @@ type Note struct {
 	Rest     *xml.Name `xml:"rest,omitempty"`
 	Chord    *xml.Name `xml:"chord,omitempty"`
 	Tie      *Tie      `xml:"tie,omitempty"`
+	NoteHead *NoteHead `xml:"notehead,omitempty"`
 	Type     string    `xml:"type,omitempty"`
 	Duration int       `xml:"duration"`
 	Voice    int       `xml:"voice,omitempty"`
+}
+
+// NoteHead is a notehead element.
+// TODO: notations/articulations
+type NoteHead struct {
+	Filled      string `xml:"filled,attr"`
+	Parentheses string `xml:"parentheses,attr"`
+	Value       string `xml:",innerxml"`
 }
 
 // Backup represents the backup element.
