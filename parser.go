@@ -14,8 +14,8 @@ import (
 	"golang.org/x/exp/slices"
 )
 
-// Interpreter evaluates text input and emits events.
-type Interpreter struct {
+// Parser evaluates text input and emits events.
+type Parser struct {
 	parser    *parser.Parser
 	barBuffer []*Bar
 
@@ -33,7 +33,7 @@ type Interpreter struct {
 }
 
 // EvalFile evaluates a file.
-func (it *Interpreter) EvalFile(filepath string) error {
+func (it *Parser) EvalFile(filepath string) error {
 	scanner, err := lexer.NewLexerFile(filepath)
 	if err != nil {
 		return err
@@ -43,16 +43,16 @@ func (it *Interpreter) EvalFile(filepath string) error {
 }
 
 // EvalString evaluates the string input.
-func (it *Interpreter) EvalString(input string) error {
+func (it *Parser) EvalString(input string) error {
 	return it.eval(lexer.NewLexer([]byte(input)))
 }
 
 // Eval evaluates the input.
-func (it *Interpreter) Eval(input []byte) error {
+func (it *Parser) Eval(input []byte) error {
 	return it.eval(lexer.NewLexer(input))
 }
 
-func (it *Interpreter) eval(scanner parser.Scanner) error {
+func (it *Parser) eval(scanner parser.Scanner) error {
 	res, err := it.parser.Parse(scanner)
 	if err != nil {
 		return err
@@ -73,8 +73,8 @@ func (it *Interpreter) eval(scanner parser.Scanner) error {
 	return nil
 }
 
-// Flush flushes the parsed bar queue and resets the interpreter.
-func (it *Interpreter) Flush() []*Bar {
+// Flush flushes the parsed bar queue and resets the parser.
+func (it *Parser) Flush() []*Bar {
 	var (
 		timesig [2]uint8
 
@@ -162,8 +162,8 @@ func (it *Interpreter) Flush() []*Bar {
 	return playableBars
 }
 
-func (it *Interpreter) beginBar() *Interpreter {
-	return &Interpreter{
+func (it *Parser) beginBar() *Parser {
+	return &Parser{
 		velocity: it.velocity,
 		channel:  it.channel,
 		channels: it.channels,
@@ -177,7 +177,7 @@ func (it *Interpreter) beginBar() *Interpreter {
 	}
 }
 
-func (it *Interpreter) parse(declList ast.NodeList) ([]*Bar, error) {
+func (it *Parser) parse(declList ast.NodeList) ([]*Bar, error) {
 	var bars []*Bar
 
 	for _, decl := range declList {
@@ -235,7 +235,7 @@ func (it *Interpreter) parse(declList ast.NodeList) ([]*Bar, error) {
 	return bars, nil
 }
 
-func (it *Interpreter) parseBar(declList ast.NodeList) (*Bar, error) {
+func (it *Parser) parseBar(declList ast.NodeList) (*Bar, error) {
 	bar := &Bar{
 		timeSig: it.timesig,
 	}
@@ -347,7 +347,7 @@ func (it *Interpreter) parseBar(declList ast.NodeList) (*Bar, error) {
 }
 
 // parseNoteList parses a note list into messages with relative ticks.
-func (it *Interpreter) parseNoteList(bar *Bar, properties ast.PropertyList, nodes ast.NodeList) error {
+func (it *Parser) parseNoteList(bar *Bar, properties ast.PropertyList, nodes ast.NodeList) error {
 	it.pos = 0
 
 	var firstNote *ast.Note
@@ -444,7 +444,7 @@ func (it *Interpreter) parseNoteList(bar *Bar, properties ast.PropertyList, node
 	return nil
 }
 
-func (it *Interpreter) modifyKey(key int, note *ast.Note, scale string) (newKey int, isFlat bool, err error) {
+func (it *Parser) modifyKey(key int, note *ast.Note, scale string) (newKey int, isFlat bool, err error) {
 	step, _ := getPitch(key)
 
 	if strings.HasSuffix(step, "#") && (note.Props.IsSharp() || note.Props.IsFlat()) {
@@ -509,9 +509,9 @@ func (it *Interpreter) modifyKey(key int, note *ast.Note, scale string) (newKey 
 	return key, isFlat, nil
 }
 
-// New creates a balafon interpreter.
-func New() *Interpreter {
-	return &Interpreter{
+// New creates a balafon parser.
+func New() *Parser {
+	return &Parser{
 		parser:   parser.NewParser(),
 		velocity: constants.DefaultVelocity,
 		timesig:  [2]uint8{4, 4},

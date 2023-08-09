@@ -50,11 +50,11 @@ func TestZeroDurationBar(t *testing.T) {
 		t.Run(tc.input, func(t *testing.T) {
 			g := NewWithT(t)
 
-			it := balafon.New()
+			p := balafon.New()
 
-			g.Expect(it.EvalString(tc.input)).To(Succeed())
+			g.Expect(p.EvalString(tc.input)).To(Succeed())
 
-			bars := it.Flush()
+			bars := p.Flush()
 			g.Expect(bars).To(HaveLen(1))
 			g.Expect(bars[0].Duration(60)).To(Equal(tc.dur))
 		})
@@ -97,13 +97,13 @@ func TestBarDurationTimeSignatures(t *testing.T) {
 		t.Run(fmt.Sprintf(":time %s", tc.timesig), func(t *testing.T) {
 			g := NewWithT(t)
 
-			it := balafon.New()
+			p := balafon.New()
 
-			g.Expect(it.EvalString(fmt.Sprintf(":time %s", tc.timesig))).To(Succeed())
-			g.Expect(it.EvalString(":assign c 60")).To(Succeed())
-			g.Expect(it.EvalString(tc.input)).To(Succeed())
+			g.Expect(p.EvalString(fmt.Sprintf(":time %s", tc.timesig))).To(Succeed())
+			g.Expect(p.EvalString(":assign c 60")).To(Succeed())
+			g.Expect(p.EvalString(tc.input)).To(Succeed())
 
-			bars := it.Flush()
+			bars := p.Flush()
 			g.Expect(bars).To(HaveLen(1))
 			g.Expect(bars[0].Duration(60)).To(Equal(time.Second))
 		})
@@ -122,10 +122,10 @@ func TestEmptyBarIsInvalid(t *testing.T) {
 	`
 
 	// TODO
-	it := balafon.New()
-	err := it.EvalString(input)
+	p := balafon.New()
+	err := p.EvalString(input)
 
-	spew.Dump(it.Flush())
+	spew.Dump(p.Flush())
 	_ = g
 	_ = t
 	_ = err

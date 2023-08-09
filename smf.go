@@ -22,13 +22,13 @@ func (a *track) Add(ev TrackEvent) {
 
 // ToSMF converts a balafon script to SMF2.
 func ToSMF(input []byte) (*smf.SMF, error) {
-	it := New()
+	p := New()
 
-	if err := it.Eval(input); err != nil {
+	if err := p.Eval(input); err != nil {
 		return nil, err
 	}
 
-	bars := it.Flush()
+	bars := p.Flush()
 
 	seq := NewSequencer()
 	seq.AddBars(bars...)

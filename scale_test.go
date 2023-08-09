@@ -34,10 +34,10 @@ func TestKeyAccidentalsPitch(t *testing.T) {
 			g := NewWithT(t)
 
 			{
-				it := balafon.New()
-				g.Expect(it.EvalString(tc.input)).To(Succeed())
+				p := balafon.New()
+				g.Expect(p.EvalString(tc.input)).To(Succeed())
 
-				bars := it.Flush()
+				bars := p.Flush()
 				g.Expect(bars).To(HaveLen(1))
 
 				_, key, _, ok := FindNote(bars[0])

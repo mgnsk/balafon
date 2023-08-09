@@ -33,11 +33,11 @@ func TestSequencerTiming(t *testing.T) {
 		t.Run(tc.input, func(t *testing.T) {
 			g := NewWithT(t)
 
-			it := balafon.New()
-			g.Expect(it.EvalString(tc.input)).To(Succeed())
+			p := balafon.New()
+			g.Expect(p.EvalString(tc.input)).To(Succeed())
 
 			s := balafon.NewSequencer()
-			s.AddBars(it.Flush()...)
+			s.AddBars(p.Flush()...)
 
 			sm := s.Flush()
 			g.Expect(sm).To(HaveLen(4))
@@ -64,7 +64,7 @@ func TestSequencerTiming(t *testing.T) {
 func TestSequencerMultiTrackTiming(t *testing.T) {
 	g := NewWithT(t)
 
-	it := balafon.New()
+	p := balafon.New()
 
 	input := `
 :channel 1
@@ -82,10 +82,10 @@ func TestSequencerMultiTrackTiming(t *testing.T) {
 :play test
 `
 
-	g.Expect(it.EvalString(input)).To(Succeed())
+	g.Expect(p.EvalString(input)).To(Succeed())
 
 	s := balafon.NewSequencer()
-	s.AddBars(it.Flush()...)
+	s.AddBars(p.Flush()...)
 
 	sm := s.Flush()
 	g.Expect(sm).To(HaveLen(20))
@@ -102,7 +102,7 @@ func TestSequencerMultiTrackTiming(t *testing.T) {
 func TestSilenceBetweenBars(t *testing.T) {
 	g := NewWithT(t)
 
-	it := balafon.New()
+	p := balafon.New()
 
 	input := `
 :assign x 42
@@ -121,10 +121,10 @@ func TestSilenceBetweenBars(t *testing.T) {
 :play two
 `
 
-	g.Expect(it.EvalString(input)).To(Succeed())
+	g.Expect(p.EvalString(input)).To(Succeed())
 
 	s := balafon.NewSequencer()
-	s.AddBars(it.Flush()...)
+	s.AddBars(p.Flush()...)
 
 	sm := s.Flush()
 	g.Expect(sm.String()).To(Equal(`pos: 0 ns: 0 message: MetaTempo bpm: 60.00
@@ -142,7 +142,7 @@ pos: 3840 ns: 4000000000 message: NoteOff channel: 0 key: 42
 func TestTempoChange(t *testing.T) {
 	g := NewWithT(t)
 
-	it := balafon.New()
+	p := balafon.New()
 
 	input := `
 :assign x 42
@@ -163,10 +163,10 @@ func TestTempoChange(t *testing.T) {
 :play two
 `
 
-	g.Expect(it.EvalString(input)).To(Succeed())
+	g.Expect(p.EvalString(input)).To(Succeed())
 
 	s := balafon.NewSequencer()
-	s.AddBars(it.Flush()...)
+	s.AddBars(p.Flush()...)
 
 	sm := s.Flush()
 	g.Expect(sm).To(HaveLen(10))
@@ -181,9 +181,9 @@ func TestTempoChange(t *testing.T) {
 func TestZeroDurationBarCollapse(t *testing.T) {
 	g := NewWithT(t)
 
-	it := balafon.New()
+	p := balafon.New()
 
-	err := it.EvalString(`
+	err := p.EvalString(`
 :tempo 60
 :time 1 4
 
@@ -207,7 +207,7 @@ func TestZeroDurationBarCollapse(t *testing.T) {
 	g.Expect(err).NotTo(HaveOccurred())
 
 	s := balafon.NewSequencer()
-	s.AddBars(it.Flush()...)
+	s.AddBars(p.Flush()...)
 
 	sm := s.Flush()
 	g.Expect(sm.String()).To(Equal(`pos: 0 ns: 0 message: MetaTempo bpm: 60.00

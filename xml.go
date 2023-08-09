@@ -14,13 +14,13 @@ import (
 
 // ToXML converts a balafon script to MusicXML.
 func ToXML(w io.Writer, input []byte) error {
-	it := New()
+	p := New()
 
-	if err := it.Eval(input); err != nil {
+	if err := p.Eval(input); err != nil {
 		return err
 	}
 
-	bars := it.Flush()
+	bars := p.Flush()
 
 	var tracks []uint8
 	{

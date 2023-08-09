@@ -33,12 +33,12 @@ func (*reader) Read(p []byte) (int, error) {
 func TestLiveShell(t *testing.T) {
 	g := NewWithT(t)
 
-	it := balafon.New()
-	g.Expect(it.EvalString(":assign a 60")).To(Succeed())
+	p := balafon.New()
+	g.Expect(p.EvalString(":assign a 60")).To(Succeed())
 
 	buf := &bytes.Buffer{}
 
-	s := balafon.NewLiveShell(&reader{}, it, &out{buf: buf})
+	s := balafon.NewLiveShell(&reader{}, p, &out{buf: buf})
 	g.Expect(s.HandleNext()).To(Succeed())
 
 	msg := midi.Message(buf.Bytes())
@@ -46,12 +46,12 @@ func TestLiveShell(t *testing.T) {
 }
 
 func BenchmarkLiveShell(b *testing.B) {
-	it := balafon.New()
-	if err := it.EvalString(":assign a 60"); err != nil {
+	p := balafon.New()
+	if err := p.EvalString(":assign a 60"); err != nil {
 		b.Fatal(err)
 	}
 
-	s := balafon.NewLiveShell(&reader{}, it, &out{})
+	s := balafon.NewLiveShell(&reader{}, p, &out{})
 
 	b.ReportAllocs()
 	b.ResetTimer()

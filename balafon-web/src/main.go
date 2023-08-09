@@ -121,22 +121,22 @@ func play(_ js.Value, args []js.Value) any {
 		panic("expected 1 argument")
 	}
 
-	it := balafon.New()
-	if err := it.EvalString(args[0].String()); err != nil {
+	p := balafon.New()
+	if err := p.EvalString(args[0].String()); err != nil {
 		return map[string]interface{}{
 			"err": err.Error(),
 		}
 	}
 
 	s := balafon.NewSequencer()
-	s.AddBars(it.Flush()...)
+	s.AddBars(p.Flush()...)
 
 	events := s.Flush()
 
-	p := balafon.NewPlayer(out)
+	player := balafon.NewPlayer(out)
 
 	go func() {
-		if err := p.Play(events...); err != nil {
+		if err := player.Play(events...); err != nil {
 			js.Global().Get("console").Call("error", err.Error())
 		}
 	}()

@@ -74,14 +74,14 @@ func createCmdLive() *cobra.Command {
 				return err
 			}
 
-			it := balafon.New()
-			if err := it.EvalFile(args[0]); err != nil {
+			p := balafon.New()
+			if err := p.EvalFile(args[0]); err != nil {
 				return err
 			}
 
-			it.Flush()
+			p.Flush()
 
-			s := balafon.NewLiveShell(os.Stdin, it, out)
+			s := balafon.NewLiveShell(os.Stdin, p, out)
 
 			oldState, err := term.MakeRaw(int(os.Stdin.Fd()))
 			if err != nil {
@@ -112,19 +112,19 @@ func createCmdPlay() *cobra.Command {
 				return err
 			}
 
-			it := balafon.New()
-			if err := it.EvalFile(args[0]); err != nil {
+			p := balafon.New()
+			if err := p.EvalFile(args[0]); err != nil {
 				return err
 			}
 
 			s := balafon.NewSequencer()
-			s.AddBars(it.Flush()...)
+			s.AddBars(p.Flush()...)
 
 			events := s.Flush()
 
-			p := balafon.NewPlayer(out)
+			player := balafon.NewPlayer(out)
 
-			return p.Play(events...)
+			return player.Play(events...)
 		},
 	}
 	addPortFlag(cmd)
@@ -137,9 +137,9 @@ func createCmdLint() *cobra.Command {
 		Short: "Lint a file",
 		Args:  cobra.ExactArgs(1),
 		RunE: func(c *cobra.Command, args []string) error {
-			it := balafon.New()
+			p := balafon.New()
 
-			if err := it.EvalFile(args[0]); err != nil {
+			if err := p.EvalFile(args[0]); err != nil {
 				if _, e := io.WriteString(os.Stderr, err.Error()); e != nil {
 					return e
 				}

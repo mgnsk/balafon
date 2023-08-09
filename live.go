@@ -17,16 +17,16 @@ const (
 // LiveShell is an unbuffered live shell.
 type LiveShell struct {
 	r   io.Reader
-	it  *Interpreter
+	p   *Parser
 	buf []byte
 	out drivers.Out
 }
 
 // NewLiveShell creates a new live shell.
-func NewLiveShell(r io.Reader, it *Interpreter, out drivers.Out) *LiveShell {
+func NewLiveShell(r io.Reader, p *Parser, out drivers.Out) *LiveShell {
 	return &LiveShell{
 		r:   r,
-		it:  it,
+		p:   p,
 		buf: make([]byte, 1),
 		out: out,
 	}
@@ -44,12 +44,12 @@ func (s *LiveShell) HandleNext() error {
 		return io.EOF
 	}
 
-	if err := s.it.EvalString(string(r)); err != nil {
+	if err := s.p.EvalString(string(r)); err != nil {
 		fmt.Printf("%s\n", err.Error())
 		return nil
 	}
 
-	for _, bar := range s.it.Flush() {
+	for _, bar := range s.p.Flush() {
 		for _, ev := range bar.Events {
 			if ev.Message.Is(midi.NoteOnMsg) {
 				if err := s.out.Send(ev.Message); err != nil {
