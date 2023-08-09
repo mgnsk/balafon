@@ -215,6 +215,8 @@ c$
 
 Notes can be arbitrarily grouped and properties applied to multiple notes at once.
 
+TODO: In MusicXML export, grouped notes are beamed together.
+
 ```
 // Ti-Tiri.
 x8 x16 x16

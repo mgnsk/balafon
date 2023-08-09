@@ -1,7 +1,7 @@
 package balafon_test
 
 import (
-	"bytes"
+	"strings"
 	"testing"
 
 	"github.com/mgnsk/balafon"
@@ -12,7 +12,7 @@ func TestXMLSharpNotes(t *testing.T) {
 	t.Run("natural base note plus sharp", func(t *testing.T) {
 		g := NewWithT(t)
 
-		var buf bytes.Buffer
+		var buf strings.Builder
 		err := balafon.ToXML(&buf, []byte(`
 :assign c 60
 c#
@@ -28,7 +28,7 @@ c#
 	t.Run("sharp base note", func(t *testing.T) {
 		g := NewWithT(t)
 
-		var buf bytes.Buffer
+		var buf strings.Builder
 		err := balafon.ToXML(&buf, []byte(`
 :assign c 61
 c
@@ -46,7 +46,7 @@ func TestXMLChords(t *testing.T) {
 	t.Run("single voice can chord", func(t *testing.T) {
 		g := NewWithT(t)
 
-		var buf bytes.Buffer
+		var buf strings.Builder
 		err := balafon.ToXML(&buf, []byte(`
 :assign c 60
 :bar one
@@ -63,18 +63,17 @@ func TestXMLChords(t *testing.T) {
 	t.Run("multiple voice cannot chord", func(t *testing.T) {
 		g := NewWithT(t)
 
-		var buf bytes.Buffer
+		var buf strings.Builder
 		err := balafon.ToXML(&buf, []byte(`
-
-	:assign c 60
-	:bar one
+:assign c 60
+:bar one
 	:voice 1
 	c
 	:voice 2
 	c
-	:end
-	:play one
-	`))
+:end
+:play one
+`))
 
 		g.Expect(err).NotTo(HaveOccurred())
 		g.Expect(buf.String()).NotTo(ContainSubstring("<chord>"))

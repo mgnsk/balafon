@@ -1,8 +1,8 @@
 package balafon_test
 
 import (
-	"bytes"
 	"fmt"
+	"strings"
 	"testing"
 
 	"github.com/mgnsk/balafon"
@@ -46,7 +46,7 @@ func TestKeyAccidentalsPitch(t *testing.T) {
 			}
 
 			{
-				var buf bytes.Buffer
+				var buf strings.Builder
 				g.Expect(balafon.ToXML(&buf, []byte(tc.input))).To(Succeed())
 
 				g.Expect(buf.String()).To(ContainSubstring(fmt.Sprintf("<alter>%d</alter>", tc.alter)))

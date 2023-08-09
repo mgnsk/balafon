@@ -1,7 +1,7 @@
 package ast_test
 
 import (
-	"bytes"
+	"strings"
 	"testing"
 
 	"github.com/mgnsk/balafon/internal/ast"
@@ -95,7 +95,7 @@ func TestNoteList(t *testing.T) {
 			res, err := parse(tc.input)
 			g.Expect(err).NotTo(HaveOccurred())
 
-			var buf bytes.Buffer
+			var buf strings.Builder
 			_, err = res.WriteTo(&buf)
 			g.Expect(err).NotTo(HaveOccurred())
 

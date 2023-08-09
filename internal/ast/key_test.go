@@ -1,8 +1,8 @@
 package ast_test
 
 import (
-	"bytes"
 	"fmt"
+	"strings"
 	"testing"
 
 	. "github.com/onsi/gomega"
@@ -51,7 +51,7 @@ func TestKey(t *testing.T) {
 			nodeList, err := parse(input)
 			g.Expect(err).NotTo(HaveOccurred())
 
-			var buf bytes.Buffer
+			var buf strings.Builder
 			_, err = nodeList.WriteTo(&buf)
 			g.Expect(err).NotTo(HaveOccurred())
 			g.Expect(buf.String()).To(Equal(fmt.Sprintf(":key %s", scale)))

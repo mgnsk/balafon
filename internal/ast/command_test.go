@@ -1,7 +1,7 @@
 package ast_test
 
 import (
-	"bytes"
+	"strings"
 	"testing"
 
 	"github.com/mgnsk/balafon/internal/ast"
@@ -65,7 +65,7 @@ func TestValidCommands(t *testing.T) {
 			res, err := parse(tc.input)
 			g.Expect(err).NotTo(HaveOccurred())
 
-			var buf bytes.Buffer
+			var buf strings.Builder
 			res.WriteTo(&buf)
 			g.Expect(buf.String()).To(Equal(tc.input))
 		})
