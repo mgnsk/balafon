@@ -101,10 +101,11 @@
   }
 
   function onSelectPort() {
-    localStorage.setItem("balafon-web-port", selectedPort.toString());
     const resp = balafon.selectPort(selectedPort);
     if (resp.err) {
       showError(resp.err);
+    } else {
+      localStorage.setItem("balafon-web-port", selectedPort.toString());
     }
   }
 

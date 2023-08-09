@@ -63,16 +63,18 @@ func ToXML(w io.Writer, input []byte) error {
 				key  *mxl.Key
 			)
 
-			if tr == constants.PercussionTrack {
-				clef = &mxl.Clef{
-					Sign: "percussion",
-					Line: 2,
-				}
-			} else if i == 0 {
+			if i == 0 {
 				// Set default CMaj key on each channel's first bar.
 				key = &mxl.Key{
 					Fifths: 0,
 					Mode:   "major",
+				}
+
+				if tr == constants.PercussionTrack {
+					clef = &mxl.Clef{
+						Sign: "percussion",
+						Line: 2,
+					}
 				}
 			}
 
