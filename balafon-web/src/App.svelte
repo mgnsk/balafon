@@ -5,6 +5,7 @@
   import { linter, type Diagnostic } from "@codemirror/lint";
   import {
     AlignRestOption,
+    Cursor,
     OpenSheetMusicDisplay,
   } from "opensheetmusicdisplay";
 
@@ -50,6 +51,7 @@
       autoBeam: true,
       backend: "svg",
       drawTitle: false,
+      followCursor: true,
     });
 
     // https://github.com/opensheetmusicdisplay/opensheetmusicdisplay/issues/1254#issuecomment-1282613439
@@ -119,22 +121,22 @@
 
 <main>
   <div class="error">{errorMessage}</div>
+
   <div class="toolbar">
-    <div>
-      <label for="ports">Choose MIDI out port:</label>
-      <select
-        name="ports"
-        id="ports"
-        bind:value={selectedPort}
-        on:change={onSelectPort}
-      >
-        {#each ports as port}
-          <option value={port.number}>{port.number}: {port.name}</option>
-        {/each}
-      </select>
-    </div>
+    <label for="ports">Choose MIDI out port:</label>
+    <select
+      name="ports"
+      id="ports"
+      bind:value={selectedPort}
+      on:change={onSelectPort}
+    >
+      {#each ports as port}
+        <option value={port.number}>{port.number}: {port.name}</option>
+      {/each}
+    </select>
     <a href="#" on:click={onPlay} title="Play">Play</a>
   </div>
+
   <div class="editor">
     <CodeMirror
       bind:value={inputValue}
@@ -142,6 +144,7 @@
       on:change={onInput}
     />
   </div>
+
   <div class="score" id="osmdContainer"></div>
 </main>
 

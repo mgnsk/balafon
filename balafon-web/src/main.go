@@ -59,8 +59,6 @@ func convert(_ js.Value, args []js.Value) any {
 		return newConvertResponse(0, err)
 	}
 
-	fmt.Println(buf.String())
-
 	if n := js.CopyBytesToJS(args[0], buf.Bytes()); n != buf.Len() {
 		panic(fmt.Errorf("copied: %d, expected: %d bytes", n, buf.Len()))
 	}
