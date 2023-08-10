@@ -88,16 +88,6 @@ func (l PropertyList) IsFlat() bool {
 	return l.find(tokentype.PropFlat) != -1
 }
 
-// NumSharp returns the number of sharp signs.
-func (l PropertyList) NumSharp() int {
-	return l.countProps(tokentype.PropSharp)
-}
-
-// NumFlat reports the number of flat signs.
-func (l PropertyList) NumFlat() int {
-	return l.countProps(tokentype.PropFlat)
-}
-
 // NumStaccato reports the number of staccato properties.
 func (l PropertyList) NumStaccato() int {
 	return l.countProps(tokentype.PropStaccato)

@@ -97,7 +97,7 @@ func TestUniqueProperties(t *testing.T) {
 	n := notes[0]
 
 	g.Expect(n.Props).To(HaveLen(4))
-	g.Expect(n.Props.NumSharp()).To(Equal(1))
+	g.Expect(n.Props.IsSharp()).To(BeTrue())
 	g.Expect(n.Props.Value()).To(Equal(uint8(8)))
 	g.Expect(n.Props.Tuplet()).To(Equal(3))
 	g.Expect(n.Props.IsLetRing()).To(BeTrue())

@@ -11,16 +11,12 @@ import (
 // Channel is a MIDI channel.
 type Channel uint8
 
-func (c Channel) Uint8() uint8 {
+func (c Channel) MIDI() uint8 {
 	return uint8(c)
 }
 
 func (c Channel) Human() uint8 {
 	return uint8(c) + 1
-}
-
-func NewChannelFromMIDI(ch uint8) Channel {
-	return Channel(ch)
 }
 
 func NewChannelFromHuman(ch uint8) Channel {
@@ -30,19 +26,16 @@ func NewChannelFromHuman(ch uint8) Channel {
 // Voice is a score voice.
 type Voice uint8
 
-func (v Voice) Uint8() uint8 {
-	return uint8(v)
-}
-
 // Event is a balafon event.
 type Event struct {
-	Note     *ast.Note // only for note on messages and rests
-	Message  smf.Message
-	IsFlat   bool   // if the midi note was lowered due to key sig
-	Pos      uint32 // in relative ticks from beginning of bar
-	Duration uint32 // in ticks
-	Voice    Voice
-	Track    uint8 // track is the MIDI channel in human value
+	Note        *ast.Note // only for note on messages and rests
+	Message     smf.Message
+	IsNoteGroup bool   // if note part of a note group
+	IsFlat      bool   // if the midi note was lowered due to key sig
+	Pos         uint32 // in relative ticks from beginning of bar
+	Duration    uint32 // in ticks
+	Voice       Voice
+	Track       uint8 // track is the MIDI channel in human value
 }
 
 func (e *Event) String() string {

@@ -84,15 +84,25 @@ type Time struct {
 
 // Note represents a note in a measure
 type Note struct {
-	XMLName  xml.Name  `xml:"note"`
-	Pitch    *Pitch    `xml:"pitch,omitempty"`
-	Rest     *xml.Name `xml:"rest,omitempty"`
-	Chord    *xml.Name `xml:"chord,omitempty"`
-	Tie      *Tie      `xml:"tie,omitempty"`
-	NoteHead *NoteHead `xml:"notehead,omitempty"`
-	Type     string    `xml:"type,omitempty"`
-	Duration int       `xml:"duration"`
-	Voice    int       `xml:"voice,omitempty"`
+	XMLName   xml.Name   `xml:"note"`
+	Pitch     *Pitch     `xml:"pitch,omitempty"`
+	Rest      *xml.Name  `xml:"rest,omitempty"`
+	Chord     *xml.Name  `xml:"chord,omitempty"`
+	Tie       *Tie       `xml:"tie,omitempty"`
+	NoteHead  *NoteHead  `xml:"notehead,omitempty"`
+	Notations *Notations `xml:"notations,omitempty"`
+	Type      string     `xml:"type,omitempty"`
+	Duration  int        `xml:"duration"`
+	Voice     int        `xml:"voice,omitempty"`
+}
+
+type Notations struct {
+	Tuplet *Tuplet `xml:"tuplet,omitempty"`
+}
+
+type Tuplet struct {
+	Number int    `xml:"number,attr"`
+	Type   string `xml:"type,attr"`
 }
 
 // NoteHead is a notehead element.

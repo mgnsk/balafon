@@ -201,7 +201,7 @@ func TestSharpFlatNote(t *testing.T) {
 				bars := p.Flush()
 				g.Expect(bars).To(HaveLen(1))
 
-				_, key, _, ok := FindNote(bars[0])
+				_, key, _, ok := findNote(bars[0])
 				g.Expect(ok).To(BeTrue())
 				g.Expect(key).To(Equal(tc.key))
 			})
@@ -260,7 +260,7 @@ func TestAccentuatedAndGhostNote(t *testing.T) {
 			bars := p.Flush()
 			g.Expect(bars).To(HaveLen(1))
 
-			_, _, velocity, ok := FindNote(bars[0])
+			_, _, velocity, ok := findNote(bars[0])
 			g.Expect(ok).To(BeTrue())
 			g.Expect(velocity).To(Equal(velocity))
 		})
@@ -776,7 +776,7 @@ func TestChannelHumanValue(t *testing.T) {
 			bars := p.Flush()
 			g.Expect(bars).To(HaveLen(1))
 
-			ch, _, _, ok := FindNote(bars[0])
+			ch, _, _, ok := findNote(bars[0])
 			g.Expect(ok).To(BeTrue())
 
 			g.Expect(ch).To(Equal(tc.midiCh))
@@ -795,7 +795,7 @@ func TestDefaultChannel(t *testing.T) {
 	bars := p.Flush()
 	g.Expect(bars).To(HaveLen(1))
 
-	ch, _, _, ok := FindNote(bars[0])
+	ch, _, _, ok := findNote(bars[0])
 	g.Expect(ok).To(BeTrue())
 	g.Expect(ch).To(Equal(uint8(0)))
 }

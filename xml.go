@@ -6,6 +6,7 @@ import (
 	"io"
 	"strings"
 
+	"github.com/mgnsk/balafon/internal/ast"
 	"github.com/mgnsk/balafon/internal/constants"
 	"github.com/mgnsk/balafon/internal/mxl"
 	"gitlab.com/gomidi/midi/v2/smf"
@@ -15,6 +16,8 @@ import (
 // ToXML converts a balafon script to MusicXML.
 func ToXML(w io.Writer, input []byte) error {
 	p := New()
+
+	curTuplet := 0
 
 	if err := p.Eval(input); err != nil {
 		return err
@@ -139,6 +142,7 @@ func ToXML(w io.Writer, input []byte) error {
 							}
 						}
 
+						var prevNote *ast.Note
 						prevNoteDur := 0
 						noteCountInPos := 0
 
@@ -191,9 +195,29 @@ func ToXML(w io.Writer, input []byte) error {
 									})
 								}
 
+								var notations *mxl.Notations
+								if ev.Note.Props.Tuplet() > 0 {
+									if prevNote == nil || prevNote.Props.Tuplet() == 0 {
+										// First note or beginning of tuplet.
+										notations = &mxl.Notations{}
+
+										curTuplet++
+
+										notations.Tuplet = &mxl.Tuplet{
+											Number: curTuplet,
+											Type:   "start",
+										}
+									}
+								} else if prevNote != nil && prevNote.Props.Tuplet() > 0 {
+									notations = &mxl.Notations{}
+
+									notations.Tuplet = &mxl.Tuplet{
+										Number: curTuplet,
+										Type:   "stop",
+									}
+								}
+
 								dur := int(ev.Note.Props.NoteLen())
-								prevVoiceDur += dur
-								prevNoteDur = dur
 
 								if ev.Note.IsPause() {
 									measure.Notes = append(measure.Notes, mxl.Note{
@@ -208,7 +232,8 @@ func ToXML(w io.Writer, input []byte) error {
 										Rest: &xml.Name{
 											Local: "rest",
 										},
-										Chord: chord,
+										Chord:     chord,
+										Notations: notations,
 										// Tie      Tie      `xml:"tie"`
 									})
 								} else {
@@ -226,6 +251,7 @@ func ToXML(w io.Writer, input []byte) error {
 											Parentheses: "no",
 											Value:       "normal",
 										},
+										Notations: notations,
 									}
 
 									// TODO: not working
@@ -285,7 +311,11 @@ func ToXML(w io.Writer, input []byte) error {
 									measure.Notes = append(measure.Notes, note)
 								}
 
+								prevVoiceDur += dur
+								prevNoteDur = dur
 								noteCountInPos++
+
+								prevNote = ev.Note
 							}
 						}
 					}

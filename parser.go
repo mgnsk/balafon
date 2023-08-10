@@ -298,13 +298,13 @@ func (it *Parser) parseBar(declList ast.NodeList) (*Bar, error) {
 		case ast.CmdProgram:
 			bar.Events = append(bar.Events, Event{
 				Track:   it.channel.Human(),
-				Message: smf.Message(midi.ProgramChange(it.channel.Uint8(), decl.Program)),
+				Message: smf.Message(midi.ProgramChange(it.channel.MIDI(), decl.Program)),
 			})
 
 		case ast.CmdControl:
 			bar.Events = append(bar.Events, Event{
 				Track:   it.channel.Human(),
-				Message: smf.Message(midi.ControlChange(it.channel.Uint8(), decl.Control, decl.Parameter)),
+				Message: smf.Message(midi.ControlChange(it.channel.MIDI(), decl.Control, decl.Parameter)),
 			})
 
 		case ast.CmdStart:
@@ -318,12 +318,12 @@ func (it *Parser) parseBar(declList ast.NodeList) (*Bar, error) {
 			})
 
 		case ast.NodeList:
-			if err := it.parseNoteList(bar, nil, decl); err != nil {
+			if err := it.parseNoteList(bar, nil, decl, false); err != nil {
 				return nil, err
 			}
 
 		case ast.NoteGroup:
-			if err := it.parseNoteList(bar, decl.Props, decl.Nodes); err != nil {
+			if err := it.parseNoteList(bar, decl.Props, decl.Nodes, true); err != nil {
 				return nil, err
 			}
 
@@ -347,12 +347,12 @@ func (it *Parser) parseBar(declList ast.NodeList) (*Bar, error) {
 }
 
 // parseNoteList parses a note list into messages with relative ticks.
-func (it *Parser) parseNoteList(bar *Bar, properties ast.PropertyList, nodes ast.NodeList) error {
+func (it *Parser) parseNoteList(bar *Bar, properties ast.PropertyList, nodes ast.NodeList, isNoteGroup bool) error {
 	it.pos = 0
 
 	var firstNote *ast.Note
 
-	err := ast.WalkNotes(nodes, nil, func(note *ast.Note) error {
+	err := ast.WalkNotes(nodes, properties, func(note *ast.Note) error {
 		if firstNote == nil {
 			firstNote = note
 		}
@@ -367,11 +367,12 @@ func (it *Parser) parseNoteList(bar *Bar, properties ast.PropertyList, nodes ast
 		switch note.IsPause() {
 		case true:
 			bar.Events = append(bar.Events, Event{
-				Track:    it.channel.Human(),
-				Voice:    it.voice,
-				Note:     note,
-				Pos:      it.pos,
-				Duration: actualNoteLen,
+				Track:       it.channel.Human(),
+				Voice:       it.voice,
+				Note:        note,
+				Pos:         it.pos,
+				Duration:    actualNoteLen,
+				IsNoteGroup: isNoteGroup,
 			})
 
 		case false:
@@ -404,13 +405,14 @@ func (it *Parser) parseNoteList(bar *Bar, properties ast.PropertyList, nodes ast
 			}
 
 			bar.Events = append(bar.Events, Event{
-				Track:    it.channel.Human(),
-				Voice:    it.voice,
-				Note:     note,
-				Pos:      it.pos,
-				Duration: actualNoteLen,
-				IsFlat:   isFlat,
-				Message:  smf.Message(midi.NoteOn(it.channel.Uint8(), uint8(key), uint8(v))),
+				Track:       it.channel.Human(),
+				Voice:       it.voice,
+				Note:        note,
+				Pos:         it.pos,
+				Duration:    actualNoteLen,
+				IsNoteGroup: isNoteGroup,
+				IsFlat:      isFlat,
+				Message:     smf.Message(midi.NoteOn(it.channel.MIDI(), uint8(key), uint8(v))),
 			})
 
 			if !note.Props.IsLetRing() {
@@ -420,7 +422,7 @@ func (it *Parser) parseNoteList(bar *Bar, properties ast.PropertyList, nodes ast
 					Track:    it.channel.Human(),
 					Pos:      it.pos + actualNoteLen,
 					Duration: 0,
-					Message:  smf.Message(midi.NoteOff(it.channel.Uint8(), uint8(key))),
+					Message:  smf.Message(midi.NoteOff(it.channel.MIDI(), uint8(key))),
 				})
 			}
 		}

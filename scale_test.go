@@ -40,7 +40,7 @@ func TestKeyAccidentalsPitch(t *testing.T) {
 				bars := p.Flush()
 				g.Expect(bars).To(HaveLen(1))
 
-				_, key, _, ok := FindNote(bars[0])
+				_, key, _, ok := findNote(bars[0])
 				g.Expect(ok).To(BeTrue())
 				g.Expect(key).To(Equal(tc.key))
 			}

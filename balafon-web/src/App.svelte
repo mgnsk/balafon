@@ -85,6 +85,8 @@
       });
       var url = URL.createObjectURL(blob);
 
+      console.log(await blob.text());
+
       await osmd.load(url);
       osmd.render();
       errorMessage = "";
