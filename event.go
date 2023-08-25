@@ -30,7 +30,7 @@ type Voice uint8
 type Event struct {
 	Note        *ast.Note // only for note on messages and rests
 	Message     smf.Message
-	IsNoteGroup bool   // if note part of a note group
+	IsNoteGroup bool   // if note part of a note group, TODO
 	IsFlat      bool   // if the midi note was lowered due to key sig
 	Pos         uint32 // in relative ticks from beginning of bar
 	Duration    uint32 // in ticks
