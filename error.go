@@ -20,13 +20,11 @@ type EvalError struct {
 }
 
 func (e *EvalError) Error() string {
-	text := fmt.Sprintf("%d:%d: error: ", e.Pos.Line, e.Pos.Column)
-
-	// See if the error token can provide us with the filename.
-	switch src := e.Pos.Context.(type) {
-	case token.Sourcer:
-		text = src.Source() + ":" + text
+	if e.Pos.Context != nil {
+		if src, ok := e.Pos.Context.(token.Sourcer); ok {
+			return fmt.Sprintf("%s:%d:%d: error: %s", src.Source(), e.Pos.Line, e.Pos.Column, e.Err.Error())
+		}
 	}
 
-	return text + e.Err.Error()
+	return fmt.Sprintf("%d:%d: error: %s", e.Pos.Line, e.Pos.Column, e.Err.Error())
 }
