@@ -1,0 +1,295 @@
+#### SMF Format: 1 TimeFormat: 960 MetricTicks NumTracks: 2 ####
+## TRACK 0 ##
+#0 [0] MetaText text: "A simplified Bonham half time shuffle"
+#0 [0] MetaText text: "Percussion channel."
+#0 [0] MetaText text: "Kick drum."
+#0 [0] MetaText text: "Acoustic snare drum."
+#0 [0] MetaText text: "Hi-Hat closed."
+#0 [0] MetaText text: "Hi-Hat open."
+#0 [0] MetaText text: "Hi-Hat foot."
+#0 [0] MetaText text: "Crash cymbal."
+#0 [0] MetaText text: "Low tom."
+#0 [0] MetaText text: "Floor tom 2."
+#0 [0] MetaTempo bpm: 132.00
+#0 [0] MetaTimeSig meter: 4/4
+#0 [0] MetaText text: "Start the first bar with a crash cymbal and let it ring."
+#0 [0] MetaText text: "Count in."
+#0 [3840] MetaText text: "Play 8 :bars of the Bonham groove."
+#0 [0] MetaTimeSig meter: 4/4
+#0 [3840] MetaTimeSig meter: 4/4
+#0 [3840] MetaTimeSig meter: 4/4
+#0 [3840] MetaTimeSig meter: 4/4
+#0 [3840] MetaText text: "Play 8 :bars of the Bonham groove."
+#0 [0] MetaTimeSig meter: 4/4
+#0 [3840] MetaTimeSig meter: 4/4
+#0 [3840] MetaTimeSig meter: 4/4
+#0 [3840] MetaTimeSig meter: 4/4
+#0 [0] MetaEndOfTrack
+## TRACK 1 ##
+#1 [0] NoteOn channel: 9 key: 42 velocity: 100
+#1 [960] NoteOff channel: 9 key: 42
+#1 [0] NoteOn channel: 9 key: 42 velocity: 100
+#1 [960] NoteOff channel: 9 key: 42
+#1 [0] NoteOn channel: 9 key: 42 velocity: 100
+#1 [960] NoteOff channel: 9 key: 42
+#1 [0] NoteOn channel: 9 key: 46 velocity: 100
+#1 [960] NoteOff channel: 9 key: 46
+#1 [0] NoteOn channel: 9 key: 49 velocity: 100
+#1 [0] NoteOn channel: 9 key: 36 velocity: 105
+#1 [320] NoteOff channel: 9 key: 36
+#1 [320] NoteOn channel: 9 key: 46 velocity: 100
+#1 [0] NoteOn channel: 9 key: 36 velocity: 105
+#1 [320] NoteOff channel: 9 key: 46
+#1 [0] NoteOn channel: 9 key: 42 velocity: 105
+#1 [0] NoteOff channel: 9 key: 36
+#1 [0] NoteOn channel: 9 key: 44 velocity: 100
+#1 [320] NoteOff channel: 9 key: 42
+#1 [0] NoteOn channel: 9 key: 38 velocity: 95
+#1 [320] NoteOn channel: 9 key: 42 velocity: 100
+#1 [0] NoteOff channel: 9 key: 38
+#1 [0] NoteOn channel: 9 key: 36 velocity: 100
+#1 [320] NoteOff channel: 9 key: 42
+#1 [0] NoteOn channel: 9 key: 42 velocity: 110
+#1 [0] NoteOn channel: 9 key: 38 velocity: 110
+#1 [0] NoteOff channel: 9 key: 36
+#1 [0] NoteOff channel: 9 key: 44
+#1 [320] NoteOff channel: 9 key: 42
+#1 [320] NoteOn channel: 9 key: 42 velocity: 100
+#1 [320] NoteOff channel: 9 key: 42
+#1 [0] NoteOn channel: 9 key: 42 velocity: 105
+#1 [0] NoteOff channel: 9 key: 38
+#1 [320] NoteOff channel: 9 key: 42
+#1 [0] NoteOn channel: 9 key: 38 velocity: 95
+#1 [320] NoteOn channel: 9 key: 42 velocity: 100
+#1 [0] NoteOff channel: 9 key: 38
+#1 [0] NoteOn channel: 9 key: 36 velocity: 100
+#1 [320] NoteOff channel: 9 key: 42
+#1 [0] NoteOff channel: 9 key: 36
+#1 [0] NoteOn channel: 9 key: 42 velocity: 110
+#1 [0] NoteOn channel: 9 key: 36 velocity: 105
+#1 [320] NoteOff channel: 9 key: 42
+#1 [0] NoteOff channel: 9 key: 36
+#1 [320] NoteOn channel: 9 key: 46 velocity: 100
+#1 [0] NoteOn channel: 9 key: 36 velocity: 105
+#1 [320] NoteOff channel: 9 key: 46
+#1 [0] NoteOn channel: 9 key: 42 velocity: 105
+#1 [0] NoteOff channel: 9 key: 36
+#1 [0] NoteOn channel: 9 key: 44 velocity: 100
+#1 [320] NoteOff channel: 9 key: 42
+#1 [0] NoteOn channel: 9 key: 38 velocity: 95
+#1 [320] NoteOn channel: 9 key: 42 velocity: 100
+#1 [0] NoteOff channel: 9 key: 38
+#1 [0] NoteOn channel: 9 key: 36 velocity: 100
+#1 [320] NoteOff channel: 9 key: 42
+#1 [0] NoteOn channel: 9 key: 42 velocity: 110
+#1 [0] NoteOn channel: 9 key: 38 velocity: 110
+#1 [0] NoteOff channel: 9 key: 36
+#1 [0] NoteOff channel: 9 key: 44
+#1 [320] NoteOff channel: 9 key: 42
+#1 [320] NoteOn channel: 9 key: 42 velocity: 100
+#1 [320] NoteOff channel: 9 key: 42
+#1 [0] NoteOn channel: 9 key: 42 velocity: 105
+#1 [0] NoteOff channel: 9 key: 38
+#1 [320] NoteOff channel: 9 key: 42
+#1 [0] NoteOn channel: 9 key: 38 velocity: 95
+#1 [320] NoteOn channel: 9 key: 42 velocity: 100
+#1 [0] NoteOff channel: 9 key: 38
+#1 [0] NoteOn channel: 9 key: 36 velocity: 100
+#1 [320] NoteOff channel: 9 key: 42
+#1 [0] NoteOff channel: 9 key: 36
+#1 [0] NoteOn channel: 9 key: 42 velocity: 110
+#1 [0] NoteOn channel: 9 key: 36 velocity: 105
+#1 [320] NoteOff channel: 9 key: 42
+#1 [0] NoteOff channel: 9 key: 36
+#1 [320] NoteOn channel: 9 key: 46 velocity: 100
+#1 [0] NoteOn channel: 9 key: 36 velocity: 105
+#1 [320] NoteOff channel: 9 key: 46
+#1 [0] NoteOn channel: 9 key: 42 velocity: 105
+#1 [0] NoteOff channel: 9 key: 36
+#1 [0] NoteOn channel: 9 key: 44 velocity: 100
+#1 [320] NoteOff channel: 9 key: 42
+#1 [0] NoteOn channel: 9 key: 38 velocity: 95
+#1 [320] NoteOn channel: 9 key: 42 velocity: 100
+#1 [0] NoteOff channel: 9 key: 38
+#1 [0] NoteOn channel: 9 key: 36 velocity: 100
+#1 [320] NoteOff channel: 9 key: 42
+#1 [0] NoteOn channel: 9 key: 42 velocity: 110
+#1 [0] NoteOn channel: 9 key: 38 velocity: 110
+#1 [0] NoteOff channel: 9 key: 36
+#1 [0] NoteOff channel: 9 key: 44
+#1 [320] NoteOff channel: 9 key: 42
+#1 [320] NoteOn channel: 9 key: 42 velocity: 100
+#1 [320] NoteOff channel: 9 key: 42
+#1 [0] NoteOn channel: 9 key: 42 velocity: 105
+#1 [0] NoteOff channel: 9 key: 38
+#1 [320] NoteOff channel: 9 key: 42
+#1 [0] NoteOn channel: 9 key: 38 velocity: 95
+#1 [320] NoteOn channel: 9 key: 42 velocity: 100
+#1 [0] NoteOff channel: 9 key: 38
+#1 [0] NoteOn channel: 9 key: 36 velocity: 100
+#1 [320] NoteOff channel: 9 key: 42
+#1 [0] NoteOff channel: 9 key: 36
+#1 [0] NoteOn channel: 9 key: 42 velocity: 110
+#1 [0] NoteOn channel: 9 key: 36 velocity: 105
+#1 [320] NoteOff channel: 9 key: 42
+#1 [0] NoteOff channel: 9 key: 36
+#1 [320] NoteOn channel: 9 key: 38 velocity: 100
+#1 [0] NoteOn channel: 9 key: 36 velocity: 105
+#1 [320] NoteOff channel: 9 key: 38
+#1 [0] NoteOn channel: 9 key: 38 velocity: 100
+#1 [0] NoteOff channel: 9 key: 36
+#1 [0] NoteOn channel: 9 key: 44 velocity: 100
+#1 [320] NoteOff channel: 9 key: 38
+#1 [0] NoteOn channel: 9 key: 38 velocity: 100
+#1 [320] NoteOff channel: 9 key: 38
+#1 [0] NoteOn channel: 9 key: 38 velocity: 100
+#1 [0] NoteOn channel: 9 key: 36 velocity: 100
+#1 [320] NoteOff channel: 9 key: 38
+#1 [0] NoteOn channel: 9 key: 38 velocity: 100
+#1 [0] NoteOff channel: 9 key: 36
+#1 [0] NoteOff channel: 9 key: 44
+#1 [0] NoteOn channel: 9 key: 44 velocity: 100
+#1 [320] NoteOff channel: 9 key: 38
+#1 [0] NoteOn channel: 9 key: 38 velocity: 100
+#1 [320] NoteOff channel: 9 key: 38
+#1 [0] NoteOn channel: 9 key: 45 velocity: 100
+#1 [320] NoteOff channel: 9 key: 45
+#1 [0] NoteOn channel: 9 key: 45 velocity: 100
+#1 [0] NoteOff channel: 9 key: 44
+#1 [0] NoteOn channel: 9 key: 44 velocity: 100
+#1 [320] NoteOff channel: 9 key: 45
+#1 [0] NoteOn channel: 9 key: 41 velocity: 100
+#1 [320] NoteOff channel: 9 key: 41
+#1 [0] NoteOn channel: 9 key: 41 velocity: 100
+#1 [320] NoteOff channel: 9 key: 41
+#1 [0] NoteOff channel: 9 key: 44
+#1 [0] NoteOn channel: 9 key: 49 velocity: 100
+#1 [0] NoteOn channel: 9 key: 36 velocity: 105
+#1 [320] NoteOff channel: 9 key: 36
+#1 [320] NoteOn channel: 9 key: 46 velocity: 100
+#1 [0] NoteOn channel: 9 key: 36 velocity: 105
+#1 [320] NoteOff channel: 9 key: 46
+#1 [0] NoteOn channel: 9 key: 42 velocity: 105
+#1 [0] NoteOff channel: 9 key: 36
+#1 [0] NoteOn channel: 9 key: 44 velocity: 100
+#1 [320] NoteOff channel: 9 key: 42
+#1 [0] NoteOn channel: 9 key: 38 velocity: 95
+#1 [320] NoteOn channel: 9 key: 42 velocity: 100
+#1 [0] NoteOff channel: 9 key: 38
+#1 [0] NoteOn channel: 9 key: 36 velocity: 100
+#1 [320] NoteOff channel: 9 key: 42
+#1 [0] NoteOn channel: 9 key: 42 velocity: 110
+#1 [0] NoteOn channel: 9 key: 38 velocity: 110
+#1 [0] NoteOff channel: 9 key: 36
+#1 [0] NoteOff channel: 9 key: 44
+#1 [320] NoteOff channel: 9 key: 42
+#1 [320] NoteOn channel: 9 key: 42 velocity: 100
+#1 [320] NoteOff channel: 9 key: 42
+#1 [0] NoteOn channel: 9 key: 42 velocity: 105
+#1 [0] NoteOff channel: 9 key: 38
+#1 [320] NoteOff channel: 9 key: 42
+#1 [0] NoteOn channel: 9 key: 38 velocity: 95
+#1 [320] NoteOn channel: 9 key: 42 velocity: 100
+#1 [0] NoteOff channel: 9 key: 38
+#1 [0] NoteOn channel: 9 key: 36 velocity: 100
+#1 [320] NoteOff channel: 9 key: 42
+#1 [0] NoteOff channel: 9 key: 36
+#1 [0] NoteOn channel: 9 key: 42 velocity: 110
+#1 [0] NoteOn channel: 9 key: 36 velocity: 105
+#1 [320] NoteOff channel: 9 key: 42
+#1 [0] NoteOff channel: 9 key: 36
+#1 [320] NoteOn channel: 9 key: 46 velocity: 100
+#1 [0] NoteOn channel: 9 key: 36 velocity: 105
+#1 [320] NoteOff channel: 9 key: 46
+#1 [0] NoteOn channel: 9 key: 42 velocity: 105
+#1 [0] NoteOff channel: 9 key: 36
+#1 [0] NoteOn channel: 9 key: 44 velocity: 100
+#1 [320] NoteOff channel: 9 key: 42
+#1 [0] NoteOn channel: 9 key: 38 velocity: 95
+#1 [320] NoteOn channel: 9 key: 42 velocity: 100
+#1 [0] NoteOff channel: 9 key: 38
+#1 [0] NoteOn channel: 9 key: 36 velocity: 100
+#1 [320] NoteOff channel: 9 key: 42
+#1 [0] NoteOn channel: 9 key: 42 velocity: 110
+#1 [0] NoteOn channel: 9 key: 38 velocity: 110
+#1 [0] NoteOff channel: 9 key: 36
+#1 [0] NoteOff channel: 9 key: 44
+#1 [320] NoteOff channel: 9 key: 42
+#1 [320] NoteOn channel: 9 key: 42 velocity: 100
+#1 [320] NoteOff channel: 9 key: 42
+#1 [0] NoteOn channel: 9 key: 42 velocity: 105
+#1 [0] NoteOff channel: 9 key: 38
+#1 [320] NoteOff channel: 9 key: 42
+#1 [0] NoteOn channel: 9 key: 38 velocity: 95
+#1 [320] NoteOn channel: 9 key: 42 velocity: 100
+#1 [0] NoteOff channel: 9 key: 38
+#1 [0] NoteOn channel: 9 key: 36 velocity: 100
+#1 [320] NoteOff channel: 9 key: 42
+#1 [0] NoteOff channel: 9 key: 36
+#1 [0] NoteOn channel: 9 key: 42 velocity: 110
+#1 [0] NoteOn channel: 9 key: 36 velocity: 105
+#1 [320] NoteOff channel: 9 key: 42
+#1 [0] NoteOff channel: 9 key: 36
+#1 [320] NoteOn channel: 9 key: 46 velocity: 100
+#1 [0] NoteOn channel: 9 key: 36 velocity: 105
+#1 [320] NoteOff channel: 9 key: 46
+#1 [0] NoteOn channel: 9 key: 42 velocity: 105
+#1 [0] NoteOff channel: 9 key: 36
+#1 [0] NoteOn channel: 9 key: 44 velocity: 100
+#1 [320] NoteOff channel: 9 key: 42
+#1 [0] NoteOn channel: 9 key: 38 velocity: 95
+#1 [320] NoteOn channel: 9 key: 42 velocity: 100
+#1 [0] NoteOff channel: 9 key: 38
+#1 [0] NoteOn channel: 9 key: 36 velocity: 100
+#1 [320] NoteOff channel: 9 key: 42
+#1 [0] NoteOn channel: 9 key: 42 velocity: 110
+#1 [0] NoteOn channel: 9 key: 38 velocity: 110
+#1 [0] NoteOff channel: 9 key: 36
+#1 [0] NoteOff channel: 9 key: 44
+#1 [320] NoteOff channel: 9 key: 42
+#1 [320] NoteOn channel: 9 key: 42 velocity: 100
+#1 [320] NoteOff channel: 9 key: 42
+#1 [0] NoteOn channel: 9 key: 42 velocity: 105
+#1 [0] NoteOff channel: 9 key: 38
+#1 [320] NoteOff channel: 9 key: 42
+#1 [0] NoteOn channel: 9 key: 38 velocity: 95
+#1 [320] NoteOn channel: 9 key: 42 velocity: 100
+#1 [0] NoteOff channel: 9 key: 38
+#1 [0] NoteOn channel: 9 key: 36 velocity: 100
+#1 [320] NoteOff channel: 9 key: 42
+#1 [0] NoteOff channel: 9 key: 36
+#1 [0] NoteOn channel: 9 key: 42 velocity: 110
+#1 [0] NoteOn channel: 9 key: 36 velocity: 105
+#1 [320] NoteOff channel: 9 key: 42
+#1 [0] NoteOff channel: 9 key: 36
+#1 [320] NoteOn channel: 9 key: 38 velocity: 100
+#1 [0] NoteOn channel: 9 key: 36 velocity: 105
+#1 [320] NoteOff channel: 9 key: 38
+#1 [0] NoteOn channel: 9 key: 38 velocity: 100
+#1 [0] NoteOff channel: 9 key: 36
+#1 [0] NoteOn channel: 9 key: 44 velocity: 100
+#1 [320] NoteOff channel: 9 key: 38
+#1 [0] NoteOn channel: 9 key: 38 velocity: 100
+#1 [320] NoteOff channel: 9 key: 38
+#1 [0] NoteOn channel: 9 key: 38 velocity: 100
+#1 [0] NoteOn channel: 9 key: 36 velocity: 100
+#1 [320] NoteOff channel: 9 key: 38
+#1 [0] NoteOn channel: 9 key: 38 velocity: 100
+#1 [0] NoteOff channel: 9 key: 36
+#1 [0] NoteOff channel: 9 key: 44
+#1 [0] NoteOn channel: 9 key: 44 velocity: 100
+#1 [320] NoteOff channel: 9 key: 38
+#1 [0] NoteOn channel: 9 key: 38 velocity: 100
+#1 [320] NoteOff channel: 9 key: 38
+#1 [0] NoteOn channel: 9 key: 45 velocity: 100
+#1 [320] NoteOff channel: 9 key: 45
+#1 [0] NoteOn channel: 9 key: 45 velocity: 100
+#1 [0] NoteOff channel: 9 key: 44
+#1 [0] NoteOn channel: 9 key: 44 velocity: 100
+#1 [320] NoteOff channel: 9 key: 45
+#1 [0] NoteOn channel: 9 key: 41 velocity: 100
+#1 [320] NoteOff channel: 9 key: 41
+#1 [0] NoteOn channel: 9 key: 41 velocity: 100
+#1 [320] NoteOff channel: 9 key: 41
+#1 [0] NoteOff channel: 9 key: 44
+#1 [0] MetaEndOfTrack

@@ -192,13 +192,16 @@ func createCmdFmt() *cobra.Command {
 }
 
 func createCmdSMF() *cobra.Command {
-	var outputFile string
+	var (
+		isText     bool
+		outputFile string
+	)
 
 	cmd := &cobra.Command{
 		Use:   "smf [file]",
 		Short: "Convert a file to SMF2",
 		Args:  cobra.ExactArgs(1),
-		RunE: func(c *cobra.Command, args []string) error {
+		RunE: func(_ *cobra.Command, args []string) error {
 			if outputFile == "" {
 				outputFile = strings.TrimSuffix(args[0], ".bal") + ".mid"
 			}
@@ -213,11 +216,16 @@ func createCmdSMF() *cobra.Command {
 				return err
 			}
 
+			if isText {
+				return os.WriteFile(outputFile, []byte(s.String()), 0644)
+			}
+
 			return s.WriteFile(outputFile)
 		},
 	}
 
 	cmd.PersistentFlags().StringVarP(&outputFile, "output", "o", "", "output file")
+	cmd.PersistentFlags().BoolVarP(&isText, "text", "t", false, "write SMF as text")
 
 	return cmd
 }

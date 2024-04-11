@@ -1,3 +1,3 @@
-//go:generate go run ../cmd/balafon/main.go smf -o bonham.mid ../examples/bonham.bal
+//go:generate go run ../cmd/balafon/main.go smf --text -o bonham.txt ../examples/bonham.bal
 
 package testdata
