@@ -1,14 +1,13 @@
 package ast
 
 import (
+	"cmp"
 	"fmt"
-
-	"golang.org/x/exp/constraints"
 )
 
-func validateRange[T constraints.Integer](v, minIncl, maxIncl T) error {
+func validateRange[T cmp.Ordered](v, minIncl, maxIncl T) error {
 	if v < minIncl || v > maxIncl {
-		return fmt.Errorf("value must be in range [%d, %d], got: %d", minIncl, maxIncl, v)
+		return fmt.Errorf("value must be in range [%v, %v], got: %v", minIncl, maxIncl, v)
 	}
 	return nil
 }

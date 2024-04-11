@@ -1,15 +1,16 @@
 package balafon
 
 import (
+	"cmp"
 	"encoding/xml"
 	"fmt"
 	"io"
+	"slices"
 	"strings"
 
 	"github.com/mgnsk/balafon/internal/constants"
 	"github.com/mgnsk/balafon/internal/mxl"
 	"gitlab.com/gomidi/midi/v2/smf"
-	"golang.org/x/exp/slices"
 )
 
 // ToXML converts a balafon script to MusicXML.
@@ -309,8 +310,8 @@ func ToXML(w io.Writer, input []byte) error {
 			})
 		}
 
-		slices.SortFunc(tmpParts, func(a, b trackPart) bool {
-			return a.track < b.track
+		slices.SortFunc(tmpParts, func(a, b trackPart) int {
+			return cmp.Compare(a.track, b.track)
 		})
 
 		for _, p := range tmpParts {

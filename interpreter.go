@@ -1,8 +1,10 @@
 package balafon
 
 import (
+	"cmp"
 	"fmt"
 	"math"
+	"slices"
 	"strings"
 
 	"github.com/mgnsk/balafon/internal/ast"
@@ -11,7 +13,6 @@ import (
 	"github.com/mgnsk/balafon/internal/parser/parser"
 	"gitlab.com/gomidi/midi/v2"
 	"gitlab.com/gomidi/midi/v2/smf"
-	"golang.org/x/exp/slices"
 )
 
 // Interpreter evaluates text input and emits events.
@@ -154,8 +155,8 @@ func (it *Interpreter) Flush() []*Bar {
 	it.barBuffer = it.barBuffer[:0]
 
 	for _, bar := range playableBars {
-		slices.SortStableFunc(bar.Events, func(a, b Event) bool {
-			return a.Pos < b.Pos
+		slices.SortStableFunc(bar.Events, func(a, b Event) int {
+			return cmp.Compare(a.Pos, b.Pos)
 		})
 	}
 

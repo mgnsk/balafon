@@ -1,15 +1,16 @@
 package main
 
 import (
+	"cmp"
 	"fmt"
 	"log"
 	"os"
+	"slices"
 
 	"github.com/iancoleman/strcase"
 	"github.com/mgnsk/balafon/internal/parser/token"
 	. "github.com/moznion/gowrtr/generator"
 	"github.com/spf13/cobra"
-	"golang.org/x/exp/slices"
 )
 
 type word struct {
@@ -67,8 +68,8 @@ func main() {
 			}
 			words = words[:n]
 
-			slices.SortFunc(words, func(a, b word) bool {
-				return a.varName < b.varName
+			slices.SortFunc(words, func(a, b word) int {
+				return cmp.Compare(a.varName, b.varName)
 			})
 
 			s = append(s, NewComment("Language tokens."))

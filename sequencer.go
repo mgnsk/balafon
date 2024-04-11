@@ -1,12 +1,13 @@
 package balafon
 
 import (
+	"cmp"
 	"fmt"
+	"slices"
 	"strings"
 
 	"github.com/mgnsk/balafon/internal/constants"
 	"gitlab.com/gomidi/midi/v2/smf"
-	"golang.org/x/exp/slices"
 )
 
 // SMF is an SMF song.
@@ -65,8 +66,8 @@ func (s *Sequencer) AddBars(bars ...*Bar) {
 		s.absNanoseconds += constants.TicksPerQuarter.Duration(s.tempo, ticks).Nanoseconds()
 	}
 
-	slices.SortStableFunc(s.song, func(a, b TrackEvent) bool {
-		return a.AbsTicks < b.AbsTicks
+	slices.SortStableFunc(s.song, func(a, b TrackEvent) int {
+		return cmp.Compare(a.AbsTicks, b.AbsTicks)
 	})
 }
 

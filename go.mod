@@ -1,6 +1,6 @@
 module github.com/mgnsk/balafon
 
-go 1.19
+go 1.22
 
 require (
 	github.com/aymanbagabas/go-udiff v0.2.0
@@ -10,7 +10,6 @@ require (
 	github.com/onsi/gomega v1.27.6
 	github.com/spf13/cobra v1.7.0
 	gitlab.com/gomidi/midi/v2 v2.0.30
-	golang.org/x/exp v0.0.0-20230418202329-0354be287a23
 	golang.org/x/term v0.7.0
 )
 

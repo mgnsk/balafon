@@ -3,6 +3,7 @@ package balafon_test
 import (
 	"errors"
 	"fmt"
+	"slices"
 	"testing"
 	"time"
 
@@ -11,7 +12,6 @@ import (
 	. "github.com/onsi/gomega"
 	"gitlab.com/gomidi/midi/v2"
 	"gitlab.com/gomidi/midi/v2/smf"
-	"golang.org/x/exp/slices"
 )
 
 func TestParseError(t *testing.T) {

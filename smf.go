@@ -1,8 +1,10 @@
 package balafon
 
 import (
+	"cmp"
+	"slices"
+
 	"gitlab.com/gomidi/midi/v2/smf"
-	"golang.org/x/exp/slices"
 )
 
 type channelTrack struct {
@@ -70,8 +72,8 @@ func ToSMF(input []byte) (*smf.SMF, error) {
 		})
 	}
 
-	slices.SortFunc(smfTracks, func(a, b channelTrack) bool {
-		return a.channel < b.channel
+	slices.SortFunc(smfTracks, func(a, b channelTrack) int {
+		return cmp.Compare(a.channel, b.channel)
 	})
 
 	song := smf.New()
