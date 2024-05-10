@@ -317,20 +317,19 @@ Example configuration for lazy.nvim:
     dependencies = {
         "nvim-treesitter/nvim-treesitter",
     },
-    build = function()
+    build = function(plugin)
         local parser_config = require("nvim-treesitter.parsers").get_parser_configs()
-        parser_config.balafon = {
+        parser_config["balafon"] = {
             install_info = {
-                url = "https://github.com/mgnsk/tree-sitter-balafon",
+                url = plugin.dir,
                 files = { "src/parser.c" },
-                branch = "main",
                 generate_requires_npm = true,
                 requires_generate_from_grammar = false,
             },
             filetype = "bal",
         }
-        vim.cmd("TSUpdate balafon")
-	end,
+        vim.cmd("TSUpdateSync balafon")
+    end
 },
 ```
 
