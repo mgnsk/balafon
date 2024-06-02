@@ -319,12 +319,12 @@ func (it *Interpreter) parseBar(declList ast.NodeList) (*Bar, error) {
 			})
 
 		case ast.NodeList:
-			if err := it.parseNoteList(bar, nil, decl); err != nil {
+			if err := it.parseNoteList(bar, decl); err != nil {
 				return nil, err
 			}
 
 		case ast.NoteGroup:
-			if err := it.parseNoteList(bar, decl.Props, decl.Nodes); err != nil {
+			if err := it.parseNoteList(bar, decl.Nodes); err != nil {
 				return nil, err
 			}
 
@@ -348,7 +348,7 @@ func (it *Interpreter) parseBar(declList ast.NodeList) (*Bar, error) {
 }
 
 // parseNoteList parses a note list into messages with relative ticks.
-func (it *Interpreter) parseNoteList(bar *Bar, properties ast.PropertyList, nodes ast.NodeList) error {
+func (it *Interpreter) parseNoteList(bar *Bar, nodes ast.NodeList) error {
 	it.pos = 0
 
 	var firstNote *ast.Note

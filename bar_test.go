@@ -5,7 +5,6 @@ import (
 	"testing"
 	"time"
 
-	"github.com/davecgh/go-spew/spew"
 	"github.com/mgnsk/balafon"
 	"github.com/mgnsk/balafon/internal/constants"
 	. "github.com/onsi/gomega"
@@ -113,21 +112,16 @@ func TestBarDurationTimeSignatures(t *testing.T) {
 func TestEmptyBarIsInvalid(t *testing.T) {
 	g := NewWithT(t)
 
+	// Commands that don't emit MIDI events.
 	input := `
 :bar mybar
-:time 1 1
+:assign a 1
 :velocity 1
 :channel 1
+:voice 1
 :end
 	`
 
-	// TODO
 	it := balafon.New()
-	err := it.EvalString(input)
-
-	spew.Dump(it.Flush())
-	_ = g
-	_ = t
-	_ = err
-	// g.Expect(it.EvalString(input)).NotTo(Succeed())
+	g.Expect(it.EvalString(input)).NotTo(Succeed())
 }
