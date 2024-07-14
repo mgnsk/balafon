@@ -2,7 +2,6 @@ package ast
 
 import (
 	"io"
-	"regexp"
 )
 
 type Node interface {
@@ -56,5 +55,3 @@ func Must[T any](result T, err error) T {
 	}
 	return result
 }
-
-var newlines = regexp.MustCompile(`\n+`)
