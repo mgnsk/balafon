@@ -1,16 +1,11 @@
 package balafon
 
 import (
-	"cmp"
+	"maps"
 	"slices"
 
 	"gitlab.com/gomidi/midi/v2/smf"
 )
-
-type channelTrack struct {
-	track   smf.Track
-	channel int
-}
 
 type track struct {
 	track   smf.Track
@@ -22,7 +17,7 @@ func (a *track) Add(ev TrackEvent) {
 	a.lastPos = ev.AbsTicks
 }
 
-// ToSMF converts a balafon script to SMF2.
+// ToSMF converts a balafon script to SMF1.
 func ToSMF(input []byte) (*smf.SMF, error) {
 	it := New()
 
@@ -56,29 +51,19 @@ func ToSMF(input []byte) (*smf.SMF, error) {
 		}
 	}
 
-	smfTracks := make([]channelTrack, 0, len(tracks)+1)
+	song := smf.New()
 
 	metaTrack.track.Close(0)
-	smfTracks = append(smfTracks, channelTrack{
-		channel: -1,
-		track:   metaTrack.track,
-	})
-
-	for ch, t := range tracks {
-		t.track.Close(0)
-		smfTracks = append(smfTracks, channelTrack{
-			channel: int(ch),
-			track:   t.track,
-		})
+	if err := song.Add(metaTrack.track); err != nil {
+		return nil, err
 	}
 
-	slices.SortFunc(smfTracks, func(a, b channelTrack) int {
-		return cmp.Compare(a.channel, b.channel)
-	})
-
-	song := smf.New()
-	for _, t := range smfTracks {
-		song.Add(t.track)
+	for _, ch := range slices.Sorted(maps.Keys(tracks)) {
+		t := tracks[ch]
+		t.track.Close(0)
+		if err := song.Add(t.track); err != nil {
+			return nil, err
+		}
 	}
 
 	return song, nil
