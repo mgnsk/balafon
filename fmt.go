@@ -31,10 +31,6 @@ func FormatFile(filename string) error {
 		return err
 	}
 
-	if err := f.Close(); err != nil {
-		return err
-	}
-
 	result, err := Format(b)
 	if err != nil {
 		return err
