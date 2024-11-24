@@ -13,7 +13,6 @@ import (
 	"github.com/spf13/cobra"
 	"gitlab.com/gomidi/midi/v2"
 	"gitlab.com/gomidi/midi/v2/drivers"
-	_ "gitlab.com/gomidi/midi/v2/drivers/rtmididrv"
 	"golang.org/x/term"
 )
 
