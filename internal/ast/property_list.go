@@ -1,9 +1,10 @@
 package ast
 
 import (
+	"cmp"
 	"fmt"
 	"io"
-	"sort"
+	"slices"
 	"strconv"
 
 	"github.com/mgnsk/balafon/internal/constants"
@@ -44,12 +45,6 @@ func (l PropertyList) Merge(list PropertyList) PropertyList {
 	}
 
 	return result
-}
-
-func (l PropertyList) Len() int      { return len(l) }
-func (l PropertyList) Swap(i, j int) { l[i], l[j] = l[j], l[i] }
-func (l PropertyList) Less(i, j int) bool {
-	return l[i].Type < l[j].Type
 }
 
 func (l PropertyList) WriteTo(w io.Writer) (int64, error) {
@@ -156,22 +151,16 @@ func (l PropertyList) IsLetRing() bool {
 	return l.find(tokentype.PropLetRing) != -1
 }
 
-func (l PropertyList) has(types ...token.Type) bool {
-	for _, typ := range types {
-		if l.find(typ) != -1 {
-			return true
-		}
-	}
-	return false
+func (l PropertyList) has(typ token.Type) bool {
+	return slices.ContainsFunc(l, func(tok *token.Token) bool {
+		return tok.Type == typ
+	})
 }
 
 func (l PropertyList) find(typ token.Type) int {
-	for i, tok := range l {
-		if tok.Type == typ {
-			return i
-		}
-	}
-	return -1
+	return slices.IndexFunc(l, func(tok *token.Token) bool {
+		return tok.Type == typ
+	})
 }
 
 func (l PropertyList) countProps(typ token.Type) int {
@@ -207,8 +196,9 @@ func NewPropertyList(t *token.Token, inner interface{}) (PropertyList, error) {
 
 	if props, ok := inner.(PropertyList); ok {
 		switch t.Type {
+		// TODO: better tests
 		case tokentype.PropSharp, tokentype.PropFlat:
-			if props.has(tokentype.PropSharp, tokentype.PropFlat) {
+			if props.has(tokentype.PropSharp) || props.has(tokentype.PropFlat) {
 				return nil, fmt.Errorf("duplicate sharp or flat property")
 			}
 		}
@@ -216,7 +206,9 @@ func NewPropertyList(t *token.Token, inner interface{}) (PropertyList, error) {
 		p := make(PropertyList, len(props)+1)
 		p[0] = t
 		copy(p[1:], props)
-		sort.Sort(p)
+		slices.SortFunc(p, func(a, b *token.Token) int {
+			return cmp.Compare(a.Type, b.Type)
+		})
 
 		return p, nil
 	}
