@@ -1,6 +1,6 @@
 module github.com/mgnsk/balafon
 
-go 1.24.2
+go 1.26.3
 
 require (
 	github.com/aymanbagabas/go-udiff v0.4.1
