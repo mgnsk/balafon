@@ -64,7 +64,7 @@ func (l PropertyList) NoteLen() uint32 {
 	length := uint32(constants.TicksPerWhole) / uint32(l.Value())
 	newLength := length
 	dots := l.NumDot()
-	for i := 0; i < dots; i++ {
+	for range dots {
 		length /= 2
 		newLength += length
 	}
@@ -175,7 +175,7 @@ func (l PropertyList) countProps(typ token.Type) int {
 }
 
 // NewPropertyList creates a note property list.
-func NewPropertyList(t *token.Token, inner interface{}) (PropertyList, error) {
+func NewPropertyList(t *token.Token, inner any) (PropertyList, error) {
 	switch t.Type {
 	case tokentype.Uint:
 		v, err := strconv.Atoi(string(t.Lit))

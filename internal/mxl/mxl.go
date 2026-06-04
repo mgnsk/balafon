@@ -52,9 +52,9 @@ type Part struct {
 
 // Measure represents a measure in a piece of music
 type Measure struct {
-	Atters Attributes    `xml:"attributes"`
-	Notes  []interface{} // Note or Backup
-	Number int           `xml:"number,attr"`
+	Atters Attributes `xml:"attributes"`
+	Notes  []any      // Note or Backup (TODO)
+	Number int        `xml:"number,attr"`
 }
 
 // Attributes represents

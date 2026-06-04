@@ -54,9 +54,8 @@ func BenchmarkLiveShell(b *testing.B) {
 	s := balafon.NewLiveShell(&reader{}, it, &out{})
 
 	b.ReportAllocs()
-	b.ResetTimer()
 
-	for i := 0; i < b.N; i++ {
+	for b.Loop() {
 		if err := s.HandleNext(); err != nil {
 			b.Fatal(err)
 		}

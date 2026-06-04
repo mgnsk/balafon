@@ -13,7 +13,7 @@ import (
 	_ "gitlab.com/gomidi/midi/v2/drivers/webmididrv"
 )
 
-func newConvertResponse(written int, err error) map[string]interface{} {
+func newConvertResponse(written int, err error) map[string]any {
 	if err != nil {
 		var (
 			msg string
@@ -30,9 +30,9 @@ func newConvertResponse(written int, err error) map[string]interface{} {
 			panic(err)
 		}
 
-		return map[string]interface{}{
+		return map[string]any{
 			"err": msg,
-			"pos": map[string]interface{}{
+			"pos": map[string]any{
 				"offset": pos.Offset,
 				"line":   pos.Line,
 				"column": pos.Column,
@@ -40,7 +40,7 @@ func newConvertResponse(written int, err error) map[string]interface{} {
 		}
 	}
 
-	return map[string]interface{}{
+	return map[string]any{
 		"written": written,
 	}
 }
@@ -71,21 +71,21 @@ func convert(_ js.Value, args []js.Value) any {
 func listPorts(_ js.Value, _ []js.Value) any {
 	outs, err := drivers.Outs()
 	if err != nil {
-		return map[string]interface{}{
+		return map[string]any{
 			"err": err.Error(),
 		}
 	}
 
-	ports := make([]interface{}, len(outs))
+	ports := make([]any, len(outs))
 
 	for i, out := range outs {
-		ports[i] = map[string]interface{}{
+		ports[i] = map[string]any{
 			"number": out.Number(),
 			"name":   out.String(),
 		}
 	}
 
-	return map[string]interface{}{
+	return map[string]any{
 		"ports": ports,
 	}
 }
@@ -106,14 +106,14 @@ func selectPort(_ js.Value, args []js.Value) any {
 
 	port, err := drivers.OutByNumber(args[0].Int())
 	if err != nil {
-		return map[string]interface{}{
+		return map[string]any{
 			"err": err.Error(),
 		}
 	}
 
 	out = port
 
-	return map[string]interface{}{}
+	return map[string]any{}
 }
 
 func play(_ js.Value, args []js.Value) any {
@@ -123,7 +123,7 @@ func play(_ js.Value, args []js.Value) any {
 
 	it := balafon.New()
 	if err := it.EvalString(args[0].String()); err != nil {
-		return map[string]interface{}{
+		return map[string]any{
 			"err": err.Error(),
 		}
 	}
@@ -141,7 +141,7 @@ func play(_ js.Value, args []js.Value) any {
 		}
 	}()
 
-	return map[string]interface{}{}
+	return map[string]any{}
 }
 
 func main() {

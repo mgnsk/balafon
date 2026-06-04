@@ -22,7 +22,7 @@ func (b *Bar) SetTimeSig(num, denom uint8) {
 func (b *Bar) String() string {
 	var s strings.Builder
 
-	s.WriteString(fmt.Sprintf("time: %d/%d", b.timeSig[0], b.timeSig[1]))
+	fmt.Fprintf(&s, "time: %d/%d", b.timeSig[0], b.timeSig[1])
 
 	if len(b.Events) > 0 {
 		s.WriteString("\nevents:\n")
