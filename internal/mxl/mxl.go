@@ -23,6 +23,7 @@ type ScorePart struct {
 	ScoreInstrument *ScoreInstrument `xml:"score-instrument"`
 }
 
+// ScoreInstrument is a score instrument.
 type ScoreInstrument struct {
 	ID   string `xml:"id,attr"`
 	Name string `xml:"instrument-name"`

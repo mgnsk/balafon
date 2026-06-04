@@ -16,17 +16,6 @@ import (
 	"golang.org/x/term"
 )
 
-const (
-	// Keycode for Ctrl+D.
-	eot = 4
-
-	defaultReso = 16
-
-	gridBG    = "🟦"
-	beatBG    = "⭕"
-	currentBG = "🔴"
-)
-
 func addPortFlag(cmd *cobra.Command) {
 	cmd.PersistentFlags().StringP("port", "p", "0", "MIDI output port")
 }
@@ -36,7 +25,7 @@ func main() {
 
 	root := &cobra.Command{
 		Short: "balafon is a MIDI control language and interpreter.",
-		RunE: func(c *cobra.Command, args []string) error {
+		RunE: func(_ *cobra.Command, _ []string) error {
 			outs, err := drivers.Outs()
 			if err != nil {
 				return err
@@ -135,7 +124,7 @@ func createCmdLint() *cobra.Command {
 		Use:   "lint [file]",
 		Short: "Lint a file",
 		Args:  cobra.ExactArgs(1),
-		RunE: func(c *cobra.Command, args []string) error {
+		RunE: func(_ *cobra.Command, args []string) error {
 			it := balafon.New()
 
 			if err := it.EvalFile(args[0]); err != nil {

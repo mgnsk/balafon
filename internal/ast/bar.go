@@ -13,6 +13,7 @@ type Bar struct {
 	DeclList NodeList
 }
 
+// WriteTo writes the bar to w.
 func (b Bar) WriteTo(w io.Writer) (int64, error) {
 	ew := newErrWriter(w)
 	var n int

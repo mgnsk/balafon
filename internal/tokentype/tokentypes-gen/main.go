@@ -21,7 +21,7 @@ type word struct {
 func main() {
 	root := &cobra.Command{
 		Use: "gen",
-		RunE: func(c *cobra.Command, args []string) error {
+		RunE: func(_ *cobra.Command, _ []string) error {
 			cwd, err := os.Getwd()
 			if err != nil {
 				return err

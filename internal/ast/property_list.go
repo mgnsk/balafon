@@ -47,6 +47,7 @@ func (l PropertyList) Merge(list PropertyList) PropertyList {
 	return result
 }
 
+// WriteTo writes the property list to w.
 func (l PropertyList) WriteTo(w io.Writer) (int64, error) {
 	ew := newErrWriter(w)
 	var n int

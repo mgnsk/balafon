@@ -15,6 +15,7 @@ type CmdAssign struct {
 	Key  int
 }
 
+// WriteTo writes the command to w.
 func (c CmdAssign) WriteTo(w io.Writer) (int64, error) {
 	ew := newErrWriter(w)
 	var n int
@@ -49,6 +50,7 @@ func (c CmdTempo) Value() float64 {
 	return float64(c.BPM)
 }
 
+// WriteTo writes the command to w.
 func (c CmdTempo) WriteTo(w io.Writer) (int64, error) {
 	ew := newErrWriter(w)
 	var n int
@@ -76,6 +78,7 @@ type CmdTime struct {
 	Denom uint8
 }
 
+// WriteTo writes the command to w.
 func (c CmdTime) WriteTo(w io.Writer) (int64, error) {
 	ew := newErrWriter(w)
 	var n int
@@ -109,6 +112,7 @@ type CmdChannel struct {
 	Channel uint8
 }
 
+// WriteTo writes the command to w.
 func (c CmdChannel) WriteTo(w io.Writer) (int64, error) {
 	ew := newErrWriter(w)
 	var n int
@@ -135,6 +139,7 @@ type CmdVoice struct {
 	Voice uint8
 }
 
+// WriteTo writes the command to w.
 func (c CmdVoice) WriteTo(w io.Writer) (int64, error) {
 	ew := newErrWriter(w)
 	var n int
@@ -161,6 +166,7 @@ type CmdVelocity struct {
 	Velocity int
 }
 
+// WriteTo writes the command to w.
 func (c CmdVelocity) WriteTo(w io.Writer) (int64, error) {
 	ew := newErrWriter(w)
 	var n int
@@ -187,6 +193,7 @@ type CmdProgram struct {
 	Program uint8
 }
 
+// WriteTo writes the command to w.
 func (c CmdProgram) WriteTo(w io.Writer) (int64, error) {
 	ew := newErrWriter(w)
 	var n int
@@ -214,6 +221,7 @@ type CmdControl struct {
 	Parameter uint8
 }
 
+// WriteTo writes the command to w.
 func (c CmdControl) WriteTo(w io.Writer) (int64, error) {
 	ew := newErrWriter(w)
 	var n int
@@ -248,6 +256,7 @@ type CmdPlay struct {
 	BarName string
 }
 
+// NewCmdPlay creates a play command.
 func NewCmdPlay(pos token.Pos, barName string) (CmdPlay, error) {
 	return CmdPlay{
 		Pos:     pos,
@@ -255,6 +264,7 @@ func NewCmdPlay(pos token.Pos, barName string) (CmdPlay, error) {
 	}, nil
 }
 
+// WriteTo writes the command to w.
 func (c CmdPlay) WriteTo(w io.Writer) (int64, error) {
 	ew := newErrWriter(w)
 	var n int
@@ -268,6 +278,7 @@ func (c CmdPlay) WriteTo(w io.Writer) (int64, error) {
 // CmdStart is a start commad.
 type CmdStart struct{}
 
+// WriteTo writes the command to w.
 func (c CmdStart) WriteTo(w io.Writer) (int64, error) {
 	ew := newErrWriter(w)
 	var n int
@@ -280,6 +291,7 @@ func (c CmdStart) WriteTo(w io.Writer) (int64, error) {
 // CmdStop is a stop command.
 type CmdStop struct{}
 
+// WriteTo writes the command to w.
 func (c CmdStop) WriteTo(w io.Writer) (int64, error) {
 	ew := newErrWriter(w)
 	var n int

@@ -9,6 +9,7 @@ type CmdKey struct {
 	Key string
 }
 
+// WriteTo writes the command to w.
 func (c CmdKey) WriteTo(w io.Writer) (int64, error) {
 	ew := newErrWriter(w)
 	var n int

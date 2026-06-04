@@ -20,6 +20,7 @@ func NewNoteGroup(notes NodeList, props PropertyList) (NoteGroup, error) {
 	}, nil
 }
 
+// WriteTo writes the note group to w.
 func (g NoteGroup) WriteTo(w io.Writer) (int64, error) {
 	ew := newErrWriter(w)
 	var n int
@@ -39,6 +40,7 @@ type Note struct {
 	Name  rune
 }
 
+// WriteTo writes the note to w.
 func (note *Note) WriteTo(w io.Writer) (int64, error) {
 	ew := newErrWriter(w)
 	var n int

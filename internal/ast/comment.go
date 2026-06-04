@@ -9,6 +9,7 @@ type BlockComment struct {
 	Text string
 }
 
+// WriteTo writes the comment to w.
 func (c BlockComment) WriteTo(w io.Writer) (int64, error) {
 	ew := newErrWriter(w)
 	var n int

@@ -4,12 +4,15 @@ import (
 	"io"
 )
 
+// Node is an AST node.
 type Node interface {
 	io.WriterTo
 }
 
+// NodeList is a list of AST nodes.
 type NodeList []Node
 
+// WriteTo writes the note list to w.
 func (list NodeList) WriteTo(w io.Writer) (n int64, err error) {
 	ew := newErrWriter(w)
 
@@ -20,6 +23,7 @@ func (list NodeList) WriteTo(w io.Writer) (n int64, err error) {
 	return n, ew.Flush()
 }
 
+// NewNodeList creates a new node list.
 func NewNodeList(stmt Node, inner ...Node) (list NodeList) {
 	return append(NodeList{stmt}, inner...)
 }

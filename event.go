@@ -11,18 +11,17 @@ import (
 // Channel is a MIDI channel.
 type Channel uint8
 
+// Uint8 returns the MIDI channel number.
 func (c Channel) Uint8() uint8 {
 	return uint8(c)
 }
 
+// Human returns the human channel number.
 func (c Channel) Human() uint8 {
 	return uint8(c) + 1
 }
 
-func NewChannelFromMIDI(ch uint8) Channel {
-	return Channel(ch)
-}
-
+// NewChannelFromHuman creates a channel from human number.
 func NewChannelFromHuman(ch uint8) Channel {
 	return Channel(ch - 1)
 }
@@ -30,6 +29,7 @@ func NewChannelFromHuman(ch uint8) Channel {
 // Voice is a score voice.
 type Voice uint8
 
+// Uint8 returns the voice number.
 func (v Voice) Uint8() uint8 {
 	return uint8(v)
 }
@@ -49,13 +49,13 @@ func (e *Event) String() string {
 	var s strings.Builder
 
 	if e.Track > 0 {
-		s.WriteString(fmt.Sprintf("track: %d ", e.Track))
+		fmt.Fprintf(&s, "track: %d ", e.Track)
 	}
 
-	s.WriteString(fmt.Sprintf("pos: %d dur: %d", e.Pos, e.Duration))
+	fmt.Fprintf(&s, "pos: %d dur: %d", e.Pos, e.Duration)
 
 	if e.Voice > 0 {
-		s.WriteString(fmt.Sprintf(" voice: %d", e.Voice))
+		fmt.Fprintf(&s, " voice: %d", e.Voice)
 	}
 
 	if e.Note != nil {
