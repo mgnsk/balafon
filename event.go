@@ -26,14 +26,6 @@ func NewChannelFromHuman(ch uint8) Channel {
 	return Channel(ch - 1)
 }
 
-// Voice is a score voice.
-type Voice uint8
-
-// Uint8 returns the voice number.
-func (v Voice) Uint8() uint8 {
-	return uint8(v)
-}
-
 // Event is a balafon event.
 type Event struct {
 	Note     *ast.Note // only for note on messages and rests
@@ -41,7 +33,7 @@ type Event struct {
 	IsFlat   bool   // if the midi note was lowered due to key sig
 	Pos      uint32 // in relative ticks from beginning of bar
 	Duration uint32 // in ticks
-	Voice    Voice
+	Voice    uint8
 	Track    uint8 // track is the MIDI channel in human value
 }
 

@@ -55,3 +55,39 @@ func TestKeyAccidentalsPitch(t *testing.T) {
 		})
 	}
 }
+
+func TestScaleError(t *testing.T) {
+	t.Run("using sharp on note that is already sharp due to key", func(t *testing.T) {
+		g := NewWithT(t)
+
+		it := balafon.New()
+
+		// 66 is already f sharp
+		err := it.EvalString(`
+:assign f 66
+:key G
+f#
+`)
+
+		g.Expect(err).To(HaveOccurred())
+		g.Expect(err.Error()).To(ContainSubstring("cannot use sharp/flat"))
+		g.Expect(err.Error()).To(ContainSubstring("already sharp"))
+	})
+
+	t.Run("using flat on note that is already flat due to key", func(t *testing.T) {
+		g := NewWithT(t)
+
+		it := balafon.New()
+
+		// 70 is already b flat
+		err := it.EvalString(`
+:assign b 70
+:key Dm
+b$
+`)
+
+		g.Expect(err).To(HaveOccurred())
+		g.Expect(err.Error()).To(ContainSubstring("cannot use sharp/flat"))
+		g.Expect(err.Error()).To(ContainSubstring("already flat"))
+	})
+}

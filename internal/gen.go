@@ -1,3 +1,3 @@
-//go:generate gocc -o parser balafon.bnf
+//go:generate go tool gocc -o parser balafon.bnf
 
 package main

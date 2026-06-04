@@ -90,7 +90,7 @@ func ToXML(w io.Writer, input []byte) error {
 				// Treat notes of the same voice on the same position as chords.
 				chords := map[uint32][]Event{}
 				uniqPositions := map[uint32]struct{}{}
-				uniqVoices := map[Voice]struct{}{}
+				uniqVoices := map[uint8]struct{}{}
 				for _, ev := range barEvents {
 					chords[ev.Pos] = append(chords[ev.Pos], ev)
 					uniqPositions[ev.Pos] = struct{}{}
@@ -102,7 +102,7 @@ func ToXML(w io.Writer, input []byte) error {
 					positions = append(positions, pos)
 				}
 
-				voices := make([]Voice, 0, len(uniqVoices))
+				voices := make([]uint8, 0, len(uniqVoices))
 				for voice := range uniqVoices {
 					voices = append(voices, voice)
 				}
@@ -127,7 +127,7 @@ func ToXML(w io.Writer, input []byte) error {
 
 						hasMultipleVoicesInPos := false
 						{
-							var prevVoice Voice
+							var prevVoice uint8
 							for i, ev := range chords[pos] {
 								if i == 0 {
 									prevVoice = ev.Voice

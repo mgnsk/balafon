@@ -23,7 +23,7 @@ type Interpreter struct {
 	velocity int
 	channel  Channel
 	channels []Channel
-	voice    Voice
+	voice    uint8
 
 	pos     uint32
 	timesig [2]uint8
@@ -294,7 +294,7 @@ func (it *Interpreter) parseBar(declList ast.NodeList) (*Bar, error) {
 			it.channel = ch
 
 		case ast.CmdVoice:
-			it.voice = Voice(decl.Voice)
+			it.voice = decl.Voice
 
 		case ast.CmdProgram:
 			bar.Events = append(bar.Events, Event{
@@ -448,15 +448,6 @@ func (it *Interpreter) parseNoteList(bar *Bar, nodes ast.NodeList) error {
 func (it *Interpreter) modifyKey(key int, note *ast.Note, scale string) (newKey int, isFlat bool, err error) {
 	step, _ := getPitch(key)
 
-	if strings.HasSuffix(step, "#") && (note.Props.IsSharp() || note.Props.IsFlat()) {
-		old, _ := it.keymap.Get(it.channel, note.Name)
-		// TODO: add tests
-		return 0, false, &EvalError{
-			Err: fmt.Errorf("cannot use sharp/flat on note '%c' assigned to key '%d' on channel '%d'", note.Name, old, it.channel),
-			Pos: note.Pos,
-		}
-	}
-
 	_, sharps, flats := getScale(scale)
 
 	// Detect whether we have Bb rather than A#.
@@ -464,6 +455,19 @@ func (it *Interpreter) modifyKey(key int, note *ast.Note, scale string) (newKey 
 		tmpStep, _ := getPitch(key + 1)
 		if slices.Contains(flats, tmpStep) {
 			isFlat = true
+		}
+
+		if note.Props.IsSharp() || note.Props.IsFlat() {
+			msg := "already sharp"
+			if isFlat {
+				msg = "already flat"
+			}
+
+			old, _ := it.keymap.Get(it.channel, note.Name)
+			return 0, false, &EvalError{
+				Err: fmt.Errorf("cannot use sharp/flat on note '%c' assigned to key '%d' on channel '%d': %s", note.Name, old, it.channel, msg),
+				Pos: note.Pos,
+			}
 		}
 	}
 

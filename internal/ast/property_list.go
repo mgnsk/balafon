@@ -197,7 +197,6 @@ func NewPropertyList(t *token.Token, inner any) (PropertyList, error) {
 
 	if props, ok := inner.(PropertyList); ok {
 		switch t.Type {
-		// TODO: better tests
 		case tokentype.PropSharp, tokentype.PropFlat:
 			if props.has(tokentype.PropSharp) || props.has(tokentype.PropFlat) {
 				return nil, fmt.Errorf("duplicate sharp or flat property")

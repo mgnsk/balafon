@@ -103,6 +103,34 @@ func TestUniqueProperties(t *testing.T) {
 	g.Expect(n.Props.IsLetRing()).To(BeTrue())
 }
 
+func TestDuplicateProperties(t *testing.T) {
+	for _, tc := range []struct {
+		name  string
+		input string
+	}{
+		{
+			name:  "duplicate sharp",
+			input: ":assign c 60; c##",
+		},
+		{
+			name:  "duplicate flat",
+			input: ":assign c 60; c$$",
+		},
+		{
+			name:  "sharp flat",
+			input: ":assign c 60; c#$",
+		},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			g := NewWithT(t)
+			_, err := parse(tc.input)
+
+			g.Expect(err).To(HaveOccurred())
+			g.Expect(err.Error()).To(ContainSubstring("duplicate"))
+		})
+	}
+}
+
 func TestAdditiveProperties(t *testing.T) {
 	g := NewWithT(t)
 
