@@ -15,8 +15,8 @@ jobs:
         goos: [linux]
         goarch: [amd64, arm64]
     steps:
-    - uses: actions/checkout@v4
-    - uses: wangyoucao577/go-release-action@v1
+    - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+    - uses: wangyoucao577/go-release-action@279495102627de7960cbc33434ab01a12bae144b
       env:
         CGO_ENABLED: 1
       with:

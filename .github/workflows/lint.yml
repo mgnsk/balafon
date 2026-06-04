@@ -1,0 +1,25 @@
+---
+name: Lint code
+
+on:
+  push:
+    branches-ignore:
+      - main
+
+permissions:
+  # Default permissions (matching what would be set if the permissions section was missing at all)
+  contents: read
+  packages: read
+
+jobs:
+  golint:
+    name: Lint Go code
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+
+      - name: Run Revive Action
+        uses: docker://morphy/revive-action@sha256:28eca8b53427f9f1b0c8d44236b057be4bf62c9118c98223285c0558192f0257
+        with:
+          config: revive.toml
