@@ -2,6 +2,7 @@ package balafon_test
 
 import (
 	"bytes"
+	"io"
 	"testing"
 
 	"github.com/mgnsk/balafon"
@@ -40,9 +41,37 @@ func TestLiveShell(t *testing.T) {
 
 	s := balafon.NewLiveShell(&reader{}, it, &out{buf: buf})
 	g.Expect(s.HandleNext()).To(Succeed())
+	g.Expect(midi.Message(buf.Bytes())).To(Equal(midi.NoteOn(0, 60, constants.DefaultVelocity)))
+}
 
-	msg := midi.Message(buf.Bytes())
-	g.Expect(msg).To(Equal(midi.NoteOn(0, 60, constants.DefaultVelocity)))
+func TextLiveShellExit(t *testing.T) {
+	t.Run("Ctrl-D or Ctrl-C twice in a row", func(t *testing.T) {
+		g := NewWithT(t)
+
+		it := balafon.New()
+
+		buf := &bytes.Buffer{}
+
+		s := balafon.NewLiveShell(bytes.NewReader([]byte{balafon.EOT, balafon.EOT}), it, &out{buf: buf})
+		g.Expect(s.HandleNext()).To(Succeed())                          // Press again.
+		g.Expect(s.HandleNext()).Error().To(MatchErrorStrictly(io.EOF)) // Exit.
+	})
+
+	t.Run("canceling the shutdown by pressing anything else", func(t *testing.T) {
+		g := NewWithT(t)
+
+		it := balafon.New()
+		g.Expect(it.EvalString(":assign a 60")).To(Succeed())
+
+		buf := &bytes.Buffer{}
+
+		s := balafon.NewLiveShell(bytes.NewReader([]byte{balafon.EOT, 'a', balafon.EOT, balafon.EOT}), it, &out{buf: buf})
+		g.Expect(s.HandleNext()).To(Succeed()) // Press again.
+		g.Expect(s.HandleNext()).To(Succeed()) // Pressed 'a', shutdown canceled.
+		g.Expect(midi.Message(buf.Bytes())).To(Equal(midi.NoteOn(0, 60, constants.DefaultVelocity)))
+		g.Expect(s.HandleNext()).To(Succeed())                          // Press again.
+		g.Expect(s.HandleNext()).Error().To(MatchErrorStrictly(io.EOF)) // Exit.
+	})
 }
 
 func BenchmarkLiveShell(b *testing.B) {

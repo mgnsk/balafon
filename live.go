@@ -10,16 +10,19 @@ import (
 )
 
 const (
+	// ETX is keycode for Ctrl-C.
+	ETX = '\x03'
 	// EOT is keycode for Ctrl+D.
-	EOT = 4
+	EOT = '\x04'
 )
 
 // LiveShell is an unbuffered live shell.
 type LiveShell struct {
-	r   io.Reader
-	it  *Interpreter
-	buf []byte
-	out drivers.Out
+	r                io.Reader
+	it               *Interpreter
+	buf              []byte
+	out              drivers.Out
+	exitRequestCount int
 }
 
 // NewLiveShell creates a new live shell.
@@ -40,12 +43,19 @@ func (s *LiveShell) HandleNext() error {
 	}
 
 	r, _ := utf8.DecodeRune(s.buf)
-	if r == EOT {
-		return io.EOF
+	if r == EOT || r == ETX {
+		if s.exitRequestCount > 0 {
+			return io.EOF
+		}
+		s.exitRequestCount++
+		fmt.Printf("press Ctrl-D or Ctrl-C again to exit\r\n")
+		return nil
 	}
 
+	s.exitRequestCount = 0
+
 	if err := s.it.EvalString(string(r)); err != nil {
-		fmt.Printf("%s\n", err.Error())
+		fmt.Printf("%s\r\n", err.Error())
 		return nil
 	}
 
