@@ -1,9 +1,10 @@
 package balafon
 
 import (
+	"bufio"
+	"errors"
 	"fmt"
 	"io"
-	"unicode/utf8"
 
 	"gitlab.com/gomidi/midi/v2"
 	"gitlab.com/gomidi/midi/v2/drivers"
@@ -18,7 +19,7 @@ const (
 
 // LiveShell is an unbuffered live shell.
 type LiveShell struct {
-	r                io.Reader
+	input            *bufio.Reader
 	it               *Interpreter
 	buf              []byte
 	out              drivers.Out
@@ -26,23 +27,22 @@ type LiveShell struct {
 }
 
 // NewLiveShell creates a new live shell.
-func NewLiveShell(r io.Reader, it *Interpreter, out drivers.Out) *LiveShell {
+func NewLiveShell(input io.Reader, it *Interpreter, out drivers.Out) *LiveShell {
 	return &LiveShell{
-		r:   r,
-		it:  it,
-		buf: make([]byte, 1),
-		out: out,
+		input: bufio.NewReader(input),
+		it:    it,
+		buf:   make([]byte, 1),
+		out:   out,
 	}
 }
 
 // HandleNext handles the next character from input.
 func (s *LiveShell) HandleNext() error {
-	_, err := s.r.Read(s.buf)
+	r, _, err := s.input.ReadRune()
 	if err != nil {
 		return fmt.Errorf("error reading input: %w", err)
 	}
 
-	r, _ := utf8.DecodeRune(s.buf)
 	if r == EOT || r == ETX {
 		if s.exitRequestCount > 0 {
 			return io.EOF
@@ -55,8 +55,7 @@ func (s *LiveShell) HandleNext() error {
 	s.exitRequestCount = 0
 
 	if err := s.it.EvalString(string(r)); err != nil {
-		fmt.Printf("%s\r\n", err.Error())
-		return nil
+		return err
 	}
 
 	for _, bar := range s.it.Flush() {
@@ -76,6 +75,16 @@ func (s *LiveShell) HandleNext() error {
 func (s *LiveShell) Run() error {
 	for {
 		if err := s.HandleNext(); err != nil {
+			if _, ok := errors.AsType[*ParseError](err); ok {
+				fmt.Printf("%s\r\n", err.Error())
+				continue
+			}
+
+			if _, ok := errors.AsType[*EvalError](err); ok {
+				fmt.Printf("%s\r\n", err.Error())
+				continue
+			}
+
 			return err
 		}
 	}

@@ -3,6 +3,7 @@ package balafon_test
 import (
 	"bytes"
 	"io"
+	"strings"
 	"testing"
 
 	"github.com/mgnsk/balafon"
@@ -24,24 +25,33 @@ func (o *out) Send(b []byte) error {
 	return nil
 }
 
-type reader struct{}
-
-func (*reader) Read(p []byte) (int, error) {
-	p[0] = 'a'
-	return 1, nil
-}
-
 func TestLiveShell(t *testing.T) {
-	g := NewWithT(t)
+	t.Run("one byte input", func(t *testing.T) {
+		g := NewWithT(t)
 
-	it := balafon.New()
-	g.Expect(it.EvalString(":assign a 60")).To(Succeed())
+		it := balafon.New()
+		g.Expect(it.EvalString(":assign a 60")).To(Succeed())
 
-	buf := &bytes.Buffer{}
+		buf := &bytes.Buffer{}
 
-	s := balafon.NewLiveShell(&reader{}, it, &out{buf: buf})
-	g.Expect(s.HandleNext()).To(Succeed())
-	g.Expect(midi.Message(buf.Bytes())).To(Equal(midi.NoteOn(0, 60, constants.DefaultVelocity)))
+		s := balafon.NewLiveShell(strings.NewReader("a"), it, &out{buf: buf})
+		g.Expect(s.HandleNext()).To(Succeed())
+		g.Expect(midi.Message(buf.Bytes())).To(Equal(midi.NoteOn(0, 60, constants.DefaultVelocity)))
+	})
+
+	t.Run("more one byte input", func(t *testing.T) {
+		g := NewWithT(t)
+
+		it := balafon.New()
+		g.Expect(it.EvalString(":assign a 60")).To(Succeed())
+
+		buf := &bytes.Buffer{}
+
+		s := balafon.NewLiveShell(strings.NewReader("ä"), it, &out{buf: buf})
+		err := s.HandleNext()
+		g.Expect(err).To(HaveOccurred())
+		g.Expect(err.Error()).To(ContainSubstring(`token "ä"`))
+	})
 }
 
 func TextLiveShellExit(t *testing.T) {
@@ -80,11 +90,14 @@ func BenchmarkLiveShell(b *testing.B) {
 		b.Fatal(err)
 	}
 
-	s := balafon.NewLiveShell(&reader{}, it, &out{})
+	reader := strings.NewReader("a")
+
+	s := balafon.NewLiveShell(reader, it, &out{})
 
 	b.ReportAllocs()
 
 	for b.Loop() {
+		reader.Seek(0, io.SeekStart)
 		if err := s.HandleNext(); err != nil {
 			b.Fatal(err)
 		}
